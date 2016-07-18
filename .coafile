@@ -1,0 +1,29 @@
+[Default]
+files = **.py
+ignore = **/migrations/**, **/vendor/**
+default_actions = *: ApplyPatchAction
+language = python
+
+[python-spacing]
+bears = PEP8Bear, PyCommentedCodeBear, PyImportSortBear, PyUnusedCodeBear
+
+[python-analysis]
+ignore = **/migrations/**, **/vendor/**, **/tests.py
+bears = CPDBear, LineLengthBear, RadonBear
+
+[json]
+bears = JSONFormatBear
+files = **.json
+tab_width = 2
+
+[js-analysis]
+files = **.js
+bears = CPDBear, JSComplexityBear, JSHintBear
+prohibit_undefined = False  # Angular, toastr, ...
+prohibit_unused = vars
+
+[todos]
+files = **.(js|py)
+bears = KeywordBear
+cs_keywords = todo
+ci_keywords =
