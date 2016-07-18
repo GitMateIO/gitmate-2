@@ -1,0 +1,4 @@
+django~=1.9
+djangorestframework~=3.3
+django-rest-auth~=0.7
+django-allauth~=0.25
