@@ -38,7 +38,7 @@ python3 manage.py test
 ```
 
 The code analysis can be run in the
-[official coala container](http://coala.readthedocs.io/en/latest/Users/Container.html)
+[official coala container](http://docs.coala.io/en/latest/Users/Docker_Image.html)
 or locally when installing the ``coala-bears`` pip package:
 
 ```
