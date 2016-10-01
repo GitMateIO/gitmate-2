@@ -1,5 +1,7 @@
-coala Online
-============
+GitMate 2
+=========
+
+The new version of GitMate - written in django!
 
 Running the Project
 -------------------
