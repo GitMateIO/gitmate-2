@@ -37,7 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.github.GithubOAuth2',
+)
+
+SOCIAL_AUTH_URL_NAMESPACE = 'auth'
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
