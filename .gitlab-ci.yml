@@ -1,5 +1,5 @@
 check_code:
-  image: coala/base
+  image: coala/base:0.9
   script:
   - pip install -r requirements.txt
   - coala-ci
