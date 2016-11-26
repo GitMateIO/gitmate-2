@@ -20,7 +20,8 @@ from django.contrib.staticfiles.views import serve as serve_static
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 urlpatterns = [
-    url(r'^$', ensure_csrf_cookie(serve_static), kwargs={'path': 'index.html'}),
+    url(r'^$', ensure_csrf_cookie(serve_static),
+        kwargs={'path': 'index.html'}),
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('social.apps.django_app.urls', namespace='auth')),
 ]
