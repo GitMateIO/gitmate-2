@@ -1,14 +1,13 @@
 [Default]
 files = **.py
-ignore = **/migrations/**, **/vendor/**
-default_actions = *: ApplyPatchAction
+ignore = **/migrations/**, **/vendor/**, node_modules/**
 language = python
 
 [python-spacing]
 bears = PEP8Bear, PyCommentedCodeBear, PyImportSortBear, PyUnusedCodeBear
 
 [python-analysis]
-ignore = **/migrations/**, **/vendor/**, **/tests.py
+ignore = **/migrations/**, **/vendor/**, node_modules/**, **/tests.py
 bears = CPDBear, LineLengthBear, RadonBear
 
 [json]
@@ -25,5 +24,3 @@ prohibit_unused = vars
 [todos]
 files = **.(js|py)
 bears = KeywordBear
-cs_keywords = todo
-ci_keywords =
