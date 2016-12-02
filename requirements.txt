@@ -1,4 +1,6 @@
 django~=1.9
 djangorestframework~=3.3
 django-rest-auth~=0.7
+django-assets~=0.12
 python-social-auth[django]~=0.3
+webassets-elm~=0.1.3
