@@ -1,6 +1,6 @@
 [Default]
 files = **.py
-ignore = **/migrations/**, **/vendor/**, node_modules/**
+ignore = **/migrations/**, **/vendor/**, node_modules/**, elm-stuff/**, **.js
 language = python
 
 [python-spacing]
@@ -13,13 +13,8 @@ bears = CPDBear, LineLengthBear, RadonBear
 [json]
 bears = JSONFormatBear
 files = **.json
-tab_width = 2
-
-[js-analysis]
-files = **.js
-bears = CPDBear, JSComplexityBear, JSHintBear
-prohibit_undefined = False  # Angular, toastr, ...
-prohibit_unused = vars
+indent_size = 4
+json_sort = false
 
 [todos]
 files = **.(js|py)

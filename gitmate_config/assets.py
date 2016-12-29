@@ -1,7 +1,7 @@
-from django_assets import Bundle, register
+from django_assets import Bundle
+from django_assets import register
 from webassets.filter import register_filter
 from webassets_elm import Elm
-
 
 register_filter(Elm)
 
