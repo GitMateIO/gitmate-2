@@ -3,3 +3,10 @@ check_code:
   script:
   - pip install -r requirements.txt
   - coala-ci
+
+run_tests:
+  image: coala/base:0.9
+  script:
+  - pip install -r requirements.txt
+  - pip install pytest pytest-django
+  - py.test -vv
