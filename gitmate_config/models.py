@@ -1,10 +1,15 @@
 from importlib import import_module
 
+from django.db import IntegrityError
 from django.db import models
 
 
 class Plugin(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(
+        # default None ensures that trying to save a Plugin instance
+        # with uninitialized name will be forbidden on database level
+        default=None, max_length=50)
+
     active = models.BooleanField(default=False)
 
     def __str__(self):

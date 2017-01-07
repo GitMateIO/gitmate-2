@@ -8,5 +8,5 @@ run_tests:
   image: coala/base:0.9
   script:
   - pip install -r requirements.txt
-  - pip install pytest pytest-django
-  - py.test -vv
+  - pip install pytest pytest-cov pytest-django
+  - py.test -vv --cov
