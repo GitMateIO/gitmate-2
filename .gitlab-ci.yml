@@ -2,7 +2,7 @@ check_code:
   image: coala/base:0.9
   script:
   - pip install -r requirements.txt
-  - coala-ci
+  - coala --ci
 
 run_tests:
   image: coala/base:0.9
