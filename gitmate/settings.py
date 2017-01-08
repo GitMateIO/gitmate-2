@@ -37,12 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social.apps.django_app.default',
+    'social_django',
     'gitmate_config',
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.github.GithubOAuth2',
+    'social_core.backends.github.GithubOAuth2',
 )
 
 SOCIAL_AUTH_URL_NAMESPACE = 'auth'

@@ -1,4 +1,4 @@
 django~=1.9
 djangorestframework~=3.3
 django-rest-auth~=0.7
-python-social-auth~=0.2
+python-social-auth[django]~=0.3

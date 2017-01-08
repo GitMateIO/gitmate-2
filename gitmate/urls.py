@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^$', ensure_csrf_cookie(serve_static),
         kwargs={'path': 'index.html'}),
     url(r'^admin/', admin.site.urls),
-    url(r'^auth/', include('social.apps.django_app.urls', namespace='auth')),
+    url(r'^auth/', include('social_django.urls', namespace='auth')),
 ]
