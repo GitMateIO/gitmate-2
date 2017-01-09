@@ -22,6 +22,12 @@ bower install
 python3 manage.py migrate
 ```
 
+Followed by updating the database with all configured GitMate plugins:
+
+```
+python3 manage.py upmate
+```
+
 Then start the webassets watcher in a separate console. It automatically
 compiles the Elm sources into JavaScript and keeps them up-to-date:
 
