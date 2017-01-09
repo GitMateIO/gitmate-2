@@ -22,7 +22,14 @@ bower install
 python3 manage.py migrate
 ```
 
-You can now run the project:
+Then start the webassets watcher in a separate console. It automatically
+compiles the Elm sources into JavaScript and keeps them up-to-date:
+
+```
+python3 manage.py assets watch
+```
+
+Now you can run the actual server:
 
 ```
 python3 manage.py runserver
