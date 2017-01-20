@@ -3,6 +3,13 @@ GitMate 2
 
 The new version of GitMate - written in django!
 
+What exactly is GitMate?
+------------------------
+
+GitMate is a software which listens for certain events in your git project
+(e.g. push event) and runs a plugin (which you have configured) when that event
+is detected.
+
 Running the Project
 -------------------
 
