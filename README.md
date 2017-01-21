@@ -20,19 +20,17 @@ you can make your own!
 Running the Project
 -------------------
 
-Make sure bower as well as a virtual environment with pip is available:
+Make sure virtual environment with pip is available:
 
 ```
 virtualenv ~/.venvs/coon
 . ~/.venvs/coon/bin/activate
-npm install bower
 ```
 
 Now install the project specific requirements and create your initial database:
 
 ```
 pip install -r requirements.txt
-bower install
 python3 manage.py migrate
 ```
 
@@ -63,4 +61,56 @@ or locally when installing the ``coala-bears`` pip package:
 
 ```
 coala
+```
+
+Modifications to Models
+-----------------------
+
+After adding/removing models in apps, you would need to make migrations
+for the database. You could make migrations with
+
+```
+python3 manage.py makemigrations
+```
+
+And then migrate the changes with
+```
+python3 manage.py migrate
+```
+
+Accessing Django shell
+----------------------
+
+To run a python interpreter with a complete django environment setup,
+just run
+
+```
+python3 manage.py shell
+```
+
+Accessing Django's database(via an SQL shell)
+---------------------------------------------
+We could access the database through SQL commands via a shell, to
+do so, just run
+
+```
+python3 manage.py dbshell
+```
+
+Collecting static assets into wsgi application(production stage)
+----------------------------------------------------------------
+We could collect all static files into a single location so they
+could be served easily in production.
+
+```
+python3 manage.py collectstatic
+```
+
+Clear sessions
+--------------
+Ever got caught in an irksome situation, without a logout button?
+You could end all your sessions with,
+
+```
+python manage.py clearsessions
 ```
