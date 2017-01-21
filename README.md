@@ -10,6 +10,13 @@ GitMate is a software which listens for certain events in your git project
 (e.g. push event) and runs a plugin (which you have configured) when that event
 is detected.
 
+So what can GitMate do?
+--------------------
+
+**Anything!** In gitmate different plugins perform different functions that you
+can choose from. If you can't find a plugin you are looking for
+you can make your own!
+
 Running the Project
 -------------------
 
