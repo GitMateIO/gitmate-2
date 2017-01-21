@@ -1,6 +1,3 @@
 *.pyc
 .idea/
 db.sqlite3
-.webassets-cache
-*.js
-elm-stuff/

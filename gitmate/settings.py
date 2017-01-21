@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'gitmate_config',
-    'django_assets',
 ]
 
 AUTHENTICATION_BACKENDS = (

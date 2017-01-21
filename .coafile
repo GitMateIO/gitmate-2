@@ -1,6 +1,6 @@
 [Default]
 files = **.py
-ignore = **/migrations/**, **/vendor/**, node_modules/**, elm-stuff/**, **.js
+ignore = **/migrations/**, **/vendor/**, node_modules/**
 language = python
 
 [python-spacing]
