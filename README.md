@@ -114,3 +114,19 @@ You could end all your sessions with,
 ```
 python manage.py clearsessions
 ```
+
+Social Authentication
+---------------------
+**Providers Supported:**
+    - GitLab (OAuth2)
+    - GitHub (OAuth2)
+    - Bitbucket (OAuth)
+
+Please include your CLIENT ID and CLIENT SECRET keys in
+`gitmate/settings.py`.
+
+The login URL: `<domainname:port>/auth/login/<provider>`
+
+This saves the required access tokens as provided by the providers
+into the `User` model, which could later be used to send
+authenticated requests to communicate with the providers.
