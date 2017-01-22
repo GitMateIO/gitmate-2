@@ -108,6 +108,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
     'social_core.backends.gitlab.GitLabOAuth2',
     'social_core.backends.bitbucket.BitbucketOAuth',
+    'django.contrib.auth.backends.ModelBackend'
 )
 
 GITMATE_PLUGINS = [
