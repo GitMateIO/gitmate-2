@@ -8,7 +8,7 @@ bears = PEP8Bear, PyCommentedCodeBear, PyImportSortBear, PyUnusedCodeBear
 
 [python-analysis]
 ignore = **/migrations/**, **/vendor/**, node_modules/**, **/tests.py
-bears = CPDBear, LineLengthBear, RadonBear
+bears = LineLengthBear, RadonBear
 
 [json]
 bears = JSONFormatBear
