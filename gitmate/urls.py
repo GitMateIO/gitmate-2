@@ -21,4 +21,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('social_django.urls', namespace='auth')),
+    url(r'^api/', include('gitmate_config.api.urls', namespace='api'))
 ]

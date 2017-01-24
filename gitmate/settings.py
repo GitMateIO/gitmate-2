@@ -39,7 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'gitmate_config',
+    'rest_framework'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
+    )
+}
 
 SOCIAL_AUTH_URL_NAMESPACE = 'auth'
 
