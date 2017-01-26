@@ -1,11 +1,14 @@
+from unittest import TestCase
+
 from django.contrib.auth.models import User
 from django.test import RequestFactory
-from django.test import TestCase
+import pytest
 
-from gitmate_config.api.views import UserDetailsView
+from api.views import UserDetailsView
 
 
-class SimpleTest(TestCase):
+@pytest.mark.django_db(transaction=False)
+class TestApi(TestCase):
 
     def setUp(self):
         self.factory = RequestFactory()
@@ -34,5 +37,5 @@ class SimpleTest(TestCase):
                                  'first_name': 'John',
                                  'last_name': 'Appleseed',
                                  'username': 'john'
-                                 }
-                             })
+                             }
+                         })
