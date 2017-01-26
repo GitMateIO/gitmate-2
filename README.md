@@ -1,5 +1,8 @@
-GitMate 2
-=========
+Backend
+=======
+
+GitMate 2 Backend
+=================
 
 The new version of GitMate - written in django!
 
@@ -130,3 +133,46 @@ The login URL: `<domainname:port>/auth/login/<provider>`
 This saves the required access tokens as provided by the providers
 into the `User` model, which could later be used to send
 authenticated requests to communicate with the providers.
+
+
+Frontend
+========
+
+GitMate 2 Frontend
+==================
+
+Frontend for the new version of GitMate
+
+> `cd frontend` - change into frontend directory to work with the frontend
+
+Trying it out:
+--------------
+
+* `npm install` - installs the prerequisited from the `package.json` file
+* `npm start` - runs the compiler and a server at the same time, both in "watch mode".
+* `npm run tsc` - runs the TypeScript compiler once.
+* `npm run tsc:w` - runs the TypeScript compiler in watch mode; the process keeps running, awaiting changes to TypeScript files and re-compiling when it sees them.
+* `npm run lite` - runs the [lite-server](https://www.npmjs.com/package/lite-server), a light-weight, static file server, written and maintained by
+[John Papa](https://github.com/johnpapa) and
+[Christopher Martin](https://github.com/cgmartin)
+with excellent support for Angular apps that use routing.
+* `npm test` - compiles, runs and watches the karma unit tests
+
+Unit Tests
+----------
+TypeScript unit-tests are usually in the `app` folder. Their filenames must end in `.spec`.
+
+Look for the example `app/app.component.spec.ts`.
+Add more `.spec.ts` files as you wish; we configured karma to find them.
+
+Run it with `npm test`
+
+That command first compiles the application, then simultaneously re-compiles and runs the karma test-runner.
+Both the compiler and the karma watch for (different) file changes.
+
+Shut it down manually with `Ctrl-C`.
+
+Test-runner output appears in the terminal window.
+We can update our app and our tests in real-time, keeping a weather eye on the console for broken tests.
+Karma is occasionally confused and it is often necessary to shut down its browser or even shut the command down (`Ctrl-C`) and
+restart it. No worries; it's pretty quick.

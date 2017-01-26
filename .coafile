@@ -1,6 +1,6 @@
 [Default]
 files = **.py
-ignore = **/migrations/**, **/vendor/**, node_modules/**
+ignore = **/migrations/**, **/vendor/**, **/node_modules/**
 language = python
 
 [python-spacing]
@@ -15,6 +15,7 @@ bears = JSONFormatBear
 files = **.json
 indent_size = 4
 json_sort = false
+ignore = frontend/node_modules/**/*.json
 
 [todos]
 files = **.(js|py)
