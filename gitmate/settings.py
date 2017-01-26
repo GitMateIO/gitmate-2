@@ -209,5 +209,5 @@ USE_TZ = True
 STATIC_ROOT = ''
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'client'),
+    os.path.join(BASE_DIR, 'frontend'),
 )

@@ -176,3 +176,21 @@ Test-runner output appears in the terminal window.
 We can update our app and our tests in real-time, keeping a weather eye on the console for broken tests.
 Karma is occasionally confused and it is often necessary to shut down its browser or even shut the command down (`Ctrl-C`) and
 restart it. No worries; it's pretty quick.
+
+
+Testing (development)
+=====================
+*both frontend and backend combined*
+
+You could test the full app, by following these steps.
+
+* `cd frontend` : change directory into frontend
+* `npm run tsc` : compile the app once
+* `cd ..` : change directory back into the root
+* `python3 manage.py runserver` : runs the server for testing
+
+Navigate to `http://localhost:8000/` to see the application running.
+
+> Note that the link `/static/` specified as STATIC_URL in `gitmate/settings.py` links the static serve of files, so all static links
+> in `frontend/index.html` should prefix the same, and the `baseURL` settings
+> of `frontend/system.config.js` should reflect the same, for proper functioning of the application.
