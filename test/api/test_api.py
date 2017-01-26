@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.test import RequestFactory
 from django.test import TestCase
 
-from gitmate_config.api.views import UserDetailsView
+from api.views import UserDetailsView
 
 
 class SimpleTest(TestCase):

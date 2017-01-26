@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'gitmate_config',
-    'rest_framework'
+    'rest_framework',
+    'api'
 ]
 
 REST_FRAMEWORK = {
