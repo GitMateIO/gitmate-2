@@ -1,4 +1,5 @@
 *.pyc
+*.orig
 .idea/
 db.sqlite3
 node_modules/
