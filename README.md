@@ -1,8 +1,5 @@
-Backend
-=======
-
-GitMate 2 Backend
-=================
+GitMate 2
+=========
 
 The new version of GitMate - written in django!
 
@@ -43,7 +40,20 @@ Followed by updating the database with all configured GitMate plugins:
 python3 manage.py upmate
 ```
 
-Now you can run the actual server:
+Now change to the "fronted" Directory with `cd frontend` and install the frontend dependencies:
+
+```
+npm install
+./node_modules/typings/dist/bin.js install dt~hammerjs --global
+```
+
+Compile the app once, or continuously on filechange:
+```
+npm run tsc   # one-shot compilation
+npm run tsc:w # continuous compilation
+```
+
+Now you can go back to the "gitmate-2" dir with `cd ..` and run the server:
 
 ```
 python3 manage.py runserver
@@ -135,31 +145,8 @@ into the `User` model, which could later be used to send
 authenticated requests to communicate with the providers.
 
 
-Frontend
-========
-
-GitMate 2 Frontend
-==================
-
-Frontend for the new version of GitMate
-
-> `cd frontend` - change into frontend directory to work with the frontend
-
-Trying it out:
---------------
-
-* `npm install` - installs the prerequisited from the `package.json` file
-* `npm start` - runs the compiler and a server at the same time, both in "watch mode".
-* `npm run tsc` - runs the TypeScript compiler once.
-* `npm run tsc:w` - runs the TypeScript compiler in watch mode; the process keeps running, awaiting changes to TypeScript files and re-compiling when it sees them.
-* `npm run lite` - runs the [lite-server](https://www.npmjs.com/package/lite-server), a light-weight, static file server, written and maintained by
-[John Papa](https://github.com/johnpapa) and
-[Christopher Martin](https://github.com/cgmartin)
-with excellent support for Angular apps that use routing.
-* `npm test` - compiles, runs and watches the karma unit tests
-
-Unit Tests
-----------
+Frontend Unit Tests
+-------------------
 TypeScript unit-tests are usually in the `app` folder. Their filenames must end in `.spec`.
 
 Look for the example `app/app.component.spec.ts`.
@@ -185,7 +172,7 @@ Testing (development)
 You could test the full app, by following these steps.
 
 * `cd frontend` : change directory into frontend
-* `npm run tsc` : compile the app once
+* `npm run tsc` : compile the app once (`npm run tsc:w` for coninuous compilation)
 * `cd ..` : change directory back into the root
 * `python3 manage.py runserver` : runs the server for testing
 
