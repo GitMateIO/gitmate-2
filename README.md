@@ -181,3 +181,10 @@ Navigate to `http://localhost:8000/` to see the application running.
 > Note that the link `/static/` specified as STATIC_URL in `gitmate/settings.py` links the static serve of files, so all static links
 > in `frontend/index.html` should prefix the same, and the `baseURL` settings
 > of `frontend/system.config.js` should reflect the same, for proper functioning of the application.
+
+API Endpoints
+=============
+
+**Authenticated only**
+- `GET /api/me/` : Get user
+- `GET /api/repos?provider=name` : Get user owned repositories with the provider `name`
