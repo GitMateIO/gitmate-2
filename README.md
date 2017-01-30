@@ -182,9 +182,6 @@ Navigate to `http://localhost:8000/` to see the application running.
 > in `frontend/index.html` should prefix the same, and the `baseURL` settings
 > of `frontend/system.config.js` should reflect the same, for proper functioning of the application.
 
-API Endpoints
-=============
-
-**Authenticated only**
-- `GET /api/me/` : Get user
-- `GET /api/repos?provider=name` : Get user owned repositories with the provider `name`
+Documentation to API Endpoints
+------------------------------
+The docs could be accessed via http://localhost:8000/docs once the server is running.

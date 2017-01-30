@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'social_django',
     'gitmate_config',
     'rest_framework',
+    'rest_framework_docs',
     'api'
 ]
 

@@ -4,3 +4,4 @@ django-rest-auth~=0.7
 python-social-auth[django]~=0.3
 python3-openid==3.0.10
 IGitt~=0.2.0.dev20170127093917
+drfdocs~=0.0.11
