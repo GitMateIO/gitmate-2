@@ -13,12 +13,10 @@ from .serializers import UserSerializer
 class UserDetailsView(APIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
 
     def get(self, request, format=None):
-        content = {
-            'user': UserSerializer(request.user).data
-        }
-        return Response(content)
+        return Response(UserSerializer(request.user).data)
 
 
 class UserOwnedRepositoriesView(APIView):

@@ -33,15 +33,11 @@ class TestApi(TestCase):
         response = UserDetailsView.as_view()(request)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data,
-                         {
-                             'user':
-                             {
-                                 'email': 'john.appleseed@example.com',
-                                 'first_name': 'John',
-                                 'last_name': 'Appleseed',
-                                 'username': 'john'
-                             }
+        self.assertEqual(response.data, {
+                             'email': 'john.appleseed@example.com',
+                             'first_name': 'John',
+                             'last_name': 'Appleseed',
+                             'username': 'john'
                          })
 
     def test_repositories(self):
