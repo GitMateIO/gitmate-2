@@ -3,6 +3,7 @@ from unittest import TestCase
 from django.contrib.auth.models import User
 from django.test import RequestFactory
 import pytest
+from rest_framework import status
 from social_django.models import UserSocialAuth
 
 from api.views import UserDetailsView
@@ -34,7 +35,7 @@ class TestApi(TestCase):
         request.user = self.user
         response = UserDetailsView.as_view()(request)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {
                              'email': 'john.appleseed@example.com',
                              'first_name': 'John',
@@ -53,10 +54,9 @@ class TestApi(TestCase):
         request.user = self.user
         response = UserOwnedRepositoriesView.as_view()(request)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(response.data, {
-            'error': 'Bad credentials',
-            'status_code': 401
+            'error': 'Bad credentials'
         })
 
         # Plugin not yet developed case
@@ -71,10 +71,10 @@ class TestApi(TestCase):
         request.user = self.user
         response = UserOwnedRepositoriesView.as_view()(request)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code,
+                         status.HTTP_501_NOT_IMPLEMENTED)
         self.assertEqual(response.data, {
-            'error': 'Plugin for host not yet developed',
-            'status_code': 500
+            'error': 'Plugin for host not yet developed'
         })
 
         # Invalid Provider name
@@ -82,8 +82,8 @@ class TestApi(TestCase):
         request.user = self.user
         response = UserOwnedRepositoriesView.as_view()(request)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code,
+                         status.HTTP_204_NO_CONTENT)
         self.assertEqual(response.data, {
-            'error': 'Requires a valid provider name',
-            'status_code': 500
+            'error': 'Requires a valid provider name'
         })

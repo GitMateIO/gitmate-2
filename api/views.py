@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
 from IGitt.GitHub.GitHub import GitHub
+from rest_framework import status
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -18,7 +19,7 @@ class UserDetailsView(APIView):
     serializer_class = UserSerializer
 
     def get(self, request, format=None):
-        return Response(UserSerializer(request.user).data)
+        return Response(UserSerializer(request.user).data, status.HTTP_200_OK)
 
 
 class UserOwnedRepositoriesView(APIView):
@@ -27,6 +28,7 @@ class UserOwnedRepositoriesView(APIView):
 
     def get(self, request, format=None):
         try:
+            content = {}
             provider = request.query_params['provider']
             provider_data = request.user.social_auth.get(
                 provider=provider).extra_data
@@ -35,23 +37,16 @@ class UserOwnedRepositoriesView(APIView):
                 host = GitHub(access_token)
             else:
                 raise NotImplementedError
-            content = {
-                'owned': host.owned_repositories,
-                'write': host.write_repositories
-            }
+            status_code = status.HTTP_200_OK
+            content = {'owned': host.owned_repositories,
+                       'write': host.write_repositories}
         except (MultiValueDictKeyError, ObjectDoesNotExist):
-            content = {
-                'error': 'Requires a valid provider name',
-                'status_code': 500
-            }
+            content['error'] = 'Requires a valid provider name'
+            status_code = status.HTTP_204_NO_CONTENT
         except NotImplementedError:
-            content = {
-                'error': 'Plugin for host not yet developed',
-                'status_code': 500
-            }
+            content['error'] = 'Plugin for host not yet developed'
+            status_code = status.HTTP_501_NOT_IMPLEMENTED
         except RuntimeError:
-            content = {
-                'error': 'Bad credentials',
-                'status_code': 401
-            }
-        return Response(content)
+            content['error'] = 'Bad credentials'
+            status_code = status.HTTP_401_UNAUTHORIZED
+        return Response(content, status_code)
