@@ -7,6 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from gitmate_config import Providers
+
 from .serializers import UserSerializer
 
 
@@ -29,7 +31,7 @@ class UserOwnedRepositoriesView(APIView):
             provider_data = request.user.social_auth.get(
                 provider=provider).extra_data
             access_token = provider_data['access_token']
-            if provider == 'github':
+            if provider == Providers.GITHUB.value:
                 host = GitHub(access_token)
             else:
                 raise NotImplementedError

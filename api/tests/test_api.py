@@ -7,6 +7,7 @@ from social_django.models import UserSocialAuth
 
 from api.views import UserDetailsView
 from api.views import UserOwnedRepositoriesView
+from gitmate_config import Providers
 
 
 @pytest.mark.django_db(transaction=False)
@@ -21,7 +22,8 @@ class TestApi(TestCase):
             first_name="John",
             last_name="Appleseed"
         )
-        self.auth = UserSocialAuth(user=self.user, provider='github')
+        self.auth = UserSocialAuth(
+            user=self.user, provider=Providers.GITHUB.value)
         self.auth.save()
 
     def test_details(self):
@@ -58,7 +60,8 @@ class TestApi(TestCase):
         })
 
         # Plugin not yet developed case
-        self.auth = UserSocialAuth(user=self.user, provider='gitlab')
+        self.auth = UserSocialAuth(
+            user=self.user, provider=Providers.GITLAB.value)
         self.auth.set_extra_data(extra_data={
             'access_token': 'themostwonderfulaccesstokenever'
         })
