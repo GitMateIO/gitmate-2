@@ -109,6 +109,10 @@ SOCIAL_AUTH_PIPELINE = (
 # Put gitmate's corresponding OAuth details here.
 SOCIAL_AUTH_GITHUB_KEY = ''
 SOCIAL_AUTH_GITHUB_SECRET = ''
+SOCIAL_AUTH_GITHUB_SCOPE = [
+    'admin:repo_hook',
+    'repo',
+]
 
 SOCIAL_AUTH_GITLAB_KEY = ''
 SOCIAL_AUTH_GITLAB_SECRET = ''
