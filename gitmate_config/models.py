@@ -3,6 +3,7 @@ from importlib import import_module
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.db import models
+from django.forms.models import model_to_dict
 
 
 class Plugin(models.Model):
@@ -18,6 +19,16 @@ class Plugin(models.Model):
 
     def import_module(self):
         return import_module('gitmate_' + self.name)
+
+    def get_plugin_settings(self, repo):
+        plugin = self.import_module()
+        settings = plugin.models.Settings.objects.filter(repo=repo)[0]
+        return model_to_dict(settings, exclude=['repo', 'id'])
+
+    @classmethod
+    def get_all_settings(cls, repo):
+        return {k: v for plugin in cls.objects.all()
+                for k, v in plugin.get_plugin_settings(repo).items()}
 
 
 class Repository(models.Model):

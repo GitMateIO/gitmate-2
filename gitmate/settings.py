@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+GITMATE_PLUGINS = [
+    'testplugin',
+    'github_pr',
+]
 
 # Application definition
 
@@ -42,7 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_docs',
     'api'
-]
+] + ['gitmate_'+plugin for plugin in GITMATE_PLUGINS]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -120,10 +124,6 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.bitbucket.BitbucketOAuth',
     'django.contrib.auth.backends.ModelBackend'
 )
-
-GITMATE_PLUGINS = [
-    'testplugin',
-]
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
