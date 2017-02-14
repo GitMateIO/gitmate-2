@@ -1,3 +1,9 @@
 from django.db import models
 
-# Create your models here.
+from gitmate_config.models import Repository
+
+
+class Settings(models.Model):
+    repo = models.ForeignKey(Repository, on_delete=models.CASCADE,
+                             related_name='gitmate_testplugin_repository')
+    example_setting = models.CharField(max_length=25)

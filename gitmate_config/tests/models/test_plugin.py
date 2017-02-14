@@ -1,16 +1,31 @@
 from inspect import ismodule
+from unittest import TestCase
 
+from django.contrib.auth.models import User
 from django.core.validators import ValidationError
 from django.db import IntegrityError
 from django.db import models
 import pytest
 
 from gitmate_config.models import Plugin
+from gitmate_config.models import Repository
 
 
-class TestPlugin:
+@pytest.mark.django_db(transaction=False)
+class TestPlugin(TestCase):
 
-    @pytest.mark.django_db
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="john",
+            email="john.appleseed@example.com",
+            password="top_secret",
+            first_name="John",
+            last_name="Appleseed"
+        )
+        self.repo = Repository(
+            user=self.user, full_name='test', provider='example')
+        self.repo.save()
+
     def test_name(self):
         plugin = Plugin()
         # check default value
@@ -45,3 +60,15 @@ class TestPlugin:
         module = plugin.import_module()
         assert ismodule(module)
         assert module.__name__ == 'gitmate_testplugin'
+
+    def test_get_plugin_settings(self):
+        plugin = Plugin(name='testplugin')
+        plugin_module = plugin.import_module()
+        plugin.save()
+        settings = plugin_module.models.Settings()
+        settings.repo = self.repo
+        settings.example_setting = "test_example"
+        settings.save()
+
+        settings = Plugin.get_all_settings(self.repo)
+        assert settings == {'example_setting': 'test_example'}

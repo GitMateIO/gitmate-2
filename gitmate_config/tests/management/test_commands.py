@@ -1,5 +1,6 @@
 from inspect import ismodule
 
+from django.conf import settings
 from django.core.management import call_command
 import pytest
 
@@ -13,7 +14,7 @@ def test_upmate():
     call_command('upmate')
     # after calling the should be only gitmate_testplugin
     plugins = Plugin.objects.all()
-    assert len(plugins) == 1
+    assert len(plugins) == len(settings.GITMATE_PLUGINS)
     testplugin = plugins[0]
     assert testplugin.name == 'testplugin'
     testplugin_module = testplugin.import_module()
