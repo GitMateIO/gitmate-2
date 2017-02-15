@@ -9,4 +9,4 @@ run_tests:
   script:
   - pip install -r requirements.txt
   - pip install pytest pytest-cov pytest-django
-  - py.test -vv --cov
+  - py.test -vv --cov --doctest-modules

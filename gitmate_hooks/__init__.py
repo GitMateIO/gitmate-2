@@ -6,6 +6,27 @@ from traceback import print_exc
 class ResponderRegistrar:
     """
     This class provides ability to register responders and invoke them.
+
+    >>> from enum import Enum
+    >>> class Messenger(Enum):
+    ...     NEW_CHAT = 0
+    ...     EXISTING_CHAT = 1
+
+    Registering a request responder.
+    >>> @ResponderRegistrar.responder(Messenger.NEW_CHAT)
+    ... def test_responder(obj, test_var: bool = "An example variable"):
+    ...     if test_var:
+    ...         print(obj + ": success")
+
+    The options obtained from responders.
+    >>> ResponderRegistrar.options() == {test_responder: ['test_var']}
+    True
+
+    Request a response from all available responders.
+    >>> ResponderRegistrar.respond(Messenger.NEW_CHAT, "example",
+    ...     options={"test_var": True})
+    example: success
+
     """
 
     _responders = {}
