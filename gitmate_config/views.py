@@ -2,12 +2,14 @@ from django.shortcuts import get_object_or_404
 from django.utils.datastructures import MultiValueDictKeyError
 from IGitt.GitHub.GitHub import GitHub
 from IGitt.GitHub.GitHubRepository import GitHubRepository
+from rest_framework import mixins
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
 
 from gitmate_config import Providers
 from gitmate_config.models import Plugin
@@ -17,6 +19,67 @@ from .serializers import RepositorySerializer
 from .serializers import UserSerializer
 
 
+class RepositoryViewSet(
+    GenericViewSet,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+):
+    """
+    Retrieves repositories this user has access to.
+    """
+    serializer_class = RepositorySerializer
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Repository.objects.filter(user=self.request.user)
+
+    def list(self, request):
+        # Update db model
+        for provider in Providers:
+            try:
+                token = self.request.user.social_auth.get(
+                    provider=provider.value
+                ).extra_data['access_token']
+                for repo in GitHub(token).owned_repositories:
+                    try:
+                        Repository.objects.get(
+                            provider=provider.value, full_name=repo)
+
+                    except Repository.DoesNotExist:  # New repo found!
+                        Repository(
+                            active=False, user=request.user,
+                            provider=provider.value, full_name=repo
+                        ).save()
+
+                # TODO: validate if a cached repo was removed. Handling if it
+                # was active?
+            except:
+                continue
+
+        return super().list(request)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Updates the repository. This will be called by `super` on both
+        partial and full update (PATCH and PUT), only the `active` property
+        is writable (see serializer) so this takes care of
+        activation/decativation of the webhook only.
+        """
+        retval = super().update(request, *args, **kwargs)
+
+        instance = self.get_object()
+        repo = instance.igitt_repo()
+        hook_url = "https://" + request.META['HTTP_HOST'] + "/webhooks/github"
+        if instance.active:
+            repo.register_hook(hook_url)
+        else:
+            repo.delete_hook(hook_url)
+
+        return retval
+
+
 class UserDetailsView(APIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated,)
@@ -24,58 +87,6 @@ class UserDetailsView(APIView):
 
     def get(self, request, format=None):
         return Response(UserSerializer(request.user).data, status.HTTP_200_OK)
-
-
-class UserOwnedRepositoriesView(APIView):
-    authentication_classes = (SessionAuthentication, BasicAuthentication)
-    permission_classes = (IsAuthenticated,)
-
-    def get(self, request, format=None):
-        content = {}
-        status_code = status.HTTP_200_OK
-        for provider in Providers:
-            try:
-                provider_data = request.user.social_auth.get(
-                    provider=provider.value).extra_data
-                access_token = provider_data['access_token']
-                host = GitHub(access_token)
-                content.update({provider.value: host.owned_repositories})
-            except RuntimeError:
-                content = {'error': 'Bad credentials'}
-                status_code = status.HTTP_401_UNAUTHORIZED
-            return Response(content, status_code)
-
-
-class ActivateRepositoryView(APIView):
-    authentication_classes = (SessionAuthentication, BasicAuthentication)
-    permission_classes = (IsAuthenticated,)
-
-    def put(self, request, format=None):
-        received_json = request.data
-        try:
-            provider = received_json['provider'].lower()
-            repo_name = received_json['repository']
-            if provider == Providers.GITHUB.value:
-                token = request.user.social_auth.get(
-                    provider=provider).extra_data['access_token']
-                repo = GitHubRepository(token, repo_name)
-                repo_obj = Repository(
-                    active=True, user=request.user,
-                    provider=provider, full_name=repo_name)
-                repo_obj.save()
-                repo.register_hook(request.scheme + "://" +
-                                   request.META['HTTP_HOST'] +
-                                   "/webhooks/github")
-                return Response(RepositorySerializer(repo_obj).data,
-                                status.HTTP_201_CREATED)
-            else:
-                raise NotImplementedError
-        except (KeyError, NotImplementedError):
-            return Response({'error': "Invalid request"},
-                            status.HTTP_400_BAD_REQUEST)
-        except RuntimeError:
-            return Response({'error': "Bad credentials"},
-                            status.HTTP_401_UNAUTHORIZED)
 
 
 class PluginSettingsView(APIView):

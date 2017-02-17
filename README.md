@@ -48,6 +48,7 @@ npm install
 ```
 
 Compile the app once, or continuously on filechange:
+
 ```
 npm run tsc   # one-shot compilation
 npm run tsc:w # continuous compilation

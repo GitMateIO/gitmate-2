@@ -11,7 +11,10 @@ class UserSerializer(serializers.Serializer):
 
 
 class RepositorySerializer(serializers.ModelSerializer):
+    id = serializers.HyperlinkedIdentityField(
+        view_name='api:repository-detail')
 
     class Meta:
         model = Repository
-        fields = ('user', 'provider', 'full_name', 'active')
+        fields = '__all__'
+        read_only_fields = ('user', 'provider', 'full_name')

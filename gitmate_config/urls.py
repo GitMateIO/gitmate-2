@@ -1,14 +1,16 @@
-from django.conf.urls import include
 from django.conf.urls import url
+from rest_framework.routers import DefaultRouter
 
-from .views import ActivateRepositoryView
 from .views import PluginSettingsView
+from .views import RepositoryViewSet
 from .views import UserDetailsView
-from .views import UserOwnedRepositoriesView
+
+router = DefaultRouter()
+router.register(r'repos', RepositoryViewSet, base_name='repository')
 
 urlpatterns = [
-    url(r'^me/', UserDetailsView.as_view()),
-    url(r'^repos/?', UserOwnedRepositoriesView.as_view()),
-    url(r'^repo/add/?', ActivateRepositoryView.as_view()),
+    url(r'^me/', UserDetailsView.as_view(), name='user-details'),
     url(r'^settings/?', PluginSettingsView.as_view()),
 ]
+
+urlpatterns += router.urls

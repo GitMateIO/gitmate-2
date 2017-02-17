@@ -16,7 +16,3 @@ files = **.json
 indent_size = 4
 json_sort = false
 ignore = frontend/node_modules/**/*.json
-
-[todos]
-files = **.(js|py)
-bears = KeywordBear

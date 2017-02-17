@@ -10,7 +10,6 @@ from social_django.models import UserSocialAuth
 from gitmate_config import Providers
 from gitmate_config.models import Repository
 from gitmate_config.views import UserDetailsView
-from gitmate_config.views import UserOwnedRepositoriesView
 
 
 @pytest.mark.django_db(transaction=False)
@@ -51,35 +50,3 @@ class TestApi(TestCase):
                              'last_name': 'Appleseed',
                              'username': 'john'
                          })
-
-    def test_repositories_bad_credentials(self):
-        # Bad credentials
-        self.auth.set_extra_data(extra_data={
-            'access_token': 'themostwonderfulaccesstokenever'
-        })
-        self.auth.save()
-
-        request = self.factory.get('/api/repos/')
-        request.user = self.user
-        response = UserOwnedRepositoriesView.as_view()(request)
-
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.assertEqual(response.data, {
-            'error': 'Bad credentials'
-        })
-
-    def test_repositories_successful(self):
-        # Correct credentials
-        self.auth.set_extra_data({
-            'access_token': os.environ['GITHUB_TEST_TOKEN']
-        })
-        self.auth.save()
-
-        request = self.factory.get('/api/repos/')
-        request.user = self.user
-        response = UserOwnedRepositoriesView.as_view()(request)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, {
-            Providers.GITHUB.value: {os.environ['GITHUB_TEST_REPO']}
-        })

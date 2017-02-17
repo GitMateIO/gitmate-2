@@ -1,9 +1,12 @@
 from importlib import import_module
 
 from django.contrib.auth.models import User
-from django.db import IntegrityError
 from django.db import models
 from django.forms.models import model_to_dict
+from IGitt.GitHub.GitHubRepository import GitHubRepository
+from IGitt.Interfaces.Repository import Repository
+
+from gitmate_config import Providers
 
 
 class Plugin(models.Model):
@@ -81,6 +84,15 @@ class Repository(models.Model):
 
     def __str__(self):
         return self.full_name
+
+    def igitt_repo(self) -> Repository:
+        token = self.user.social_auth.get(
+            provider=self.provider).extra_data['access_token']
+        if self.provider == Providers.GITHUB.value:
+            return GitHubRepository(token, self.full_name)
+
+        # Other providers aren't implemented yet.
+        raise NotImplementedError
 
     class Meta:
         unique_together = ('provider', 'full_name')
