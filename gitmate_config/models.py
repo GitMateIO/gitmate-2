@@ -20,13 +20,48 @@ class Plugin(models.Model):
     def import_module(self):
         return import_module('gitmate_' + self.name)
 
+    def get_detailed_plugin_settings(self, repo):
+        """
+        Returns a detailed dictionary of specified plugin's settings with their
+        values, types and descriptions.
+        """
+        plugin = self.import_module()
+        settings = plugin.models.Settings.objects.filter(repo=repo)[0]
+        return {
+            "status": "active" if self.active else "inactive",
+            "settings": {
+                field.name: {
+                    "value": field.value_from_object(settings),
+                    "description": field.help_text,
+                    "type": field.get_internal_type(),
+                }
+                for field in settings._meta.fields
+                if field.name not in ['repo', 'id']
+            }
+        }
+
     def get_plugin_settings(self, repo):
+        """
+        Returns the dictionary of settings for the specified plugin.
+        """
         plugin = self.import_module()
         settings = plugin.models.Settings.objects.filter(repo=repo)[0]
         return model_to_dict(settings, exclude=['repo', 'id'])
 
     @classmethod
-    def get_all_settings(cls, repo):
+    def get_all_settings_detailed(cls, repo):
+        """
+        Returns the dictionary of settings of all the plugins with their names,
+        values, types and descriptions.
+        """
+        return {plugin.name: plugin.get_detailed_plugin_settings(repo)
+                for plugin in cls.objects.all()}
+
+    @classmethod
+    def get_all_settings(cls, repo, format=None):
+        """
+        Returns a dictionary of values for settings of all the plugins.
+        """
         return {k: v for plugin in cls.objects.all()
                 for k, v in plugin.get_plugin_settings(repo).items()}
 

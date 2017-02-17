@@ -67,8 +67,35 @@ class TestPlugin(TestCase):
         plugin.save()
         settings = plugin_module.models.Settings()
         settings.repo = self.repo
-        settings.example_setting = "test_example"
         settings.save()
 
         settings = Plugin.get_all_settings(self.repo)
-        assert settings == {'example_setting': 'test_example'}
+        assert settings == {'example_bool_setting': True,
+                            'example_char_setting': 'example'}
+
+    def test_get_plugin_settings_detailed(self):
+        plugin = Plugin(name="testplugin")
+        plugin_module = plugin.import_module()
+        plugin.save()
+        settings = plugin_module.models.Settings()
+        settings.repo = self.repo
+        settings.save()
+
+        settings = Plugin.get_all_settings_detailed(self.repo)
+        assert settings == {
+            "testplugin": {
+                "status": "inactive",
+                "settings": {
+                    "example_bool_setting": {
+                        "description": "An example Bool setting",
+                        "value": True,
+                        "type": "BooleanField"
+                    },
+                    "example_char_setting": {
+                        "description": "An example Char setting",
+                        "value": "example",
+                        "type": "CharField"
+                    }
+                }
+            }
+        }
