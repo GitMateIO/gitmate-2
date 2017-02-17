@@ -31,29 +31,19 @@ class UserOwnedRepositoriesView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, format=None):
-        try:
-            content = {}
-            provider = request.query_params['provider']
-            provider_data = request.user.social_auth.get(
-                provider=provider).extra_data
-            access_token = provider_data['access_token']
-            if provider == Providers.GITHUB.value:
+        content = {}
+        status_code = status.HTTP_200_OK
+        for provider in Providers:
+            try:
+                provider_data = request.user.social_auth.get(
+                    provider=provider.value).extra_data
+                access_token = provider_data['access_token']
                 host = GitHub(access_token)
-            else:
-                raise NotImplementedError
-            status_code = status.HTTP_200_OK
-            content = {'owned': host.owned_repositories,
-                       'write': host.write_repositories}
-        except (MultiValueDictKeyError, ObjectDoesNotExist):
-            content['error'] = 'Requires a valid provider name'
-            status_code = status.HTTP_400_BAD_REQUEST
-        except NotImplementedError:
-            content['error'] = 'Plugin for host not yet developed'
-            status_code = status.HTTP_501_NOT_IMPLEMENTED
-        except RuntimeError:
-            content['error'] = 'Bad credentials'
-            status_code = status.HTTP_401_UNAUTHORIZED
-        return Response(content, status_code)
+                content.update({provider.value: host.owned_repositories})
+            except RuntimeError:
+                content = {'error': 'Bad credentials'}
+                status_code = status.HTTP_401_UNAUTHORIZED
+            return Response(content, status_code)
 
 
 class ActivateRepositoryView(APIView):

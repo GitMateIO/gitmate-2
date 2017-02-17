@@ -1,31 +1,40 @@
+import os
 from unittest import TestCase
 
 from django.contrib.auth.models import User
-from django.test import RequestFactory
 import pytest
 from rest_framework import status
+from rest_framework.test import APIRequestFactory
 from social_django.models import UserSocialAuth
 
 from api.views import UserDetailsView
 from api.views import UserOwnedRepositoriesView
 from gitmate_config import Providers
+from gitmate_config.models import Repository
 
 
 @pytest.mark.django_db(transaction=False)
 class TestApi(TestCase):
 
     def setUp(self):
-        self.factory = RequestFactory()
+        self.factory = APIRequestFactory()
+
         self.user = User.objects.create_user(
             username="john",
             email="john.appleseed@example.com",
-            password="top_secret",
             first_name="John",
             last_name="Appleseed"
         )
+
         self.auth = UserSocialAuth(
             user=self.user, provider=Providers.GITHUB.value)
         self.auth.save()
+
+        self.repo = Repository(
+            user=self.user,
+            full_name=os.environ['GITHUB_TEST_REPO'],
+            provider=Providers.GITHUB.value)
+        self.repo.save()
 
     def test_details(self):
         request = self.factory.get('/api/me')
@@ -43,14 +52,14 @@ class TestApi(TestCase):
                              'username': 'john'
                          })
 
-    def test_repositories(self):
+    def test_repositories_bad_credentials(self):
         # Bad credentials
         self.auth.set_extra_data(extra_data={
             'access_token': 'themostwonderfulaccesstokenever'
         })
         self.auth.save()
 
-        request = self.factory.get('/api/repos/?provider=github')
+        request = self.factory.get('/api/repos/')
         request.user = self.user
         response = UserOwnedRepositoriesView.as_view()(request)
 
@@ -59,31 +68,18 @@ class TestApi(TestCase):
             'error': 'Bad credentials'
         })
 
-        # Plugin not yet developed case
-        self.auth = UserSocialAuth(
-            user=self.user, provider=Providers.GITLAB.value)
-        self.auth.set_extra_data(extra_data={
-            'access_token': 'themostwonderfulaccesstokenever'
+    def test_repositories_successful(self):
+        # Correct credentials
+        self.auth.set_extra_data({
+            'access_token': os.environ['GITHUB_TEST_TOKEN']
         })
         self.auth.save()
 
-        request = self.factory.get('/api/repos/?provider=gitlab')
+        request = self.factory.get('/api/repos/')
         request.user = self.user
         response = UserOwnedRepositoriesView.as_view()(request)
 
-        self.assertEqual(response.status_code,
-                         status.HTTP_501_NOT_IMPLEMENTED)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {
-            'error': 'Plugin for host not yet developed'
-        })
-
-        # Invalid Provider name
-        request = self.factory.get('/api/repos/?provider=google')
-        request.user = self.user
-        response = UserOwnedRepositoriesView.as_view()(request)
-
-        self.assertEqual(response.status_code,
-                         status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data, {
-            'error': 'Requires a valid provider name'
+            Providers.GITHUB.value: {os.environ['GITHUB_TEST_REPO']}
         })
