@@ -66,9 +66,6 @@ class TestSettings(TestCase):
         response = PluginSettingsView.as_view()(request)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(response.data, {
-            'error': 'No such repository exists.'
-        })
 
     def test_get_plugin_settings(self):
         request = self.factory.get(

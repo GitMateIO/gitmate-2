@@ -1,4 +1,4 @@
-from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
 from django.utils.datastructures import MultiValueDictKeyError
 from IGitt.GitHub.GitHub import GitHub
 from IGitt.GitHub.GitHubRepository import GitHubRepository
@@ -86,12 +86,10 @@ class PluginSettingsView(APIView):
         try:
             provider = request.query_params['provider']
             name = request.query_params['repo']
-            repo = Repository.objects.get(full_name=name, provider=provider)
+            repo = get_object_or_404(
+                Repository, full_name=name, provider=provider)
             content = Plugin.get_all_settings_detailed(repo)
             return Response(content, status.HTTP_200_OK)
         except MultiValueDictKeyError:
             content = {'error': 'Requires valid provider and repo names.'}
             return Response(content, status.HTTP_400_BAD_REQUEST)
-        except Repository.DoesNotExist:
-            content = {'error': 'No such repository exists.'}
-            return Response(content, status.HTTP_404_NOT_FOUND)
