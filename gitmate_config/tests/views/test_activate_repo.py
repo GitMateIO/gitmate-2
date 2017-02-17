@@ -7,8 +7,8 @@ from rest_framework import status
 from rest_framework.test import APIRequestFactory
 from social_django.models import UserSocialAuth
 
-from api.views import ActivateRepositoryView
 from gitmate_config import Providers
+from gitmate_config.views import ActivateRepositoryView
 
 
 @pytest.mark.django_db(transaction=False)

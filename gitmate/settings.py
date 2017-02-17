@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'gitmate_config',
     'rest_framework',
     'rest_framework_docs',
-    'api'
 ] + ['gitmate_'+plugin for plugin in GITMATE_PLUGINS]
 
 REST_FRAMEWORK = {
