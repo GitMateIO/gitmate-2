@@ -78,5 +78,5 @@ class TestAddRepo(TestCase):
         request.user = self.user
         response = ActivateRepositoryView.as_view()(request)
 
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {'error': "Invalid request"})

@@ -46,7 +46,7 @@ class UserOwnedRepositoriesView(APIView):
                        'write': host.write_repositories}
         except (MultiValueDictKeyError, ObjectDoesNotExist):
             content['error'] = 'Requires a valid provider name'
-            status_code = status.HTTP_204_NO_CONTENT
+            status_code = status.HTTP_400_BAD_REQUEST
         except NotImplementedError:
             content['error'] = 'Plugin for host not yet developed'
             status_code = status.HTTP_501_NOT_IMPLEMENTED
@@ -82,7 +82,7 @@ class ActivateRepositoryView(APIView):
                 raise NotImplementedError
         except (KeyError, NotImplementedError):
             return Response({'error': "Invalid request"},
-                            status.HTTP_204_NO_CONTENT)
+                            status.HTTP_400_BAD_REQUEST)
         except RuntimeError:
             return Response({'error': "Bad credentials"},
                             status.HTTP_401_UNAUTHORIZED)

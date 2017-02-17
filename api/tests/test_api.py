@@ -83,7 +83,7 @@ class TestApi(TestCase):
         response = UserOwnedRepositoriesView.as_view()(request)
 
         self.assertEqual(response.status_code,
-                         status.HTTP_204_NO_CONTENT)
+                         status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {
             'error': 'Requires a valid provider name'
         })
