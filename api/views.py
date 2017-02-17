@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from gitmate_config import Providers
+from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 
 from .serializers import RepositorySerializer
@@ -85,3 +86,22 @@ class ActivateRepositoryView(APIView):
         except RuntimeError:
             return Response({'error': "Bad credentials"},
                             status.HTTP_401_UNAUTHORIZED)
+
+
+class PluginSettingsView(APIView):
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        try:
+            provider = request.query_params['provider']
+            name = request.query_params['repo']
+            repo = Repository.objects.get(full_name=name, provider=provider)
+            content = Plugin.get_all_settings_detailed(repo)
+            return Response(content, status.HTTP_200_OK)
+        except MultiValueDictKeyError:
+            content = {'error': 'Requires valid provider and repo names.'}
+            return Response(content, status.HTTP_400_BAD_REQUEST)
+        except Repository.DoesNotExist:
+            content = {'error': 'No such repository exists.'}
+            return Response(content, status.HTTP_404_NOT_FOUND)
