@@ -2,5 +2,17 @@
 <md-toolbar color="primary">
   <span>GitMate</span>
   <span class="toolbar-filler"></span>
-  <span>{{user?.email}}</span>
+  <button md-raised-button *ngIf="!userDefined()" class=toolbar-button color="accent" (click)="loginGitHub()">
+    Login with GitHub
+  </button>
+
+  <button md-button *ngIf="userDefined()" class=toolbar-button [mdMenuTriggerFor]="userMenu">
+    <md-icon>person</md-icon>
+    <span>{{user.username}}</span>
+  </button>
+
+  <md-menu #userMenu="mdMenu">
+    <button md-menu-item routerLink="/profile" routerLinkActive="active">Profile</button>
+    <button md-menu-item (click)="logout()" >Logout</button>
+  </md-menu>
 </md-toolbar>

@@ -15,5 +15,17 @@ export class ToolbarComponent {
   ngOnInit() {
     this.apiService.getUser().subscribe(user => this.user = user);
   }
+
+  userDefined() {
+    return !(this.user == null);
+  }
+
+  loginGitHub() {
+    window.location.href = '/auth/login/github';
+  }
+
+  logout() {
+    window.location.href = '/logout';
+  }
 }
 
