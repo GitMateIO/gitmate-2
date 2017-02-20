@@ -11,6 +11,7 @@ import { HomeComponent } from './components/home-view/home-view.component';
 import { NotFoundComponent } from './components/not-found-view/not-found-view.component';
 import { ProfileComponent } from './components/profile-view/profile-view.component';
 import { RepositoriesComponent } from './components/repositories-view/repositories-view.component';
+import { RepositoryComponent } from './components/repository/repository.component';
 
 const appRoutes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -28,7 +29,8 @@ const appRoutes: Routes = [
     HomeComponent,
     NotFoundComponent,
     ProfileComponent,
-    RepositoriesComponent
+    RepositoriesComponent,
+    RepositoryComponent
   ],
   bootstrap:    [ AppComponent ],
   providers: [ ApiService ],
