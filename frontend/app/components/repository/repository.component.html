@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 
-<md-card class=repo_card>
+<md-card class="repo_card">
   <md-card-title>full_name: {{repo.full_name}}</md-card-title>
   <md-card-content>provider: {{repo.provider}}</md-card-content>
   <md-card-content>id: {{repo.id}}</md-card-content>
   <md-card-content>active: {{repo.active}}</md-card-content>
   <md-card-content>user: {{repo.user}}</md-card-content>
+  <md-card-actions>
+    <button md-button>ADD</button>
+    <button md-button>SETTINGS</button>
+  </md-card-actions>
 </md-card>
