@@ -1,7 +1,7 @@
 import { NgModule }       from '@angular/core';
 import { BrowserModule }  from '@angular/platform-browser';
 import { MaterialModule  } from '@angular/material';
-import { HttpModule } from '@angular/http';
+import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent }   from './app.component';
@@ -33,6 +33,12 @@ const appRoutes: Routes = [
     RepositoryComponent
   ],
   bootstrap:    [ AppComponent ],
-  providers: [ ApiService ],
+  providers: [
+    ApiService,
+    {
+      provide: XSRFStrategy,
+      useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken')
+    }
+  ],
 })
 export class AppModule { }

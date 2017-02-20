@@ -7,7 +7,8 @@
   <md-card-content>active: {{repo.active}}</md-card-content>
   <md-card-content>user: {{repo.user}}</md-card-content>
   <md-card-actions>
-    <button md-button>ADD</button>
+    <button md-button *ngIf="!repo.active" (click)="enable()" >ADD</button>
+    <button md-button *ngIf="repo.active" (click)="disable()" >REMOVE</button>
     <button md-button>SETTINGS</button>
   </md-card-actions>
 </md-card>
