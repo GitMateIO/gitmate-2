@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <md-toolbar color="primary">
-  <span>GitMate</span>
+  <button md-icon-button color="primary" class="toolbar-menu" [mdMenuTriggerFor]="appMenu">
+    <md-icon class="toolbar-icon">menu</md-icon>
+  </button>
+
+  <md-menu #appMenu="mdMenu">
+    <button md-menu-item routerLink="/home" routerLinkActive="active" >
+      Home
+    </button>
+
+    <button *ngIf="userDefined()" md-menu-item routerLink="/repositories" routerLinkActive="active" >
+      Repositories
+    </button>
+  </md-menu>
+
+  <a class="toolbar-title" [routerLink]="['']" [routerLinkActive]="['router-link-active']"
+    [routerLinkActiveOptions]="{exact:true}">GitMate</a>
+
+  <button *ngIf="userDefined()" md-button routerLink="/repositories" routerLinkActive="active" class="nav-button" >
+    REPOSITORIES
+  </button>
+
   <span class="toolbar-filler"></span>
-  <button md-raised-button *ngIf="!userDefined()" class=toolbar-button color="accent" (click)="loginGitHub()">
+
+  <button md-raised-button *ngIf="!userDefined()" color="accent" (click)="loginGitHub()">
     Login with GitHub
   </button>
 
-  <button md-button *ngIf="userDefined()" class=toolbar-button [mdMenuTriggerFor]="userMenu">
+  <button md-button *ngIf="userDefined()" [mdMenuTriggerFor]="userMenu">
     <md-icon>person</md-icon>
     <span>{{user.username}}</span>
   </button>
