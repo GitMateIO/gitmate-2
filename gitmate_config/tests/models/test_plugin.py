@@ -90,6 +90,8 @@ class TestPlugin(TransactionTestCase):
         with pytest.raises(Http404):
             Plugin.set_all_settings_for_repo(self.repo, new_settings)
         modified_settings = Plugin.get_all_settings(self.repo)
+        self.plugin = Plugin.objects.get(name='testplugin')
+        assert self.plugin.active is False
         assert modified_settings == old_settings
 
         # No status setting
@@ -116,12 +118,13 @@ class TestPlugin(TransactionTestCase):
             'status': 'inactive',
         }]
         Plugin.set_all_settings_for_repo(self.repo, new_settings)
+        self.plugin = Plugin.objects.get(name='testplugin')
         assert self.plugin.active is False
 
         # Successful set
         new_settings = [{
             'name': 'testplugin',
-            'status': 'active',
+            'active': False,
             'settings': {
                 'example_bool_setting': False,
                 'example_char_setting': "hello"
@@ -130,6 +133,8 @@ class TestPlugin(TransactionTestCase):
         Plugin.set_all_settings_for_repo(self.repo, new_settings)
 
         modified_settings = Plugin.get_all_settings(self.repo)
+        self.plugin = Plugin.objects.get(name='testplugin')
+        assert self.plugin.active is False
         assert modified_settings['example_bool_setting'] is False
         assert modified_settings['example_char_setting'] == "hello"
 

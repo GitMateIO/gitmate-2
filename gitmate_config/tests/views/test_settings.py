@@ -58,6 +58,9 @@ class TestSettings(TestCase):
             'api:settings-detail',
             args=(self.repo.pk,))
 
+        self.plugin_update = PluginSettingsViewSet.as_view(
+            actions={'put': 'update', 'patch': 'partial_update'})
+
     def test_list_plugin_settings_unauthorized(self):
         list_plugin_settings_request = self.factory.get(self.plugin_list_url)
         response = self.plugin_list(list_plugin_settings_request)
@@ -125,3 +128,22 @@ class TestSettings(TestCase):
                 }
             }
         })
+
+    def test_update_plugin_settings_authorized(self):
+        settings = [{
+            'name': 'testplugin',
+            'status': 'active',
+            'settings': {
+                'example_bool_setting': False,
+                'example_char_setting': "hello"
+            }
+        }]
+        update_plugin_settings_request = self.factory.patch(
+            self.plugin_retrive_url,
+            settings,
+            HTTP_HOST='testing.com', format='json')
+        update_plugin_settings_request.user = self.user
+        response = self.plugin_update(
+            update_plugin_settings_request,
+            pk=self.repo.pk)
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
