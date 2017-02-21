@@ -15,6 +15,7 @@ from gitmate_config import Providers
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 
+from .serializers import PluginSettingsSerializer
 from .serializers import RepositorySerializer
 from .serializers import UserSerializer
 
@@ -89,18 +90,25 @@ class UserDetailsView(APIView):
         return Response(UserSerializer(request.user).data, status.HTTP_200_OK)
 
 
-class PluginSettingsView(APIView):
+class PluginSettingsViewSet(
+    GenericViewSet,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    mixins.UpdateModelMixin
+):
     authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated,)
+    serializer_class = PluginSettingsSerializer
 
-    def get(self, request):
-        try:
-            provider = request.query_params['provider']
-            name = request.query_params['repo']
-            repo = get_object_or_404(
-                Repository, full_name=name, provider=provider)
-            content = Plugin.get_all_settings_detailed(repo)
-            return Response(content, status.HTTP_200_OK)
-        except MultiValueDictKeyError:
-            content = {'error': 'Requires valid provider and repo names.'}
-            return Response(content, status.HTTP_400_BAD_REQUEST)
+    def list(self, request):
+        serializer = PluginSettingsSerializer(
+            instance=Plugin.get_all_settings_by_user(request.user),
+            many=True
+        )
+        return Response(serializer.data, status.HTTP_200_OK)
+
+    def retrieve(self, request, pk=None):
+        repo = get_object_or_404(Repository, pk=pk)
+        serializer = PluginSettingsSerializer(
+            instance=Plugin.get_all_settings_by_repo(repo))
+        return Response(serializer.data, status.HTTP_200_OK)

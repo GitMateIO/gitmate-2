@@ -18,3 +18,8 @@ class RepositorySerializer(serializers.ModelSerializer):
         model = Repository
         fields = '__all__'
         read_only_fields = ('user', 'provider', 'full_name')
+
+
+class PluginSettingsSerializer(serializers.Serializer):
+    repository = serializers.CharField()
+    plugins = serializers.DictField()

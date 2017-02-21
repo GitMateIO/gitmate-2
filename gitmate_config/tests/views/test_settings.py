@@ -4,13 +4,14 @@ from unittest import TestCase
 from django.contrib.auth.models import User
 import pytest
 from rest_framework import status
+from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory
 from social_django.models import UserSocialAuth
 
 from gitmate_config import Providers
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
-from gitmate_config.views import PluginSettingsView
+from gitmate_config.views import PluginSettingsViewSet
 
 
 @pytest.mark.django_db(transaction=False)
@@ -47,48 +48,79 @@ class TestSettings(TestCase):
         self.settings.repo = self.repo
         self.settings.save()
 
-    def test_get_plugin_settings_no_full_query(self):
-        request = self.factory.get('/api/settings')
+        self.plugin_list = PluginSettingsViewSet.as_view(
+            actions={'get': 'list'})
+        self.plugin_list_url = reverse('api:settings-list')
 
-        request.user = self.user
-        response = PluginSettingsView.as_view()(request)
+        self.plugin_retrieve = PluginSettingsViewSet.as_view(
+            actions={'get': 'retrieve'})
+        self.plugin_retrive_url = reverse(
+            'api:settings-detail',
+            args=(self.repo.pk,))
 
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data, {
-            'error': 'Requires valid provider and repo names.'
-        })
+    def test_list_plugin_settings_unauthorized(self):
+        list_plugin_settings_request = self.factory.get(self.plugin_list_url)
+        response = self.plugin_list(list_plugin_settings_request)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_get_plugin_settings_no_such_repo(self):
-        request = self.factory.get(
-            '/api/settings?provider=unknown&repo=unknown')
+    def test_list_plugin_settings_authorized(self):
+        list_plugin_settings_request = self.factory.get(self.plugin_list_url)
+        list_plugin_settings_request.user = self.user
+        response = self.plugin_list(list_plugin_settings_request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [{
+            'repository': self.repo.full_name,
+            'plugins': {
+                'testplugin': {
+                    'status': 'inactive',
+                    'settings': {
+                        'example_bool_setting': {
+                            'value': True,
+                            'description': 'An example Bool setting',
+                            'type': 'BooleanField'
+                        },
+                        'example_char_setting': {
+                            'value': 'example',
+                            'description': 'An example Char setting',
+                            'type': 'CharField'
+                        }
+                    }
+                }
+            }
+        }])
 
-        request.user = self.user
-        response = PluginSettingsView.as_view()(request)
+    def test_retrive_plugin_settings_unauthorized(self):
+        retrieve_plugin_settings_request = self.factory.get(
+            self.plugin_list_url)
+        response = self.plugin_retrieve(
+            retrieve_plugin_settings_request,
+            pk=self.repo.pk)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_get_plugin_settings(self):
-        request = self.factory.get(
-            '/api/settings?provider=github&repo=' +
-            os.environ['GITHUB_TEST_REPO'])
-
-        request.user = self.user
-        response = PluginSettingsView.as_view()(request)
-
+    def test_retrive_plugin_settings_authorized(self):
+        retrieve_plugin_settings_request = self.factory.get(
+            self.plugin_list_url)
+        retrieve_plugin_settings_request.user = self.user
+        response = self.plugin_retrieve(
+            retrieve_plugin_settings_request,
+            pk=self.repo.pk)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {
-            'testplugin': {
-                'status': 'inactive',
-                'settings': {
-                    'example_bool_setting': {
-                        'value': True,
-                        'description': 'An example Bool setting',
-                        'type': 'BooleanField'
-                    },
-                    'example_char_setting': {
-                        'value': 'example',
-                        'description': 'An example Char setting',
-                        'type': 'CharField'
+            'repository': self.repo.full_name,
+            'plugins': {
+                'testplugin': {
+                    'status': 'inactive',
+                    'settings': {
+                        'example_bool_setting': {
+                            'value': True,
+                            'description': 'An example Bool setting',
+                            'type': 'BooleanField'
+                        },
+                        'example_char_setting': {
+                            'value': 'example',
+                            'description': 'An example Char setting',
+                            'type': 'CharField'
+                        }
                     }
                 }
             }
