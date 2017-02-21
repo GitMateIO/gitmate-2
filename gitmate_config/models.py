@@ -52,13 +52,26 @@ class Plugin(models.Model):
         return model_to_dict(settings, exclude=['repo', 'id'])
 
     @classmethod
-    def get_all_settings_detailed(cls, repo):
+    def get_all_settings_by_repo(cls, repo):
         """
         Returns the dictionary of settings of all the plugins with their names,
-        values, types and descriptions.
+        values, types and descriptions for the specified repository.
         """
-        return {plugin.name: plugin.get_detailed_plugin_settings(repo)
-                for plugin in cls.objects.all()}
+        return {
+            'repository': repo.full_name,
+            'plugins': {plugin.name: plugin.get_detailed_plugin_settings(repo)
+                        for plugin in cls.objects.all()}
+        }
+
+    @classmethod
+    def get_all_settings_by_user(cls, user):
+        """
+        Returns the dictionary of settings of all the plugins with their names,
+        values, types and descriptions for all the repositories of the
+        specified user.
+        """
+        return [Plugin.get_all_settings_by_repo(repo)
+                for repo in Repository.objects.filter(user=user)]
 
     @classmethod
     def get_all_settings(cls, repo, format=None):

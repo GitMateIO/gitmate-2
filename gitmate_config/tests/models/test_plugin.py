@@ -73,7 +73,7 @@ class TestPlugin(TestCase):
         assert settings == {'example_bool_setting': True,
                             'example_char_setting': 'example'}
 
-    def test_get_plugin_settings_detailed(self):
+    def test_get_plugin_settings_by_user(self):
         plugin = Plugin(name="testplugin")
         plugin_module = plugin.import_module()
         plugin.save()
@@ -81,20 +81,53 @@ class TestPlugin(TestCase):
         settings.repo = self.repo
         settings.save()
 
-        settings = Plugin.get_all_settings_detailed(self.repo)
+        settings = Plugin.get_all_settings_by_user(self.user)
+        assert settings == [{
+            "repository": self.repo.full_name,
+            "plugins": {
+                "testplugin": {
+                    "status": "inactive",
+                    "settings": {
+                        "example_bool_setting": {
+                            "description": "An example Bool setting",
+                            "value": True,
+                            "type": "BooleanField"
+                        },
+                        "example_char_setting": {
+                            "description": "An example Char setting",
+                            "value": "example",
+                            "type": "CharField"
+                        }
+                    }
+                }
+            }
+        }]
+
+    def test_get_plugin_settings_by_repo(self):
+        plugin = Plugin(name="testplugin")
+        plugin_module = plugin.import_module()
+        plugin.save()
+        settings = plugin_module.models.Settings()
+        settings.repo = self.repo
+        settings.save()
+
+        settings = Plugin.get_all_settings_by_repo(self.repo)
         assert settings == {
-            "testplugin": {
-                "status": "inactive",
-                "settings": {
-                    "example_bool_setting": {
-                        "description": "An example Bool setting",
-                        "value": True,
-                        "type": "BooleanField"
-                    },
-                    "example_char_setting": {
-                        "description": "An example Char setting",
-                        "value": "example",
-                        "type": "CharField"
+            "repository": self.repo.full_name,
+            "plugins": {
+                "testplugin": {
+                    "status": "inactive",
+                    "settings": {
+                        "example_bool_setting": {
+                            "description": "An example Bool setting",
+                            "value": True,
+                            "type": "BooleanField"
+                        },
+                        "example_char_setting": {
+                            "description": "An example Char setting",
+                            "value": "example",
+                            "type": "CharField"
+                        }
                     }
                 }
             }
