@@ -1,16 +1,15 @@
-from unittest import TestCase
-
 from django.contrib.auth.models import User
 from django.core.validators import ValidationError
 from django.db import IntegrityError
 from django.db import models
+from django.test import TransactionTestCase
 import pytest
 
 from gitmate_config.models import Repository
 
 
 @pytest.mark.django_db(transaction=False)
-class TestRepository(TestCase):
+class TestRepository(TransactionTestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(
