@@ -84,7 +84,7 @@ class TestPlugin(TransactionTestCase):
 
         # No proper plugin name
         new_settings = [{
-            'status': 'active',
+            'active': True,
             'settings': {}
         }]
         with pytest.raises(Http404):
@@ -115,7 +115,7 @@ class TestPlugin(TransactionTestCase):
         # Successful set change activeness
         new_settings = [{
             'name': 'testplugin',
-            'status': 'inactive',
+            'active': False,
         }]
         Plugin.set_all_settings_for_repo(self.repo, new_settings)
         self.plugin = Plugin.objects.get(name='testplugin')
@@ -149,7 +149,7 @@ class TestPlugin(TransactionTestCase):
             "repository": self.repo.full_name,
             "plugins": {
                 "testplugin": {
-                    "status": "inactive",
+                    "active": False,
                     "settings": {
                         "example_bool_setting": {
                             "description": "An example Bool setting",
@@ -172,7 +172,7 @@ class TestPlugin(TransactionTestCase):
             "repository": self.repo.full_name,
             "plugins": {
                 "testplugin": {
-                    "status": "inactive",
+                    "active": False,
                     "settings": {
                         "example_bool_setting": {
                             "description": "An example Bool setting",

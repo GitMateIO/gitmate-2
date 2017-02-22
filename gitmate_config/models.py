@@ -33,7 +33,7 @@ class Plugin(models.Model):
         plugin = self.import_module()
         settings = plugin.models.Settings.objects.filter(repo=repo)[0]
         return {
-            "status": "active" if self.active else "inactive",
+            "active": self.active,
             "settings": {
                 field.name: {
                     "value": field.value_from_object(settings),
@@ -72,11 +72,8 @@ class Plugin(models.Model):
             if 'name' not in plugin:
                 raise Http404
             plugin_obj = get_object_or_404(Plugin, name=plugin['name'])
-            if 'status' in plugin and isinstance(plugin['status'], str):
-                if plugin['status'] == 'active':
-                    plugin_obj.active = True
-                elif plugin['status'] == 'inactive':
-                    plugin_obj.active = False
+            if 'active' in plugin and isinstance(plugin['active'], bool):
+                plugin_obj.active = plugin['active']
             if 'settings' in plugin:
                 if isinstance(plugin['settings'], dict):
                     plugin_obj.set_settings_for_repo(repo, plugin['settings'])

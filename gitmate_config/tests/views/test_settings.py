@@ -75,7 +75,7 @@ class TestSettings(TestCase):
             'repository': self.repo.full_name,
             'plugins': {
                 'testplugin': {
-                    'status': 'inactive',
+                    'active': False,
                     'settings': {
                         'example_bool_setting': {
                             'value': True,
@@ -112,7 +112,7 @@ class TestSettings(TestCase):
             'repository': self.repo.full_name,
             'plugins': {
                 'testplugin': {
-                    'status': 'inactive',
+                    'active': False,
                     'settings': {
                         'example_bool_setting': {
                             'value': True,
@@ -132,7 +132,7 @@ class TestSettings(TestCase):
     def test_update_plugin_settings_authorized(self):
         settings = [{
             'name': 'testplugin',
-            'status': 'active',
+            'active': True,
             'settings': {
                 'example_bool_setting': False,
                 'example_char_setting': "hello"
