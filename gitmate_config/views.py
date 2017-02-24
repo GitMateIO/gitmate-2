@@ -100,12 +100,8 @@ class PluginSettingsViewSet(
     permission_classes = (IsAuthenticated,)
     serializer_class = PluginSettingsSerializer
 
-    def list(self, request):
-        serializer = PluginSettingsSerializer(
-            instance=Plugin.get_all_settings_by_user(request.user),
-            many=True
-        )
-        return Response(serializer.data, status.HTTP_200_OK)
+    def get_queryset(self):
+        return Plugin.get_all_settings_by_user(self.request.user)
 
     def retrieve(self, request, pk=None):
         repo = get_object_or_404(Repository, pk=pk)
