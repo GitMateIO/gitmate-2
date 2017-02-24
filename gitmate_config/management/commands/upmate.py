@@ -18,3 +18,5 @@ class Command(BaseCommand):
             # check importability
             plugin.import_module()
             plugin.save()
+            self.stdout.write(self.style.SUCCESS(
+                'Plugin updated successfully: "%s"' % name))
