@@ -23,15 +23,12 @@ class TestPlugin(TransactionTestCase):
             first_name="John",
             last_name="Appleseed"
         )
-        self.repo = Repository(
-            user=self.user, full_name='test', provider='example')
-        self.repo.save()
         self.plugin = Plugin(name="testplugin")
         self.plugin_module = self.plugin.import_module()
         self.plugin.save()
-        self.settings = self.plugin_module.models.Settings()
-        self.settings.repo = self.repo
-        self.settings.save()
+        self.repo = Repository(
+            user=self.user, full_name='test', provider='example')
+        self.repo.save()
 
     def test_name(self):
         plugin = Plugin()

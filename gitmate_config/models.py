@@ -2,6 +2,7 @@ from importlib import import_module
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.dispatch import receiver
 from django.forms.models import model_to_dict
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -137,3 +138,16 @@ class Repository(models.Model):
 
     class Meta:
         unique_together = ('provider', 'full_name')
+
+
+@receiver(models.signals.post_save, sender=Repository)
+def initialize_plugin_settings(sender, instance, created, **kwargs):
+    """
+    Initializes default settings for each repository.
+    """
+    if created:
+        plugins = Plugin.objects.all()
+        for plugin in plugins:
+            module = plugin.import_module()
+            defaults = module.models.Settings(repo=instance)
+            defaults.save()
