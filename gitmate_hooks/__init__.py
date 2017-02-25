@@ -1,6 +1,34 @@
 from enum import Enum
+from hashlib import sha1
+import hmac
 from inspect import getfullargspec
 from traceback import print_exc
+
+from rest_framework import status
+from rest_framework.response import Response
+
+
+def signature_check(key: str=None, http_header_name: str=None):
+    """
+    Decorator for views that checks if the signature from request header
+    matches HMAC hexdigest of the request body.
+    """
+    def decorator(function):
+
+        def _view_wrapper(request, *args, **kwargs):
+            if key and http_header_name in request.META:
+                hashed = hmac.new(bytes(key, 'utf-8'), request.body, sha1)
+                generated_signature = hashed.hexdigest()
+                signature = request.META[http_header_name]
+
+                if generated_signature == signature[5:]:
+                    return function(request, *args, **kwargs)
+
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return _view_wrapper
+
+    return decorator
 
 
 class ResponderRegistrar:

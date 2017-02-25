@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^auth/', include('social_django.urls', namespace='auth')),
     url(r'^api/', include('gitmate_config.urls', namespace='api')),
     url(r'^docs/', include('rest_framework_docs.urls', namespace='docs')),
+    url(r'^webhooks/', include('gitmate_hooks.urls', namespace='webhooks')),
     url(r'^logout/', logout, {'next_page': '/'}),
     # catch-all pattern for Angular routes. This must be last in the list.
     url(r'^(?P<path>.*)/$', ensure_csrf_cookie(serve_static),

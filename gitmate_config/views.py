@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.utils.datastructures import MultiValueDictKeyError
 from IGitt.GitHub.GitHub import GitHub
@@ -74,7 +75,7 @@ class RepositoryViewSet(
         repo = instance.igitt_repo()
         hook_url = "https://" + request.META['HTTP_HOST'] + "/webhooks/github"
         if instance.active:
-            repo.register_hook(hook_url)
+            repo.register_hook(hook_url, settings.GITHUB_WEBHOOK_SECRET)
         else:
             repo.delete_hook(hook_url)
 
