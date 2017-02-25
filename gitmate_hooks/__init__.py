@@ -102,7 +102,7 @@ class ResponderRegistrar:
 
             try:
                 responder(*args, **options_specified)
-            except BaseException:
+            except BaseException:  # pragma: no cover
                 print("ERROR: A responder failed.")
                 print("Responder:   {0!r}".format(responder))
                 print("Args:        {0!r}".format(args))
