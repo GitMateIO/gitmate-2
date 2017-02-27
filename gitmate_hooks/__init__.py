@@ -14,12 +14,12 @@ class ResponderRegistrar:
 
     Registering a request responder.
     >>> @ResponderRegistrar.responder(Messenger.NEW_CHAT)
-    ... def test_responder(obj, test_var: bool = "An example variable"):
+    ... def test_responder(obj, test_var: bool = True):
     ...     if test_var:
     ...         print(obj + ": success")
 
     The options obtained from responders.
-    >>> ResponderRegistrar.options() == {test_responder: ['test_var']}
+    >>> ResponderRegistrar.options()[test_responder] == ['test_var']
     True
 
     Request a response from all available responders.
@@ -47,7 +47,7 @@ class ResponderRegistrar:
                 cls._responders[action].append(function)
 
             argspec = getfullargspec(function)
-            cls._options[function] = argspec.args[len(argspec.defaults):]
+            cls._options[function] = argspec.args[-len(argspec.defaults):]
             return function
 
         return _wrapper
