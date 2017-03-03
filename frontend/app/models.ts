@@ -7,8 +7,22 @@ export class UserModel {
 
 export class RepoModel {
   id: string;
+  plugin: string;
   provider: string;
   full_name: string;
   active: boolean;
   user: number;
+}
+
+export class SettingModel {
+  name: string;
+  value: any;
+  type: string;
+  description: string;
+}
+
+export class PluginModel {
+  name: string;
+  active: bool;
+  settings: SettingModel[];
 }

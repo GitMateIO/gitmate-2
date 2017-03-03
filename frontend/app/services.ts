@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
-import { UserModel, RepoModel } from './models';
+import { UserModel, RepoModel, SettingModel } from './models';
 
 @Injectable()
 export class ApiService {
@@ -22,5 +22,9 @@ export class ApiService {
 
   removeRepo(url: string) {
     return this.http.patch(url, {'active': false}).map(response => <RepoModel>response.json());
+  }
+
+  getPlugins(repo_plugin_url: string) {
+    return this.http.get(repo_plugin_url).map(response => <PluginModel[]>response.json().plugins);
   }
 }

@@ -11,4 +11,5 @@
     <button md-button *ngIf="repo.active" (click)="disable()" >REMOVE</button>
     <button md-button>SETTINGS</button>
   </md-card-actions>
+  <plugins [repoid]="repo.plugin"></plugins>
 </md-card>

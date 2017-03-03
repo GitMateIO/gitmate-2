@@ -12,6 +12,7 @@ import { NotFoundComponent } from './components/not-found-view/not-found-view.co
 import { ProfileComponent } from './components/profile-view/profile-view.component';
 import { RepositoriesComponent } from './components/repositories-view/repositories-view.component';
 import { RepositoryComponent } from './components/repository/repository.component';
+import { PluginsComponent } from './components/plugins/plugins.component';
 
 const appRoutes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -30,7 +31,8 @@ const appRoutes: Routes = [
     NotFoundComponent,
     ProfileComponent,
     RepositoriesComponent,
-    RepositoryComponent
+    RepositoryComponent,
+    PluginsComponent
   ],
   bootstrap:    [ AppComponent ],
   providers: [
