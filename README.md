@@ -40,9 +40,10 @@ Followed by updating the database with all configured GitMate plugins:
 python3 manage.py upmate
 ```
 
-Now change to the "fronted" Directory with `cd frontend` and install the frontend dependencies:
+Now change to the "fronted" Directory and install the frontend dependencies:
 
 ```
+cd frontend
 npm install
 ./node_modules/typings/dist/bin.js install dt~hammerjs --global
 ```
@@ -54,9 +55,10 @@ npm run tsc   # one-shot compilation
 npm run tsc:w # continuous compilation
 ```
 
-Now you can go back to the "gitmate-2" dir with `cd ..` and run the server:
+Now you can go back to the "gitmate-2" dir and run the server:
 
 ```
+cd ..
 python3 manage.py runserver
 ```
 
