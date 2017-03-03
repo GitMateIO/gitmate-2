@@ -13,6 +13,8 @@ class UserSerializer(serializers.Serializer):
 class RepositorySerializer(serializers.ModelSerializer):
     id = serializers.HyperlinkedIdentityField(
         view_name='api:repository-detail')
+    plugin = serializers.HyperlinkedIdentityField(
+        view_name='api:settings-detail')
 
     class Meta:
         model = Repository
