@@ -74,26 +74,29 @@ class TestSettings(TestCase):
         self.assertEqual(response.data, [{
             'repository': reverse('api:repository-detail',
                                   args=(self.repo.pk,)),
-            'plugins': {
-                'testplugin': {
+            'plugins': [
+                {
+                    'name': 'testplugin',
                     'active': False,
-                    'settings': {
-                        'example_bool_setting': {
+                    'settings': [
+                        {
+                            'name': 'example_char_setting',
+                            'value': 'example',
+                            'description': 'An example Char setting',
+                            'type': 'CharField'
+                        },
+                        {
+                            'name': 'example_bool_setting',
                             'value': True,
                             'description': 'An example Bool setting',
                             'type': 'BooleanField'
                         },
-                        'example_char_setting': {
-                            'value': 'example',
-                            'description': 'An example Char setting',
-                            'type': 'CharField'
-                        }
-                    }
+                    ]
                 }
-            }
+            ]
         }])
 
-    def test_retrive_plugin_settings_unauthorized(self):
+    def test_retrieve_plugin_settings_unauthorized(self):
         retrieve_plugin_settings_request = self.factory.get(
             self.plugin_list_url)
         response = self.plugin_retrieve(
@@ -101,7 +104,7 @@ class TestSettings(TestCase):
             pk=self.repo.pk)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_retrive_plugin_settings_authorized(self):
+    def test_retrieve_plugin_settings_authorized(self):
         retrieve_plugin_settings_request = self.factory.get(
             self.plugin_list_url)
         retrieve_plugin_settings_request.user = self.user
@@ -112,23 +115,26 @@ class TestSettings(TestCase):
         self.assertEqual(response.data, {
             'repository': reverse('api:repository-detail',
                                   args=(self.repo.pk,)),
-            'plugins': {
-                'testplugin': {
+            'plugins': [
+                {
+                    'name': 'testplugin',
                     'active': False,
-                    'settings': {
-                        'example_bool_setting': {
+                    'settings': [
+                        {
+                            'name': 'example_char_setting',
+                            'value': 'example',
+                            'description': 'An example Char setting',
+                            'type': 'CharField'
+                        },
+                        {
+                            'name': 'example_bool_setting',
                             'value': True,
                             'description': 'An example Bool setting',
                             'type': 'BooleanField'
                         },
-                        'example_char_setting': {
-                            'value': 'example',
-                            'description': 'An example Char setting',
-                            'type': 'CharField'
-                        }
-                    }
+                    ]
                 }
-            }
+            ]
         })
 
     def test_update_plugin_settings_authorized(self):

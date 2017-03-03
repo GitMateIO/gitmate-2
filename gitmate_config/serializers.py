@@ -24,4 +24,4 @@ class RepositorySerializer(serializers.ModelSerializer):
 
 class PluginSettingsSerializer(serializers.Serializer):
     repository = serializers.CharField()
-    plugins = serializers.DictField()
+    plugins = serializers.ListField()

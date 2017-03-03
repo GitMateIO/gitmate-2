@@ -146,23 +146,26 @@ class TestPlugin(TransactionTestCase):
         assert settings == [{
             'repository': reverse('api:repository-detail',
                                   args=(self.repo.pk,)),
-            "plugins": {
-                "testplugin": {
-                    "active": False,
-                    "settings": {
-                        "example_bool_setting": {
-                            "description": "An example Bool setting",
-                            "value": True,
-                            "type": "BooleanField"
+            'plugins': [
+                {
+                    'name': 'testplugin',
+                    'active': False,
+                    'settings': [
+                        {
+                            'name': 'example_char_setting',
+                            'value': 'example',
+                            'description': 'An example Char setting',
+                            'type': 'CharField'
                         },
-                        "example_char_setting": {
-                            "description": "An example Char setting",
-                            "value": "example",
-                            "type": "CharField"
-                        }
-                    }
+                        {
+                            'name': 'example_bool_setting',
+                            'value': True,
+                            'description': 'An example Bool setting',
+                            'type': 'BooleanField'
+                        },
+                    ]
                 }
-            }
+            ]
         }]
 
     def test_get_plugin_settings_by_repo(self):
@@ -170,21 +173,24 @@ class TestPlugin(TransactionTestCase):
         assert settings == {
             'repository': reverse('api:repository-detail',
                                   args=(self.repo.pk,)),
-            "plugins": {
-                "testplugin": {
-                    "active": False,
-                    "settings": {
-                        "example_bool_setting": {
-                            "description": "An example Bool setting",
-                            "value": True,
-                            "type": "BooleanField"
+            'plugins': [
+                {
+                    'name': 'testplugin',
+                    'active': False,
+                    'settings': [
+                        {
+                            'name': 'example_char_setting',
+                            'value': 'example',
+                            'description': 'An example Char setting',
+                            'type': 'CharField'
                         },
-                        "example_char_setting": {
-                            "description": "An example Char setting",
-                            "value": "example",
-                            "type": "CharField"
-                        }
-                    }
+                        {
+                            'name': 'example_bool_setting',
+                            'value': True,
+                            'description': 'An example Bool setting',
+                            'type': 'BooleanField'
+                        },
+                    ]
                 }
-            }
+            ]
         }

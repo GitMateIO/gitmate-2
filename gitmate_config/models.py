@@ -35,16 +35,18 @@ class Plugin(models.Model):
         plugin = self.import_module()
         settings = plugin.models.Settings.objects.filter(repo=repo)[0]
         return {
+            "name": self.name,
             "active": self.active,
-            "settings": {
-                field.name: {
+            "settings": [
+                {
+                    "name": field.name,
                     "value": field.value_from_object(settings),
                     "description": field.help_text,
                     "type": field.get_internal_type(),
                 }
                 for field in settings._meta.fields
                 if field.name not in ['repo', 'id']
-            }
+            ]
         }
 
     def get_plugin_settings(self, repo):
@@ -61,8 +63,8 @@ class Plugin(models.Model):
         """
         plugin = self.import_module()
         instance = plugin.models.Settings.objects.filter(repo=repo)[0]
-        for key, value in settings.items():
-            setattr(instance, key, value)
+        for name, value in settings.items():
+            setattr(instance, name, value)
         instance.save()
 
     @classmethod
@@ -89,8 +91,8 @@ class Plugin(models.Model):
         """
         return {
             'repository': reverse('api:repository-detail', args=(repo.pk,)),
-            'plugins': {plugin.name: plugin.get_detailed_plugin_settings(repo)
-                        for plugin in cls.objects.all()}
+            'plugins': [plugin.get_detailed_plugin_settings(repo)
+                        for plugin in cls.objects.all()]
         }
 
     @classmethod
