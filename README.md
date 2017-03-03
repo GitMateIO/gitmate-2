@@ -27,6 +27,12 @@ virtualenv ~/.venvs/coon
 . ~/.venvs/coon/bin/activate
 ```
 
+To run GitMate you'll need a secret. Use any string you can come up with:
+
+```
+export GITHUB_WEBHOOK_SECRET=foobar
+```
+
 Now install the project specific requirements and create your initial database:
 
 ```
