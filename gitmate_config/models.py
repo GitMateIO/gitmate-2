@@ -84,25 +84,26 @@ class Plugin(models.Model):
             plugin_obj.save()
 
     @classmethod
-    def get_all_settings_by_repo(cls, repo):
+    def get_all_settings_by_repo(cls, repo, request):
         """
         Returns the dictionary of settings of all the plugins with their names,
         values, types and descriptions for the specified repository.
         """
         return {
-            'repository': reverse('api:repository-detail', args=(repo.pk,)),
+            'repository': reverse('api:repository-detail', args=(repo.pk,),
+                                  request=request),
             'plugins': [plugin.get_detailed_plugin_settings(repo)
                         for plugin in cls.objects.all()]
         }
 
     @classmethod
-    def get_all_settings_by_user(cls, user):
+    def get_all_settings_by_user(cls, user, request):
         """
         Returns the dictionary of settings of all the plugins with their names,
         values, types and descriptions for all the repositories of the
         specified user.
         """
-        return [Plugin.get_all_settings_by_repo(repo)
+        return [Plugin.get_all_settings_by_repo(repo, request)
                 for repo in Repository.objects.filter(user=user)]
 
     @classmethod

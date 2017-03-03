@@ -102,12 +102,12 @@ class PluginSettingsViewSet(
     serializer_class = PluginSettingsSerializer
 
     def get_queryset(self):
-        return Plugin.get_all_settings_by_user(self.request.user)
+        return Plugin.get_all_settings_by_user(self.request.user, self.request)
 
     def retrieve(self, request, pk=None):
         repo = get_object_or_404(Repository, pk=pk)
         serializer = PluginSettingsSerializer(
-            instance=Plugin.get_all_settings_by_repo(repo))
+            instance=Plugin.get_all_settings_by_repo(repo, request))
         return Response(serializer.data, status.HTTP_200_OK)
 
     def update(self, request, pk=None, *args, **kwargs):

@@ -142,7 +142,7 @@ class TestPlugin(TransactionTestCase):
                             'example_char_setting': 'example'}
 
     def test_get_plugin_settings_by_user(self):
-        settings = Plugin.get_all_settings_by_user(self.user)
+        settings = Plugin.get_all_settings_by_user(self.user, None)
         assert settings == [{
             'repository': reverse('api:repository-detail',
                                   args=(self.repo.pk,)),
@@ -169,7 +169,7 @@ class TestPlugin(TransactionTestCase):
         }]
 
     def test_get_plugin_settings_by_repo(self):
-        settings = Plugin.get_all_settings_by_repo(self.repo)
+        settings = Plugin.get_all_settings_by_repo(self.repo, None)
         assert settings == {
             'repository': reverse('api:repository-detail',
                                   args=(self.repo.pk,)),
