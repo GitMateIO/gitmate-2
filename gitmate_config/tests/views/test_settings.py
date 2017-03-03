@@ -72,7 +72,8 @@ class TestSettings(TestCase):
         response = self.plugin_list(list_plugin_settings_request)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, [{
-            'repository': self.repo.full_name,
+            'repository': reverse('api:repository-detail',
+                                  args=(self.repo.pk,)),
             'plugins': {
                 'testplugin': {
                     'active': False,
@@ -109,7 +110,8 @@ class TestSettings(TestCase):
             pk=self.repo.pk)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {
-            'repository': self.repo.full_name,
+            'repository': reverse('api:repository-detail',
+                                  args=(self.repo.pk,)),
             'plugins': {
                 'testplugin': {
                     'active': False,

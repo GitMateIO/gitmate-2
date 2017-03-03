@@ -7,6 +7,7 @@ from django.db import models
 from django.http import Http404
 from django.test import TransactionTestCase
 import pytest
+from rest_framework.reverse import reverse
 
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
@@ -143,7 +144,8 @@ class TestPlugin(TransactionTestCase):
     def test_get_plugin_settings_by_user(self):
         settings = Plugin.get_all_settings_by_user(self.user)
         assert settings == [{
-            "repository": self.repo.full_name,
+            'repository': reverse('api:repository-detail',
+                                  args=(self.repo.pk,)),
             "plugins": {
                 "testplugin": {
                     "active": False,
@@ -166,7 +168,8 @@ class TestPlugin(TransactionTestCase):
     def test_get_plugin_settings_by_repo(self):
         settings = Plugin.get_all_settings_by_repo(self.repo)
         assert settings == {
-            "repository": self.repo.full_name,
+            'repository': reverse('api:repository-detail',
+                                  args=(self.repo.pk,)),
             "plugins": {
                 "testplugin": {
                     "active": False,

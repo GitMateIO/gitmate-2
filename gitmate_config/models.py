@@ -8,6 +8,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from IGitt.GitHub.GitHubRepository import GitHubRepository
 from IGitt.Interfaces.Repository import Repository
+from rest_framework.reverse import reverse
 
 from gitmate_config import Providers
 
@@ -87,7 +88,7 @@ class Plugin(models.Model):
         values, types and descriptions for the specified repository.
         """
         return {
-            'repository': repo.full_name,
+            'repository': reverse('api:repository-detail', args=(repo.pk,)),
             'plugins': {plugin.name: plugin.get_detailed_plugin_settings(repo)
                         for plugin in cls.objects.all()}
         }
