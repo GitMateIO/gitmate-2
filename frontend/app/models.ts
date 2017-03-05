@@ -23,6 +23,6 @@ export class SettingModel {
 
 export class PluginModel {
   name: string;
-  active: bool;
+  active: boolean;
   settings: SettingModel[];
 }

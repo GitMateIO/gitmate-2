@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
-import { UserModel, RepoModel, SettingModel } from './models';
+import { UserModel, RepoModel, SettingModel, PluginModel } from './models';
 
 @Injectable()
 export class ApiService {
