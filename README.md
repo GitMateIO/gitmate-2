@@ -140,9 +140,9 @@ python manage.py clearsessions
 Social Authentication
 ---------------------
 **Providers Supported:**
-    - GitLab (OAuth2)
-    - GitHub (OAuth2)
-    - Bitbucket (OAuth)
+- GitLab (OAuth2)
+- GitHub (OAuth2)
+- Bitbucket (OAuth)
 
 Please include your CLIENT ID and CLIENT SECRET keys in
 `gitmate/settings.py`.
