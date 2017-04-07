@@ -75,7 +75,10 @@ class ResponderRegistrar:
                 cls._responders[action].append(function)
 
             argspec = getfullargspec(function)
-            cls._options[function] = argspec.args[-len(argspec.defaults):]
+            if argspec.defaults is not None:
+                cls._options[function] = argspec.args[-len(argspec.defaults):]
+            else:
+                cls._options[function] = []
             return function
 
         return _wrapper

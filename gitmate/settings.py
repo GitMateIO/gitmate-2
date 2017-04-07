@@ -32,6 +32,7 @@ GITMATE_PLUGINS = [
     'testplugin',
     'welcome_commenter',
     'auto_label_pending_or_wip',
+    'pr_size_labeller',
 ]
 
 # Application definition
