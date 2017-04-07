@@ -13,3 +13,5 @@ _test-output/
 _temp/
 .directory/
 tags
+.coverage
+.cache/
