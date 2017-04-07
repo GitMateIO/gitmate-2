@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['testing.com', 'localhost']
 GITMATE_PLUGINS = [
     'testplugin',
     'welcome_commenter',
+    'auto_label_pending_or_wip',
 ]
 
 # Application definition
