@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+import djcelery
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'gitmate_config',
+    'djcelery',
     'rest_framework',
     'rest_framework_docs',
     'corsheaders',
@@ -224,3 +227,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'frontend'),
 )
+
+
+# CELERY CONFIG
+djcelery.setup_loader()
+
+# RABBITMQ server base URL
+BROKER_URL = os.environ.get('CELERY_BROKER_URL')

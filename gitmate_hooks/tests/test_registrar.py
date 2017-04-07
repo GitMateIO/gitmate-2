@@ -1,5 +1,5 @@
-from unittest import TestCase
-
+from django.test import override_settings
+from django.test import TestCase
 from IGitt.Interfaces.Actions import MergeRequestActions
 import pytest
 
@@ -8,9 +8,8 @@ from gitmate_config.models import Repository
 from gitmate_config.models import User
 from gitmate_hooks import ResponderRegistrar
 
-MergeRequestActions.OPENED
 
-
+@override_settings(CELERY_ALWAYS_EAGER=True)
 @pytest.mark.django_db(transaction=False)
 class TestResponderRegistrar(TestCase):
 
@@ -39,23 +38,22 @@ class TestResponderRegistrar(TestCase):
         self.SomeRepo.save()
 
         self.assertEqual(
-            ResponderRegistrar.respond(
+            [result.get() for result in ResponderRegistrar.respond(
                 MergeRequestActions.OPENED, self.SomeRepo, 'example',
-                options={'test_var': True}),
+                options={'test_var': True})],
             [True]
         )
         self.assertEqual(
-            ResponderRegistrar.respond(
+            [result.get() for result in ResponderRegistrar.respond(
                 MergeRequestActions.OPENED, self.SomeRepo, 'example',
-                options={'test_var': False}),
+                options={'test_var': False})],
             [False]
         )
 
     def test_inactive_plugin(self):
         self.assertEqual(
-            ResponderRegistrar.respond(
+            [result.get() for result in ResponderRegistrar.respond(
                 MergeRequestActions.OPENED, self.SomeRepo, 'example',
-                options={'test_var': True}
-            ),
+                options={'test_var': True})],
             []
         )

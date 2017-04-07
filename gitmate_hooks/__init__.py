@@ -7,6 +7,8 @@ from traceback import print_exc
 from rest_framework import status
 from rest_framework.response import Response
 
+from gitmate.celery import app as celery
+
 
 def signature_check(key: str=None, http_header_name: str=None):
     """
@@ -50,19 +52,21 @@ class ResponderRegistrar:
         is mandatory.
         """
         def _wrapper(function):
+            task = celery.task(function)
+
             for action in actions:
                 if action not in cls._responders:
                     cls._responders[action] = []
 
-                cls._responders[action].append(function)
+                cls._responders[action].append(task)
 
-            cls._plugins[function] = plugin
+            cls._plugins[task] = plugin
 
             argspec = getfullargspec(function)
             if argspec.defaults is not None:
-                cls._options[function] = argspec.args[-len(argspec.defaults):]
+                cls._options[task] = argspec.args[-len(argspec.defaults):]
             else:
-                cls._options[function] = []
+                cls._options[task] = []
             return function
 
         return _wrapper
@@ -94,7 +98,7 @@ class ResponderRegistrar:
                 continue
 
             try:
-                retvals.append(responder(*args, **options_specified))
+                retvals.append(responder.delay(*args, **options_specified))
             except BaseException:  # pragma: no cover
                 print('ERROR: A responder failed.')
                 print('Responder:   {0!r}'.format(responder))

@@ -194,3 +194,24 @@ Navigate to `http://localhost:8000/` to see the application running.
 Documentation to API Endpoints
 ------------------------------
 The docs could be accessed via http://localhost:8000/docs once the server is running.
+
+Setting up Celery with Rabbitmq
+===============================
+
+Requirements
+------------
+- celery: Asynchronous Task Processing queue based on distributed message processing
+- rabbitmq: Message broker for celery
+
+Configuration
+-------------
+* Add `BROKER_URL` in `gitmate/settings.py`.
+* `sudo rabbitmq-server start`: turns on the rabbitmq server.
+* `python3 manage.py migrate`: run migrations, if any.
+* `python3 manage.py celeryd --loglevel=info --logfile=/var/log/celery/gitmate.log`: starts celery service.
+* Run django server.
+
+> Any permission errors related to logfiles could be handled by executing
+`sudo chown <username> --recursive /var/log/celery`. Also create the file,
+`/var/log/celery/gitmate.log`.
+
