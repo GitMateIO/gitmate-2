@@ -25,7 +25,8 @@ SECRET_KEY = 's#x)wcdigpbgi=7nxrbqbd&$yri@2k9bs%v@*szo#&)c=qp+3-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# django>=1.11 requires tests to use allowed hosts
+ALLOWED_HOSTS = ['testing.com', 'localhost']
 
 GITMATE_PLUGINS = [
     'testplugin',
