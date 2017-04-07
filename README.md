@@ -205,7 +205,7 @@ Requirements
 
 Configuration
 -------------
-* Add `BROKER_URL` in `gitmate/settings.py`.
+* Add `CELERY_BROKER_URL` as an environment variable specifying the messaging broker info.
 * `sudo rabbitmq-server start`: turns on the rabbitmq server.
 * `python3 manage.py migrate`: run migrations, if any.
 * `python3 manage.py celeryd --loglevel=info --logfile=/var/log/celery/gitmate.log`: starts celery service.
