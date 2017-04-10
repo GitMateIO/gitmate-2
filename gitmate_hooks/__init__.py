@@ -41,12 +41,14 @@ class ResponderRegistrar:
     ...     EXISTING_CHAT = 1
 
     Registering a request responder.
+
     >>> @ResponderRegistrar.responder(Messenger.NEW_CHAT)
     ... def test_responder(obj, test_var: bool = True):
     ...     if test_var:
     ...         print(obj + ": success")
 
     The options obtained from responders.
+
     >>> ResponderRegistrar.options()[test_responder] == ['test_var']
     True
 
