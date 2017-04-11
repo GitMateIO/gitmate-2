@@ -142,16 +142,3 @@ class Repository(models.Model):
 
     class Meta:
         unique_together = ('provider', 'full_name')
-
-
-@receiver(models.signals.post_save, sender=Repository)
-def initialize_plugin_settings(sender, instance, created, **kwargs):
-    """
-    Initializes default settings for each repository.
-    """
-    if created:
-        plugins = Plugin.objects.all()
-        for plugin in plugins:
-            module = plugin.import_module()
-            defaults = module.models.Settings(repo=instance)
-            defaults.save()
