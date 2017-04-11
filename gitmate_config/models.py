@@ -25,7 +25,7 @@ class Plugin(models.Model):
     def import_module(self):
         return import_module('gitmate_' + self.name)
 
-    def get_detailed_plugin_settings(self, repo):
+    def get_settings_with_info(self, repo):
         """
         Returns a detailed dictionary of specified plugin's settings with their
         values, types and descriptions.
@@ -34,7 +34,7 @@ class Plugin(models.Model):
         settings = plugin.models.Settings.objects.filter(repo=repo)[0]
         return {
             "name": self.name,
-            "active": self.active,
+            "active": repo.plugins.filter(name=self).exists(),
             "settings": [
                 {
                     "name": field.name,
@@ -47,7 +47,7 @@ class Plugin(models.Model):
             ]
         }
 
-    def get_plugin_settings(self, repo):
+    def get_settings(self, repo):
         """
         Returns the dictionary of settings for the specified plugin.
         """
@@ -55,7 +55,7 @@ class Plugin(models.Model):
         settings = plugin.models.Settings.objects.filter(repo=repo)[0]
         return model_to_dict(settings, exclude=['repo', 'id'])
 
-    def set_settings_for_repo(self, repo, settings):
+    def set_settings(self, repo, settings):
         """
         Sets the plugin settings for this plugin for the specified repo.
         """
@@ -64,53 +64,6 @@ class Plugin(models.Model):
         for name, value in settings.items():
             setattr(instance, name, value)
         instance.save()
-
-    @classmethod
-    def set_all_settings_for_repo(cls, repo, plugins):
-        """
-        Sets the plugin settings for all plugins for the specified repo.
-        """
-        for plugin in plugins:
-            if 'name' not in plugin:
-                raise Http404
-            plugin_obj = get_object_or_404(Plugin, name=plugin['name'])
-            if 'active' in plugin and isinstance(plugin['active'], bool):
-                plugin_obj.active = plugin['active']
-            if 'settings' in plugin:
-                if isinstance(plugin['settings'], dict):
-                    plugin_obj.set_settings_for_repo(repo, plugin['settings'])
-            plugin_obj.save()
-
-    @classmethod
-    def get_all_settings_by_repo(cls, repo, request):
-        """
-        Returns the dictionary of settings of all the plugins with their names,
-        values, types and descriptions for the specified repository.
-        """
-        return {
-            'repository': reverse('api:repository-detail', args=(repo.pk,),
-                                  request=request),
-            'plugins': [plugin.get_detailed_plugin_settings(repo)
-                        for plugin in cls.objects.all()]
-        }
-
-    @classmethod
-    def get_all_settings_by_user(cls, user, request):
-        """
-        Returns the dictionary of settings of all the plugins with their names,
-        values, types and descriptions for all the repositories of the
-        specified user.
-        """
-        return [Plugin.get_all_settings_by_repo(repo, request)
-                for repo in Repository.objects.filter(user=user)]
-
-    @classmethod
-    def get_all_settings(cls, repo, format=None):
-        """
-        Returns a dictionary of values for settings of all the plugins.
-        """
-        return {k: v for plugin in cls.objects.all()
-                for k, v in plugin.get_plugin_settings(repo).items()}
 
 
 class Repository(models.Model):
@@ -124,10 +77,52 @@ class Repository(models.Model):
     # The full name of the repository along with username
     full_name = models.CharField(default=None, max_length=255)
 
+    # The set of active plugins on the repository
+    plugins = models.ManyToManyField(Plugin)
+
     active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.full_name
+
+    def get_plugin_settings(self):
+        """
+        Returns a dictionary of settings for active plugins in this repo.
+        """
+        return {k: v for plugin in self.plugins.all()
+                for k, v in plugin.get_settings(self).items()}
+
+    def get_plugin_settings_with_info(self, request=None):
+        """
+        Returns the dictionary of settings of all the plugins with their names,
+        values, types and descriptions for the specified repository.
+        """
+        return {
+            'repository': reverse('api:repository-detail', args=(self.pk,),
+                                  request=request),
+            'plugins': [plugin.get_settings_with_info(self)
+                        for plugin in Plugin.objects.all()]
+        }
+
+    def set_plugin_settings(self, plugins=[]):
+        """
+        Sets the plugin settings for all plugins for the specified repo.
+        """
+        for plugin in plugins:
+            if 'name' not in plugin:
+                raise Http404
+            plugin_obj = get_object_or_404(Plugin, name=plugin['name'])
+
+            if 'active' in plugin:
+                if plugin['active'] is True:
+                    self.plugins.add(plugin_obj)
+                else:
+                    self.plugins.remove(plugin_obj)
+                self.save()
+
+            if 'settings' in plugin:
+                if isinstance(plugin['settings'], dict):
+                    plugin_obj.set_settings(self, plugin['settings'])
 
     def igitt_repo(self) -> Repository:
         token = self.user.social_auth.get(

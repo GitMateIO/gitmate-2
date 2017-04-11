@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.core.validators import ValidationError
 from django.db import IntegrityError
 from django.db import models
-from django.http import Http404
 from django.test import TransactionTestCase
 import pytest
 from rest_framework.reverse import reverse
@@ -61,128 +60,18 @@ class TestPlugin(TransactionTestCase):
         assert ismodule(module)
         assert module.__name__ == 'gitmate_testplugin'
 
-    def test_set_plugin_settings(self):
+    def test_set_settings(self):
         new_settings = {
             'example_bool_setting': False,
             'example_char_setting': "hello"
         }
-        self.plugin.set_settings_for_repo(self.repo, new_settings)
+        self.plugin.set_settings(self.repo, new_settings)
 
-        modified_settings = self.plugin.get_plugin_settings(self.repo)
+        modified_settings = self.plugin.get_settings(self.repo)
         assert modified_settings['example_bool_setting'] is False
         assert modified_settings['example_char_setting'] == "hello"
 
-    def test_set_all_plugin_settings(self):
-        old_settings = Plugin.get_all_settings(self.repo)
-
-        # No proper plugin name
-        new_settings = [{
-            'active': True,
-            'settings': {}
-        }]
-        with pytest.raises(Http404):
-            Plugin.set_all_settings_for_repo(self.repo, new_settings)
-        modified_settings = Plugin.get_all_settings(self.repo)
-        self.plugin = Plugin.objects.get(name='testplugin')
-        assert modified_settings == old_settings
-
-        # No status setting
-        new_settings = [{
-            'name': 'testplugin',
-            'settings': {}
-        }]
-        Plugin.set_all_settings_for_repo(self.repo, new_settings)
-        modified_settings = Plugin.get_all_settings(self.repo)
-        assert modified_settings == old_settings
-
-        # Undefined plugin
-        new_settings = [{
-            'name': 'undefinedplugin'
-        }]
-        with pytest.raises(Http404):
-            Plugin.set_all_settings_for_repo(self.repo, new_settings)
-        modified_settings = Plugin.get_all_settings(self.repo)
-        assert modified_settings == old_settings
-
-        # Successful set change activeness
-        new_settings = [{
-            'name': 'testplugin',
-            'active': False,
-        }]
-        Plugin.set_all_settings_for_repo(self.repo, new_settings)
-        self.plugin = Plugin.objects.get(name='testplugin')
-
-        # Successful set
-        new_settings = [{
-            'name': 'testplugin',
-            'active': False,
-            'settings': {
-                'example_bool_setting': False,
-                'example_char_setting': "hello"
-            }
-        }]
-        Plugin.set_all_settings_for_repo(self.repo, new_settings)
-
-        modified_settings = Plugin.get_all_settings(self.repo)
-        self.plugin = Plugin.objects.get(name='testplugin')
-        assert modified_settings['example_bool_setting'] is False
-        assert modified_settings['example_char_setting'] == "hello"
-
-    def test_get_plugin_settings(self):
-        settings = Plugin.get_all_settings(self.repo)
+    def test_get_settings(self):
+        settings = self.plugin.get_settings(self.repo)
         assert settings == {'example_bool_setting': True,
                             'example_char_setting': 'example'}
-
-    def test_get_plugin_settings_by_user(self):
-        settings = Plugin.get_all_settings_by_user(self.user, None)
-        assert settings == [{
-            'repository': reverse('api:repository-detail',
-                                  args=(self.repo.pk,)),
-            'plugins': [
-                {
-                    'name': 'testplugin',
-                    'active': False,
-                    'settings': [
-                        {
-                            'name': 'example_char_setting',
-                            'value': 'example',
-                            'description': 'An example Char setting',
-                            'type': 'CharField'
-                        },
-                        {
-                            'name': 'example_bool_setting',
-                            'value': True,
-                            'description': 'An example Bool setting',
-                            'type': 'BooleanField'
-                        },
-                    ]
-                }
-            ]
-        }]
-
-    def test_get_plugin_settings_by_repo(self):
-        settings = Plugin.get_all_settings_by_repo(self.repo, None)
-        assert settings == {
-            'repository': reverse('api:repository-detail',
-                                  args=(self.repo.pk,)),
-            'plugins': [
-                {
-                    'name': 'testplugin',
-                    'active': False,
-                    'settings': [
-                        {
-                            'name': 'example_char_setting',
-                            'value': 'example',
-                            'description': 'An example Char setting',
-                            'type': 'CharField'
-                        },
-                        {
-                            'name': 'example_bool_setting',
-                            'value': True,
-                            'description': 'An example Bool setting',
-                            'type': 'BooleanField'
-                        },
-                    ]
-                }
-            ]
-        }

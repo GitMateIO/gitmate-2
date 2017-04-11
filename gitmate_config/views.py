@@ -102,15 +102,16 @@ class PluginSettingsViewSet(
     serializer_class = PluginSettingsSerializer
 
     def get_queryset(self):
-        return Plugin.get_all_settings_by_user(self.request.user, self.request)
+        return [repo.get_plugin_settings_with_info(self.request)
+                for repo in Repository.objects.filter(user=self.request.user)]
 
     def retrieve(self, request, pk=None):
         repo = get_object_or_404(Repository, pk=pk)
         serializer = PluginSettingsSerializer(
-            instance=Plugin.get_all_settings_by_repo(repo, request))
+            instance=repo.get_plugin_settings_with_info(request))
         return Response(serializer.data, status.HTTP_200_OK)
 
     def update(self, request, pk=None, *args, **kwargs):
         repo = get_object_or_404(Repository, pk=pk)
-        Plugin.set_all_settings_for_repo(repo, request.data)
+        repo.set_plugin_settings(request.data)
         return Response(status=status.HTTP_200_OK)

@@ -54,7 +54,7 @@ class TestSettings(TestCase):
 
         self.plugin_retrieve = PluginSettingsViewSet.as_view(
             actions={'get': 'retrieve'})
-        self.plugin_retrive_url = reverse(
+        self.plugin_retrieve_url = reverse(
             'api:settings-detail',
             args=(self.repo.pk,))
 
@@ -99,7 +99,7 @@ class TestSettings(TestCase):
 
     def test_retrieve_plugin_settings_unauthorized(self):
         retrieve_plugin_settings_request = self.factory.get(
-            self.plugin_list_url)
+            self.plugin_retrieve_url)
         response = self.plugin_retrieve(
             retrieve_plugin_settings_request,
             pk=self.repo.pk)
@@ -107,7 +107,7 @@ class TestSettings(TestCase):
 
     def test_retrieve_plugin_settings_authorized(self):
         retrieve_plugin_settings_request = self.factory.get(
-            self.plugin_list_url)
+            self.plugin_retrieve_url)
         retrieve_plugin_settings_request.user = self.user
         response = self.plugin_retrieve(
             retrieve_plugin_settings_request,
@@ -149,7 +149,7 @@ class TestSettings(TestCase):
             }
         }]
         update_plugin_settings_request = self.factory.patch(
-            self.plugin_retrive_url,
+            self.plugin_retrieve_url,
             settings,
             HTTP_HOST='testing.com', format='json')
         update_plugin_settings_request.user = self.user
