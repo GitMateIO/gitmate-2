@@ -5,15 +5,11 @@ from gitmate_hooks import ResponderRegistrar
 
 
 @ResponderRegistrar.responder(MergeRequestActions.OPENED)
-def respond_to_github_pull_request(
+def add_welcome_comment(
     pr: MergeRequest,
-    autorespond_active: bool=True,
     autorespond_text: str="Hi! This is GitMate v2.0!"
 ):
     """
-    Responds to GitHub Pull Requests.
+    Adds a welcome comment to pull requests.
     """
-    if not autorespond_active:
-        return
-
     pr.issue.add_comment(autorespond_text)

@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['testing.com', 'localhost']
 
 GITMATE_PLUGINS = [
     'testplugin',
-    'github_pr',
+    'welcome_commenter',
 ]
 
 # Application definition
