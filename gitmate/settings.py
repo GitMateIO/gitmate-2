@@ -26,7 +26,7 @@ SECRET_KEY = 's#x)wcdigpbgi=7nxrbqbd&$yri@2k9bs%v@*szo#&)c=qp+3-'
 DEBUG = True
 
 # django>=1.11 requires tests to use allowed hosts
-ALLOWED_HOSTS = ['testing.com', 'localhost']
+ALLOWED_HOSTS = ['testing.com', 'localhost', '127.0.0.1']
 
 GITMATE_PLUGINS = [
     'testplugin',
@@ -60,7 +60,8 @@ REST_FRAMEWORK = {
 SOCIAL_AUTH_URL_NAMESPACE = 'auth'
 
 # python-social-auth settings
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = os.environ.get('SOCIAL_AUTH_REDIRECT',
+                                                'http://localhost:4200')
 SOCIAL_AUTH_LOGIN_URL = '/login'
 
 SOCIAL_AUTH_PIPELINE = (
