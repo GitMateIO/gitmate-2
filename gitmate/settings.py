@@ -26,7 +26,9 @@ SECRET_KEY = 's#x)wcdigpbgi=7nxrbqbd&$yri@2k9bs%v@*szo#&)c=qp+3-'
 DEBUG = True
 
 # django>=1.11 requires tests to use allowed hosts
-ALLOWED_HOSTS = ['testing.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['testing.com', 'localhost', '127.0.0.1', 'localhost:4200']
+CORS_ORIGIN_WHITELIST = ALLOWED_HOSTS
+CORS_ALLOW_CREDENTIALS = True
 
 GITMATE_PLUGINS = [
     'testplugin',
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     'gitmate_config',
     'rest_framework',
     'rest_framework_docs',
+    'corsheaders',
 ] + ['gitmate_'+plugin for plugin in GITMATE_PLUGINS]
 
 REST_FRAMEWORK = {
@@ -134,6 +137,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 MIDDLEWARE_CLASSES = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
