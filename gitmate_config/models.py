@@ -19,8 +19,6 @@ class Plugin(models.Model):
         # with uninitialized name will be forbidden on database level
         default=None, max_length=50, primary_key=True)
 
-    active = models.BooleanField(default=False)
-
     def __str__(self):
         return self.name
 
