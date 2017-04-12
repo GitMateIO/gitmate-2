@@ -49,7 +49,7 @@ class TestRepositories(TestCase):
         response = self.repo_list(get_repos_request)
         self.assertIn(os.environ['GITHUB_TEST_REPO'],
                       [elem['full_name'] for elem in response.data])
-        self.assertIn('plugin', response.data[0])
+        self.assertIn('plugins', response.data[0])
 
     def test_activate_repo(self):
         repo = Repository(
