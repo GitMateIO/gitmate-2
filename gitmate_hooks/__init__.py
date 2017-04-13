@@ -35,35 +35,15 @@ class ResponderRegistrar:
     """
     This class provides ability to register responders and invoke them.
 
-    >>> from enum import Enum
-    >>> class Messenger(Enum):
-    ...     NEW_CHAT = 0
-    ...     EXISTING_CHAT = 1
-
-    Registering a request responder.
-
-    >>> @ResponderRegistrar.responder(Messenger.NEW_CHAT)
-    ... def test_responder(obj, test_var: bool = True):
-    ...     if test_var:
-    ...         print(obj + ": success")
-
-    The options obtained from responders.
-
-    >>> ResponderRegistrar.options()[test_responder] == ['test_var']
-    True
-
-    Request a response from all available responders.
-    >>> ResponderRegistrar.respond(Messenger.NEW_CHAT, "example",
-    ...     options={"test_var": True})
-    example: success
-
+    All responders belong to a plugin that can be activated per repository.
     """
 
     _responders = {}
     _options = {}
+    _plugins = {}
 
     @classmethod
-    def responder(cls, *actions: [Enum]):
+    def responder(cls, plugin: str="", *actions: [Enum]):
         """
         Registers the decorated function as a responder to the actions
         provided. Specifying description as defaults on option specific args
@@ -75,6 +55,8 @@ class ResponderRegistrar:
                     cls._responders[action] = []
 
                 cls._responders[action].append(function)
+
+            cls._plugins[function] = plugin
 
             argspec = getfullargspec(function)
             if argspec.defaults is not None:
@@ -94,10 +76,11 @@ class ResponderRegistrar:
         return cls._options
 
     @classmethod
-    def respond(cls, event, *args, options={}):
+    def respond(cls, event, repo, *args, options={}):
         """
         Invoke all responders for the given event with the provided options.
         """
+        retvals = []
         for responder in cls._responders.get(event, []):
             # Provide the options it wants
             options_specified = {}
@@ -105,11 +88,18 @@ class ResponderRegistrar:
                 if option in options:
                     options_specified[option] = options[option]
 
+            # check if plugin is active on the repo
+            plugin = cls._plugins[responder]
+            if repo.plugins.filter(name=plugin).exists() is False:
+                continue
+
             try:
-                responder(*args, **options_specified)
+                retvals.append(responder(*args, **options_specified))
             except BaseException:  # pragma: no cover
                 print("ERROR: A responder failed.")
                 print("Responder:   {0!r}".format(responder))
                 print("Args:        {0!r}".format(args))
                 print("Options:     {0!r}".format(options_specified))
                 print_exc()
+
+        return retvals
