@@ -9,10 +9,3 @@ bears = PEP8Bear, PyCommentedCodeBear, PyImportSortBear, PyUnusedCodeBear
 [python-analysis]
 ignore = **/migrations/**, **/vendor/**, node_modules/**, **/tests.py
 bears = LineLengthBear, RadonBear
-
-[json]
-bears = JSONFormatBear
-files = **.json
-indent_size = 4
-json_sort = false
-ignore = frontend/node_modules/**/*.json
