@@ -1,0 +1,9 @@
+DB_ENGINE=django.db.backends.postgresql_psycopg2
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_ADDRESS=db
+GITHUB_WEBHOOK_SECRET=foobar
+SOCIAL_AUTH_GITHUB_KEY=foobar
+SOCIAL_AUTH_GITHUB_SECRET=foobar
+DJANGO_DEBUG=True
+

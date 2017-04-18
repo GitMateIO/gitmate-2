@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
+from ast import literal_eval
 import os
 
 import djcelery
@@ -22,13 +23,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 's#x)wcdigpbgi=7nxrbqbd&$yri@2k9bs%v@*szo#&)c=qp+3-'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
+                            ('s#x)wcdigpbgi=7nxrbqbd&$yri@2k9bs%v@'
+                             '*szo#&)c=qp+3-'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = literal_eval(os.environ.get('DJANGO_DEBUG', 'False'))
 
 # django>=1.11 requires tests to use allowed hosts
-ALLOWED_HOSTS = ['testing.com', 'localhost', '127.0.0.1', 'localhost:4200']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testing.com']
+ALLOWED_HOSTS += os.environ.get('DJANGO_ALLOWED_HOSTS', '').split()
 CORS_ORIGIN_WHITELIST = ALLOWED_HOSTS
 CORS_ALLOW_CREDENTIALS = True
 
@@ -116,7 +120,7 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 # Put gitmate's corresponding OAuth details here.
-GITHUB_WEBHOOK_SECRET = os.environ['GITHUB_WEBHOOK_SECRET']
+GITHUB_WEBHOOK_SECRET = os.environ.get('GITHUB_WEBHOOK_SECRET')
 SOCIAL_AUTH_GITHUB_KEY = os.environ.get('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('SOCIAL_AUTH_GITHUB_SECRET')
 SOCIAL_AUTH_GITHUB_SCOPE = [
@@ -124,13 +128,16 @@ SOCIAL_AUTH_GITHUB_SCOPE = [
     'repo',
 ]
 
-SOCIAL_AUTH_GITLAB_KEY = ''
-SOCIAL_AUTH_GITLAB_SECRET = ''
+SOCIAL_AUTH_GITLAB_KEY = os.environ.get(
+    'SOCIAL_AUTH_GITLAB_KEY')
+SOCIAL_AUTH_GITLAB_SECRET = os.environ.get('SOCIAL_AUTH_GITLAB_SECRET')
 # This needs to be specified as is including full domain name.
-SOCIAL_AUTH_GITLAB_REDIRECT_URL = '<domainname>/auth/complete/gitlab/'
+# ex. gitlab.com/auth/complete/gitlab/
+SOCIAL_AUTH_GITLAB_REDIRECT_URL = os.environ.get(
+    'SOCIAL_AUTH_GITLAB_REDIRECT_URL')
 
-SOCIAL_AUTH_BITBUCKET_KEY = ''
-SOCIAL_AUTH_BITBUCKET_SECRET = ''
+SOCIAL_AUTH_BITBUCKET_KEY = os.environ.get('SOCIAL_AUTH_BITBUCKET_KEY')
+SOCIAL_AUTH_BITBUCKET_SECRET = os.environ.get('SOCIAL_AUTH_BITBUCKET_SECRET')
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
@@ -177,8 +184,14 @@ WSGI_APPLICATION = 'gitmate.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.environ.get('DB_ENGINE',
+                                 'django.db.backends.sqlite3'),
+        'NAME': os.environ.get('DB_NAME',
+                               os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_ADDRESS', ''),
+        'PORT': os.environ.get('DB_PORT', '')
     }
 }
 
@@ -222,15 +235,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = ''
+STATIC_ROOT = os.environ.get('DJANGO_STATIC_ROOT', '/tmp/static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'frontend'),
-)
+STATICFILES_DIRS = ()
 
 
 # CELERY CONFIG
 djcelery.setup_loader()
 
 # RABBITMQ server base URL
-BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+BROKER_URL = os.environ.get('CELERY_BROKER_URL',
+                            'amqp://admin:password@rabbit/')

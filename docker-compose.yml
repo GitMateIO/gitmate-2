@@ -1,0 +1,35 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+  rabbit:
+    hostname: rabbit
+    image: rabbitmq:3.6
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=password
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file: ./docker/environment
+    links:
+      - db
+      - rabbit
+    depends_on:
+      - db
+  worker:
+    build: .
+    command: >
+      python3 manage.py celeryd --loglevel=info --logfile=/tmp/gitmate.log
+    env_file: ./docker/environment
+    links:
+      - db
+      - rabbit
+    depends_on:
+      - rabbit
+      - backend
