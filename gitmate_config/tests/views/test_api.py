@@ -19,10 +19,10 @@ class TestApi(TestCase):
         self.factory = APIRequestFactory()
 
         self.user = User.objects.create_user(
-            username="john",
-            email="john.appleseed@example.com",
-            first_name="John",
-            last_name="Appleseed"
+            username='john',
+            email='john.appleseed@example.com',
+            first_name='John',
+            last_name='Appleseed'
         )
 
         self.auth = UserSocialAuth(

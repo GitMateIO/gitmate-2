@@ -5,7 +5,7 @@ from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 
 
-@receiver(post_save, sender=Repository, dispatch_uid="init_plugin_settings")
+@receiver(post_save, sender=Repository, dispatch_uid='init_plugin_settings')
 def initialize_plugin_settings(sender, instance, created, **kwargs):
     """
     Initializes default settings for each repository.

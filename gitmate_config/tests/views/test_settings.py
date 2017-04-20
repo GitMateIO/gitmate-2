@@ -21,10 +21,10 @@ class TestSettings(TestCase):
         self.factory = APIRequestFactory()
 
         self.user = User.objects.create_user(
-            username="john",
-            email="john.appleseed@example.com",
-            first_name="John",
-            last_name="Appleseed"
+            username='john',
+            email='john.appleseed@example.com',
+            first_name='John',
+            last_name='Appleseed'
         )
 
         self.auth = UserSocialAuth(
@@ -40,7 +40,7 @@ class TestSettings(TestCase):
             provider=Providers.GITHUB.value)
         self.repo.save()
 
-        self.plugin = Plugin(name="testplugin")
+        self.plugin = Plugin(name='testplugin')
         plugin_module = self.plugin.import_module()
         self.plugin.save()
 
@@ -145,7 +145,7 @@ class TestSettings(TestCase):
             'active': True,
             'settings': {
                 'example_bool_setting': False,
-                'example_char_setting': "hello"
+                'example_char_setting': 'hello'
             }
         }]
         update_plugin_settings_request = self.factory.patch(

@@ -40,21 +40,21 @@ class TestResponderRegistrar(TestCase):
 
         self.assertEqual(
             ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.SomeRepo, "example",
-                options={"test_var": True}),
+                MergeRequestActions.OPENED, self.SomeRepo, 'example',
+                options={'test_var': True}),
             [True]
         )
         self.assertEqual(
             ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.SomeRepo, "example",
-                options={"test_var": False}),
+                MergeRequestActions.OPENED, self.SomeRepo, 'example',
+                options={'test_var': False}),
             [False]
         )
 
     def test_inactive_plugin(self):
         self.assertEqual(
             ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.SomeRepo, "example",
+                MergeRequestActions.OPENED, self.SomeRepo, 'example',
                 options={'test_var': True}
             ),
             []

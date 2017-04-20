@@ -7,7 +7,7 @@ from gitmate_hooks import ResponderRegistrar
 @ResponderRegistrar.responder(MergeRequestActions.OPENED)
 def add_welcome_comment(
     pr: MergeRequest,
-    autorespond_text: str="Hi! This is GitMate v2.0!"
+    autorespond_text: str='Hi! This is GitMate v2.0!'
 ):
     """
     Adds a welcome comment to pull requests.

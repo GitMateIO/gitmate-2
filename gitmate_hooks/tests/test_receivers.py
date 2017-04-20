@@ -25,10 +25,10 @@ class TestWebhookReceivers(TestCase):
         self.factory = APIRequestFactory()
         self.key = settings.GITHUB_WEBHOOK_SECRET
         self.user = User.objects.create_user(
-            username="john",
-            email="john.appleseed@example.com",
-            first_name="John",
-            last_name="Appleseed"
+            username='john',
+            email='john.appleseed@example.com',
+            first_name='John',
+            last_name='Appleseed'
         )
 
         self.auth = UserSocialAuth(
@@ -76,7 +76,7 @@ class TestWebhookReceivers(TestCase):
         }
         request = self.factory.post('/webhooks/github', data, format='json')
         hashed = hmac.new(bytes(self.key, 'utf-8'), request.body, sha1)
-        signature = "sha1=" + hashed.hexdigest()
+        signature = 'sha1=' + hashed.hexdigest()
 
         request.META.update({
             'HTTP_X_HUB_SIGNATURE': signature,

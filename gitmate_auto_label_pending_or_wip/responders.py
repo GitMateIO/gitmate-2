@@ -7,8 +7,8 @@ from gitmate_hooks import ResponderRegistrar
 @ResponderRegistrar.responder(MergeRequestActions.SYNCHRONIZED)
 def mark_pending_review_or_wip_accordingly(
     pr: MergeRequest,
-    wip_label: str="Work in progress",
-    pending_review_label: str="Review pending"
+    wip_label: str='Work in progress',
+    pending_review_label: str='Review pending'
 ):
     """
     Labels the pull request as pending review and removes work in
@@ -16,7 +16,7 @@ def mark_pending_review_or_wip_accordingly(
     label, if title of the pull request begins with "wip".
     """
     labels = pr.issue.labels
-    if not pr.issue.title.lower().startswith("wip"):
+    if not pr.issue.title.lower().startswith('wip'):
         labels.add(pending_review_label)
         labels.discard(wip_label)
     else:

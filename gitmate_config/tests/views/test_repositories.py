@@ -20,11 +20,11 @@ class TestRepositories(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
         self.user = User.objects.create_user(
-            username="john",
-            email="john.appleseed@example.com",
-            password="top_secret",
-            first_name="John",
-            last_name="Appleseed"
+            username='john',
+            email='john.appleseed@example.com',
+            password='top_secret',
+            first_name='John',
+            last_name='Appleseed'
         )
         self.auth = UserSocialAuth(
             user=self.user, provider=Providers.GITHUB.value)

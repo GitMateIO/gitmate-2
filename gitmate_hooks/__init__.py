@@ -43,7 +43,7 @@ class ResponderRegistrar:
     _plugins = {}
 
     @classmethod
-    def responder(cls, plugin: str="", *actions: [Enum]):
+    def responder(cls, plugin: str='', *actions: [Enum]):
         """
         Registers the decorated function as a responder to the actions
         provided. Specifying description as defaults on option specific args
@@ -96,10 +96,10 @@ class ResponderRegistrar:
             try:
                 retvals.append(responder(*args, **options_specified))
             except BaseException:  # pragma: no cover
-                print("ERROR: A responder failed.")
-                print("Responder:   {0!r}".format(responder))
-                print("Args:        {0!r}".format(args))
-                print("Options:     {0!r}".format(options_specified))
+                print('ERROR: A responder failed.')
+                print('Responder:   {0!r}'.format(responder))
+                print('Args:        {0!r}'.format(args))
+                print('Options:     {0!r}'.format(options_specified))
                 print_exc()
 
         return retvals

@@ -16,13 +16,13 @@ class TestRepository(TransactionTestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(
-            username="john",
-            email="john.appleseed@example.com",
-            password="top_secret",
-            first_name="John",
-            last_name="Appleseed"
+            username='john',
+            email='john.appleseed@example.com',
+            password='top_secret',
+            first_name='John',
+            last_name='Appleseed'
         )
-        self.plugin = Plugin(name="testplugin")
+        self.plugin = Plugin(name='testplugin')
         self.plugin_module = self.plugin.import_module()
         self.plugin.save()
         self.full_name = 'test'
@@ -114,14 +114,14 @@ class TestRepository(TransactionTestCase):
             'active': True,
             'settings': {
                 'example_bool_setting': False,
-                'example_char_setting': "hello"
+                'example_char_setting': 'hello'
             }
         }]
         repo.set_plugin_settings(new_settings)
 
         modified_settings = repo.get_plugin_settings()
         assert modified_settings['example_bool_setting'] is False
-        assert modified_settings['example_char_setting'] == "hello"
+        assert modified_settings['example_char_setting'] == 'hello'
 
     def test_get_plugin_settings_with_info(self):
         # create a fake repo

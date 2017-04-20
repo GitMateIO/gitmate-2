@@ -33,14 +33,14 @@ class Plugin(models.Model):
         plugin = self.import_module()
         settings = plugin.models.Settings.objects.filter(repo=repo)[0]
         return {
-            "name": self.name,
-            "active": repo.plugins.filter(name=self).exists(),
-            "settings": [
+            'name': self.name,
+            'active': repo.plugins.filter(name=self).exists(),
+            'settings': [
                 {
-                    "name": field.name,
-                    "value": field.value_from_object(settings),
-                    "description": field.help_text,
-                    "type": field.get_internal_type(),
+                    'name': field.name,
+                    'value': field.value_from_object(settings),
+                    'description': field.help_text,
+                    'type': field.get_internal_type(),
                 }
                 for field in settings._meta.fields
                 if field.name not in ['repo', 'id']
