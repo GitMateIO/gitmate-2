@@ -114,4 +114,6 @@ class PluginSettingsViewSet(
     def update(self, request, pk=None, *args, **kwargs):
         repo = get_object_or_404(Repository, pk=pk)
         repo.set_plugin_settings(request.data)
-        return Response(status=status.HTTP_200_OK)
+        serializer = PluginSettingsSerializer(
+            instance=repo.get_plugin_settings_with_info(request))
+        return Response(serializer.data, status=status.HTTP_200_OK)
