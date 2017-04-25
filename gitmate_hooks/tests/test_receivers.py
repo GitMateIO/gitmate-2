@@ -87,7 +87,5 @@ class TestWebhookReceivers(TestCase):
         # resetting all the responders to stop unnecessary actions during
         # testing phase.
         with patch.object(GitHubMergeRequest, '__init__', return_value=None):
-            ResponderRegistrar._responders = {}
-
             response = github_webhook_receiver(request)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
