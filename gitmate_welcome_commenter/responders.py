@@ -4,7 +4,7 @@ from IGitt.Interfaces.MergeRequest import MergeRequest
 from gitmate_hooks import ResponderRegistrar
 
 
-@ResponderRegistrar.responder(MergeRequestActions.OPENED)
+@ResponderRegistrar.responder('welcome_commenter', MergeRequestActions.OPENED)
 def add_welcome_comment(
     pr: MergeRequest,
     autorespond_text: str='Hi! This is GitMate v2.0!'

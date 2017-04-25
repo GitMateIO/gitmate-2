@@ -41,12 +41,12 @@ def github_webhook_receiver(request):
             pull_request_obj = GitHubMergeRequest(
                 token, repository['full_name'], pull_request['number'])
             ResponderRegistrar.respond(
-                MergeRequestActions.SYNCHRONIZED, pull_request_obj,
+                MergeRequestActions.SYNCHRONIZED, repo_obj, pull_request_obj,
                 options=repo_obj.get_plugin_settings())
 
             if webhook_data['action'] == 'opened':
                 ResponderRegistrar.respond(
-                    MergeRequestActions.OPENED, pull_request_obj,
+                    MergeRequestActions.OPENED, repo_obj, pull_request_obj,
                     options=repo_obj.get_plugin_settings())
 
     return Response(status=status.HTTP_200_OK)
