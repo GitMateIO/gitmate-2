@@ -35,7 +35,9 @@ class RepositoryViewSet(
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return Repository.objects.filter(user=self.request.user)
+        return Repository.objects.filter(user=self.request.user).order_by(
+            '-active', 'full_name'
+        )
 
     def list(self, request):
         # Update db model
