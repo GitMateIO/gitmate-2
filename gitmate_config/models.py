@@ -1,5 +1,6 @@
 from importlib import import_module
 
+from django.apps import apps
 from django.contrib.auth.models import User
 from django.db import models
 from django.dispatch import receiver
@@ -22,8 +23,15 @@ class Plugin(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def full_name(self):
+        return 'gitmate_' + self.name
+
     def import_module(self):
-        return import_module('gitmate_' + self.name)
+        return import_module(self.full_name)
+
+    def config_value(self, key, default=None):
+        return getattr(apps.get_app_config(self.full_name), key, default)
 
     def get_settings_with_info(self, repo):
         """
@@ -34,6 +42,8 @@ class Plugin(models.Model):
         settings = plugin.models.Settings.objects.filter(repo=repo)[0]
         return {
             'name': self.name,
+            'title': self.config_value('verbose_name', None),
+            'description': self.config_value('description', ''),
             'active': repo.plugins.filter(name=self).exists(),
             'settings': [
                 {

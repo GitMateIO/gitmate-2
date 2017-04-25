@@ -141,6 +141,10 @@ class TestRepository(TransactionTestCase):
             'plugins': [
                 {
                     'name': 'testplugin',
+                    'title': 'Testing',
+                    'description': (
+                        'A simple plugin used for testing. Smile :)'
+                    ),
                     'active': True,
                     'settings': [
                         {

@@ -78,6 +78,10 @@ class TestSettings(TestCase):
             'plugins': [
                 {
                     'name': 'testplugin',
+                    'title': 'Testing',
+                    'description': (
+                        'A simple plugin used for testing. Smile :)'
+                    ),
                     'active': False,
                     'settings': [
                         {
@@ -120,6 +124,10 @@ class TestSettings(TestCase):
             'plugins': [
                 {
                     'name': 'testplugin',
+                    'title': 'Testing',
+                    'description': (
+                        'A simple plugin used for testing. Smile :)'
+                    ),
                     'active': False,
                     'settings': [
                         {
