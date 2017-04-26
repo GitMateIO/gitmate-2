@@ -1,11 +1,11 @@
 check_code:
-  image: coala/base:0.9
+  image: coala/base:0.10
   script:
   - pip install -r requirements.txt
   - coala --ci
 
 run_tests:
-  image: coala/base:0.9
+  image: coala/base:0.10
   script:
   - pip install -r requirements.txt
   - pip install pytest pytest-cov pytest-django
