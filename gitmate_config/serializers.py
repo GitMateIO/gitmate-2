@@ -11,15 +11,11 @@ class UserSerializer(serializers.Serializer):
 
 
 class RepositorySerializer(serializers.ModelSerializer):
-    id = serializers.HyperlinkedIdentityField(
-        view_name='api:repository-detail')
-    plugins = serializers.HyperlinkedIdentityField(
-        view_name='api:settings-detail')
 
     class Meta:
         model = Repository
         fields = '__all__'
-        read_only_fields = ('user', 'provider', 'full_name')
+        read_only_fields = ('id', 'user', 'provider', 'full_name')
 
 
 class PluginSettingsSerializer(serializers.Serializer):
