@@ -1,0 +1,7 @@
+{{ unicode_literals }}from django.apps import AppConfig
+
+
+class {{ camel_case_plugin_name }}Config(AppConfig):
+    name = '{{ plugin_name }}'
+    verbose_name = '' # Add something verbose here
+    description = '' # Add description here

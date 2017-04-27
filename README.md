@@ -85,6 +85,17 @@ or locally when installing the ``coala-bears`` pip package:
 coala
 ```
 
+Creating a new plugin
+---------------------
+
+Create a new plugin with the name `<name_of_plugin>`.
+
+```
+python3 manage.py startplugin <name_of_plugin>
+```
+
+Add the plugin to `GITMATE_PLUGINS` in `gitmate/settings.py`.
+
 Modifications to Models
 -----------------------
 

@@ -1,7 +1,9 @@
 from inspect import ismodule
+from shutil import rmtree
 
 from django.conf import settings
 from django.core.management import call_command
+from django.core.management.base import CommandError
 import pytest
 
 from gitmate_config.models import Plugin
@@ -20,3 +22,12 @@ def test_upmate():
     testplugin_module = testplugin.import_module()
     assert ismodule(testplugin_module)
     assert testplugin_module.__name__ == 'gitmate_testplugin'
+
+
+def test_startplugin():
+    # pre existent plugin match
+    with pytest.raises(CommandError):
+        call_command('startplugin', 'testplugin')
+
+    call_command('startplugin', 'star_wars')
+    rmtree('gitmate_star_wars')

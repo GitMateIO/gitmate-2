@@ -1,0 +1,6 @@
+from .responders import *
+
+
+default_app_config = (
+    '{{ plugin_name }}.apps.{{ camel_case_plugin_name }}Config'
+)
