@@ -30,8 +30,11 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = literal_eval(os.environ.get('DJANGO_DEBUG', 'False'))
 
+HOOK_DOMAIN = os.environ.get('HOOK_DOMAIN', 'localhost:8000')
+
 # django>=1.11 requires tests to use allowed hosts
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testing.com']
+ALLOWED_HOSTS = ['testing.com', 'localhost', '127.0.0.1', 'localhost:4200',
+                 HOOK_DOMAIN]
 ALLOWED_HOSTS += os.environ.get('DJANGO_ALLOWED_HOSTS', '').split()
 CORS_ORIGIN_WHITELIST = ALLOWED_HOSTS
 CORS_ALLOW_CREDENTIALS = True

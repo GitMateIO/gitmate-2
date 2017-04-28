@@ -65,22 +65,21 @@ class TestRepositories(TestCase):
         activate_repo_request = self.factory.patch(
             url,
             {'active': True},
-            HTTP_HOST='testing.com',
         )
         activate_repo_request.user = self.user
         response = self.repo_detail(activate_repo_request, pk=repo.pk)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('https://testing.com/webhooks/github', igitt_repo.hooks)
+        self.assertIn('https://localhost:8000/webhooks/github',
+                      igitt_repo.hooks)
 
         deactivate_repo_request = self.factory.patch(
             url,
             {'active': False},
-            HTTP_HOST='testing.com',
         )
         deactivate_repo_request.user = self.user
         response = self.repo_detail(deactivate_repo_request, pk=repo.pk)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertNotIn('https://testing.com/webhooks/github',
+        self.assertNotIn('https://localhost:8000/webhooks/github',
                          igitt_repo.hooks)
 
     def test_igitt_repo_creation(self):
