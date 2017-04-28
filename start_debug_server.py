@@ -18,9 +18,6 @@ if __name__ == '__main__':
     print('\033[36mupmating plugins...\033[0m')
     call(['python3', 'manage.py', 'upmate'])
 
-    print('\033[36mstarting celery workers...\033[0m')
-    Popen(['python3', 'manage.py', 'celeryd', '--loglevel=info'])
-
     print('\033[36mwaiting 2s for the tunnel to start\033[0m')
     sleep(2)
     resp = requests.get('http://127.0.0.1:4040/inspect/http')

@@ -29,6 +29,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = literal_eval(os.environ.get('DJANGO_DEBUG', 'False'))
+if not DEBUG:
+    CELERY_ALWAYS_EAGER = True
 
 HOOK_DOMAIN = os.environ.get('HOOK_DOMAIN', 'localhost:8000')
 
