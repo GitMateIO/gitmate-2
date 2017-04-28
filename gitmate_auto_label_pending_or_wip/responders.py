@@ -4,7 +4,10 @@ from IGitt.Interfaces.MergeRequest import MergeRequest
 from gitmate_hooks import ResponderRegistrar
 
 
-@ResponderRegistrar.responder(MergeRequestActions.SYNCHRONIZED)
+@ResponderRegistrar.responder(
+    'auto_label_pending_or_wip',
+    MergeRequestActions.SYNCHRONIZED
+)
 def mark_pending_review_or_wip_accordingly(
     pr: MergeRequest,
     wip_label: str='Work in progress',

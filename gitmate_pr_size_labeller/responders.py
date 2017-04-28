@@ -4,7 +4,10 @@ from IGitt.Interfaces.MergeRequest import MergeRequest
 from gitmate_hooks import ResponderRegistrar
 
 
-@ResponderRegistrar.responder(MergeRequestActions.SYNCHRONIZED)
+@ResponderRegistrar.responder(
+    'pr_size_labeller',
+    MergeRequestActions.SYNCHRONIZED,
+)
 def add_labels_based_on_size(pr: MergeRequest):
     """
     Labels the pull request with size labels according to the amount of
