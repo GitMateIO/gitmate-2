@@ -1,4 +1,5 @@
 DB_ENGINE=django.db.backends.postgresql_psycopg2
+DB_NAME=postgres
 DB_USER=postgres
 DB_PASSWORD=postgres
 DB_ADDRESS=db
