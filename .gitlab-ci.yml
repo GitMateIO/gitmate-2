@@ -1,6 +1,11 @@
 image: docker:1.10.3
 services:
   - docker:dind
+  - postgres:9.6
+variables:
+  DB_NAME: postgres
+  DB_USER: postgres
+  DB_PASSWORD: postgres
 
 stages:
   - test
@@ -23,11 +28,11 @@ check_code:
   - coala --ci
 
 run_tests:
-  image: coala/base:0.10
+  image: python:3
   stage: test
   script:
-  - pip install -r requirements.txt
-  - pip install pytest pytest-cov pytest-django
+  - pip3 install -r requirements.txt
+  - pip3 install pytest pytest-cov pytest-django
   - py.test -vv --cov --doctest-modules
 
 build_image:
