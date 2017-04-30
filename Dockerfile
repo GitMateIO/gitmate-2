@@ -1,7 +1,7 @@
 FROM coala/base:0.10
 MAINTAINER Muhammad Kaisar Arkhan <yukinagato@protonmail.com>
 
-ENV USER=gitmate ROOT=/usr/src/app
+ENV USER=gitmate ROOT=/usr/src/app NUM_WORKERS=3 LOG_LEVEL=DEBUG
 
 EXPOSE 8000
 
@@ -13,7 +13,6 @@ ADD requirements.txt $ROOT/
 RUN pip3 install --no-cache-dir \
                  -r $ROOT/requirements.txt
 
-USER $USER
 ADD . $ROOT
 WORKDIR $ROOT
 
