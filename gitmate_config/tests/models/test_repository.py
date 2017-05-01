@@ -123,6 +123,25 @@ class TestRepository(TransactionTestCase):
         assert modified_settings['example_bool_setting'] is False
         assert modified_settings['example_char_setting'] == 'hello'
 
+    def test_plugin_set_settings_not_importable(self):
+        # create a fake plugin
+        plugin = Plugin('fake_plugin')
+        plugin.save()
+        # try to import it
+        assert plugin.importable == False
+        repo = Repository(user=self.user,
+                          full_name=self.full_name,
+                          provider=self.provider)
+
+        new_settings = [{
+            'name': 'fake_plugin',
+            'settings': {
+                'jedi': True
+            }
+        }]
+        with pytest.raises(Http404):
+            repo.set_plugin_settings(new_settings)
+
     def test_get_plugin_settings_with_info(self):
         # create a fake repo
         repo = Repository(user=self.user,

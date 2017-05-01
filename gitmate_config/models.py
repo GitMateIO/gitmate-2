@@ -27,6 +27,14 @@ class Plugin(models.Model):
     def full_name(self):
         return 'gitmate_' + self.name
 
+    @property
+    def importable(self):
+        try:
+            self.import_module().models
+            return True
+        except:
+            return False
+
     def import_module(self):
         return import_module(self.full_name)
 
@@ -100,7 +108,8 @@ class Repository(models.Model):
         Returns a dictionary of settings for active plugins in this repo.
         """
         return {k: v for plugin in self.plugins.all()
-                for k, v in plugin.get_settings(self).items()}
+                for k, v in plugin.get_settings(self).items()
+                if plugin.importable}
 
     def get_plugin_settings_with_info(self, request=None):
         """
@@ -111,7 +120,8 @@ class Repository(models.Model):
             'repository': reverse('api:repository-detail', args=(self.pk,),
                                   request=request),
             'plugins': [plugin.get_settings_with_info(self)
-                        for plugin in Plugin.objects.all()]
+                        for plugin in Plugin.objects.all()
+                        if plugin.importable]
         }
 
     def set_plugin_settings(self, plugins=[]):
@@ -122,6 +132,9 @@ class Repository(models.Model):
             if 'name' not in plugin:
                 raise Http404
             plugin_obj = get_object_or_404(Plugin, name=plugin['name'])
+
+            if not plugin_obj.importable:
+                raise Http404
 
             if 'active' in plugin:
                 if plugin['active'] is True:
