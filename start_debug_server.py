@@ -24,6 +24,7 @@ if __name__ == '__main__':
     domain = resp.text[resp.text.find('\\"https://')+10:
                        resp.text.find('.ngrok.io') + 9]
     environ['HOOK_DOMAIN'] = domain
+    environ['DJANGO_DEBUG'] = 'True'
 
     print('\033[36mstarting the server, you are now on your own. '
           '\033[32mGood Luck.\033[0m')
