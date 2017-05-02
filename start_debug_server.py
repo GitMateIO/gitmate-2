@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from os import environ
 from subprocess import call
 from subprocess import Popen
