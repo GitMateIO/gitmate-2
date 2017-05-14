@@ -1,4 +1,4 @@
-FROM coala/base:0.10
+FROM python:3
 MAINTAINER Muhammad Kaisar Arkhan <yukinagato@protonmail.com>
 
 ENV USER=gitmate ROOT=/usr/src/app NUM_WORKERS=3 LOG_LEVEL=DEBUG
