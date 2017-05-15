@@ -3,7 +3,6 @@ from importlib import import_module
 from django.apps import apps
 from django.contrib.auth.models import User
 from django.db import models
-from django.dispatch import receiver
 from django.forms.models import model_to_dict
 from django.http import Http404
 from django.shortcuts import get_object_or_404

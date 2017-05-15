@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.validators import ValidationError
 from django.db import IntegrityError
-from django.db import models
 from django.http import Http404
 from django.test import TransactionTestCase
 import pytest

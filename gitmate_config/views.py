@@ -1,8 +1,6 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from django.utils.datastructures import MultiValueDictKeyError
 from IGitt.GitHub.GitHub import GitHub
-from IGitt.GitHub.GitHubRepository import GitHubRepository
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication
@@ -13,7 +11,6 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from gitmate_config import Providers
-from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 
 from .serializers import PluginSettingsSerializer

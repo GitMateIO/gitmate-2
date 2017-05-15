@@ -14,7 +14,6 @@ from social_django.models import UserSocialAuth
 
 from gitmate_config import Providers
 from gitmate_config.models import Repository
-from gitmate_hooks import ResponderRegistrar
 from gitmate_hooks.views import github_webhook_receiver
 
 

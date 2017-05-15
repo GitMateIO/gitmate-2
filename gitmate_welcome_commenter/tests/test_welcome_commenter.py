@@ -7,8 +7,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import override_settings
 from django.test import TransactionTestCase
-from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
-from IGitt.Interfaces.Actions import MergeRequestActions
 import pytest
 from rest_framework import status
 from rest_framework.reverse import reverse
@@ -18,7 +16,6 @@ from social_django.models import UserSocialAuth
 from gitmate_config import Providers
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
-from gitmate_hooks import ResponderRegistrar
 from gitmate_hooks.views import github_webhook_receiver
 
 

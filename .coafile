@@ -5,6 +5,8 @@ language = python
 
 [python-spacing]
 bears = PEP8Bear, PyCommentedCodeBear, PyImportSortBear, PyUnusedCodeBear
+ignore = **/migrations/**, **/__init__.py, **/conftest.py, **/views.py, **/admin.py, **/apps.py
+remove_all_unused_imports=True
 
 [python-analysis]
 ignore = **/migrations/**, **/vendor/**, node_modules/**, **/tests.py

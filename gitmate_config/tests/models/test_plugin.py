@@ -3,10 +3,8 @@ from inspect import ismodule
 from django.contrib.auth.models import User
 from django.core.validators import ValidationError
 from django.db import IntegrityError
-from django.db import models
 from django.test import TransactionTestCase
 import pytest
-from rest_framework.reverse import reverse
 
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
