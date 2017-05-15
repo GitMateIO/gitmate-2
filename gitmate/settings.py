@@ -48,6 +48,7 @@ GITMATE_PLUGINS = [
     'welcome_commenter',
     'auto_label_pending_or_wip',
     'pr_size_labeller',
+    'issue_labeller',
 ]
 
 # Application definition
