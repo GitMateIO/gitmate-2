@@ -1,59 +1,42 @@
 from django.test import override_settings
-from django.test import TestCase
 from IGitt.Interfaces.Actions import MergeRequestActions
-import pytest
 
-from gitmate_config.models import Plugin
-from gitmate_config.models import Repository
-from gitmate_config.models import User
+from gitmate_config.tests.test_base import GitmateTestCase
 from gitmate_hooks import ResponderRegistrar
 
 
 @override_settings(CELERY_ALWAYS_EAGER=True)
-@pytest.mark.django_db(transaction=False)
-class TestResponderRegistrar(TestCase):
+class TestResponderRegistrar(GitmateTestCase):
 
     def setUp(self):
-        # Name is important, it'll import gitmate_testplugin
-        self.SomePlugin = Plugin.objects.create(name='testplugin')
-        self.SomePlugin.save()
+        super().setUpWithPlugin('testplugin')
 
-        self.SomeUser = User()
-        self.SomeUser.save()
-
-        self.SomeRepo = Repository.objects.create(
-            user=self.SomeUser,
-            full_name='some/repo',
-            provider='github',
-        )
-        self.SomeRepo.save()
-
-        @ResponderRegistrar.responder(self.SomePlugin,
+        @ResponderRegistrar.responder(self.plugin,
                                       MergeRequestActions.OPENED)
         def test_responder(obj, test_var: bool = True):
             return test_var
 
     def test_active_plugin(self):
-        self.SomeRepo.plugins.add(self.SomePlugin)
-        self.SomeRepo.save()
-
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.SomeRepo, 'example',
+                MergeRequestActions.OPENED, self.repo, 'example',
                 options={'test_var': True})],
             [True]
         )
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.SomeRepo, 'example',
+                MergeRequestActions.OPENED, self.repo, 'example',
                 options={'test_var': False})],
             [False]
         )
 
     def test_inactive_plugin(self):
+        # Clearing all plugins!
+        self.repo.plugins.all().delete()
+
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.SomeRepo, 'example',
+                MergeRequestActions.OPENED, self.repo, 'example',
                 options={'test_var': True})],
             []
         )

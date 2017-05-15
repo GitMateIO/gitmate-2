@@ -1,29 +1,18 @@
-from django.contrib.auth.models import User
 from django.core.validators import ValidationError
 from django.db import IntegrityError
 from django.http import Http404
-from django.test import TransactionTestCase
 import pytest
 from rest_framework.reverse import reverse
 
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
+from gitmate_config.tests.test_base import GitmateTestCase
 
 
-@pytest.mark.django_db(transaction=False)
-class TestRepository(TransactionTestCase):
+class TestRepository(GitmateTestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(
-            username='john',
-            email='john.appleseed@example.com',
-            password='top_secret',
-            first_name='John',
-            last_name='Appleseed'
-        )
-        self.plugin = Plugin(name='testplugin')
-        self.plugin_module = self.plugin.import_module()
-        self.plugin.save()
+        super().setUpWithPlugin('testplugin')
         self.full_name = 'test'
         self.provider = 'example'
 
@@ -59,16 +48,11 @@ class TestRepository(TransactionTestCase):
             repo.save()
 
     def test_set_plugin_settings(self):
-        repo = Repository(user=self.user,
-                          full_name=self.full_name,
-                          provider=self.provider)
-        repo.save()  # id creation required before many-many relationship
-
         # add a plugin into it
-        repo.plugins.add(self.plugin)
-        repo.save()
+        self.repo.plugins.add(self.plugin)
+        self.repo.save()
 
-        old_settings = repo.get_plugin_settings()
+        old_settings = self.repo.get_plugin_settings()
 
         # No proper plugin name
         new_settings = [{
@@ -76,8 +60,8 @@ class TestRepository(TransactionTestCase):
             'settings': {}
         }]
         with pytest.raises(Http404):
-            repo.set_plugin_settings(new_settings)
-        modified_settings = repo.get_plugin_settings()
+            self.repo.set_plugin_settings(new_settings)
+        modified_settings = self.repo.get_plugin_settings()
         assert modified_settings == old_settings
 
         # No status setting
@@ -85,8 +69,8 @@ class TestRepository(TransactionTestCase):
             'name': 'testplugin',
             'settings': {}
         }]
-        repo.set_plugin_settings(new_settings)
-        modified_settings = repo.get_plugin_settings()
+        self.repo.set_plugin_settings(new_settings)
+        modified_settings = self.repo.get_plugin_settings()
         assert modified_settings == old_settings
 
         # Undefined plugin
@@ -94,8 +78,8 @@ class TestRepository(TransactionTestCase):
             'name': 'undefinedplugin'
         }]
         with pytest.raises(Http404):
-            repo.set_plugin_settings(new_settings)
-        modified_settings = repo.get_plugin_settings()
+            self.repo.set_plugin_settings(new_settings)
+        modified_settings = self.repo.get_plugin_settings()
         assert modified_settings == old_settings
 
         # Remove all plugins
@@ -103,8 +87,8 @@ class TestRepository(TransactionTestCase):
             'name': 'testplugin',
             'active': False,
         }]
-        repo.set_plugin_settings(new_settings)
-        modified_settings = repo.get_plugin_settings()
+        self.repo.set_plugin_settings(new_settings)
+        modified_settings = self.repo.get_plugin_settings()
         assert modified_settings == {}
 
         # Successful set
@@ -116,9 +100,9 @@ class TestRepository(TransactionTestCase):
                 'example_char_setting': 'hello'
             }
         }]
-        repo.set_plugin_settings(new_settings)
+        self.repo.set_plugin_settings(new_settings)
 
-        modified_settings = repo.get_plugin_settings()
+        modified_settings = self.repo.get_plugin_settings()
         assert modified_settings['example_bool_setting'] is False
         assert modified_settings['example_char_setting'] == 'hello'
 
@@ -128,9 +112,6 @@ class TestRepository(TransactionTestCase):
         plugin.save()
         # try to import it
         assert plugin.importable == False
-        repo = Repository(user=self.user,
-                          full_name=self.full_name,
-                          provider=self.provider)
 
         new_settings = [{
             'name': 'fake_plugin',
@@ -139,23 +120,17 @@ class TestRepository(TransactionTestCase):
             }
         }]
         with pytest.raises(Http404):
-            repo.set_plugin_settings(new_settings)
+            self.repo.set_plugin_settings(new_settings)
 
     def test_get_plugin_settings_with_info(self):
-        # create a fake repo
-        repo = Repository(user=self.user,
-                          full_name=self.full_name,
-                          provider=self.provider)
-        repo.save()  # id creation required before many-many relationship
-
         # add a plugin into it
-        repo.plugins.add(self.plugin)
-        repo.save()
+        self.repo.plugins.add(self.plugin)
+        self.repo.save()
 
-        settings = repo.get_plugin_settings_with_info()
+        settings = self.repo.get_plugin_settings_with_info()
         assert settings == {
             'repository': reverse('api:repository-detail',
-                                  args=(repo.pk,)),
+                                  args=(self.repo.pk,)),
             'plugins': [
                 {
                     'name': 'testplugin',

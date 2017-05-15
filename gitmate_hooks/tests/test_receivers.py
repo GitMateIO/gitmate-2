@@ -1,48 +1,21 @@
 from hashlib import sha1
 import hmac
 from os import environ
-from unittest import TestCase
 from unittest.mock import patch
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
-import pytest
 from rest_framework import status
-from rest_framework.test import APIRequestFactory
-from social_django.models import UserSocialAuth
 
-from gitmate_config import Providers
-from gitmate_config.models import Repository
+from gitmate_config.tests.test_base import GitmateTestCase
 from gitmate_hooks.views import github_webhook_receiver
 
 
-@pytest.mark.django_db(transaction=False)
-class TestWebhookReceivers(TestCase):
+class TestWebhookReceivers(GitmateTestCase):
 
     def setUp(self):
-        self.factory = APIRequestFactory()
+        super().setUp(active=True)
         self.key = settings.GITHUB_WEBHOOK_SECRET
-        self.user = User.objects.create_user(
-            username='john',
-            email='john.appleseed@example.com',
-            first_name='John',
-            last_name='Appleseed'
-        )
-
-        self.auth = UserSocialAuth(
-            user=self.user, provider=Providers.GITHUB.value)
-        self.auth.set_extra_data({
-            'access_token': environ['GITHUB_TEST_TOKEN']
-        })
-        self.auth.save()
-
-        self.repo = Repository(
-            active=True,
-            user=self.user,
-            full_name=environ['GITHUB_TEST_REPO'],
-            provider=Providers.GITHUB.value)
-        self.repo.save()
 
     def test_github_webhook_receiver_signature_match_failed(self):
         data = {'some-random-key': 'some-random-value'}

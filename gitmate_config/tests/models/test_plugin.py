@@ -1,32 +1,17 @@
 from inspect import ismodule
 
-from django.contrib.auth.models import User
 from django.core.validators import ValidationError
 from django.db import IntegrityError
-from django.test import TransactionTestCase
 import pytest
 
 from gitmate_config.models import Plugin
-from gitmate_config.models import Repository
+from gitmate_config.tests.test_base import GitmateTestCase
 
 
-@pytest.mark.django_db(transaction=False)
-class TestPlugin(TransactionTestCase):
+class TestPlugin(GitmateTestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(
-            username='john',
-            email='john.appleseed@example.com',
-            password='top_secret',
-            first_name='John',
-            last_name='Appleseed'
-        )
-        self.plugin = Plugin(name='testplugin')
-        self.plugin_module = self.plugin.import_module()
-        self.plugin.save()
-        self.repo = Repository(
-            user=self.user, full_name='test', provider='example')
-        self.repo.save()
+        super().setUpWithPlugin('testplugin')
 
     def test_name(self):
         plugin = Plugin()
