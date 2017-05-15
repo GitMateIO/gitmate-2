@@ -4,7 +4,6 @@ from IGitt.Interfaces.Actions import IssueActions
 from IGitt.Interfaces.Issue import Issue
 
 from gitmate_hooks import ResponderRegistrar
-from gitmate_issue_labeller.models import Settings
 
 
 def matches(expression, pattern, min_match_ratio=0.8):

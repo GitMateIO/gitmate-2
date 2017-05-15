@@ -2,7 +2,9 @@ import json
 
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
+from IGitt.Interfaces.Actions import IssueActions
 from IGitt.Interfaces.Actions import MergeRequestActions
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -32,6 +34,21 @@ def github_webhook_receiver(request):
         provider=Providers.GITHUB.value).first()
     token = repo_obj.user.social_auth.get(
         provider=Providers.GITHUB.value).extra_data['access_token']
+
+    if event == 'issues':
+        issue = webhook_data['issue']
+        issue_obj = GitHubIssue(
+            token, repository['full_name'], issue['number'])
+        trigger_event = {
+            'opened': IssueActions.OPENED,
+            'closed': IssueActions.CLOSED,
+            'reopened': IssueActions.REOPENED,
+            'created': IssueActions.COMMENTED
+        }.get(webhook_data['action'], IssueActions.ATTRIBUTES_CHANGED)
+
+        ResponderRegistrar.respond(
+            trigger_event, repo_obj, issue_obj,
+            options=repo_obj.get_plugin_settings())
 
     if event == 'pull_request':
         pull_request = webhook_data['pull_request']
