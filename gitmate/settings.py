@@ -49,6 +49,7 @@ GITMATE_PLUGINS = [
     'auto_label_pending_or_wip',
     'pr_size_labeller',
     'issue_labeller',
+    'bug_spotter',
 ]
 
 # Application definition
