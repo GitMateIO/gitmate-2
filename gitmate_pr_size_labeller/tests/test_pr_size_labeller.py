@@ -2,7 +2,6 @@ from os import environ
 from unittest.mock import patch
 from unittest.mock import PropertyMock
 
-from django.test import override_settings
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from rest_framework import status
@@ -10,7 +9,6 @@ from rest_framework import status
 from gitmate_config.tests.test_base import GitmateTestCase
 
 
-@override_settings(CELERY_ALWAYS_EAGER=True)
 class TestPRSizeLabeller(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('pr_size_labeller')

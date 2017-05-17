@@ -1,13 +1,11 @@
 from os import environ
 from unittest.mock import patch
 
-from django.test import override_settings
 from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
 
 
-@override_settings(CELERY_ALWAYS_EAGER=True)
 class TestWelcomeCommenter(GitmateTestCase):
 
     def setUp(self):

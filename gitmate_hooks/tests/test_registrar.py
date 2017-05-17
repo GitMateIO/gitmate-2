@@ -1,11 +1,9 @@
-from django.test import override_settings
 from IGitt.Interfaces.Actions import MergeRequestActions
 
 from gitmate_config.tests.test_base import GitmateTestCase
 from gitmate_hooks import ResponderRegistrar
 
 
-@override_settings(CELERY_ALWAYS_EAGER=True)
 class TestResponderRegistrar(GitmateTestCase):
 
     def setUp(self):

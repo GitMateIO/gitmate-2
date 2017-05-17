@@ -43,7 +43,6 @@ CORS_ORIGIN_WHITELIST = ALLOWED_HOSTS
 CORS_ALLOW_CREDENTIALS = True
 
 GITMATE_PLUGINS = [
-    'testplugin',
     'code_analysis',
     'welcome_commenter',
     'auto_label_pending_or_wip',

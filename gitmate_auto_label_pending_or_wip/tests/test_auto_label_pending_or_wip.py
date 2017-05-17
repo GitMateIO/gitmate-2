@@ -3,14 +3,12 @@ from unittest.mock import MagicMock
 from unittest.mock import patch
 from unittest.mock import PropertyMock
 
-from django.test import override_settings
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
 
 
-@override_settings(CELERY_ALWAYS_EAGER=True)
 class TestAutoLabelPendingOrWip(GitmateTestCase):
 
     def setUp(self):
