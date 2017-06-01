@@ -2,10 +2,10 @@ from os import environ
 from unittest.mock import patch
 from unittest.mock import PropertyMock
 
-from IGitt.GitHub.GitHubIssue import GitHubIssue
 from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
+from IGitt.GitHub.GitHubIssue import GitHubIssue
 
 
 class TestIssueLabeller(GitmateTestCase):
@@ -35,7 +35,7 @@ class TestIssueLabeller(GitmateTestCase):
         }
 
         response = self.simulate_github_webhook_call('issues', data)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         m_labels.assert_called()
         m_labels.assert_called_with({'bears'})
