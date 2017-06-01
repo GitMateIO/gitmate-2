@@ -1,10 +1,8 @@
 import json
 from os import environ
 from os import path
-from shutil import rmtree
 import subprocess
 from subprocess import PIPE
-from tempfile import mkdtemp
 from traceback import print_exc
 
 from gitmate_hooks import ResponderRegistrar
