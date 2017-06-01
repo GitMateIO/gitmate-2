@@ -3,10 +3,10 @@ from unittest.mock import MagicMock
 from unittest.mock import patch
 from unittest.mock import PropertyMock
 
-from IGitt.GitHub.GitHubIssue import GitHubIssue
 from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
+from IGitt.GitHub.GitHubIssue import GitHubIssue
 
 
 class TestAutoLabelPendingOrWip(GitmateTestCase):
@@ -24,7 +24,7 @@ class TestAutoLabelPendingOrWip(GitmateTestCase):
         mocked_labels.return_value.add = MagicMock()
         response = self.simulate_github_webhook_call(
             'pull_request', self.github_data)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         mocked_labels().add.assert_called_with('process/pending_review')
 
     @patch.object(GitHubIssue, 'title',
@@ -35,5 +35,5 @@ class TestAutoLabelPendingOrWip(GitmateTestCase):
         mocked_labels.return_value.add = MagicMock()
         response = self.simulate_github_webhook_call(
             'pull_request', self.github_data)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         mocked_labels().add.assert_called_with('process/WIP')
