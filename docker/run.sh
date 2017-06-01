@@ -12,6 +12,7 @@ python3 manage.py migrate
 echo "Migrating plugins ..."
 python3 manage.py upmate
 
+# For debugging: python3 manage.py runserver 0.0.0.0:8000
 exec gunicorn gitmate.wsgi \
     --name=gitmate \
     --workers=$NUM_WORKERS \
