@@ -130,4 +130,4 @@ class TestSettings(GitmateTestCase):
         response = self.plugin_update(
             update_plugin_settings_request,
             pk=self.repo.pk)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

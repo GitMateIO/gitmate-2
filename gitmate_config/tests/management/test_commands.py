@@ -20,19 +20,19 @@ class TestCommands(GitmateTestCase):
         call_command('upmate')
         # after calling all plugins should be present
         plugins = Plugin.objects.all()
-        self.assertEquals(len(plugins), len(settings.GITMATE_PLUGINS))
+        self.assertEqual(len(plugins), len(settings.GITMATE_PLUGINS))
 
         testplugin = plugins.get(name='testplugin')
-        self.assertEquals(testplugin.name, 'testplugin')
+        self.assertEqual(testplugin.name, 'testplugin')
 
         testplugin_module = testplugin.import_module()
         self.assertTrue(ismodule(testplugin_module))
-        self.assertEquals(testplugin_module.__name__, 'gitmate_testplugin')
+        self.assertEqual(testplugin_module.__name__, 'gitmate_testplugin')
 
         call_command('upmate')
         self.repo.plugins.add(testplugin)
 
-        self.assertEquals(self.repo.get_plugin_settings(), {
+        self.assertEqual(self.repo.get_plugin_settings(), {
             'example_bool_setting': True,
             'example_char_setting': 'example',
         })
