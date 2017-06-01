@@ -1,6 +1,5 @@
 import json
 from os import environ
-from os import path
 import subprocess
 from subprocess import PIPE
 from traceback import print_exc
@@ -71,6 +70,17 @@ def filter_results(old_results: dict, new_results: dict):
     return filtered_results
 
 
+def describe_patch(diffs):
+    patch = ''
+    for filename, diff in diffs.items():
+        filename = filename.split('/', maxsplit=3)[3]
+        patch += '\n\n```diff\n'+diff.replace(
+                '--- \n+++ \n',
+                '--- a/'+filename+'\n+++ b/'+filename+'\n'
+        ) + '```'
+    return '\n\nThe issue can be fixed by applying the following patch:'+patch
+
+
 def add_comment(commit: Commit, results: dict, mr_num: int=None):
     for section_name, section_results in results.items():
         if len(section_results) > 3:
@@ -86,16 +96,19 @@ def add_comment(commit: Commit, results: dict, mr_num: int=None):
             line = None
             if result.get('affected_code'):
                 start_dict = result['affected_code'][0]['start']
-                file = path.relpath(start_dict['file'], start='/tmp/coala')
+                file = start_dict['file'].split('/', maxsplit=3)[3]
                 line = start_dict['line']
+
+            patch = describe_patch(result['diffs']) if result['diffs'] else ''
 
             commit.comment(
                 ('{message}\n'
                  '\n'
-                 '*Origin: {origin}, Section: `{section}`.*')
+                 '*Origin: {origin}, Section: `{section}`.*{patch}')
                 .format(message=result.get('message'),
                         origin=result.get('origin'),
-                        section=section_name),
+                        section=section_name,
+                        patch=patch),
                 file, line, mr_number=mr_num)
 
 
