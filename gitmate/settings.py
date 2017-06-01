@@ -32,6 +32,8 @@ DEBUG = literal_eval(os.environ.get('DJANGO_DEBUG', 'False'))
 if DEBUG:  # pragma: nocover
     # let celery invoke all tasks locally
     CELERY_ALWAYS_EAGER = True
+    # make celery raise exceptions when something fails
+    CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
 HOOK_DOMAIN = os.environ.get('HOOK_DOMAIN', 'localhost:8000')
 

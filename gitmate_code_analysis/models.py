@@ -1,3 +1,4 @@
+from django.contrib.postgres import fields as psql_fields
 from django.db import models
 
 from gitmate_config.models import Repository
@@ -11,3 +12,18 @@ class Settings(models.Model):
         default=True,
         help_text='Analyze full pull requests and not commit by commit'
     )
+
+
+class AnalysisResults(models.Model):
+    repo = models.ForeignKey(
+        Repository, on_delete=models.CASCADE,
+        related_name='analysis_result_repository')
+    sha = models.CharField(default=None, max_length=40)
+    results = psql_fields.JSONField()
+
+    def __str__(self):  # pragma: no cover
+        repo = Repository.objects.filter(self.repo)[0]
+        return '{}@{}'.format(repo.full_name, self.sha)
+
+    class Meta:
+        unique_together = ('repo', 'sha')
