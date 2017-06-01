@@ -2,11 +2,11 @@ from os import environ
 from unittest.mock import patch
 from unittest.mock import PropertyMock
 
-from IGitt.GitHub.GitHubIssue import GitHubIssue
-from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
+from IGitt.GitHub.GitHubIssue import GitHubIssue
+from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 
 
 class TestPRSizeLabeller(GitmateTestCase):
@@ -33,7 +33,7 @@ class TestPRSizeLabeller(GitmateTestCase):
             m_diffstat.return_value = diffstat
             response = self.simulate_github_webhook_call('pull_request',
                                                          self.github_data)
-            self.assertEquals(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
             # Check for label getter call
             m_labels.assert_called()
