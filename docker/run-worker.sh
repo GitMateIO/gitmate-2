@@ -17,6 +17,12 @@ groupadd -fr -g $docker_group_id docker
 echo "Adding $USER to the docker group ..."
 usermod -aG $docker_group_id $USER
 
+command="python3 manage.py celeryd"
+command="$command --loglevel=info --logfile=/tmp/gitmate.log"
+command="$command --settings='gitmate.settings'"
+
+export command
+
 exec su - $USER \
         -s /bin/bash \
-        -c "python3 manage.py celeryd --loglevel=info --logfile=/tmp/gitmate.log"
+        -c "$command"
