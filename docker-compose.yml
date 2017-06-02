@@ -16,8 +16,6 @@ services:
     build: .
     ports:
       - "8000:8000"
-    volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
     env_file: ./docker/environment
     links:
       - db
@@ -26,8 +24,9 @@ services:
       - db
   worker:
     build: .
-    command: >
-      python3 manage.py celeryd --loglevel=info --logfile=/tmp/gitmate.log
+    command: ./docker/run-worker.sh
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     env_file: ./docker/environment
     links:
       - db
