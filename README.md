@@ -125,7 +125,8 @@ Setting up Celery with Rabbitmq
 * `sudo rabbitmq-server start`: turns on the rabbitmq server.
 * `python3 manage.py migrate`: run migrations, if any.
 * `python3 manage.py celeryd --loglevel=info
-    --logfile=/var/log/celery/gitmate.log`: starts celery service.
+    --logfile=/var/log/celery/gitmate.log
+    --settings='gitmate.settings'`: starts celery service.
 * Run django server.
 
 > Any permission errors related to logfiles could be handled by executing
