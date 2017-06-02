@@ -12,7 +12,7 @@ EXPOSE 8000
 
 RUN groupadd -r $USER && \
     useradd -r -m --home-dir=$ROOT -s /usr/sbin/nologin \
-    -g $USER -G docker $USER
+    -g $USER $USER
 
 ADD requirements.txt $ROOT/
 RUN pip3 install --no-cache-dir \
