@@ -73,7 +73,6 @@ def filter_results(old_results: dict, new_results: dict):
 def describe_patch(diffs):
     patch = ''
     for filename, diff in diffs.items():
-        filename = filename.split('/', maxsplit=3)[3]
         patch += '\n\n```diff\n'+diff.replace(
                 '--- \n+++ \n',
                 '--- a/'+filename+'\n+++ b/'+filename+'\n'
@@ -96,7 +95,7 @@ def add_comment(commit: Commit, results: dict, mr_num: int=None):
             line = None
             if result.get('affected_code'):
                 start_dict = result['affected_code'][0]['start']
-                file = start_dict['file'].split('/', maxsplit=3)[3]
+                file = start_dict['file']
                 line = start_dict['line']
 
             patch = describe_patch(result['diffs']) if result['diffs'] else ''

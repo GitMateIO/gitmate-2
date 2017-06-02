@@ -141,13 +141,13 @@ class TestCodeAnalysis(GitmateTestCase):
                                 'affected_code': [
                                     {
                                         'start': {
-                                            'file': '///filename',
+                                            'file': 'filename',
                                             'line': 1
                                         }
                                     },
                                 ],
                                 'diffs': {
-                                    '///filename': 'unified diff here',
+                                    'filename': 'unified diff here',
                                 },
                             }
                         ]
