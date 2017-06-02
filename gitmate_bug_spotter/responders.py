@@ -1,4 +1,4 @@
-from shutil import rmtree
+import shutil
 
 from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.MergeRequest import MergeRequest
@@ -16,7 +16,7 @@ def get_hotspot_files(pattern: str, pr: MergeRequest):
         b = bugspots.Bugspots(grep=pattern, path=path)
         return {hotspot.filename for hotspot in b.get_hotspots()}
     finally:
-        rmtree(path)
+        shutil.rmtree(path)
 
 
 @ResponderRegistrar.responder(
