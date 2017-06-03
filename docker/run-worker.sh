@@ -25,4 +25,5 @@ export command
 
 exec su - $USER \
         -s /bin/bash \
+        --preserve-environment \
         -c "$command"
