@@ -10,8 +10,8 @@ echo "Getting the Docker socket group owner ... "
 export docker_group_id=$(stat -c "%g" /var/run/docker.sock)
 
 # Create the docker group in this container
-echo "Creating docker group with gid $docker_group_id ..."
-groupadd -fr -g $docker_group_id docker
+echo "Creating host_docker group with gid $docker_group_id ..."
+groupadd -fr -g $docker_group_id host_docker
 
 # Add the daemon user to the docker group
 echo "Adding $USER to the docker group ..."
