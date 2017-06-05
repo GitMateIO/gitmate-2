@@ -22,8 +22,7 @@ class AnalysisResults(models.Model):
     results = psql_fields.JSONField()
 
     def __str__(self):  # pragma: no cover
-        repo = Repository.objects.filter(self.repo)[0]
-        return '{}@{}'.format(repo.full_name, self.sha)
+        return '{}@{}'.format(self.repo.full_name, self.sha)
 
     class Meta:
         unique_together = ('repo', 'sha')
