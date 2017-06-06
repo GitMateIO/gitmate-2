@@ -10,6 +10,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
+from social_django.models import UserSocialAuth
+
 from gitmate_config import Providers
 from gitmate_config.models import Repository
 
@@ -61,9 +63,8 @@ class RepositoryViewSet(
                         repo.admins.add(request.user)
                 # TODO: validate if a cached repo was removed. Handling if it
                 # was active?
-            except:
-                continue
-
+            except UserSocialAuth.DoesNotExist:
+                pass  # User never gave us his key for that provider
         return super().list(request)
 
     def update(self, request, *args, **kwargs):
