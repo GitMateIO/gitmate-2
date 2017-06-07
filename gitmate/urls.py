@@ -31,7 +31,8 @@ urlpatterns = [
     url(r'^api/', include('gitmate_config.urls', namespace='api')),
     url(r'^docs/', include('rest_framework_docs.urls', namespace='docs')),
     url(r'^webhooks/', include('gitmate_hooks.urls', namespace='webhooks')),
-    url(r'^logout/', logout, {'next_page': 'http://localhost:4200/'}),
+    url(r'^logout/', logout,
+        {'next_page': settings.SOCIAL_AUTH_LOGIN_REDIRECT_URL}),
     # catch-all pattern for Angular routes. This must be last in the list.
     url(r'^(?P<path>.*)/$', ensure_csrf_cookie(serve_static),
         kwargs={'path': 'index.html'}),
