@@ -2,7 +2,6 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from gitmate_config.models import Plugin
-from gitmate_config.models import Repository
 
 
 class Command(BaseCommand):
@@ -12,15 +11,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for name in settings.GITMATE_PLUGINS:
-            try:
-                plugin = Plugin.objects.get(name=name)
-            except Plugin.DoesNotExist:
-                plugin = Plugin(name=name)
             # check importability
-            module = plugin.import_module()
-            plugin.save()
-            for repo in Repository.objects.all():
-                defaults = module.models.Settings(repo=repo)
-                defaults.save()
+            plugin, _ = Plugin.objects.get_or_create(name=name)
+            plugin.import_module()
             self.stdout.write(self.style.SUCCESS(
                 'Plugin updated successfully: "%s"' % name))
