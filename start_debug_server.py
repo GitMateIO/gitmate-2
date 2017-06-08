@@ -25,4 +25,8 @@ if __name__ == '__main__':
 
     print('\033[36mstarting the server, you are now on your own. '
           '\033[32mGood Luck.\033[0m')
-    call(['python3', 'manage.py', 'runserver'])
+    try:
+        call(['python3', 'manage.py', 'runserver'])
+    except KeyboardInterrupt:
+        print('\033[36m\nshutting down the server. Good Bye!!\033[0m')
+        sys.exit(0)
