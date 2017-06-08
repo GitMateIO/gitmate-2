@@ -84,9 +84,11 @@ class Plugin(models.Model):
 
 
 class Repository(models.Model):
-
-    # The user who owns the repository
+    # The user who operates the repository
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    # The users who can control the repository
+    admins = models.ManyToManyField(User, related_name='admin_repos')
 
     # The provider for the hosted repository
     provider = models.CharField(default=None, max_length=32)
