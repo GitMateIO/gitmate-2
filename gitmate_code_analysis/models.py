@@ -19,10 +19,11 @@ class AnalysisResults(models.Model):
         Repository, on_delete=models.CASCADE,
         related_name='analysis_result_repository')
     sha = models.CharField(default=None, max_length=40)
+    version = models.CharField(default=None, max_length=8)
     results = psql_fields.JSONField()
 
     def __str__(self):  # pragma: no cover
         return '{}@{}'.format(self.repo.full_name, self.sha)
 
     class Meta:
-        unique_together = ('repo', 'sha')
+        unique_together = ('repo', 'sha', 'version')

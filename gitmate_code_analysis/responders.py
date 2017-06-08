@@ -28,18 +28,19 @@ def analyse(repo, sha, clone_url, ref):
     try:
         # Cached result available
         return AnalysisResults.objects.get(
-            repo=repo, sha=sha).results
+            repo=repo, sha=sha, version=version).results
     except AnalysisResults.DoesNotExist:
         proc = subprocess.Popen(
             ['docker', 'run', '-i', '--rm',
-             environ['COALA_RESULTS_IMAGE'],
+             environ['COALA_RESULTS_IMAGE'] + ':' + version,
              'python3', 'run.py', sha, clone_url, ref],
             stdout=PIPE,
         )
         results = json.loads(proc.stdout.read().decode('utf-8'))
         proc.wait()
 
-        AnalysisResults.objects.create(repo=repo, sha=sha, results=results)
+        AnalysisResults.objects.create(repo=repo, sha=sha,
+                                       version=version, results=results)
         return results
 
 
