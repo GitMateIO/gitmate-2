@@ -4,7 +4,7 @@ from gitmate_config.models import Repository
 
 
 class Settings(models.Model):
-    repo = models.ForeignKey(
+    repo = models.OneToOneField(
         Repository, on_delete=models.CASCADE,
         related_name='auto_label_pending_or_wip_repository')
     wip_label = models.CharField(

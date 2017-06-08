@@ -4,7 +4,7 @@ from gitmate_config.models import Repository
 
 
 class Settings(models.Model):
-    repo = models.ForeignKey(
+    repo = models.OneToOneField(
         Repository, on_delete=models.CASCADE,
         related_name='gitmate_bug_spotter_repository')
     pattern = models.CharField(

@@ -4,6 +4,6 @@ from gitmate_config.models import Repository
 
 
 class Settings(models.Model):
-    repo = models.ForeignKey(
+    repo = models.OneToOneField(
         Repository, on_delete=models.CASCADE,
         related_name='pr_size_labeller_repository')
