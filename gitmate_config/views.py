@@ -32,9 +32,9 @@ class RepositoryViewSet(
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return Repository.objects.filter(user=self.request.user).order_by(
-            '-active', 'full_name'
-        )
+        return Repository.objects.filter(
+            admins__in=[self.request.user]
+        ).order_by('-active', 'full_name')
 
     def list(self, request):
         # Update db model
@@ -45,15 +45,20 @@ class RepositoryViewSet(
                 ).extra_data['access_token']
                 for repo in GitHub(token).owned_repositories:
                     try:
-                        Repository.objects.get(
+                        # some user already created this
+                        repo = Repository.objects.get(
                             provider=provider.value, full_name=repo)
-
-                    except Repository.DoesNotExist:  # New repo found!
-                        Repository(
+                    except Repository.DoesNotExist:
+                        # Newly created
+                        repo = Repository(
                             active=False, user=request.user,
-                            provider=provider.value, full_name=repo
-                        ).save()
-
+                            provider=provider.value, full_name=repo)
+                        repo.save()
+                    finally:
+                        # add the current users as an admin user since he
+                        # can write to it too. Also, django doesn't add it
+                        # again if it's already there.
+                        repo.admins.add(request.user)
                 # TODO: validate if a cached repo was removed. Handling if it
                 # was active?
             except:

@@ -76,6 +76,8 @@ class GitmateTestCase(TransactionTestCase):
             full_name=os.environ['GITHUB_TEST_REPO'],
             provider=Providers.GITHUB.value,
             active=active)
+        self.repo.save()  # Needs an ID before adding relationship
+        self.repo.admins.add(self.user)
         self.repo.save()
 
     def setUpWithPlugin(self, name: str):
