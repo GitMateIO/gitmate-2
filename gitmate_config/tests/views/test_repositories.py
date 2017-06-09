@@ -1,6 +1,7 @@
 import os
 
 from IGitt.Interfaces.Repository import Repository as IGittRepository
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.reverse import reverse
 from social_django.models import UserSocialAuth
@@ -58,6 +59,30 @@ class TestRepositories(GitmateTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertNotIn('https://localhost:8000/webhooks/github',
                          self.repo.igitt_repo().hooks)
+
+    def test_set_user(self):
+        url = reverse('api:repository-detail', args=(self.repo.pk,))
+
+        # Add an admin user
+        admin_user = User.objects.create_user(
+            username='max',
+            email='max.mustermann@example.com',
+            first_name='Max',
+            last_name='Mustermann'
+        )
+        admin_auth = UserSocialAuth(
+            user=admin_user, provider=Providers.GITHUB.value, uid=2)
+        admin_auth.set_extra_data({
+            'access_token': os.environ['GITHUB_TEST_TOKEN']
+        })
+        admin_auth.save()
+        self.repo.admins.add(admin_user)
+        self.repo.save()
+
+        request = self.factory.patch(url, {'user': 'max'})
+        request.user = self.user
+        response = self.repo_detail(request, pk=self.repo.pk)
+        self.assertEqual(response.data['user'], 'max')
 
     def test_igitt_repo_creation(self):
         igitt_repo = self.repo.igitt_repo()

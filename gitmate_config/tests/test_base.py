@@ -65,7 +65,7 @@ class GitmateTestCase(TransactionTestCase):
         )
 
         self.auth = UserSocialAuth(
-            user=self.user, provider=Providers.GITHUB.value)
+            user=self.user, provider=Providers.GITHUB.value, uid=1)
         self.auth.set_extra_data({
             'access_token': os.environ['GITHUB_TEST_TOKEN']
         })
