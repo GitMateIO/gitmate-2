@@ -5,6 +5,8 @@ class GitmatePrSizeLabellerConfig(AppConfig):
     name = 'gitmate_pr_size_labeller'
     verbose_name = 'PR Size Labelling'
     description = (
-        'Marks PRs/MRs with size/{XS|S|M|L|XL|XXL} labels based on the number '
-        'of touched LOC, commits, touched files etc.'
+        'Sets size labels on new pull requests in this repository'\
+        ' (XS/S/M/L/XL/XXL). '\
+        'The number of changed lines of code is taken into account as well '\
+        'as the number of commits and that of files changed.'
     )
