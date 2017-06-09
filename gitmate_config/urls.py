@@ -1,16 +1,12 @@
-from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
 
 from .views import PluginSettingsViewSet
 from .views import RepositoryViewSet
-from .views import UserDetailsView
+from .views import UserViewSet
 
 router = DefaultRouter()
 router.register(r'repos', RepositoryViewSet, base_name='repository')
 router.register(r'plugins', PluginSettingsViewSet, base_name='settings')
+router.register(r'users', UserViewSet, base_name='users')
 
-urlpatterns = [
-    url(r'^me/', UserDetailsView.as_view(), name='user-details'),
-]
-
-urlpatterns += router.urls
+urlpatterns = router.urls

@@ -1,5 +1,7 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import PermissionDenied
 from IGitt.GitHub.GitHub import GitHub
 from rest_framework import mixins
 from rest_framework import status
@@ -90,15 +92,20 @@ class RepositoryViewSet(
 
         return retval
 
-
-class UserDetailsView(APIView):
+class UserViewSet(
+    GenericViewSet,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin
+):
     authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
+    queryset = User.objects.all()
 
-    def get(self, request, format=None):
-        return Response(UserSerializer(request.user).data, status.HTTP_200_OK)
-
+    def get_object(self):
+        if self.kwargs.get('pk') in ['me', self.request.user.pk]:
+            return self.request.user
+        raise PermissionDenied
 
 class PluginSettingsViewSet(
     GenericViewSet,

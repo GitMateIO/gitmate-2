@@ -1,13 +1,13 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from gitmate_config.models import Repository
 
 
-class UserSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    username = serializers.CharField()
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'first_name', 'last_name')
 
 
 class RepositorySerializer(serializers.ModelSerializer):
