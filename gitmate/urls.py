@@ -23,6 +23,8 @@ from django.contrib.auth.views import logout
 from django.contrib.staticfiles.views import serve as serve_static
 from django.views.decorators.csrf import ensure_csrf_cookie
 
+from coala_online.views import coala_online
+
 urlpatterns = [
     url(r'^$', ensure_csrf_cookie(serve_static),
         kwargs={'path': 'index.html'}),
@@ -33,6 +35,7 @@ urlpatterns = [
     url(r'^webhooks/', include('gitmate_hooks.urls', namespace='webhooks')),
     url(r'^logout/', logout,
         {'next_page': settings.SOCIAL_AUTH_LOGIN_REDIRECT_URL}),
+    url(r'^coala_online/', coala_online),
     # catch-all pattern for Angular routes. This must be last in the list.
     url(r'^(?P<path>.*)/$', ensure_csrf_cookie(serve_static),
         kwargs={'path': 'index.html'}),
