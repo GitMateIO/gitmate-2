@@ -52,6 +52,7 @@ GITMATE_PLUGINS = [
     'pr_size_labeller',
     'issue_labeller',
     'bug_spotter',
+    'ack',
 ]
 
 # Application definition

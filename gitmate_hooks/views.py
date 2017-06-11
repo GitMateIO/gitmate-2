@@ -2,6 +2,7 @@ import json
 
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from IGitt.GitHub.GitHubComment import GitHubComment
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.Interfaces.Actions import IssueActions
@@ -63,6 +64,24 @@ def github_webhook_receiver(request):
             if webhook_data['action'] == 'opened':
                 ResponderRegistrar.respond(
                     MergeRequestActions.OPENED, repo_obj, pull_request_obj,
+                    options=repo_obj.get_plugin_settings())
+
+    if event == 'issue_comment':
+        if webhook_data['action'] != 'deleted':
+            comment = webhook_data['comment']
+            pull_request_obj = GitHubMergeRequest(
+                    token,
+                    repository['full_name'],
+                    webhook_data['issue']['number'])
+            comment_obj = GitHubComment(
+                    token,
+                    repository['full_name'],
+                    comment['id'])
+            ResponderRegistrar.respond(
+                    MergeRequestActions.COMMENTED,
+                    repo_obj,
+                    pull_request_obj,
+                    comment_obj,
                     options=repo_obj.get_plugin_settings())
 
     return Response(status=status.HTTP_200_OK)
