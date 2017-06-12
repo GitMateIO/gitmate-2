@@ -1,10 +1,10 @@
 from collections import namedtuple
 import json
+from os import environ
 import subprocess
 from unittest.mock import patch
 
 from gitmate_config.tests.test_base import GitmateTestCase
-from IGitt import GitHub
 from IGitt.GitHub.GitHubCommit import GitHubCommit
 from rest_framework.status import HTTP_200_OK
 
@@ -34,6 +34,33 @@ def popen_coala():
     )
 
 
+def fake_fetch(base: str, req_type: str, token: str, url: str,
+               data: dict = None, query_params: dict=None):
+    if '/commits/' in url:
+        return {
+            'sha': 'deadbeef',
+        }
+    elif '/commits' in url:
+        return [{
+            'sha': 'deadbeef',
+        }]
+    elif '/pulls/' in url or '/issues/' in url:
+        return {
+            'head': {
+                'sha': 'deadbeef',
+            },
+            'base': {
+                'sha': 'deadbeef',
+            }
+        }
+    else:
+        return {
+            'full_name': environ['GITHUB_TEST_REPO'],
+            'clone_url': 'somewhere'
+        }
+
+
+@patch('IGitt.GitHub._fetch', side_effect=fake_fetch)
 class TestCodeAnalysis(GitmateTestCase):
 
     BOUNCER_INPUT = '{"old_files": {}, "new_files": {}, ' \
@@ -41,34 +68,6 @@ class TestCodeAnalysis(GitmateTestCase):
 
     def setUp(self):
         self.setUpWithPlugin('code_analysis')
-
-        def fake_fetch_github(req_type: str, token: str, url: str,
-                              data: dict = None):
-            if '/commits/' in url:
-                return {
-                    'sha': 'deadbeef',
-                }
-            elif '/commits' in url:
-                return [{
-                    'sha': 'deadbeef',
-                }]
-            elif '/pulls/' in url:
-                return {
-                    'head': {
-                        'sha': 'deadbeef',
-                    },
-                    'base': {
-                        'sha': 'deadbeef',
-                    }
-                }
-            else:
-                return {
-                    'full_name': self.repo.full_name,
-                    'clone_url': 'somewhere'
-                }
-
-        self.old_fetch_github = GitHub._fetch_all_github
-        GitHub._fetch_all_github = fake_fetch_github
 
         self.data = {
             'repository': {'full_name': self.repo.full_name},
@@ -80,10 +79,9 @@ class TestCodeAnalysis(GitmateTestCase):
 
     def tearDown(self):
         subprocess.Popen = self.old_popen
-        GitHub._fetch_all_github = self.old_fetch_github
 
     @patch.object(GitHubCommit, 'comment')
-    def test_pr_analysis_no_issues(self, comment_mock, pr_based=False):
+    def test_pr_analysis_no_issues(self, comment_mock, _, pr_based=False):
         self.repo.set_plugin_settings([
             {
                 'name': 'code_analysis',
@@ -113,11 +111,11 @@ class TestCodeAnalysis(GitmateTestCase):
         self.assertEqual(response.status_code, HTTP_200_OK)
         comment_mock.assert_not_called()
 
-    def test_pr_analysis_no_issues_pr_based(self):
+    def test_pr_analysis_no_issues_pr_based(self, *args):
         return self.test_pr_analysis_no_issues(pr_based=True)
 
     @patch.object(GitHubCommit, 'comment')
-    def test_pr_analysis_issues(self, comment_mock):
+    def test_pr_analysis_issues(self, comment_mock, _):
         def fake_popen(cmd, **kwargs):
             if 'bouncer.py' in cmd:
                 return popen_bouncer()
@@ -164,7 +162,7 @@ class TestCodeAnalysis(GitmateTestCase):
         assert comment_mock.call_count == 2
 
     @patch.object(GitHubCommit, 'comment')
-    def test_pr_analysis_many_issues(self, comment_mock):
+    def test_pr_analysis_many_issues(self, comment_mock, _):
         self.repo.set_plugin_settings([
             {
                 'name': 'code_analysis',

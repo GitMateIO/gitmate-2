@@ -5,7 +5,6 @@ from unittest.mock import PropertyMock
 from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
-from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 
 
@@ -27,7 +26,7 @@ class TestPRSizeLabeller(GitmateTestCase):
         }
 
     @patch.object(GitHubMergeRequest, 'diffstat', new_callable=PropertyMock)
-    @patch.object(GitHubIssue, 'labels', new_callable=PropertyMock)
+    @patch.object(GitHubMergeRequest, 'labels', new_callable=PropertyMock)
     def test_github(self, m_labels, m_diffstat):
         for label, diffstat in self.test_labels.items():
             m_diffstat.return_value = diffstat

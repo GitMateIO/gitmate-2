@@ -18,12 +18,12 @@ def mark_pending_review_or_wip_accordingly(
     progress on every changed PR accordingly. But retains work in progress
     label, if title of the pull request begins with "wip".
     """
-    labels = pr.issue.labels
-    if not pr.issue.title.lower().startswith('wip'):
+    labels = pr.labels
+    if not pr.title.lower().startswith('wip'):
         labels.add(pending_review_label)
         labels.discard(wip_label)
     else:
         labels.add(wip_label)
         labels.discard(pending_review_label)
 
-    pr.issue.labels = labels
+    pr.labels = labels

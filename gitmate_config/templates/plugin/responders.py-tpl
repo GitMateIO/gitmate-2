@@ -10,4 +10,4 @@ from gitmate_hooks import ResponderRegistrar
     MergeRequestActions.SYNCHRONIZED
 )
 def {{ plugin_name }}(pr: MergeRequest):
-    pr.issue.add_comment('Hello World!')
+    pr.add_comment('Hello World!')

@@ -51,12 +51,12 @@ class RepositoryViewSet(
                     try:
                         # some user already created this
                         repo = Repository.objects.get(
-                            provider=provider.value, full_name=repo)
+                            provider=provider.value, full_name=repo.full_name)
                     except Repository.DoesNotExist:
                         # Newly created
                         repo = Repository(
                             active=False, user=request.user,
-                            provider=provider.value, full_name=repo)
+                            provider=provider.value, full_name=repo.full_name)
                         repo.save()
                     finally:
                         # add the current users as an admin user since he

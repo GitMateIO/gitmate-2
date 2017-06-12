@@ -4,7 +4,7 @@ from unittest.mock import patch
 from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
-from IGitt.GitHub.GitHubIssue import GitHubIssue
+from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 
 
 class TestWelcomeCommenter(GitmateTestCase):
@@ -12,7 +12,7 @@ class TestWelcomeCommenter(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('welcome_commenter')
 
-    @patch.object(GitHubIssue, 'add_comment')
+    @patch.object(GitHubMergeRequest, 'add_comment')
     def test_github(self, mock_add_comment):
         data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO']},

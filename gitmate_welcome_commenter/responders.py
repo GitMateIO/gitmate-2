@@ -12,4 +12,4 @@ def add_welcome_comment(
     """
     Adds a welcome comment to pull requests.
     """
-    pr.issue.add_comment(autorespond_text)
+    pr.add_comment(autorespond_text)

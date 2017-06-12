@@ -29,4 +29,4 @@ def label_hotspots(
     hotspot_label: str = 'Label to be added if hotspot found',
 ):
     if len(get_hotspot_files(pattern, pr).intersection(pr.affected_files)):
-        pr.issue.labels.add(hotspot_label)
+        pr.labels.add(hotspot_label)
