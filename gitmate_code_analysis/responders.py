@@ -1,4 +1,5 @@
 import json
+import logging
 from os import environ
 import subprocess
 from subprocess import PIPE
@@ -36,7 +37,13 @@ def analyse(repo, sha, clone_url, ref):
              'python3', 'run.py', sha, clone_url, ref],
             stdout=PIPE,
         )
-        results = json.loads(proc.stdout.read().decode('utf-8'))
+        output = proc.stdout.read().decode('utf-8')
+        try:
+            results = json.loads(output)
+        except json.JSONDecodeError:  # pragma: no cover, for debugging
+            logging.error('coala image output was not JSON parsable. Output '
+                          'was: ' + output)
+
         proc.wait()
 
         AnalysisResults.objects.create(repo=repo, sha=sha, results=results)
