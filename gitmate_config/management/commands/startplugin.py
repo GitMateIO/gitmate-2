@@ -13,7 +13,11 @@ class Command(TemplateCommand):
     missing_args_message = 'You must provide a plugin name.'
 
     def handle(self, **options):
-        plugin_name = 'gitmate_' + options.pop('name')
+        short_plugin_name = options.pop('name')
+        plugin_name = 'gitmate_' + short_plugin_name
+
+        options['plugin_name'] = plugin_name
+        options['short_plugin_name'] = short_plugin_name
 
         # Change the template directory.
         options['template'] = 'gitmate_config/templates/plugin'

@@ -6,7 +6,7 @@ from gitmate_hooks import ResponderRegistrar
 
 
 @ResponderRegistrar.responder(
-    '{{ plugin_name }}',
+    '{{ short_plugin_name }}',
     MergeRequestActions.SYNCHRONIZED
 )
 def {{ plugin_name }}(pr: MergeRequest):
