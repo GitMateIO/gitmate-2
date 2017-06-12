@@ -43,6 +43,7 @@ def analyse(repo, sha, clone_url, ref):
         except json.JSONDecodeError:  # pragma: no cover, for debugging
             logging.error('coala image output was not JSON parsable. Output '
                           'was: ' + output)
+            raise
 
         proc.wait()
 
