@@ -29,7 +29,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = literal_eval(os.environ.get('DJANGO_DEBUG', 'False'))
-if DEBUG:  # pragma: nocover
+if DEBUG and not literal_eval(os.environ.get('FORCE_CELERY',
+                                             'False')):  # pragma: nocover
     # let celery invoke all tasks locally
     CELERY_ALWAYS_EAGER = True
     # make celery raise exceptions when something fails
