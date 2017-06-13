@@ -50,19 +50,19 @@ class RepositoryViewSet(
                 for repo in GitHub(token).owned_repositories:
                     try:
                         # some user already created this
-                        repo = Repository.objects.get(
+                        irepo = Repository.objects.get(
                             provider=provider.value, full_name=repo.full_name)
                     except Repository.DoesNotExist:
                         # Newly created
-                        repo = Repository(
+                        irepo = Repository(
                             active=False, user=request.user,
                             provider=provider.value, full_name=repo.full_name)
-                        repo.save()
+                        irepo.save()
                     finally:
                         # add the current users as an admin user since he
                         # can write to it too. Also, django doesn't add it
                         # again if it's already there.
-                        repo.admins.add(request.user)
+                        irepo.admins.add(request.user)
                 # TODO: validate if a cached repo was removed. Handling if it
                 # was active?
             except UserSocialAuth.DoesNotExist:
