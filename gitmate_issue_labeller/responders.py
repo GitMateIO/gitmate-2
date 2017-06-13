@@ -1,3 +1,4 @@
+import logging
 from difflib import SequenceMatcher
 
 from IGitt.Interfaces.Actions import IssueActions
@@ -43,11 +44,16 @@ def add_labels_to_issue(
     issue: Issue,
     blacklisted_labels: [str] = 'Labels which should not be used'
 ):
+    # Inline import needed because this file is imported beore the db mutex
+    # django app is initialized
+    from gitmate.utils import lock_igitt_object
+
     issue_summary = issue.title.lower() + ' ' + issue.description.lower()
 
-    new_labels = set({
-        label for label in issue.available_labels
-        if matches(issue_summary, label, 0.9) and
-        label not in blacklisted_labels})
+    with lock_igitt_object('issue labelling', issue):
+        new_labels = set({
+            label for label in issue.available_labels
+            if matches(issue_summary, label, 0.9) and
+            label not in blacklisted_labels})
 
-    issue.labels = new_labels.union(issue.labels)
+        issue.labels = new_labels.union(issue.labels)
