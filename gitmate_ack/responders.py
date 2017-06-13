@@ -40,3 +40,17 @@ def gitmate_ack(pr: MergeRequest,
             for commit in commits:
                 if commit.sha[:6] in body:
                     commit.ack()
+
+
+@ResponderRegistrar.responder(
+        'ack',
+        MergeRequestActions.OPENED,
+        MergeRequestActions.SYNCHRONIZED)
+def add_review_pending_status(pr: MergeRequest):
+    """
+    A responder to add pending status on commits on
+    MergeRequest SYNCHRONIZED and OPENED event.
+    """
+    commits = pr.commits
+    for commit in commits:
+        commit.pending()

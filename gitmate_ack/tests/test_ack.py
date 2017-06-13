@@ -79,3 +79,25 @@ class TestAck(GitmateTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         m_unack.assert_called()
+
+    @patch.object(GitHubMergeRequest, 'commits', new_callable=PropertyMock)
+    @patch.object(GitHubMergeRequest, '__init__', return_value=None)
+    @patch.object(GitHubCommit, 'pending', new_callable=MagicMock)
+    @patch.object(GitHubCommit, '__init__', return_value=None)
+    def test_github_pending_pr_open_event(self,
+                                          mock_commit,
+                                          mock_pending,
+                                          mock_pr,
+                                          mock_commits):
+        mock_commits.return_value = tuple([GitHubCommit()])
+
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'pull_request': {'number': 0},
+            'action': 'opened'
+            }
+
+        response = self.simulate_github_webhook_call('pull_request', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        mock_pending.assert_called()
