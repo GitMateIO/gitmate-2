@@ -20,4 +20,5 @@ exec gunicorn gitmate.wsgi \
     --timeout=$TIMEOUT \
     --bind=0.0.0.0:8000 \
     --log-level=$LOG_LEVEL \
-    --log-file=-
+    --log-file=- \
+    --worker-class=gevent
