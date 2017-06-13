@@ -95,7 +95,9 @@ def add_comment(commit: Commit, results: dict, mr_num: int=None):
             commit.comment(
                 'There are {} results for the section {}. They have been '
                 'shortened and will not be shown inline because they are more '
-                'than 10.\n\n{}\n\n'
+                'than 10.\n\n'
+                '| Message | File | Line |\n'
+                '|---|---|---|\n{}\n\n'
                 'Until GitMate provides an online UI to show a better '
                 'overview, you can run [coala](https://coala.io/) locally for '
                 'more details.'
@@ -103,10 +105,10 @@ def add_comment(commit: Commit, results: dict, mr_num: int=None):
                     len(section_results),
                     section_name,
                     '\n'.join(
-                        '- {} in {}, line {}'.format(
+                        '| {} | {} | {} |'.format(
                             result.get('message'),
                             result.get(
-                                'file', 'the whole project').lstrip('/'),
+                                'file', 'global').lstrip('/'),
                             result.get('line', 'none'))
                         for result in section_results
                     )
