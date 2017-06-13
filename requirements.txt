@@ -11,3 +11,4 @@ gunicorn~=19.7.1
 psycopg2~=2.7.1
 bugspots3~=0.3.0
 attrs~=17.2.0
+django-db-mutex~=0.4.0

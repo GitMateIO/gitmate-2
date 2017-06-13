@@ -70,7 +70,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_docs',
     'corsheaders',
+    'db_mutex',
 ] + ['gitmate_'+plugin for plugin in GITMATE_PLUGINS]
+
+DB_MUTEX_TTL_SECONDS = 60
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
