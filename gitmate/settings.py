@@ -143,10 +143,15 @@ SOCIAL_AUTH_GITHUB_SCOPE = [
 SOCIAL_AUTH_GITLAB_KEY = os.environ.get(
     'SOCIAL_AUTH_GITLAB_KEY')
 SOCIAL_AUTH_GITLAB_SECRET = os.environ.get('SOCIAL_AUTH_GITLAB_SECRET')
-# This needs to be specified as is including full domain name.
-# ex. gitlab.com/auth/complete/gitlab/
+# This needs to be specified as is including full domain name and protocol.
+# Be extra careful and use the same URL used while registering the application
+# on GitLab. ex. example.com/auth/complete/gitlab/
 SOCIAL_AUTH_GITLAB_REDIRECT_URL = os.environ.get(
     'SOCIAL_AUTH_GITLAB_REDIRECT_URL')
+SOCIAL_AUTH_GITLAB_SCOPE = [
+    'api',
+    'read_user',
+]
 
 SOCIAL_AUTH_BITBUCKET_KEY = os.environ.get('SOCIAL_AUTH_BITBUCKET_KEY')
 SOCIAL_AUTH_BITBUCKET_SECRET = os.environ.get('SOCIAL_AUTH_BITBUCKET_SECRET')
