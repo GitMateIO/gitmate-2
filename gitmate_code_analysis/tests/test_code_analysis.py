@@ -188,7 +188,7 @@ class TestCodeAnalysis(GitmateTestCase):
                                 'message': 'message ' + str(i),
                                 'origin': 'I come from here'
                             }
-                            for i in range(4)
+                            for i in range(12)
                         ]
                     })
                 ),

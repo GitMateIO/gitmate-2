@@ -91,13 +91,27 @@ def describe_patch(diffs):
 
 def add_comment(commit: Commit, results: dict, mr_num: int=None):
     for section_name, section_results in results.items():
-        if len(section_results) > 3:
+        if len(section_results) > 10:
             commit.comment(
-                'There are {} results for the section {}.\n\n{}\n\n'
-                'Run coala locally for more details.'
-                .format(len(section_results), section_name,
-                        '\n'.join('- '+result.get('message') for result in
-                                  section_results)))
+                'There are {} results for the section {}. They have been '
+                'shortened and will not be shown inline because they are more '
+                'than 10.\n\n{}\n\n'
+                'Until GitMate provides an online UI to show a better '
+                'overview, you can run [coala](https://coala.io/) locally for '
+                'more details.'
+                .format(
+                    len(section_results),
+                    section_name,
+                    '\n'.join(
+                        '- {} in {}, line {}'.format(
+                            result.get('message'),
+                            result.get(
+                                'file', 'the whole project').lstrip('/'),
+                            result.get('line', 'none'))
+                        for result in section_results
+                    )
+                )
+            )
             continue
         for result in section_results:
             file = None
