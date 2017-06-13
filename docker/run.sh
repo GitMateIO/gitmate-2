@@ -17,6 +17,7 @@ exec gunicorn gitmate.wsgi \
     --name=gitmate \
     --workers=$NUM_WORKERS \
     --user=$USER --group=$USER \
+    --timeout=$TIMEOUT \
     --bind=0.0.0.0:8000 \
     --log-level=$LOG_LEVEL \
     --log-file=-
