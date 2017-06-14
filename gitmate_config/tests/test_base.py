@@ -70,6 +70,13 @@ class GitmateTestCase(TransactionTestCase):
             'access_token': os.environ['GITHUB_TEST_TOKEN']
         })
         self.auth.save()
+        self.gl_auth = UserSocialAuth(
+            user=self.user, provider=Providers.GITLAB.value, uid=2
+        )
+        self.gl_auth.set_extra_data({
+            'access_token': os.environ['GITLAB_TEST_TOKEN']
+        })
+        self.gl_auth.save()
 
         self.repo = Repository(
             user=self.user,
@@ -79,6 +86,14 @@ class GitmateTestCase(TransactionTestCase):
         self.repo.save()  # Needs an ID before adding relationship
         self.repo.admins.add(self.user)
         self.repo.save()
+        self.gl_repo = Repository(
+            user=self.user,
+            full_name=os.environ['GITLAB_TEST_REPO'],
+            provider=Providers.GITLAB.value,
+            active=active)
+        self.gl_repo.save()
+        self.gl_repo.admins.add(self.user)
+        self.gl_repo.save()
 
     def setUpWithPlugin(self, name: str):
         self.plugin = Plugin(name=name)
@@ -90,6 +105,10 @@ class GitmateTestCase(TransactionTestCase):
         self.repo.plugins.add(self.plugin)
         self.repo.active = True
         self.repo.save()
+
+        self.gl_repo.plugins.add(self.plugin)
+        self.gl_repo.active = True
+        self.gl_repo.save()
 
     def simulate_github_webhook_call(self, event: str, data: dict):
         request = self.factory.post(

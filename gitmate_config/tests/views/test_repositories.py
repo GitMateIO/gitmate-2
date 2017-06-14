@@ -27,6 +27,7 @@ class TestRepositories(GitmateTestCase):
     def test_get_repos(self):
         # Clearing a previously created entry from db
         self.repo.delete()
+        self.gl_repo.delete()
 
         get_repos_request = self.factory.get(self.repo_list_url)
         response = self.repo_list(get_repos_request)
@@ -35,6 +36,8 @@ class TestRepositories(GitmateTestCase):
         get_repos_request.user = self.user
         response = self.repo_list(get_repos_request)
         self.assertIn(os.environ['GITHUB_TEST_REPO'],
+                      [elem['full_name'] for elem in response.data])
+        self.assertIn(os.environ['GITLAB_TEST_REPO'],
                       [elem['full_name'] for elem in response.data])
         self.assertIn('plugins', response.data[0])
 
@@ -86,11 +89,13 @@ class TestRepositories(GitmateTestCase):
 
     def test_igitt_repo_creation(self):
         igitt_repo = self.repo.igitt_repo()
+        igitt_repo_gl = self.gl_repo.igitt_repo()
         self.assertIsInstance(igitt_repo, IGittRepository)
+        self.assertIsInstance(igitt_repo_gl, IGittRepository)
 
     def test_not_implemented_igitt_repo_creation(self):
         self.auth = UserSocialAuth(
-            user=self.user, provider=Providers.GITLAB.value)
+            user=self.user, provider='unknownprovider')
         self.auth.set_extra_data({
             'access_token': 'stupidshit'
         })
@@ -99,7 +104,7 @@ class TestRepositories(GitmateTestCase):
         with self.assertRaises(NotImplementedError):
             repo = Repository(
                 user=self.user,
-                provider='gitlab',
+                provider='unknownprovider',
                 full_name='some_repo',
                 active=False
             ).igitt_repo()

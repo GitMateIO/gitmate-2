@@ -10,9 +10,13 @@ class TestSettings(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('testplugin')
 
-        self.settings = self.plugin_module.models.Settings()
-        self.settings.repo = self.repo
-        self.settings.save()
+        settings = self.plugin_module.models.Settings()
+        settings.repo = self.repo
+        settings.save()
+
+        settings = self.plugin_module.models.Settings()
+        settings.repo = self.gl_repo
+        settings.save()
 
         self.plugin_list = PluginSettingsViewSet.as_view(
             actions={'get': 'list'})
@@ -36,36 +40,40 @@ class TestSettings(GitmateTestCase):
         list_plugin_settings_request = self.factory.get(self.plugin_list_url)
         list_plugin_settings_request.user = self.user
         response = self.plugin_list(list_plugin_settings_request)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, [{
-            'repository': reverse('api:repository-detail',
-                                  args=(self.repo.pk,),
-                                  request=list_plugin_settings_request),
-            'plugins': [
+        repos = [reverse('api:repository-detail',
+                         args=(repo.pk,),
+                         request=list_plugin_settings_request)
+                 for repo in (self.gl_repo, self.repo,)]
+        plugin_data = [{
+            'name': 'testplugin',
+            'title': 'Testing',
+            'description': (
+                'A simple plugin used for testing. Smile :)'
+            ),
+            'active': True,
+            'settings': [
                 {
-                    'name': 'testplugin',
-                    'title': 'Testing',
-                    'description': (
-                        'A simple plugin used for testing. Smile :)'
-                    ),
-                    'active': True,
-                    'settings': [
-                        {
-                            'name': 'example_char_setting',
-                            'value': 'example',
-                            'description': 'An example Char setting',
-                            'type': 'CharField'
-                        },
-                        {
-                            'name': 'example_bool_setting',
-                            'value': True,
-                            'description': 'An example Bool setting',
-                            'type': 'BooleanField'
-                        },
-                    ]
-                }
+                    'name': 'example_char_setting',
+                    'value': 'example',
+                    'description': 'An example Char setting',
+                    'type': 'CharField'
+                },
+                {
+                    'name': 'example_bool_setting',
+                    'value': True,
+                    'description': 'An example Bool setting',
+                    'type': 'BooleanField'
+                },
             ]
-        }])
+        }]
+        resp_data = [{
+            'repository': repo,
+            'plugins': plugin_data
+        } for repo in repos]
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn(resp_data[0], response.data)
+        self.assertIn(resp_data[1], response.data)
 
     def test_retrieve_plugin_settings_unauthorized(self):
         retrieve_plugin_settings_request = self.factory.get(
