@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from IGitt.GitHub.GitHub import GitHub
+from IGitt.GitLab.GitLab import GitLab
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication
@@ -42,12 +43,17 @@ class RepositoryViewSet(
 
     def list(self, request):
         # Update db model
+        hoster = {
+            Providers.GITHUB.value: GitHub,
+            Providers.GITLAB.value: GitLab,
+        }
         for provider in Providers:
             try:
                 token = self.request.user.social_auth.get(
                     provider=provider.value
                 ).extra_data['access_token']
-                for repo in GitHub(token).owned_repositories:
+
+                for repo in hoster[provider.value](token).owned_repositories:
                     try:
                         # some user already created this
                         irepo = Repository.objects.get(
@@ -65,7 +71,7 @@ class RepositoryViewSet(
                         irepo.admins.add(request.user)
                 # TODO: validate if a cached repo was removed. Handling if it
                 # was active?
-            except UserSocialAuth.DoesNotExist:
+            except UserSocialAuth.DoesNotExist: # pragma: no cover
                 pass  # User never gave us his key for that provider
         return super().list(request)
 

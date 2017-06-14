@@ -7,6 +7,7 @@ from django.forms.models import model_to_dict
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from IGitt.GitHub.GitHubRepository import GitHubRepository
+from IGitt.GitLab.GitLabRepository import GitLabRepository
 from IGitt.Interfaces.Repository import Repository
 from rest_framework.reverse import reverse
 
@@ -153,6 +154,8 @@ class Repository(models.Model):
             provider=self.provider).extra_data['access_token']
         if self.provider == Providers.GITHUB.value:
             return GitHubRepository(token, self.full_name)
+        if self.provider == Providers.GITLAB.value:
+            return GitLabRepository(token, self.full_name)
 
         # Other providers aren't implemented yet.
         raise NotImplementedError
