@@ -137,6 +137,11 @@ Setting up Celery with Rabbitmq
 Unit Testing
 ------------
 
+Install the test requirements with
+```bash
+pip3 install -r test-requirements.txt
+```
+
 Tests can be run with
 
 ```bash

@@ -35,7 +35,7 @@ run_tests:
   stage: test
   script:
   - pip3 install -r requirements.txt
-  - pip3 install pytest pytest-cov pytest-django
+  - pip3 install -r test-requirements.txt
   - py.test -vv --cov --doctest-modules
 
 build_image:
