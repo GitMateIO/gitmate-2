@@ -89,6 +89,25 @@ def describe_patch(diffs):
     return '\n\nThe issue can be fixed by applying the following patch:'+patch
 
 
+def get_file_and_line(result):
+    if result.get('affected_code'):
+        start_dict = result['affected_code'][0]['start']
+        file = start_dict['file'].lstrip('/')
+        line = start_dict['line']
+    else:
+        file = None
+        line = None
+
+    return file, line
+
+
+def result_table_row(result):
+    file, line = get_file_and_line(result)
+    return '| {} | {} | {} |'.format(
+        result.get('message').replace('\n', ' '), str(file), str(line)
+    )
+
+
 def add_comment(commit: Commit, results: dict, mr_num: int=None):
     for section_name, section_results in results.items():
         if len(section_results) > 10:
@@ -104,25 +123,13 @@ def add_comment(commit: Commit, results: dict, mr_num: int=None):
                 .format(
                     len(section_results),
                     section_name,
-                    '\n'.join(
-                        '| {} | {} | {} |'.format(
-                            result.get('message'),
-                            result.get(
-                                'file', 'global').lstrip('/'),
-                            result.get('line', 'none'))
-                        for result in section_results
-                    )
+                    '\n'.join(result_table_row(result)
+                              for result in section_results)
                 )
             )
             continue
         for result in section_results:
-            file = None
-            line = None
-            if result.get('affected_code'):
-                start_dict = result['affected_code'][0]['start']
-                file = start_dict['file'].lstrip('/')
-                line = start_dict['line']
-
+            file, line = get_file_and_line(result)
             patch = describe_patch(result['diffs']) if result['diffs'] else ''
 
             commit.comment(
