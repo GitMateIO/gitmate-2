@@ -51,7 +51,7 @@ def github_webhook_receiver(request):
             trigger_event, repo_obj, issue_obj,
             options=repo_obj.get_plugin_settings())
 
-    if event == 'pull_request':
+    elif event == 'pull_request':
         pull_request = webhook_data['pull_request']
 
         if webhook_data['action'] in ['synchronize', 'opened']:
@@ -66,7 +66,7 @@ def github_webhook_receiver(request):
                     MergeRequestActions.OPENED, repo_obj, pull_request_obj,
                     options=repo_obj.get_plugin_settings())
 
-    if event == 'issue_comment':
+    elif event == 'issue_comment':
         if webhook_data['action'] != 'deleted':
             comment = webhook_data['comment']
             pull_request_obj = GitHubMergeRequest(
