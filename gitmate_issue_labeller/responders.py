@@ -3,6 +3,7 @@ from difflib import SequenceMatcher
 from IGitt.Interfaces.Actions import IssueActions
 from IGitt.Interfaces.Issue import Issue
 
+from gitmate.utils import lock_igitt_object
 from gitmate_hooks import ResponderRegistrar
 
 
@@ -45,9 +46,10 @@ def add_labels_to_issue(
 ):
     issue_summary = issue.title.lower() + ' ' + issue.description.lower()
 
-    new_labels = set({
-        label for label in issue.available_labels
-        if matches(issue_summary, label, 0.9) and
-        label not in blacklisted_labels})
+    with lock_igitt_object('label issue', issue):
+        new_labels = set({
+            label for label in issue.available_labels
+            if matches(issue_summary, label, 0.9) and
+            label not in blacklisted_labels})
 
-    issue.labels = new_labels.union(issue.labels)
+        issue.labels = new_labels.union(issue.labels)

@@ -4,6 +4,8 @@ from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
 import bugspots
+
+from gitmate.utils import lock_igitt_object
 from gitmate_hooks import ResponderRegistrar
 
 
@@ -29,4 +31,5 @@ def label_hotspots(
     hotspot_label: str = 'Label to be added if hotspot found',
 ):
     if len(get_hotspot_files(pattern, pr).intersection(pr.affected_files)):
-        pr.labels.add(hotspot_label)
+        with lock_igitt_object('label mr', pr):
+            pr.labels.add(hotspot_label)

@@ -18,6 +18,10 @@ class TestIssueLabeller(GitmateTestCase):
     @patch.object(GitHubIssue, 'labels', new_callable=PropertyMock)
     @patch.object(GitHubIssue, '__init__', return_value=None)
     def test_github(self, m_issue, m_labels, m_avail_labels, m_title, m_desc):
+        # needed for the igitt object locking
+        GitHubIssue._repository = environ['GITHUB_TEST_REPO']
+        GitHubIssue.number = 0
+        GitHubIssue.refresh = lambda *args: None
         # clear all the labels
         m_labels.return_value = set()
 
