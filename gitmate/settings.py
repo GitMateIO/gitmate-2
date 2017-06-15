@@ -70,7 +70,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_docs',
     'corsheaders',
-    'coala_online'
+    'db_mutex',
+    'coala_online',
 ] + ['gitmate_'+plugin for plugin in GITMATE_PLUGINS]
 
 REST_FRAMEWORK = {
