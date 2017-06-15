@@ -7,6 +7,7 @@ from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.Interfaces.Actions import IssueActions
 from IGitt.Interfaces.Actions import MergeRequestActions
+from IGitt.Interfaces.Comment import CommentType
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -76,6 +77,7 @@ def github_webhook_receiver(request):
             comment_obj = GitHubComment(
                     token,
                     repository['full_name'],
+                    CommentType.MERGE_REQUEST,
                     comment['id'])
             ResponderRegistrar.respond(
                     MergeRequestActions.COMMENTED,
