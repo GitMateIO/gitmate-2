@@ -48,7 +48,7 @@ class TestBugSpotter(GitmateTestCase):
     def test_risky(self, m_aff_files, m_clone, m_labels):
         m_aff_files.return_value = {'file1', 'file2'}
         m_clone.return_value = None, '/path/doesnt/exist/nowhere'
-        m_labels.return_value.add = MagicMock()
+        m_labels.return_value.__ior__ = MagicMock()
 
         bugspots.Bugspots = generate_fake_bugspots({'file1'})
 
@@ -59,7 +59,7 @@ class TestBugSpotter(GitmateTestCase):
         m_labels.assert_called()
 
         self.assertEquals(response.status_code, status.HTTP_200_OK)
-        m_labels().add.assert_called_with('review carefully!')
+        m_labels().__ior__.assert_called_with({'review carefully!'})
 
     @patch.object(GitHubIssue, 'labels', new_callable=PropertyMock)
     @patch.object(GitHubRepository, 'get_clone', autospec=True)

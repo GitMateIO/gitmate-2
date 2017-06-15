@@ -32,4 +32,4 @@ def label_hotspots(
 ):
     if len(get_hotspot_files(pattern, pr).intersection(pr.affected_files)):
         with lock_igitt_object('label mr', pr):
-            pr.labels.add(hotspot_label)
+            pr.labels |= {hotspot_label}
