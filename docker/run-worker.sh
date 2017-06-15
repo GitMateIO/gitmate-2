@@ -17,13 +17,9 @@ groupadd -fr -g $docker_group_id host_docker
 echo "Adding $USER to the docker group ..."
 usermod -aG $docker_group_id $USER
 
-command="python3 manage.py celeryd"
-command="$command --loglevel=info"
-command="$command --settings='gitmate.settings'"
-
-export command
-
-exec su - $USER \
-        -s /bin/bash \
-        --preserve-environment \
-        -c "$command"
+exec python3 manage.py celeryd \
+    --uid=$USER --gid=$USER \
+    --settings=gitmate.settings \
+    --loglevel=$LOG_LEVEL \
+    --pool=gevent \
+    --concurrency=$NUM_WORKERS
