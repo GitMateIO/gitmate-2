@@ -104,6 +104,9 @@ def gitlab_webhook_receiver(request):
     Receives webhooks from GitLab and carries out the appropriate action.
     """
     webhook = json.loads(request.body.decode('utf-8'))
+    print(webhook)
+    return Response(status=status.HTTP_200_OK)
+
     event = request.META['HTTP_X_GITLAB_EVENT']
     repository = (webhook['project'] if 'project' in webhook.keys()
                   else webhook['object_attributes']['target'])
