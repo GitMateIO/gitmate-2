@@ -163,11 +163,11 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
     if pr_based_analysis is False:
         for commit in pr.commits:
             commit.set_status(CommitStatus(
-                Status.PENDING, 'GitMate-2 analysis in progress...',
+                Status.RUNNING, 'GitMate-2 analysis in progress...',
                 'GitMate-2 Commit Review', 'http://2.gitmate.io'))
     else:
         pr.head.set_status(CommitStatus(
-            Status.PENDING, 'GitMate-2 analysis in progress...',
+            Status.RUNNING, 'GitMate-2 analysis in progress...',
             'GitMate-2 PR Review', 'http://2.gitmate.io/'))
 
     # This is github specific, to be fixed
