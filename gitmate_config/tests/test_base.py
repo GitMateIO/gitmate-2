@@ -16,6 +16,7 @@ from gitmate_config import Providers
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 from gitmate_hooks.views import github_webhook_receiver
+from gitmate_hooks.views import gitlab_webhook_receiver
 
 
 def reinit_plugin(name, upmate: bool=False):
@@ -124,3 +125,12 @@ class GitmateTestCase(TransactionTestCase):
         })
 
         return github_webhook_receiver(request)
+
+    def simulate_gitlab_webhook_call(self, event: str, data: dict):
+        request = self.factory.post(
+            reverse('webhooks:gitlab'), data, format='json')
+        request.META.update({
+            'HTTP_X_GITLAB_TOKEN': os.environ['WEBHOOK_SECRET'],
+            'HTTP_X_GITLAB_EVENT': event
+        })
+        return gitlab_webhook_receiver(request)
