@@ -6,6 +6,7 @@ from unittest.mock import patch
 
 from gitmate_config.tests.test_base import GitmateTestCase
 from IGitt.GitHub.GitHubCommit import GitHubCommit
+from IGitt.GitLab.GitLabCommit import GitLabCommit
 from rest_framework.status import HTTP_200_OK
 
 
@@ -65,10 +66,18 @@ class TestCodeAnalysis(GitmateTestCase):
     def setUp(self):
         self.setUpWithPlugin('code_analysis')
 
-        self.data = {
+        self.github_data = {
             'repository': {'full_name': self.repo.full_name},
             'pull_request': {'number': 0},
             'action': 'opened'
+        }
+
+        self.gitlab_data = {
+            'object_attributes': {
+                'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
+                'action': 'open',
+                'iid': 2
+            }
         }
 
         self.old_popen = subprocess.Popen
@@ -77,7 +86,9 @@ class TestCodeAnalysis(GitmateTestCase):
         subprocess.Popen = self.old_popen
 
     @patch.object(GitHubCommit, 'comment')
-    def test_pr_analysis_no_issues(self, comment_mock, _, pr_based=False):
+    def test_pr_analysis_no_issues_github(
+        self, comment_mock, _, pr_based=False
+    ):
         self.repo.set_plugin_settings([
             {
                 'name': 'code_analysis',
@@ -103,15 +114,16 @@ class TestCodeAnalysis(GitmateTestCase):
 
         subprocess.Popen = fake_popen
 
-        response = self.simulate_github_webhook_call('pull_request', self.data)
+        response = self.simulate_github_webhook_call(
+            'pull_request', self.github_data)
         self.assertEqual(response.status_code, HTTP_200_OK)
         comment_mock.assert_not_called()
 
-    def test_pr_analysis_no_issues_pr_based(self, *args):
-        return self.test_pr_analysis_no_issues(pr_based=True)
+    def test_pr_analysis_no_issues_pr_based_github(self, *args):
+        return self.test_pr_analysis_no_issues_github(pr_based=True)
 
     @patch.object(GitHubCommit, 'comment')
-    def test_pr_analysis_issues(self, comment_mock, _):
+    def test_pr_analysis_issues_github(self, comment_mock, _):
         def fake_popen(cmd, **kwargs):
             if 'bouncer.py' in cmd:
                 return popen_bouncer()
@@ -152,13 +164,14 @@ class TestCodeAnalysis(GitmateTestCase):
             )
 
         subprocess.Popen = fake_popen
-        response = self.simulate_github_webhook_call('pull_request', self.data)
+        response = self.simulate_github_webhook_call(
+            'pull_request', self.github_data)
         self.assertEqual(response.status_code, HTTP_200_OK)
 
         assert comment_mock.call_count == 2
 
     @patch.object(GitHubCommit, 'comment')
-    def test_pr_analysis_many_issues(self, comment_mock, _):
+    def test_pr_analysis_many_issues_github(self, comment_mock, _):
         self.repo.set_plugin_settings([
             {
                 'name': 'code_analysis',
@@ -193,7 +206,136 @@ class TestCodeAnalysis(GitmateTestCase):
             )
 
         subprocess.Popen = fake_popen
-        response = self.simulate_github_webhook_call('pull_request', self.data)
+        response = self.simulate_github_webhook_call(
+            'pull_request', self.github_data)
+        self.assertEqual(response.status_code, HTTP_200_OK)
+
+        # More than three results, one summary comment
+        comment_mock.assert_called_once()
+
+    @patch.object(GitLabCommit, 'comment')
+    def test_pr_analysis_no_issues_gitlab(
+        self, comment_mock, _, pr_based=False
+    ):
+        self.repo.set_plugin_settings([
+            {
+                'name': 'code_analysis',
+                'settings': {
+                    'pr_based_analysis': pr_based,
+                }
+            }
+        ])
+
+        def popen_bouncer():
+            return PopenResult(
+                StreamMock('{}'),
+                StreamMock(self.BOUNCER_INPUT),
+                lambda: None
+            )
+
+        def fake_popen(cmd, **kwargs):
+            if 'bouncer.py' in cmd:
+                return popen_bouncer()
+
+            assert 'run.py' in cmd
+            return popen_coala()
+
+        subprocess.Popen = fake_popen
+
+        response = self.simulate_gitlab_webhook_call(
+            'Merge Request Hook', self.gitlab_data)
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        comment_mock.assert_not_called()
+
+    def test_pr_analysis_no_issues_pr_based_gitlab(self, *args):
+        return self.test_pr_analysis_no_issues_gitlab(pr_based=True)
+
+    @patch.object(GitLabCommit, 'comment')
+    def test_pr_analysis_issues_gitlab(self, comment_mock, _):
+        def fake_popen(cmd, **kwargs):
+            if 'bouncer.py' in cmd:
+                return popen_bouncer()
+
+            assert 'run.py' in cmd
+            return popen_coala()
+
+        def popen_bouncer():
+            return PopenResult(
+                StreamMock(
+                    json.dumps({
+                        'section': [
+                            {
+                                'message': 'a message',
+                                'origin': 'I come from here',
+                                'diffs': None,
+                            },
+                            {
+                                'message': 'a message',
+                                'origin': 'I come from here',
+                                'affected_code': [
+                                    {
+                                        'start': {
+                                            'file': 'filename',
+                                            'line': 1
+                                        }
+                                    },
+                                ],
+                                'diffs': {
+                                    'filename': 'unified diff here',
+                                },
+                            }
+                        ]
+                    })
+                ),
+                StreamMock(self.BOUNCER_INPUT),
+                lambda: None
+            )
+
+        subprocess.Popen = fake_popen
+        response = self.simulate_gitlab_webhook_call(
+            'Merge Request Hook', self.gitlab_data)
+        self.assertEqual(response.status_code, HTTP_200_OK)
+
+        assert comment_mock.call_count == 2
+
+    @patch.object(GitLabCommit, 'comment')
+    def test_pr_analysis_many_issues_gitlab(self, comment_mock, _):
+        self.repo.set_plugin_settings([
+            {
+                'name': 'code_analysis',
+                'settings': {
+                    'pr_based_analysis': False,
+                }
+            }
+        ])
+
+        def fake_popen(cmd, **kwargs):
+            if 'bouncer.py' in cmd:
+                return popen_bouncer()
+
+            assert 'run.py' in cmd
+            return popen_coala()
+
+        def popen_bouncer():
+            return PopenResult(
+                StreamMock(
+                    json.dumps({
+                        'too_many': [
+                            {
+                                'message': 'message ' + str(i),
+                                'origin': 'I come from here'
+                            }
+                            for i in range(12)
+                        ]
+                    })
+                ),
+                StreamMock(self.BOUNCER_INPUT),
+                lambda: None
+            )
+
+        subprocess.Popen = fake_popen
+        response = self.simulate_gitlab_webhook_call(
+            'Merge Request Hook', self.gitlab_data)
         self.assertEqual(response.status_code, HTTP_200_OK)
 
         # More than three results, one summary comment
