@@ -29,6 +29,8 @@ check_code:
   script:
   - pip install -r requirements.txt
   - coala --ci
+  except:
+  - master
 
 run_tests:
   image: python:3
