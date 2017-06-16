@@ -114,7 +114,7 @@ class GitmateTestCase(TransactionTestCase):
         request = self.factory.post(
             reverse('webhooks:github'), data, format='json')
         hashed = hmac.new(
-            bytes(os.environ['GITHUB_WEBHOOK_SECRET'], 'utf-8'),
+            bytes(os.environ['WEBHOOK_SECRET'], 'utf-8'),
             request.body,
             sha1)
         signature = 'sha1=' + hashed.hexdigest()

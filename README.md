@@ -79,7 +79,7 @@ Configuring Environment Variables
  authentication
 - `SOCIAL_AUTH_GITHUB_KEY`: Client key for GitHub OAuth Application
 - `SOCIAL_AUTH_GITHUB_SECRET`: Client secret for GitHub OAuth Application
-- `GITHUB_WEBHOOK_SECRET`: A secret key to register GitHub
+- `WEBHOOK_SECRET`: A secret key to register GitHub
 webhooks with, improves security.
 
 > Note: Make sure all the services like rabbitmq, postgresql, etc. are running.
@@ -98,7 +98,7 @@ virtualenv ~/.venvs/coon
 To run GitMate you'll need a secret. Use any string you can come up with:
 
 ```bash
-export GITHUB_WEBHOOK_SECRET=foobar
+export WEBHOOK_SECRET=foobar
 ```
 
 Now install the project specific requirements and create your initial database:

@@ -90,7 +90,7 @@ class RepositoryViewSet(
             domain = settings.HOOK_DOMAIN, provider=instance.provider)
 
         if instance.active:
-            repo.register_hook(hook_url, settings.GITHUB_WEBHOOK_SECRET)
+            repo.register_hook(hook_url, settings.WEBHOOK_SECRET)
         else:
             repo.delete_hook(hook_url)
 

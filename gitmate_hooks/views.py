@@ -23,7 +23,9 @@ from gitmate_hooks import signature_check
 
 @csrf_exempt
 @api_view(['POST'])
-@signature_check(settings.GITHUB_WEBHOOK_SECRET, 'HTTP_X_HUB_SIGNATURE')
+@signature_check(settings.WEBHOOK_SECRET,
+                 Providers.GITHUB.value,
+                 'HTTP_X_HUB_SIGNATURE')
 def github_webhook_receiver(request):
     """
     Receives webhooks from GitHub and carries out the approriate action.
@@ -94,6 +96,9 @@ def github_webhook_receiver(request):
 
 @csrf_exempt
 @api_view(['POST'])
+@signature_check(settings.WEBHOOK_SECRET,
+                 Providers.GITLAB.value,
+                 'HTTP_X_GITLAB_TOKEN')
 def gitlab_webhook_receiver(request):
     """
     Receives webhooks from GitLab and carries out the appropriate action.
