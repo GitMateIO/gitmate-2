@@ -37,6 +37,8 @@ run_tests:
   - pip3 install -r requirements.txt
   - pip3 install -r test-requirements.txt
   - py.test -vv --cov --doctest-modules
+  except:
+  - master
 
 build_image:
   stage: build
