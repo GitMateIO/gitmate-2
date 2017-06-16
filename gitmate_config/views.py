@@ -86,11 +86,9 @@ class RepositoryViewSet(
 
         instance = self.get_object()
         repo = instance.igitt_repo()
-        hook_url = (
-            'https://' +
-            settings.HOOK_DOMAIN +
-            '/webhooks/github'
-        )
+        hook_url = 'https://{domain}/webhooks/{provider}'.format(
+            domain = settings.HOOK_DOMAIN, provider=instance.provider)
+
         if instance.active:
             repo.register_hook(hook_url, settings.GITHUB_WEBHOOK_SECRET)
         else:
