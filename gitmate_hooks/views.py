@@ -59,18 +59,22 @@ def github_webhook_receiver(request):
 
     elif event == 'pull_request':
         pull_request = webhook_data['pull_request']
+        pull_request_obj = GitHubMergeRequest(
+            token, repository['full_name'], pull_request['number'])
+        trigger_event = {
+            'synchronize': MergeRequestActions.SYNCHRONIZED,
+            'opened': MergeRequestActions.OPENED,
+            'edited': MergeRequestActions.ATTRIBUTES_CHANGED
+        }.get(webhook_data['action'])
 
-        if webhook_data['action'] in ['synchronize', 'opened']:
-            pull_request_obj = GitHubMergeRequest(
-                token, repository['full_name'], pull_request['number'])
-            ResponderRegistrar.respond(
-                MergeRequestActions.SYNCHRONIZED, repo_obj, pull_request_obj,
-                options=repo_obj.get_plugin_settings())
+        # no such webhook event action implemented yet
+        if not trigger_event: # pragma: no cover
+            raise NotImplementedError('Unrecgonized action: '
+                                      + event+ '/' + webhook_data['action'])
 
-            if webhook_data['action'] == 'opened':
-                ResponderRegistrar.respond(
-                    MergeRequestActions.OPENED, repo_obj, pull_request_obj,
-                    options=repo_obj.get_plugin_settings())
+        ResponderRegistrar.respond(
+            trigger_event, repo_obj, pull_request_obj,
+            options=repo_obj.get_plugin_settings())
 
     elif event == 'issue_comment':
         if webhook_data['action'] != 'deleted':
@@ -130,17 +134,22 @@ def gitlab_webhook_receiver(request):
 
     elif event == 'Merge Request Hook':
         pull_request = webhook['object_attributes']
-        if pull_request['action'] in ['update', 'open', 'reopen']:
-            ipull_request = GitLabMergeRequest(
-                token, repository['path_with_namespace'], pull_request['iid'])
-            ResponderRegistrar.respond(
-                MergeRequestActions.SYNCHRONIZED, repo_obj, ipull_request,
-                options=repo_obj.get_plugin_settings())
+        ipull_request = GitLabMergeRequest(
+            token, repository['path_with_namespace'], pull_request['iid'])
+        trigger_event = {
+            'update': MergeRequestActions.SYNCHRONIZED,
+            'open': MergeRequestActions.OPENED,
+            'reopen': MergeRequestActions.REOPENED,
+        }.get(pull_request['action'])
 
-            if pull_request['action'] == 'open':
-                ResponderRegistrar.respond(
-                    MergeRequestActions.OPENED, repo_obj, ipull_request,
-                    options=repo_obj.get_plugin_settings())
+        # no such webhook event action implemented yet
+        if not trigger_event: # pragma: no cover
+            raise NotImplementedError('Unrecgonized action: '
+                                      + event+ '/' + pull_request['action'])
+
+        ResponderRegistrar.respond(
+            trigger_event, repo_obj, ipull_request,
+            options=repo_obj.get_plugin_settings())
 
     elif event == 'Note Hook':
         comment = webhook['object_attributes']
