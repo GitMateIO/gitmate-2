@@ -7,7 +7,7 @@ from gitmate_hooks import ResponderRegistrar
 
 @ResponderRegistrar.responder(
     'auto_label_pending_or_wip',
-    MergeRequestActions.SYNCHRONIZED
+    MergeRequestActions.ATTRIBUTES_CHANGED
 )
 def mark_pending_review_or_wip_accordingly(
     pr: MergeRequest,

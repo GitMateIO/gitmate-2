@@ -59,18 +59,21 @@ def github_webhook_receiver(request):
 
     elif event == 'pull_request':
         pull_request = webhook_data['pull_request']
+        pull_request_obj = GitHubMergeRequest(
+            token, repository['full_name'], pull_request['number'])
+        trigger_event = {
+            'opened': MergeRequestActions.OPENED,
+            'synchronize': MergeRequestActions.SYNCHRONIZED,
+        }.get(webhook_data['action'], MergeRequestActions.ATTRIBUTES_CHANGED)
 
-        if webhook_data['action'] in ['synchronize', 'opened']:
-            pull_request_obj = GitHubMergeRequest(
-                token, repository['full_name'], pull_request['number'])
+        ResponderRegistrar.respond(trigger_event, repo_obj, pull_request_obj,
+            options=repo_obj.get_plugin_settings())
+
+        # trigger 'synchronize' events too when an mr is opened
+        if trigger_event == MergeRequestActions.OPENED:
             ResponderRegistrar.respond(
                 MergeRequestActions.SYNCHRONIZED, repo_obj, pull_request_obj,
                 options=repo_obj.get_plugin_settings())
-
-            if webhook_data['action'] == 'opened':
-                ResponderRegistrar.respond(
-                    MergeRequestActions.OPENED, repo_obj, pull_request_obj,
-                    options=repo_obj.get_plugin_settings())
 
     elif event == 'issue_comment':
         if webhook_data['action'] != 'deleted':
@@ -130,17 +133,29 @@ def gitlab_webhook_receiver(request):
 
     elif event == 'Merge Request Hook':
         pull_request = webhook['object_attributes']
-        if pull_request['action'] in ['update', 'open', 'reopen']:
-            ipull_request = GitLabMergeRequest(
-                token, repository['path_with_namespace'], pull_request['iid'])
+        ipull_request = GitLabMergeRequest(
+            token, repository['path_with_namespace'], pull_request['iid'])
+        trigger_event = {
+            'open': MergeRequestActions.OPENED,
+            'reopen': MergeRequestActions.OPENED,
+            'update': MergeRequestActions.SYNCHRONIZED
+        }.get(pull_request['action'], MergeRequestActions.ATTRIBUTES_CHANGED)
+
+        ResponderRegistrar.respond(trigger_event, repo_obj, ipull_request,
+            options=repo_obj.get_plugin_settings())
+
+        # trigger attribute change events too when an mr is updated since
+        # gitlab doesn't differentiate the events
+        if trigger_event == MergeRequestActions.SYNCHRONIZED:
+            ResponderRegistrar.respond(
+                MergeRequestActions.ATTRIBUTES_CHANGED, repo_obj,
+                ipull_request, options=repo_obj.get_plugin_settings())
+
+        # trigger synchronize events too when an mr is opened
+        if trigger_event == MergeRequestActions.OPENED:
             ResponderRegistrar.respond(
                 MergeRequestActions.SYNCHRONIZED, repo_obj, ipull_request,
                 options=repo_obj.get_plugin_settings())
-
-            if pull_request['action'] == 'open':
-                ResponderRegistrar.respond(
-                    MergeRequestActions.OPENED, repo_obj, ipull_request,
-                    options=repo_obj.get_plugin_settings())
 
     elif event == 'Note Hook':
         comment = webhook['object_attributes']

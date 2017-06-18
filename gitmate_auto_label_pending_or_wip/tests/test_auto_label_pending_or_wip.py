@@ -17,7 +17,7 @@ class TestAutoLabelPendingOrWip(GitmateTestCase):
         self.github_data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO']},
             'pull_request': {'number': 7},
-            'action': 'synchronize'
+            'action': 'edited'
         }
         self.gitlab_data = {
             'object_attributes': {
