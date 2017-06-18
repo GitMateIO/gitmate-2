@@ -23,7 +23,8 @@ def get_hotspot_files(pattern: str, pr: MergeRequest):
 
 @ResponderRegistrar.responder(
     'bug_spotter',
-    MergeRequestActions.SYNCHRONIZED
+    MergeRequestActions.SYNCHRONIZED,
+    MergeRequestActions.OPENED
 )
 def label_hotspots(
     pr: MergeRequest,

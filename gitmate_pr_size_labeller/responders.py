@@ -8,6 +8,7 @@ from gitmate_hooks import ResponderRegistrar
 @ResponderRegistrar.responder(
     'pr_size_labeller',
     MergeRequestActions.SYNCHRONIZED,
+    MergeRequestActions.OPENED,
 )
 def add_labels_based_on_size(pr: MergeRequest):
     """

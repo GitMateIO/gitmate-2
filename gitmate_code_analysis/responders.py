@@ -158,7 +158,8 @@ def get_ref(pr):  # pragma: no cover, testing this with mocks is meaningless
 
 @ResponderRegistrar.responder(
     'code_analysis',
-    MergeRequestActions.SYNCHRONIZED
+    MergeRequestActions.SYNCHRONIZED,
+    MergeRequestActions.OPENED
 )
 def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
     """
