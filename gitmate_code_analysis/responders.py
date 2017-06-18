@@ -1,5 +1,8 @@
 import json
 import logging
+
+from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
+from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from os import environ
 import subprocess
 from subprocess import PIPE
@@ -143,6 +146,16 @@ def add_comment(commit: Commit, results: dict, mr_num: int=None):
                 file, line, mr_number=mr_num)
 
 
+def get_ref(pr):  # pragma: no cover, testing this with mocks is meaningless
+    if isinstance(pr, GitHubMergeRequest):
+        return 'refs/pull/{}/head'.format(pr.number)
+
+    if isinstance(pr, GitLabMergeRequest):
+        return 'merge-requests/{}/head'.format(pr.number)
+
+    raise NotImplementedError
+
+
 @ResponderRegistrar.responder(
     'code_analysis',
     MergeRequestActions.SYNCHRONIZED
@@ -170,8 +183,8 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
             Status.RUNNING, 'GitMate-2 analysis in progress...',
             'GitMate-2 PR Review', 'http://2.gitmate.io/'))
 
-    # This is github specific, to be fixed
-    ref = 'refs/pull/{}/head'.format(pr.number)
+    ref = get_ref(pr)
+
     try:
         # Spawn a coala container for base commit to generate old results.
         old_results = analyse(repo, pr.base.sha, igitt_repo.clone_url, ref)
