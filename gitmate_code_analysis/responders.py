@@ -1,5 +1,8 @@
 import json
 import logging
+
+from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
+from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from os import environ
 import subprocess
 from subprocess import PIPE
@@ -170,8 +173,11 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
             Status.RUNNING, 'GitMate-2 analysis in progress...',
             'GitMate-2 PR Review', 'http://2.gitmate.io/'))
 
-    # This is github specific, to be fixed
-    ref = 'refs/pull/{}/head'.format(pr.number)
+    if isinstance(pr, GitHubMergeRequest):
+        ref = 'refs/pull/{}/head'.format(pr.number)
+    elif isinstance(pr, GitLabMergeRequest):  # pragma: no cover
+        ref = 'merge-requests/{}/head'.format(pr.number)
+
     try:
         # Spawn a coala container for base commit to generate old results.
         old_results = analyse(repo, pr.base.sha, igitt_repo.clone_url, ref)
