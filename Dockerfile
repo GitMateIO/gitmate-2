@@ -21,7 +21,4 @@ RUN pip3 install --no-cache-dir \
 ADD . $ROOT
 WORKDIR $ROOT
 
-RUN touch db.sqlite3 && \
-    chown $USER:$USER db.sqlite3
-
 CMD ["./docker/run.sh"]
