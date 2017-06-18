@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from IGitt.GitHub.GitHub import GitHub
 from IGitt.GitLab.GitLab import GitLab
+from IGitt.Interfaces.Repository import WebhookEvents
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication
@@ -90,7 +91,11 @@ class RepositoryViewSet(
             domain = settings.HOOK_DOMAIN, provider=instance.provider)
 
         if instance.active:
-            repo.register_hook(hook_url, settings.WEBHOOK_SECRET)
+            repo.register_hook(hook_url, settings.WEBHOOK_SECRET,
+                {WebhookEvents.MERGE_REQUEST,
+                 WebhookEvents.MERGE_REQUEST_COMMENT,
+                 WebhookEvents.ISSUE,
+                 WebhookEvents.ISSUE_COMMENT})
         else:
             repo.delete_hook(hook_url)
 
