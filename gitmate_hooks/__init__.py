@@ -4,6 +4,8 @@ import hmac
 from inspect import getfullargspec
 from traceback import print_exc
 
+from celery import Task
+from celery.utils.log import get_logger
 from rest_framework import status
 from rest_framework.response import Response
 from gitmate_config import Providers
@@ -40,6 +42,20 @@ def signature_check(key: str=None,
 
     return decorator
 
+class ExceptionLoggerTask(Task):
+    """
+    Celery Task subclass to log exceptions on failure.
+    """
+    def on_failure(self, exc , task_id, args, kwargs, einfo):
+        logger = get_logger('celery.worker')
+        warning = ('Task {task} failed with {exc}:\n'
+                   'args: {args}\nkwargs: {kwargs}\n'
+                   'Full stacktrace: \n\n{einfo}').format(task=task_id,
+                                                          exc=exc,
+                                                          args=args,
+                                                          kwargs=kwargs,
+                                                          einfo=einfo)
+        super().on_failure(exc, task_id, args, kwargs, einfo)
 
 class ResponderRegistrar:
     """
@@ -60,7 +76,7 @@ class ResponderRegistrar:
         is mandatory.
         """
         def _wrapper(function):
-            task = celery.task(function)
+            task = celery.task(function, base=ExceptionLoggerTask)
 
             for action in actions:
                 if action not in cls._responders:
