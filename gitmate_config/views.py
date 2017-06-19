@@ -53,7 +53,7 @@ class RepositoryViewSet(
                     provider=provider.value
                 ).extra_data['access_token']
 
-                for repo in hoster[provider.value](token).owned_repositories:
+                for repo in hoster[provider.value](token).master_repositories:
                     try:
                         # some user already created this
                         irepo = Repository.objects.get(
