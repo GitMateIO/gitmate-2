@@ -76,6 +76,7 @@ class TestCodeAnalysis(GitmateTestCase):
             'object_attributes': {
                 'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
                 'action': 'open',
+                'oldrev': 'gitmatesavestheday',
                 'iid': 2
             }
         }
