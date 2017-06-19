@@ -137,10 +137,14 @@ def gitlab_webhook_receiver(request):
         ipull_request = GitLabMergeRequest(
             token, repository['path_with_namespace'], pull_request['iid'])
         trigger_event = {
-            'update': MergeRequestActions.SYNCHRONIZED,
+            'update': MergeRequestActions.ATTRIBUTES_CHANGED,
             'open': MergeRequestActions.OPENED,
             'reopen': MergeRequestActions.REOPENED,
         }.get(pull_request['action'])
+
+        # nasty workaround for finding merge request resync
+        if 'oldrev' in pull_request:
+            trigger_event = MergeRequestActions.SYNCHRONIZED
 
         # no such webhook event action implemented yet
         if not trigger_event: # pragma: no cover
