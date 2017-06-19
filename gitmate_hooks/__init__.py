@@ -4,6 +4,8 @@ import hmac
 from inspect import getfullargspec
 from traceback import print_exc
 
+from celery import Task
+from celery.utils.log import get_logger
 from rest_framework import status
 from rest_framework.response import Response
 from gitmate_config import Providers
@@ -40,6 +42,24 @@ def signature_check(key: str=None,
 
     return decorator
 
+class ExceptionLoggerTask(Task):
+    """
+    Celery Task subclass to log exceptions on failure.
+    
+    For Task inheritance see:
+    http://docs.celeryproject.org/en/latest/userguide/tasks.html#task-inheritance
+    """
+    def on_failure(self, exc , task_id, args, kwargs, einfo):# pragma: no cover
+        logger = get_logger('celery.worker')
+        warning = ('Task {task}[{t_id}] had unexpected failure:\n'
+                   '\nargs: {args}\n\nkwargs: {kwargs}\n'
+                   '\n{einfo}').format(task=self.name,
+                                         t_id=task_id,
+                                         args=args,
+                                         kwargs=kwargs,
+                                         einfo=einfo)
+        logger.warn(warning)
+        super().on_failure(exc, task_id, args, kwargs, einfo)
 
 class ResponderRegistrar:
     """
@@ -60,7 +80,7 @@ class ResponderRegistrar:
         is mandatory.
         """
         def _wrapper(function):
-            task = celery.task(function)
+            task = celery.task(function, base=ExceptionLoggerTask)
 
             for action in actions:
                 if action not in cls._responders:
