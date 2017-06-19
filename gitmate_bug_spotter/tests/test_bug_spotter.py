@@ -44,6 +44,7 @@ class TestBugSpotter(GitmateTestCase):
             'object_attributes': {
                 'target': {'path_with_namespace': self.gl_repo.full_name},
                 'action': 'update',
+                'old': 'gitmatesavestheday',
                 'iid': 2
             }
         }
