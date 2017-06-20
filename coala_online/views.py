@@ -1,11 +1,10 @@
 import json
-import subprocess
 from collections import defaultdict
 
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
-from coala_online.config import COALA_ONLINE_IMAGE
+from coala_online.task import run_coala_online
 
 
 @require_http_methods(['POST'])
@@ -26,13 +25,6 @@ def coala_online(request):
     req['url'] = request.get('url', None)
     req['sections'] = request.get('sections', None)
 
-    req_str = json.dumps(req)
+    response = run_coala_online.delay(req)
 
-    proc = subprocess.Popen(
-        ['docker', 'run', '-i', '--rm',
-         COALA_ONLINE_IMAGE,
-         'python3', 'run.py', req_str],
-        stdout=subprocess.PIPE,
-    )
-    response = json.loads(proc.stdout.read().decode('utf-8'))
-    return JsonResponse(response, safe=False)
+    return JsonResponse(response.get(), safe=False)
