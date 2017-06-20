@@ -13,7 +13,6 @@ from rest_framework.reverse import reverse
 
 from gitmate_config import Providers
 
-
 class Plugin(models.Model):
     name = models.CharField(
         # default None ensures that trying to save a Plugin instance
