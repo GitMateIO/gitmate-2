@@ -86,6 +86,8 @@ SOCIAL_AUTH_URL_NAMESPACE = 'auth'
 # python-social-auth settings
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = os.environ.get(
     'SOCIAL_AUTH_REDIRECT', 'http://localhost:4200') + '/repositories'
+SOCIAL_AUTH_LOGOUT_REDIRECT_URL = os.environ.get(
+    'SOCIAL_AUTH_REDIRECT', 'http://localhost:4200')
 SOCIAL_AUTH_LOGIN_URL = '/login'
 
 SOCIAL_AUTH_PIPELINE = (
