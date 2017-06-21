@@ -12,4 +12,4 @@ gevent~=1.2.2
 psycopg2~=2.7.1
 bugspots3~=0.3.0
 attrs~=17.2.0
-django-db-mutex~=0.4.0
+django-pglocks~=1.0.2
