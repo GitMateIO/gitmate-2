@@ -1,12 +1,9 @@
 from django.db import models
 
-from gitmate_config.models import Repository
+from gitmate_config.models import SettingsBase
 
 
-class Settings(models.Model):
-    repo = models.OneToOneField(
-        Repository, on_delete=models.CASCADE,
-        related_name='auto_label_pending_or_wip_repository')
+class Settings(SettingsBase):
     wip_label = models.CharField(
         max_length=25,
         default='process/WIP',

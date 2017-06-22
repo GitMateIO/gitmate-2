@@ -1,12 +1,9 @@
 from django.db import models
 
-from gitmate_config.models import Repository
+from gitmate_config.models import SettingsBase
 
 
-class Settings(models.Model):
-    repo = models.OneToOneField(
-        Repository, on_delete=models.CASCADE,
-        related_name='gitmate_bug_spotter_repository')
+class Settings(SettingsBase):
     pattern = models.CharField(
         max_length=100,
         default='(fix(e[sd])?|close[sd]?|resolve[sd]?) #[1-9][0-9]*',

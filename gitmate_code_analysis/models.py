@@ -1,13 +1,10 @@
 from django.contrib.postgres import fields as psql_fields
 from django.db import models
 
-from gitmate_config.models import Repository
+from gitmate_config.models import Repository, SettingsBase
 
 
-class Settings(models.Model):
-    repo = models.OneToOneField(
-        Repository, on_delete=models.CASCADE,
-        related_name='gitmate_code_analysis_repository')
+class Settings(SettingsBase):
     pr_based_analysis = models.BooleanField(
         default=True,
         help_text='Analyze full pull requests and not commit by commit'
@@ -26,3 +23,5 @@ class AnalysisResults(models.Model):
 
     class Meta:
         unique_together = ('repo', 'sha')
+        verbose_name = 'result'
+        verbose_name_plural = 'results'

@@ -1,13 +1,10 @@
 from django.contrib.postgres import fields as psql_fields
 from django.db import models
 
-from gitmate_config.models import Repository
+from gitmate_config.models import SettingsBase
 
 
-class Settings(models.Model):
-    repo = models.OneToOneField(
-        Repository, on_delete=models.CASCADE,
-        related_name='gitmate_issue_labeller_repository')
+class Settings(SettingsBase):
     blacklisted_labels = psql_fields.ArrayField(
         models.CharField(max_length=20, default=''),
         blank=False,

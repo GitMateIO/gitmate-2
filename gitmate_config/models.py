@@ -162,3 +162,17 @@ class Repository(models.Model):
 
     class Meta:
         unique_together = ('provider', 'full_name')
+        verbose_name_plural = 'repositories'
+
+
+class SettingsBase(models.Model):
+    """
+    The abstract base class for all plugin settings.
+    """
+    repo = models.OneToOneField(
+        Repository, on_delete=models.CASCADE,
+        related_name='%(app_label)s_repository')
+
+    class Meta:
+        verbose_name_plural = 'settings'
+        abstract = True
