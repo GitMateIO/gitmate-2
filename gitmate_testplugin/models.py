@@ -11,3 +11,6 @@ class Settings(models.Model):
         max_length=25, default='example', help_text='An example Char setting')
     example_bool_setting = models.BooleanField(
         default=True, help_text='An example Bool setting')
+
+    class Meta:
+        verbose_name_plural = 'settings'

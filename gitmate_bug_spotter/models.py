@@ -15,3 +15,6 @@ class Settings(models.Model):
         max_length=25,
         default='review carefully!',
         help_text='The label to be used to identify possible bugs.')
+
+    class Meta:
+        verbose_name_plural = 'settings'

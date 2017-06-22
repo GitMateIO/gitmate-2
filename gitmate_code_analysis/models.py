@@ -13,6 +13,9 @@ class Settings(models.Model):
         help_text='Analyze full pull requests and not commit by commit'
     )
 
+    class Meta:
+        verbose_name_plural = 'settings'
+
 
 class AnalysisResults(models.Model):
     repo = models.ForeignKey(
@@ -26,3 +29,5 @@ class AnalysisResults(models.Model):
 
     class Meta:
         unique_together = ('repo', 'sha')
+        verbose_name = 'result'
+        verbose_name_plural = 'results'

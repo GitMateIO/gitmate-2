@@ -162,3 +162,4 @@ class Repository(models.Model):
 
     class Meta:
         unique_together = ('provider', 'full_name')
+        verbose_name_plural = 'repositories'

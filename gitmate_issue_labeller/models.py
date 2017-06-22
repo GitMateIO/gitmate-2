@@ -13,3 +13,6 @@ class Settings(models.Model):
         blank=False,
         help_text='The labels to be avoided on issues.',
         default=['invalid', 'duplicate', 'bounty'])
+
+    class Meta:
+        verbose_name_plural = 'settings'

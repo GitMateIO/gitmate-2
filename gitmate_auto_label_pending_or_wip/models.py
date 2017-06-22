@@ -15,3 +15,6 @@ class Settings(models.Model):
         max_length=25,
         default='process/pending_review',
         help_text='The label to be used for marking pending review.')
+
+    class Meta:
+        verbose_name_plural = 'settings'

@@ -10,3 +10,6 @@ class Settings(models.Model):
     autorespond_text = models.TextField(
         max_length=2500,
         help_text='Text to be commented, upon opening pull request.')
+
+    class Meta:
+        verbose_name_plural = 'settings'

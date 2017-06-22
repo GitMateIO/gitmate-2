@@ -7,3 +7,6 @@ class Settings(models.Model):
     repo = models.OneToOneField(
         Repository, on_delete=models.CASCADE,
         related_name='pr_size_labeller_repository')
+
+    class Meta:
+        verbose_name_plural = 'settings'

@@ -8,3 +8,6 @@ class Settings(models.Model):
         Repository, on_delete=models.CASCADE,
         related_name='{{ plugin_name }}_repository')
     # Add your custom plugin settings here.
+
+    class Meta:
+        verbose_name_plural = 'settings'

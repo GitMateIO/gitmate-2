@@ -15,3 +15,6 @@ class Settings(models.Model):
         default='unack',
         max_length=100,
         help_text='Phrases that will be recognized as unack commands.')
+
+    class Meta:
+        verbose_name_plural = 'settings'
