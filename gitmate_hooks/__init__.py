@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from gitmate_config import Providers
 
-from gitmate.celery import app as celery
+from gitmate.celery import app as celery, crontab
 
 
 def signature_check(key: str=None,
@@ -71,6 +71,19 @@ class ResponderRegistrar:
     _responders = {}
     _options = {}
     _plugins = {}
+
+    @classmethod
+    def scheduler(cls, interval: str):
+        """
+        Registers the decorated function as a scheduled_task
+        which will run at particular intervals provided.
+        """
+        def _wrapper(function):
+            task = celery.task(function, base=ExceptionLoggerTask)
+            celery.add_periodic_task(interval, task.s())
+            return function
+
+        return _wrapper
 
     @classmethod
     def responder(cls, plugin: str='', *actions: [Enum]):
@@ -135,3 +148,12 @@ class ResponderRegistrar:
                 print_exc()
 
         return retvals
+
+# @celery.on_after_configure.connect
+# def setup_periodic_tasks(sender, **kwargs):
+#     sender.add_periodic_task(5.0, add.s(2.2))
+
+# @celery.task
+# def add(a,b):
+#     print("a scheduled_task")
+#     print(a+b)

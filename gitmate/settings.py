@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 from ast import literal_eval
 import os
 
-import djcelery
+import celery
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,7 +32,7 @@ DEBUG = literal_eval(os.environ.get('DJANGO_DEBUG', 'False'))
 if DEBUG and not literal_eval(os.environ.get('FORCE_CELERY',
                                              'False')):  # pragma: nocover
     # let celery invoke all tasks locally
-    CELERY_ALWAYS_EAGER = True
+    CELERY_ALWAYS_EAGER = False
     # make celery raise exceptions when something fails
     CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
@@ -53,6 +53,7 @@ GITMATE_PLUGINS = [
     'issue_labeller',
     'bug_spotter',
     'ack',
+    'stale_pr_pinger',
 ]
 
 # Application definition
@@ -66,7 +67,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'gitmate_config',
-    'djcelery',
+    'celery',
     'rest_framework',
     'rest_framework_docs',
     'corsheaders',
@@ -257,7 +258,7 @@ STATICFILES_DIRS = ()
 
 
 # CELERY CONFIG
-djcelery.setup_loader()
+# djcelery.setup_loader()
 
 # RABBITMQ server base URL
 BROKER_URL = os.environ.get('CELERY_BROKER_URL',
