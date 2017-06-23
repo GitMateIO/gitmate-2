@@ -2,9 +2,11 @@ import json
 
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from IGitt.GitHub import GitHubToken
 from IGitt.GitHub.GitHubComment import GitHubComment
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
+from IGitt.GitLab import GitLabOAuthToken
 from IGitt.GitLab.GitLabComment import GitLabComment
 from IGitt.GitLab.GitLabIssue import GitLabIssue
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
@@ -41,6 +43,7 @@ def github_webhook_receiver(request):
         provider=Providers.GITHUB.value).first()
     token = repo_obj.user.social_auth.get(
         provider=Providers.GITHUB.value).extra_data['access_token']
+    token = GitHubToken(token)
 
     if event == 'issues':
         issue = webhook_data['issue']
@@ -117,6 +120,7 @@ def gitlab_webhook_receiver(request):
         provider=Providers.GITLAB.value).first()
     token = repo_obj.user.social_auth.get(
         provider=Providers.GITLAB.value).extra_data['access_token']
+    token = GitLabOAuthToken(token)
 
     if event == 'Issue Hook':
         issue = webhook['object_attributes']
