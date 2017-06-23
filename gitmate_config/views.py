@@ -47,13 +47,15 @@ class RepositoryViewSet(
             Providers.GITHUB.value: GitHub,
             Providers.GITLAB.value: GitLab,
         }
+
         for provider in Providers:
             try:
-                token = self.request.user.social_auth.get(
+                raw_token = self.request.user.social_auth.get(
                     provider=provider.value
                 ).extra_data['access_token']
 
-                for repo in hoster[provider.value](token).master_repositories:
+                for repo in hoster[provider.value](
+                        provider.get_token(raw_token)).master_repositories:
                     try:
                         # some user already created this
                         irepo = Repository.objects.get(

@@ -150,11 +150,13 @@ class Repository(models.Model):
                     plugin_obj.set_settings(self, plugin['settings'])
 
     def igitt_repo(self) -> Repository:
-        token = self.user.social_auth.get(
+        token_str = self.user.social_auth.get(
             provider=self.provider).extra_data['access_token']
         if self.provider == Providers.GITHUB.value:
+            token = Providers.GITHUB.get_token(token_str)
             return GitHubRepository(token, self.full_name)
         if self.provider == Providers.GITLAB.value:
+            token = Providers.GITLAB.get_token(token_str)
             return GitLabRepository(token, self.full_name)
 
         # Other providers aren't implemented yet.
