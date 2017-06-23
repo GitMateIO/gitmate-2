@@ -18,6 +18,9 @@ from IGitt.Interfaces.MergeRequest import MergeRequest
 # timeout for docker container in seconds, setting upto 10 minutes
 CONTAINER_TIMEOUT = 60 * 10
 
+# base url for sending results
+BASE_URL = 'https://2.gitmate.io'
+
 
 def analyse(repo, sha, clone_url, ref):
     """
@@ -178,11 +181,11 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
         for commit in pr.commits:
             commit.set_status(CommitStatus(
                 Status.RUNNING, 'GitMate-2 analysis in progress...',
-                'GitMate-2 Commit Review', 'http://2.gitmate.io'))
+                'GitMate-2 Commit Review', BASE_URL))
     else:
         pr.head.set_status(CommitStatus(
             Status.RUNNING, 'GitMate-2 analysis in progress...',
-            'GitMate-2 PR Review', 'http://2.gitmate.io/'))
+            'GitMate-2 PR Review', BASE_URL))
 
     ref = get_ref(pr)
 
@@ -201,11 +204,13 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
             if any(s_results for _, s_results in filtered_results.items()):
                 pr.head.set_status(CommitStatus(
                     Status.FAILED, 'This PR has issues!',
-                    'GitMate-2 PR Review', 'http://2.gitmate.io/'))
+                    'GitMate-2 PR Review',
+                    BASE_URL + '/results/{repo}/{sha}'.format(
+                        repo=repo.id, sha=pr.head.sha)))
             else:
                 pr.head.set_status(CommitStatus(
                     Status.SUCCESS, 'This PR has no issues. :)',
-                    'GitMate-2 PR Review', 'http://2.gitmate.io/'))
+                    'GitMate-2 PR Review', BASE_URL))
         else:  # Run coala per commit
             for commit in pr.commits:
                 new_results = analyse(
@@ -220,11 +225,13 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
                 if any(s_results for _, s_results in filtered_results.items()):
                     commit.set_status(CommitStatus(
                         Status.FAILED, 'This commit has issues!',
-                        'GitMate-2 Commit Review', 'http://2.gitmate.io/'))
+                        'GitMate-2 Commit Review',
+                        BASE_URL + '/results/{repo}/{sha}'.format(
+                            repo=repo.id, sha=commit.sha)))
                 else:
                     commit.set_status(CommitStatus(
                         Status.SUCCESS, 'This commit has no issues. :)',
-                        'GitMate-2 Commit Review', 'http://2.gitmate.io/'))
+                        'GitMate-2 Commit Review', BASE_URL))
     except Exception as exc:  # pragma: no cover
         print(str(exc))
         print_exc()
