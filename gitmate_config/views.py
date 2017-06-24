@@ -99,7 +99,8 @@ class RepositoryViewSet(
 class UserViewSet(
     GenericViewSet,
     mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin
 ):
     authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated,)
@@ -110,6 +111,18 @@ class UserViewSet(
         if self.kwargs.get('pk') in ['me', self.request.user.pk]:
             return self.request.user
         raise PermissionDenied
+
+    def destroy(self, request, *args, **kwargs):
+        user = self.get_object()
+        # Scan for user repos. If they have multiple admins, make someone else
+        # the operating user and then remove the user.
+        for repo in user.repository_set.all():
+            if repo.admins.count() > 1:
+                repo.admins.remove(user)
+                repo.user = repo.admins.first()
+                repo.save()
+        return super().destroy(request, *args, **kwargs)
+
 
 class PluginSettingsViewSet(
     GenericViewSet,
