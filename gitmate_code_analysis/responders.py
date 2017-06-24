@@ -1,5 +1,6 @@
 import json
 import logging
+from django.conf import settings
 
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
@@ -18,9 +19,6 @@ from IGitt.Interfaces.MergeRequest import MergeRequest
 # timeout for docker container in seconds, setting upto 10 minutes
 CONTAINER_TIMEOUT = 60 * 10
 
-# base url for sending results
-BASE_URL = 'https://2.gitmate.io'
-
 
 def analyse(repo, sha, clone_url, ref):
     """
@@ -33,10 +31,12 @@ def analyse(repo, sha, clone_url, ref):
     from gitmate_code_analysis.models import AnalysisResults
 
     try:
+        result_obj = AnalysisResults.objects.get(repo=repo, sha=sha)
+        if not result_obj.results:
+            raise ValueError
         # Cached result available
-        return AnalysisResults.objects.get(
-            repo=repo, sha=sha).results
-    except AnalysisResults.DoesNotExist:
+        return result_obj.results
+    except (ValueError, AnalysisResults.DoesNotExist):
         proc = subprocess.Popen(
             ['docker', 'run', '-i', '--rm',
              environ['COALA_RESULTS_IMAGE'],
@@ -53,7 +53,12 @@ def analyse(repo, sha, clone_url, ref):
 
         proc.wait()
 
-        AnalysisResults.objects.create(repo=repo, sha=sha, results=results)
+        # created in case of DoesNotExist, or get in case of ValueError
+        result_obj, _ = AnalysisResults.objects.get_or_create(
+            repo=repo, sha=sha)
+        result_obj.results = results
+        result_obj.save()
+
         return results
 
 
@@ -159,6 +164,15 @@ def get_ref(pr):  # pragma: no cover, testing this with mocks is meaningless
     raise NotImplementedError
 
 
+def set_result_status(repo, sha, status):
+    # Don't move to module code! Apps aren't loaded yet.
+    from gitmate_code_analysis.models import AnalysisResults
+
+    result, _ = AnalysisResults.objects.get_or_create(repo=repo, sha=sha)
+    result.status = status.name
+    result.save()
+
+
 @ResponderRegistrar.responder(
     'code_analysis',
     MergeRequestActions.SYNCHRONIZED,
@@ -181,11 +195,20 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
         for commit in pr.commits:
             commit.set_status(CommitStatus(
                 Status.RUNNING, 'GitMate-2 analysis in progress...',
-                'GitMate-2 Commit Review', BASE_URL))
+                'GitMate-2 Commit Review',
+                'https://{domain}/results/{repo}/{sha}'.format(
+                    domain=settings.FRONTEND_DOMAIN,
+                    repo=repo.id, sha=commit.sha)))
+            set_result_status(repo, commit.sha, Status.RUNNING)
+
     else:
         pr.head.set_status(CommitStatus(
             Status.RUNNING, 'GitMate-2 analysis in progress...',
-            'GitMate-2 PR Review', BASE_URL))
+            'GitMate-2 PR Review',
+            'https://{domain}/results/{repo}/{sha}'.format(
+                domain=settings.FRONTEND_DOMAIN,
+                repo=repo.id, sha=pr.head.sha)))
+        set_result_status(repo, pr.head.sha, Status.RUNNING)
 
     ref = get_ref(pr)
 
@@ -205,12 +228,18 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
                 pr.head.set_status(CommitStatus(
                     Status.FAILED, 'This PR has issues!',
                     'GitMate-2 PR Review',
-                    BASE_URL + '/results/{repo}/{sha}'.format(
-                        repo=repo.id, sha=pr.head.sha)))
+                    'https://{domain}/results/{repo}/{sha}'.format(
+                        domain=settings.FRONTEND_DOMAIN,
+                        repo=repo, sha=pr.head.sha)))
+                set_result_status(repo, pr.head.sha, Status.FAILED)
             else:
                 pr.head.set_status(CommitStatus(
                     Status.SUCCESS, 'This PR has no issues. :)',
-                    'GitMate-2 PR Review', BASE_URL))
+                    'GitMate-2 PR Review',
+                    'https://{domain}/results/{repo}/{sha}'.format(
+                        domain=settings.FRONTEND_DOMAIN,
+                        repo=repo.id, sha=pr.head.sha)))
+                set_result_status(repo, pr.head.sha, Status.SUCCESS)
         else:  # Run coala per commit
             for commit in pr.commits:
                 new_results = analyse(
@@ -226,12 +255,18 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
                     commit.set_status(CommitStatus(
                         Status.FAILED, 'This commit has issues!',
                         'GitMate-2 Commit Review',
-                        BASE_URL + '/results/{repo}/{sha}'.format(
+                        'https://{domain}/results/{repo}/{sha}'.format(
+                            domain=settings.FRONTEND_DOMAIN,
                             repo=repo.id, sha=commit.sha)))
+                    set_result_status(repo, commit.sha, Status.FAILED)
                 else:
                     commit.set_status(CommitStatus(
                         Status.SUCCESS, 'This commit has no issues. :)',
-                        'GitMate-2 Commit Review', BASE_URL))
+                        'GitMate-2 Commit Review',
+                        'https://{domain}/results/{repo}/{sha}'.format(
+                            domain=settings.FRONTEND_DOMAIN,
+                            repo=repo.id, sha=commit.sha)))
+                    set_result_status(repo, commit.sha, Status.SUCCESS)
     except Exception as exc:  # pragma: no cover
         print(str(exc))
         print_exc()

@@ -1,5 +1,6 @@
 from django.contrib.postgres import fields as psql_fields
 from django.db import models
+from IGitt.Interfaces.CommitStatus import Status
 
 from gitmate_config.models import Repository, SettingsBase
 
@@ -16,7 +17,10 @@ class AnalysisResults(models.Model):
         Repository, on_delete=models.CASCADE,
         related_name='analysis_result_repository')
     sha = models.CharField(default=None, max_length=40)
-    results = psql_fields.JSONField()
+    status = models.CharField(choices=[(e.name, e.name) for e in Status],
+                              default=Status.RUNNING.name,
+                              max_length=10)
+    results = psql_fields.JSONField(default=None, null=True)
 
     def __str__(self):  # pragma: no cover
         return '{}@{}'.format(self.repo.full_name, self.sha)
