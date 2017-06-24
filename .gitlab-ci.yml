@@ -26,6 +26,10 @@ check_code:
   except:
   - master
 
+cache:
+  paths:
+  - /root/.cache/pip
+
 run_tests:
   image: python:3
   script:
