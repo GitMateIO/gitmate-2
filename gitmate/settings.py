@@ -262,3 +262,6 @@ djcelery.setup_loader()
 # RABBITMQ server base URL
 BROKER_URL = os.environ.get('CELERY_BROKER_URL',
                             'amqp://admin:password@rabbit/')
+
+# For coala_online or else it throws NotImplementError
+CELERY_RESULT_BACKEND = "amqp"
