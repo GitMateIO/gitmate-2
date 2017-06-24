@@ -15,6 +15,7 @@ if __name__ == '__main__':
         call(['killall', 'lt'])
         Popen(['lt', '-s', user + 'gitmate', '-p', '8000'])
         environ['HOOK_DOMAIN'] = user + 'gitmate.localtunnel.me'
+        environ['FRONTEND_DOMAIN'] = environ['HOOK_DOMAIN']
 
     print('\033[36mprecautiously attempting to migrate database...\033[0m')
     call(['python3', 'manage.py', 'migrate'])

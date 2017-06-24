@@ -37,10 +37,11 @@ if DEBUG and not literal_eval(os.environ.get('FORCE_CELERY',
     CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
 HOOK_DOMAIN = os.environ.get('HOOK_DOMAIN', 'localhost:8000')
+FRONTEND_DOMAIN = os.environ.get('FRONTEND_DOMAIN', 'localhost:4200')
 
 # django>=1.11 requires tests to use allowed hosts
-ALLOWED_HOSTS = ['testing.com', 'localhost', '127.0.0.1', 'localhost:4200',
-                 'coala.io', HOOK_DOMAIN]
+ALLOWED_HOSTS = ['testing.com', 'localhost', '127.0.0.1', 'coala.io',
+                 HOOK_DOMAIN, FRONTEND_DOMAIN]
 ALLOWED_HOSTS += os.environ.get('DJANGO_ALLOWED_HOSTS', '').split()
 CORS_ORIGIN_WHITELIST = ALLOWED_HOSTS
 CORS_ALLOW_CREDENTIALS = True
