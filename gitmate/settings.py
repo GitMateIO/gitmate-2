@@ -260,3 +260,7 @@ CELERY_ACCEPT_CONTENT = ['json', 'pickle', 'yaml']
 # RABBITMQ server base URL
 BROKER_URL = os.environ.get('CELERY_BROKER_URL',
                             'amqp://admin:password@rabbit/')
+
+# This is required for coala_online
+# Otherwise it throws NotImplementedError
+CELERY_RESULT_BACKEND = 'amqp'
