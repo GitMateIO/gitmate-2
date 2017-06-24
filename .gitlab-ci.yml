@@ -17,10 +17,10 @@ before_script:
   - export COALA_RESULTS_IMAGE=registry.gitlab.com/gitmate/open-source/coala-incremental-results:latest
   - export RESULTS_BOUNCER_IMAGE=registry.gitlab.com/gitmate/open-source/result-bouncer:latest
 
-
 check_code:
-  image: coala/base:0.10
+  image: python:3
   script:
+  - pip install 'coala-bears[alldeps]'
   - pip install -r requirements.txt
   - coala --ci
   except:
