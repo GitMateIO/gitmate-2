@@ -1,12 +1,13 @@
 import json
 import subprocess
 
-from celery.task import task
+from gitmate.celery import app as celery
+from gitmate_hooks import ExceptionLoggerTask
 
 from coala_online.config import COALA_ONLINE_IMAGE
 
 
-@task(name='run_coala_online')
+@celery.task(base=ExceptionLoggerTask, serializer='json')
 def run_coala_online(req):
     """
     Takes in a dict with mode, file_content, bears, url and sections
