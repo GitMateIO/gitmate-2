@@ -2,12 +2,14 @@ import json
 from collections import defaultdict
 
 from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
+from rest_framework.decorators import api_view, throttle_classes
 
 from coala_online.task import run_coala_online
+from coala_online.throttle import throttle
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
+@throttle_classes([throttle('50/minute')])
 def coala_online(request):
     """
     Spawns a docker container to run coala and coala-quickstart as specified.
