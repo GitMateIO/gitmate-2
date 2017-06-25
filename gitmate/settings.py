@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 from ast import literal_eval
 import os
 
-import djcelery
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -66,7 +65,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'gitmate_config',
-    'djcelery',
     'rest_framework',
     'rest_framework_docs',
     'corsheaders',
@@ -152,7 +150,6 @@ SOCIAL_AUTH_GITLAB_SECRET = os.environ.get('SOCIAL_AUTH_GITLAB_SECRET')
 SOCIAL_AUTH_GITLAB_REDIRECT_URL = os.environ.get(
     'SOCIAL_AUTH_GITLAB_REDIRECT_URL')
 SOCIAL_AUTH_GITLAB_SCOPE = ['api']
-
 SOCIAL_AUTH_BITBUCKET_KEY = os.environ.get('SOCIAL_AUTH_BITBUCKET_KEY')
 SOCIAL_AUTH_BITBUCKET_SECRET = os.environ.get('SOCIAL_AUTH_BITBUCKET_SECRET')
 
@@ -257,7 +254,8 @@ STATICFILES_DIRS = ()
 
 
 # CELERY CONFIG
-djcelery.setup_loader()
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_ACCEPT_CONTENT = ['json', 'pickle', 'yaml']
 
 # RABBITMQ server base URL
 BROKER_URL = os.environ.get('CELERY_BROKER_URL',
