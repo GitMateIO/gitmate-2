@@ -153,13 +153,14 @@ SOCIAL_AUTH_GITLAB_REDIRECT_URL = os.environ.get(
     'SOCIAL_AUTH_GITLAB_REDIRECT_URL')
 SOCIAL_AUTH_GITLAB_SCOPE = ['api']
 
-SOCIAL_AUTH_BITBUCKET_KEY = os.environ.get('SOCIAL_AUTH_BITBUCKET_KEY')
-SOCIAL_AUTH_BITBUCKET_SECRET = os.environ.get('SOCIAL_AUTH_BITBUCKET_SECRET')
+SOCIAL_AUTH_BITBUCKET_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_BITBUCKET_KEY')
+SOCIAL_AUTH_BITBUCKET_OAUTH2_SECRET = os.environ.get(
+    'SOCIAL_AUTH_BITBUCKET_SECRET')
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
     'social_core.backends.gitlab.GitLabOAuth2',
-    'social_core.backends.bitbucket.BitbucketOAuth',
+    'social_core.backends.bitbucket.BitbucketOAuth2',
     'django.contrib.auth.backends.ModelBackend'
 )
 
