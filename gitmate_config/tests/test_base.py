@@ -70,14 +70,12 @@ class GitmateTestCase(TransactionTestCase):
         self.auth.set_extra_data({
             'access_token': os.environ['GITHUB_TEST_TOKEN']
         })
-        self.auth.save()
         self.gl_auth = UserSocialAuth(
             user=self.user, provider=Providers.GITLAB.value, uid=2
         )
         self.gl_auth.set_extra_data({
             'access_token': os.environ['GITLAB_TEST_TOKEN']
         })
-        self.gl_auth.save()
 
         self.repo = Repository(
             user=self.user,

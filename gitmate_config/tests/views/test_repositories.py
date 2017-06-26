@@ -78,7 +78,6 @@ class TestRepositories(GitmateTestCase):
         admin_auth.set_extra_data({
             'access_token': os.environ['GITHUB_TEST_TOKEN']
         })
-        admin_auth.save()
         self.repo.admins.add(admin_user)
         self.repo.save()
 
@@ -99,7 +98,6 @@ class TestRepositories(GitmateTestCase):
         self.auth.set_extra_data({
             'access_token': 'stupidshit'
         })
-        self.auth.save()
 
         with self.assertRaises(NotImplementedError):
             repo = Repository(
