@@ -1,3 +1,4 @@
+from datetime import datetime
 from importlib import import_module
 
 from django.apps import apps
@@ -10,6 +11,7 @@ from IGitt.GitHub.GitHubRepository import GitHubRepository
 from IGitt.GitLab.GitLabRepository import GitLabRepository
 from IGitt.Interfaces.Repository import Repository
 from rest_framework.reverse import reverse
+from social_django.utils import load_strategy
 
 from gitmate_config import Providers
 
@@ -150,8 +152,7 @@ class Repository(models.Model):
                     plugin_obj.set_settings(self, plugin['settings'])
 
     def igitt_repo(self) -> Repository:
-        token = self.user.social_auth.get(
-            provider=self.provider).extra_data['access_token']
+        token = self.user.get_token(self.provider)
         if self.provider == Providers.GITHUB.value:
             return GitHubRepository(token, self.full_name)
         if self.provider == Providers.GITLAB.value:
@@ -176,3 +177,22 @@ class SettingsBase(models.Model):
     class Meta:
         verbose_name_plural = 'settings'
         abstract = True
+
+
+def get_token(self, provider: str):
+    social = self.social_auth.get(provider=provider)
+    if social.access_token_expired():  # pragma: no cover, non deterministic
+        strategy = load_strategy()
+        backend_instance = social.get_backend_instance(strategy)
+        backend = social.get_backend(strategy)
+        token = social.extra_data.get('refresh_token')
+        extra_data = super(backend, backend_instance).refresh_token(token)
+        extra_data.update({'auth_time': datetime.now().timestamp()})
+        if 'expires_in' in extra_data:
+            extra_data['expires'] = extra_data.pop('expires_in')
+        social.set_extra_data(extra_data)
+
+    return social.access_token
+
+
+User.add_to_class('get_token', get_token)

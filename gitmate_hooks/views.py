@@ -39,8 +39,7 @@ def github_webhook_receiver(request):
         active=True,
         full_name=repository['full_name'],
         provider=Providers.GITHUB.value).first()
-    token = repo_obj.user.social_auth.get(
-        provider=Providers.GITHUB.value).extra_data['access_token']
+    token = repo_obj.user.get_token(repo_obj.provider)
 
     if event == 'issues':
         issue = webhook_data['issue']
@@ -115,8 +114,7 @@ def gitlab_webhook_receiver(request):
         active=True,
         full_name=repository['path_with_namespace'],
         provider=Providers.GITLAB.value).first()
-    token = repo_obj.user.social_auth.get(
-        provider=Providers.GITLAB.value).extra_data['access_token']
+    token = repo_obj.user.get_token(repo_obj.provider)
 
     if event == 'Issue Hook':
         issue = webhook['object_attributes']

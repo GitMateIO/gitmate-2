@@ -49,9 +49,7 @@ class RepositoryViewSet(
         }
         for provider in Providers:
             try:
-                token = self.request.user.social_auth.get(
-                    provider=provider.value
-                ).extra_data['access_token']
+                token = self.request.user.get_token(provider.value)
 
                 for repo in hoster[provider.value](token).master_repositories:
                     try:
