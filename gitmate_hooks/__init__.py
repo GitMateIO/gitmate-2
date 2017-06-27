@@ -4,6 +4,7 @@ import hmac
 from inspect import getfullargspec
 from traceback import print_exc
 
+from celery.schedules import crontab
 from celery import Task
 from celery.utils.log import get_logger
 from rest_framework import status
@@ -71,6 +72,23 @@ class ResponderRegistrar:
     _responders = {}
     _options = {}
     _plugins = {}
+
+    @classmethod
+    def scheduler(cls, interval: (crontab, float)): # pragma: no cover
+        """
+        Registers the decorated function as a periodic task.
+        The task should not accept any arguments.
+        :param interval: Periodic interval in seconds as float or
+                crontab object specifying task trigger time.
+                See http://docs.celeryproject.org/en/latest/reference/celery.schedules.html#celery.schedules.crontab
+        """
+        #TODO: Implement argument passing to task
+        def _wrapper(function):
+            task = celery.task(function, base=ExceptionLoggerTask)
+            celery.add_periodic_task(interval, task.s())
+            return function
+
+        return _wrapper
 
     @classmethod
     def responder(cls, plugin: str='', *actions: [Enum]):
