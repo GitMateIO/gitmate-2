@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+  
 
 from os import environ
 from subprocess import call
 from subprocess import Popen
 import sys
-
+ 
 if __name__ == '__main__':
     print('\033[36mBE SURE TO HAVE YOUR SECRETS EXPOSED!\033[0m')
 
