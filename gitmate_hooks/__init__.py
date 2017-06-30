@@ -74,18 +74,22 @@ class ResponderRegistrar:
     _plugins = {}
 
     @classmethod
-    def scheduler(cls, interval: (crontab, float)): # pragma: no cover
+    def scheduler(cls,
+                  interval: (crontab, float),
+                  *args,
+                  **kwargs): # pragma: no cover
         """
         Registers the decorated function as a periodic task.
         The task should not accept any arguments.
         :param interval: Periodic interval in seconds as float or
                 crontab object specifying task trigger time.
                 See http://docs.celeryproject.org/en/latest/reference/celery.schedules.html#celery.schedules.crontab
+        :param args: Arguments to pass to scheduled task.
+        :param kwargs: Keyword arguments to pass to scheduled task.
         """
-        #TODO: Implement argument passing to task
         def _wrapper(function):
             task = celery.task(function, base=ExceptionLoggerTask)
-            celery.add_periodic_task(interval, task.s())
+            celery.add_periodic_task(interval, task.s(), args, kwargs)
             return function
 
         return _wrapper
