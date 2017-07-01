@@ -32,3 +32,14 @@ def snake_case_to_camel_case(string: str):
     Converts a string from snake_case to CamelCase.
     """
     return ''.join(group.capitalize() or '_' for group in string.split('_'))
+
+class ScheduledTasks(Enum):
+    """
+    Task schedules type
+    """
+    # Scheduled to run daily
+    DAILY = 1
+    # Scheduled to run weekly
+    WEEKLY = 2
+    # Scheduled to run monthy
+    MONTHLY = 3
