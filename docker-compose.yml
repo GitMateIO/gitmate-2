@@ -35,3 +35,15 @@ services:
     depends_on:
       - rabbit
       - backend
+  beat:
+    build: .
+    command: ./docker/run-beat.sh
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file: ./docker/environment
+    links:
+      - db
+      - rabbit
+    depends_on:
+      - rabbit
+      - backend
