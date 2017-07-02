@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'gitmate_config',
+    'igitt_django',
     'rest_framework',
     'rest_framework_docs',
     'corsheaders',
