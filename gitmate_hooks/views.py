@@ -17,7 +17,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from gitmate_config import Providers
+from igitt_django import Providers
 from gitmate_config.models import Repository
 from gitmate_hooks import ResponderRegistrar
 from gitmate_hooks import signature_check

@@ -9,7 +9,7 @@ from celery import Task
 from celery.utils.log import get_logger
 from rest_framework import status
 from rest_framework.response import Response
-from gitmate_config import Providers
+from igitt_django import Providers
 
 from gitmate.celery import app as celery
 
@@ -46,7 +46,7 @@ def signature_check(key: str=None,
 class ExceptionLoggerTask(Task):
     """
     Celery Task subclass to log exceptions on failure.
-    
+
     For Task inheritance see:
     http://docs.celeryproject.org/en/latest/userguide/tasks.html#task-inheritance
     """

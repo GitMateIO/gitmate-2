@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from social_django.models import UserSocialAuth
 
-from gitmate_config import Providers
+from igitt_django import Providers
 from gitmate_config.models import Repository
 from gitmate_config.tests.test_base import GitmateTestCase
 from gitmate_config.views import RepositoryViewSet

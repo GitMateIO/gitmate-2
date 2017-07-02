@@ -11,7 +11,7 @@ from IGitt.GitLab.GitLabRepository import GitLabRepository
 from IGitt.Interfaces.Repository import Repository
 from rest_framework.reverse import reverse
 
-from gitmate_config import Providers
+from igitt_django import Providers
 
 
 class Plugin(models.Model):

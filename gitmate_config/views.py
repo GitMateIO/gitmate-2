@@ -15,7 +15,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from social_django.models import UserSocialAuth
 
-from gitmate_config import Providers
+from igitt_django import Providers
 from gitmate_config.models import Repository
 
 from .serializers import PluginSettingsSerializer

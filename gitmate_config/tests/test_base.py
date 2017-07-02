@@ -12,7 +12,7 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory
 from social_django.models import UserSocialAuth
 
-from gitmate_config import Providers
+from igitt_django import Providers
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 from gitmate_hooks.views import github_webhook_receiver
