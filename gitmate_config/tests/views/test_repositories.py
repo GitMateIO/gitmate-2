@@ -51,7 +51,7 @@ class TestRepositories(GitmateTestCase):
         response = self.repo_detail(activate_repo_request, pk=self.repo.pk)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('https://localhost:8000/webhooks/github',
-                      self.repo.igitt_repo().hooks)
+                      self.repo.to_igitt_instance().hooks)
 
         deactivate_repo_request = self.factory.patch(
             url,
@@ -61,7 +61,7 @@ class TestRepositories(GitmateTestCase):
         response = self.repo_detail(deactivate_repo_request, pk=self.repo.pk)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertNotIn('https://localhost:8000/webhooks/github',
-                         self.repo.igitt_repo().hooks)
+                         self.repo.to_igitt_instance().hooks)
 
     def test_set_user(self):
         url = reverse('api:repository-detail', args=(self.repo.pk,))
@@ -88,8 +88,8 @@ class TestRepositories(GitmateTestCase):
         self.assertEqual(response.data['user'], 'max')
 
     def test_igitt_repo_creation(self):
-        igitt_repo = self.repo.igitt_repo()
-        igitt_repo_gl = self.gl_repo.igitt_repo()
+        igitt_repo = self.repo.to_igitt_instance()
+        igitt_repo_gl = self.gl_repo.to_igitt_instance()
         self.assertIsInstance(igitt_repo, IGittRepository)
         self.assertIsInstance(igitt_repo_gl, IGittRepository)
 
@@ -107,4 +107,4 @@ class TestRepositories(GitmateTestCase):
                 provider='unknownprovider',
                 full_name='some_repo',
                 active=False
-            ).igitt_repo()
+            ).to_igitt_instance()

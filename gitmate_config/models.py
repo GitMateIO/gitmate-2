@@ -6,12 +6,10 @@ from django.db import models
 from django.forms.models import model_to_dict
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from IGitt.GitHub.GitHubRepository import GitHubRepository
-from IGitt.GitLab.GitLabRepository import GitLabRepository
-from IGitt.Interfaces.Repository import Repository
 from rest_framework.reverse import reverse
 
 from igitt_django import Providers
+from igitt_django.models import AbstractRepository
 
 
 class Plugin(models.Model):
@@ -84,26 +82,24 @@ class Plugin(models.Model):
         instance.save()
 
 
-class Repository(models.Model):
+class Repository(AbstractRepository):
     # The user who operates the repository
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # The users who can control the repository
     admins = models.ManyToManyField(User, related_name='admin_repos')
 
-    # The provider for the hosted repository
-    provider = models.CharField(default=None, max_length=32)
-
-    # The full name of the repository along with username
-    full_name = models.CharField(default=None, max_length=255)
-
     # The set of active plugins on the repository
     plugins = models.ManyToManyField(Plugin)
 
     active = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.full_name
+    def to_igitt_instance(self, raw_token: str=None):
+        """
+        Returns an IGitt Repository object.
+        """
+        return super(Repository, self).to_igitt_instance(
+            self.user.social_auth.get(provider=self.provider).access_token)
 
     def get_plugin_settings(self):
         """
@@ -148,19 +144,6 @@ class Repository(models.Model):
             if 'settings' in plugin:
                 if isinstance(plugin['settings'], dict):
                     plugin_obj.set_settings(self, plugin['settings'])
-
-    def igitt_repo(self) -> Repository:
-        token_str = self.user.social_auth.get(
-            provider=self.provider).extra_data['access_token']
-        if self.provider == Providers.GITHUB.value:
-            token = Providers.GITHUB.get_token(token_str)
-            return GitHubRepository(token, self.full_name)
-        if self.provider == Providers.GITLAB.value:
-            token = Providers.GITLAB.get_token(token_str)
-            return GitLabRepository(token, self.full_name)
-
-        # Other providers aren't implemented yet.
-        raise NotImplementedError
 
     class Meta:
         unique_together = ('provider', 'full_name')

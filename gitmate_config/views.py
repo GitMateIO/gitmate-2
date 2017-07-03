@@ -87,7 +87,7 @@ class RepositoryViewSet(
         retval = super().update(request, *args, **kwargs)
 
         instance = self.get_object()
-        repo = instance.igitt_repo()
+        repo = instance.to_igitt_instance()
         hook_url = 'https://{domain}/webhooks/{provider}'.format(
             domain = settings.HOOK_DOMAIN, provider=instance.provider)
 
