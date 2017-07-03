@@ -12,10 +12,12 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 from ast import literal_eval
 import os
+import sys
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(BASE_DIR, 'plugins'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -44,19 +46,7 @@ ALLOWED_HOSTS += os.environ.get('DJANGO_ALLOWED_HOSTS', '').split()
 CORS_ORIGIN_WHITELIST = ALLOWED_HOSTS
 CORS_ALLOW_CREDENTIALS = True
 
-GITMATE_PLUGINS = [
-    'code_analysis',
-    'welcome_commenter',
-    'auto_label_pending_or_wip',
-    'pr_size_labeller',
-    'issue_labeller',
-    'bug_spotter',
-    'ack',
-]
-
-# Application definition
-
-INSTALLED_APPS = [
+REQUISITE_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -69,7 +59,21 @@ INSTALLED_APPS = [
     'rest_framework_docs',
     'corsheaders',
     'coala_online',
-] + ['gitmate_'+plugin for plugin in GITMATE_PLUGINS]
+]
+
+GITMATE_PLUGINS = [
+    'code_analysis',
+    'welcome_commenter',
+    'auto_label_pending_or_wip',
+    'pr_size_labeller',
+    'issue_labeller',
+    'bug_spotter',
+    'ack',
+]
+
+# Application definition
+INSTALLED_APPS = (REQUISITE_APPS +
+                  ['gitmate_' + name for name in GITMATE_PLUGINS])
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
