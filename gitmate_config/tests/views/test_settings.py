@@ -47,6 +47,7 @@ class TestSettings(GitmateTestCase):
         plugin_data = [{
             'name': 'testplugin',
             'title': 'Testing',
+            'plugin_category': 'test',
             'description': (
                 'A simple plugin used for testing. Smile :)'
             ),
@@ -99,6 +100,7 @@ class TestSettings(GitmateTestCase):
                 {
                     'name': 'testplugin',
                     'title': 'Testing',
+                    'plugin_category': 'test',
                     'description': (
                         'A simple plugin used for testing. Smile :)'
                     ),
