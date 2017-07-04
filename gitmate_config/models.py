@@ -51,6 +51,7 @@ class Plugin(models.Model):
         return {
             'name': self.name,
             'title': self.config_value('verbose_name', None),
+            'plugin_category': self.config_value('plugin_category', None),
             'description': self.config_value('description', ''),
             'active': repo.plugins.filter(name=self).exists(),
             'settings': [

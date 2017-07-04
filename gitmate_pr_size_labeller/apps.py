@@ -4,6 +4,7 @@ from django.apps import AppConfig
 class GitmatePrSizeLabellerConfig(AppConfig):
     name = 'gitmate_pr_size_labeller'
     verbose_name = 'PR Size Labelling'
+    plugin_category = 'pull_request'
     description = (
         'Sets size labels on new pull requests in this repository'\
         ' (XS/S/M/L/XL/XXL). '\
