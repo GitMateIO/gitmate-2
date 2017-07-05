@@ -11,22 +11,27 @@ variables:
   DOCKER_DRIVER: overlay
 
 before_script:
-  - export TEST_IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH:${CI_COMMIT_REF_NAME/\//-}-$CI_COMMIT_SHA
+  - export TEST_IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH:$CI_COMMIT_SHA
   - export MASTER_NAME=registry.gitlab.com/$CI_PROJECT_PATH:latest
   - export RELEASE_NAME=registry.gitlab.com/$CI_PROJECT_PATH:release
   - export WEBHOOK_SECRET=foobar
   - export COALA_RESULTS_IMAGE=registry.gitlab.com/gitmate/open-source/coala-incremental-results:latest
   - export RESULTS_BOUNCER_IMAGE=registry.gitlab.com/gitmate/open-source/result-bouncer:latest
 
+stages:
+  - test
+  - release
+  - deploy
+
 check_code:
   image: python:3
+  stage: test
   script:
   - pip install 'coala-bears[alldeps]'
   - pip install -r requirements.txt
   - coala --ci
   except:
   - master
-  - release
 
 cache:
   paths:
@@ -34,35 +39,77 @@ cache:
 
 run_tests:
   image: python:3
+  stage: test
   script:
   - pip3 install -r requirements.txt
   - pip3 install -r test-requirements.txt
   - py.test -vv --cov --doctest-modules
   except:
   - master
-  - release
 
 build_image:
+  stage: test
   script:
     - docker build -t $TEST_IMAGE_NAME .
     - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker push $TEST_IMAGE_NAME
   except:
-    - master
-    - release
+   - master
 
-master_build:
+push_master_image:
+  stage: release
   script:
     - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker build -t $MASTER_NAME .
+    - docker pull $TEST_IMAGE_NAME
+    - docker tag $TEST_IMAGE_NAME $MASTER_NAME
     - docker push $MASTER_NAME
   only:
     - master
 
-release_build:
+push_release_image:
+  stage: release
   script:
     - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker build -t $RELEASE_NAME .
+    - docker pull $TEST_IMAGE_NAME
+    - docker tag $TEST_IMAGE_NAME $RELEASE_NAME
     - docker push $RELEASE_NAME
+  when: manual
   only:
-    - release
+    - master
+
+deploy_master:
+  stage: deploy
+  image: debian:9
+  script:
+    - which ssh-agent || (apt-get update -y && apt-get install -y --no-install-recommends openssh-client)
+    - eval $(ssh-agent -s)
+    - ssh-add < $(echo "$DEPLOY_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
+    - ssh tomoko@moon.gitmate.io 'bash -s' < ~/.ci/deploy.master.sh
+  environment:
+    name: master
+    url: api.master.gitmate.io
+  dependencies:
+    - push_master_image
+  only:
+    - master
+
+deploy_release:
+  stage: deploy
+  image: debian:9
+  script:
+    - which ssh-agent || (apt-get update -y && apt-get install -y --no-install-recommends openssh-client)
+    - eval $(ssh-agent -s)
+    - ssh-add < $(echo "$DEPLOY_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
+    - ssh tomoko@moon.gitmate.io 'bash -s' < ~/.ci/deploy.release.sh
+  environment:
+    name: release
+    url: api.gitmate.io
+  dependencies:
+    - push_release_image
+  when: manual
+  only:
+    - master
