@@ -1,5 +1,7 @@
 {{ unicode_literals }}from django.apps import AppConfig
 
+from gitmate.utils import PluginCategory
+
 
 class {{ camel_case_plugin_name }}Config(AppConfig):
     name = '{{ plugin_name }}'

@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from enum import Enum
 
 
 from django_pglocks import advisory_lock
@@ -13,3 +14,14 @@ def lock_igitt_object(task: str, igitt_object):
     with advisory_lock(task + igitt_object.url):
         igitt_object.refresh()
         yield
+
+class PluginCategory(Enum):
+    """
+    Enum class to hold types of plugins.
+    """
+    # Plugin related to analysis
+    ANALYSIS = 'analysis'
+    # Plugin related to issues
+    ISSUE = 'issue'
+    # Plugin related to Pull Requests
+    PULLS = 'pull_request'
