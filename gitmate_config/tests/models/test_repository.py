@@ -135,7 +135,7 @@ class TestRepository(GitmateTestCase):
                 {
                     'name': 'testplugin',
                     'title': 'Testing',
-                    'plugin_category': 'test',
+                    'plugin_category': 'issue',
                     'description': (
                         'A simple plugin used for testing. Smile :)'
                     ),
