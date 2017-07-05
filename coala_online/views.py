@@ -29,4 +29,6 @@ def coala_online(request):
 
     response = run_coala_online.delay(req)
 
+    if 'error' in response.keys():
+        return JsonResponse(response.get(), safe=False, status=422)
     return JsonResponse(response.get(), safe=False)
