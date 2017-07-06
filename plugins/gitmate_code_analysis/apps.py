@@ -4,7 +4,7 @@ from gitmate.utils import PluginCategory
 
 
 class GitmateCodeAnalysisConfig(AppConfig):
-    name = 'gitmate_code_analysis'
+    name = 'plugins.gitmate_code_analysis'
     verbose_name = 'Code Analysis'
     plugin_category = PluginCategory.ANALYSIS
     description = 'Checks new and updated pull requests of this repository '\

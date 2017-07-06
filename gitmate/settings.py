@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 from ast import literal_eval
 import os
 
+from gitmate.utils import snake_case_to_camel_case
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -69,7 +71,9 @@ INSTALLED_APPS = [
     'rest_framework_docs',
     'corsheaders',
     'coala_online',
-] + ['gitmate_'+plugin for plugin in GITMATE_PLUGINS]
+] + ['plugins.gitmate_{}.apps.{}Config'.format(
+        plugin, snake_case_to_camel_case('gitmate_' + plugin))
+     for plugin in GITMATE_PLUGINS]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
