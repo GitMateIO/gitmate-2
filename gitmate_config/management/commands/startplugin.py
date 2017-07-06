@@ -1,3 +1,5 @@
+from os import makedirs
+
 from importlib import import_module
 
 from django.core.management.base import CommandError
@@ -18,6 +20,7 @@ class Command(TemplateCommand):
 
         options['plugin_name'] = plugin_name
         options['short_plugin_name'] = short_plugin_name
+        target = 'plugins/' + plugin_name
 
         # Change the template directory.
         options['template'] = 'gitmate_config/templates/plugin'
@@ -26,8 +29,10 @@ class Command(TemplateCommand):
 
         # Check that the plugin_name cannot be imported.
         try:
-            import_module(plugin_name)
+            import_module('plugins.' + plugin_name)
         except ImportError:
+            # make a new directory for the plugin
+            makedirs(target, exist_ok=True)
             pass
         else:
             raise CommandError(
@@ -37,4 +42,4 @@ class Command(TemplateCommand):
             )
 
         super().handle(
-            'plugin', plugin_name, None, **options)
+            'plugin', plugin_name, target, **options)

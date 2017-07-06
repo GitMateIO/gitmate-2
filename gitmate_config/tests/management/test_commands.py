@@ -44,4 +44,4 @@ class TestCommands(GitmateTestCase):
             call_command('startplugin', 'testplugin')
 
         call_command('startplugin', 'star_wars')
-        rmtree('gitmate_star_wars')
+        rmtree('plugins/gitmate_star_wars')
