@@ -83,7 +83,7 @@ deploy_master:
   script:
     - which ssh-agent || (apt-get update -y && apt-get install -y --no-install-recommends openssh-client)
     - eval $(ssh-agent -s)
-    - ssh-add < $(echo "$DEPLOY_PRIVATE_KEY")
+    - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
     - ssh tomoko@moon.gitmate.io 'bash -s' < ~/.ci/deploy.master.sh
@@ -101,7 +101,7 @@ deploy_release:
   script:
     - which ssh-agent || (apt-get update -y && apt-get install -y --no-install-recommends openssh-client)
     - eval $(ssh-agent -s)
-    - ssh-add < $(echo "$DEPLOY_PRIVATE_KEY")
+    - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
     - ssh tomoko@moon.gitmate.io 'bash -s' < ~/.ci/deploy.release.sh
