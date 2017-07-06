@@ -20,7 +20,10 @@ from gitmate_hooks.views import github_webhook_receiver
 from gitmate_hooks.views import gitlab_webhook_receiver
 
 
-def reinit_plugin(name, upmate: bool=False):
+# this is a helper method to reinitate gitmate plugins and is used only
+# for testing purposes and is not a part of the actual gitmate server, 
+# henceforth coverage here is not required.
+def reinit_plugin(name, upmate: bool=False): # pragma: no cover
     """
     Reinitialize gitmate with plugin and upmate, if specified.
     """
