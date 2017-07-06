@@ -27,7 +27,7 @@ def analyse(repo, sha, clone_url, ref):
     the anlaysis if it's there.
     """
     # Don't move to module code! Apps aren't loaded yet.
-    from gitmate_code_analysis.models import AnalysisResults
+    from plugins.gitmate_code_analysis.models import AnalysisResults
 
     try:
         # Cached result available

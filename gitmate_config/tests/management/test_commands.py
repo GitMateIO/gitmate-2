@@ -27,7 +27,8 @@ class TestCommands(GitmateTestCase):
 
         testplugin_module = testplugin.import_module()
         self.assertTrue(ismodule(testplugin_module))
-        self.assertEqual(testplugin_module.__name__, 'gitmate_testplugin')
+        self.assertEqual(testplugin_module.__name__,
+                         'plugins.gitmate_testplugin')
 
         call_command('upmate')
         self.repo.plugins.add(testplugin)

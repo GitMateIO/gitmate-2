@@ -12,6 +12,7 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory
 from social_django.models import UserSocialAuth
 
+from gitmate.utils import snake_case_to_camel_case
 from gitmate_config import Providers
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
@@ -24,12 +25,14 @@ def reinit_plugin(name, upmate: bool=False):
     Reinitialize gitmate with plugin and upmate, if specified.
     """
     app_name = 'gitmate_' + name
+    app_config_name = 'plugins.{}.apps.{}Config'.format(
+        app_name, snake_case_to_camel_case(app_name))
 
-    if app_name in settings.INSTALLED_APPS:
+    if app_config_name in settings.INSTALLED_APPS:
         return
 
     settings.GITMATE_PLUGINS += [name]
-    settings.INSTALLED_APPS += [app_name]
+    settings.INSTALLED_APPS += [app_config_name]
     # To load the new app let's reset app_configs, the dictionary
     # with the configuration of loaded apps
     apps.app_configs = OrderedDict()
