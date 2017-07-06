@@ -5,7 +5,7 @@ from gitmate.utils import PluginCategory
 
 class GitmatePrSizeLabellerConfig(AppConfig):
     name = 'plugins.gitmate_pr_size_labeller'
-    verbose_name = 'PR Size Labelling'
+    verbose_name = 'Assign label based on size'
     plugin_category = PluginCategory.PULLS
     description = (
         'Sets size labels on new pull requests in this repository'\
