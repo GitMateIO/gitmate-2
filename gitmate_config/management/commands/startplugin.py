@@ -1,3 +1,5 @@
+from os import makedirs
+
 from importlib import import_module
 
 from django.core.management.base import CommandError
@@ -18,6 +20,7 @@ class Command(TemplateCommand):
 
         options['plugin_name'] = plugin_name
         options['short_plugin_name'] = short_plugin_name
+        target = 'plugins/' + plugin_name
 
         # Change the template directory.
         options['template'] = 'gitmate_config/templates/plugin'
@@ -36,5 +39,12 @@ class Command(TemplateCommand):
                 % plugin_name
             )
 
+        try:
+            makedirs(target)
+        except FileExistsError:
+            raise CommandError("'%s' already exists" % target)
+        except OSError as ex:
+            raise CommandError(ex)
+
         super().handle(
-            'plugin', plugin_name, None, **options)
+            'plugin', plugin_name, target, **options)
