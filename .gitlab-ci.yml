@@ -64,6 +64,7 @@ deploy_master:
     url: api.master.gitmate.io
   only:
     - master
+    - yuki_is_bored/test-deploy-improvement
 
 deploy_release:
   stage: deploy
