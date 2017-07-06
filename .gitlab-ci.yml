@@ -20,7 +20,6 @@ before_script:
 
 stages:
   - test
-  - release
   - deploy
 
 check_code:
@@ -56,60 +55,23 @@ build_image:
   except:
    - master
 
-push_master_image:
-  stage: release
-  script:
-    - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker pull $TEST_IMAGE_NAME
-    - docker tag $TEST_IMAGE_NAME $MASTER_NAME
-    - docker push $MASTER_NAME
-  only:
-    - master
-
-push_release_image:
-  stage: release
-  script:
-    - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker pull $TEST_IMAGE_NAME
-    - docker tag $TEST_IMAGE_NAME $RELEASE_NAME
-    - docker push $RELEASE_NAME
-  when: manual
-  only:
-    - master
-
 deploy_master:
   stage: deploy
-  image: debian:9
   script:
-    - which ssh-agent || (apt-get update -y && apt-get install -y --no-install-recommends openssh-client)
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
-    - mkdir -p ~/.ssh
-    - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
-    - ssh tomoko@moon.gitmate.io 'bash -s' < .ci/deploy.master.sh
+    - .ci/deploy.sh master
   environment:
     name: master
     url: api.master.gitmate.io
-  dependencies:
-    - push_master_image
   only:
     - master
 
 deploy_release:
   stage: deploy
-  image: debian:9
   script:
-    - which ssh-agent || (apt-get update -y && apt-get install -y --no-install-recommends openssh-client)
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
-    - mkdir -p ~/.ssh
-    - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
-    - ssh tomoko@moon.gitmate.io 'bash -s' < .ci/deploy.release.sh
+    - .ci/deploy.sh release
   environment:
     name: release
     url: api.gitmate.io
-  dependencies:
-    - push_release_image
   when: manual
   only:
     - master
