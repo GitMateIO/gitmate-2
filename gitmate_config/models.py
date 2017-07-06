@@ -36,7 +36,7 @@ class Plugin(models.Model):
             return False
 
     def import_module(self):
-        return import_module(self.full_name)
+        return import_module(self.config_value('name'))
 
     def config_value(self, key, default=None):
         return getattr(apps.get_app_config(self.full_name), key, default)

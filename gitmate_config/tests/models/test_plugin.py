@@ -41,7 +41,7 @@ class TestPlugin(GitmateTestCase):
         # import_module should try to import gitmate_{plugin.name}
         module = plugin.import_module()
         assert ismodule(module)
-        assert module.__name__ == 'gitmate_testplugin'
+        assert module.__name__ == 'plugins.gitmate_testplugin'
 
     def test_set_settings(self):
         new_settings = {
