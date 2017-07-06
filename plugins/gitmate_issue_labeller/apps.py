@@ -4,7 +4,7 @@ from gitmate.utils import PluginCategory
 
 
 class GitmateIssueLabellerConfig(AppConfig):
-    name = 'gitmate_issue_labeller'
+    name = 'plugins.gitmate_issue_labeller'
     verbose_name = 'Issue Autolabeller'
     plugin_category = PluginCategory.ISSUE
     description = 'Sets labels on newly created issues based on keywords.'

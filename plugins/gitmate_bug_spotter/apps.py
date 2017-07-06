@@ -4,7 +4,7 @@ from gitmate.utils import PluginCategory
 
 
 class GitmateBugSpotterConfig(AppConfig):
-    name = 'gitmate_bug_spotter'
+    name = 'plugins.gitmate_bug_spotter'
     verbose_name = 'PR bug spotter'
     plugin_category = PluginCategory.ANALYSIS
     description = 'Sets a label on new pull request if their likelyhood of '\

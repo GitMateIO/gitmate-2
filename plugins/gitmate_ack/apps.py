@@ -3,7 +3,7 @@ from django.apps import AppConfig
 from gitmate.utils import PluginCategory
 
 class GitmateAckConfig(AppConfig):
-    name = 'gitmate_ack'
+    name = 'plugins.gitmate_ack'
     verbose_name = 'Commit Acknowledger'
     plugin_category = PluginCategory.PULLS
     description = ('Acknowledge/Unacknowledge commits in a PR based on '

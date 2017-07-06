@@ -25,3 +25,10 @@ class PluginCategory(Enum):
     ISSUE = 'issue'
     # Plugin related to Pull Requests
     PULLS = 'pull_request'
+
+
+def snake_case_to_camel_case(string: str):
+    """
+    Converts a string from snake_case to CamelCase.
+    """
+    return ''.join(group.capitalize() or '_' for group in string.split('_'))

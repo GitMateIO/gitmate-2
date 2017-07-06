@@ -4,7 +4,7 @@ from gitmate.utils import PluginCategory
 
 
 class GitmatePrSizeLabellerConfig(AppConfig):
-    name = 'gitmate_pr_size_labeller'
+    name = 'plugins.gitmate_pr_size_labeller'
     verbose_name = 'PR Size Labelling'
     plugin_category = PluginCategory.PULLS
     description = (

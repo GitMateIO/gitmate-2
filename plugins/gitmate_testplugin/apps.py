@@ -4,7 +4,7 @@ from gitmate.utils import PluginCategory
 
 
 class GitmateTestpluginConfig(AppConfig):
-    name = 'gitmate_testplugin'
+    name = 'plugins.gitmate_testplugin'
     verbose_name = 'Testing'
     plugin_category = PluginCategory.ISSUE
     description = 'A simple plugin used for testing. Smile :)'
