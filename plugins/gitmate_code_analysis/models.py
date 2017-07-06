@@ -7,7 +7,7 @@ from gitmate_config.models import Repository, SettingsBase
 class Settings(SettingsBase):
     pr_based_analysis = models.BooleanField(
         default=True,
-        help_text='Analyze full pull requests and not commit by commit'
+        help_text='Run analysis only for the head commit of a pull request'
     )
 
 
