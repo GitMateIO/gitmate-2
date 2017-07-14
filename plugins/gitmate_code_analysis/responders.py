@@ -207,6 +207,7 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
                     Status.SUCCESS, 'This PR has no issues. :)',
                     'GitMate-2 PR Review', 'http://2.gitmate.io/'))
         else:  # Run coala per commit
+            failed = False
             for commit in pr.commits:
                 new_results = analyse(
                     repo, commit.sha, igitt_repo.clone_url, ref)
@@ -218,6 +219,7 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
 
                 # set commit status as failed if any results are found
                 if any(s_results for _, s_results in filtered_results.items()):
+                    failed = True
                     commit.set_status(CommitStatus(
                         Status.FAILED, 'This commit has issues!',
                         'GitMate-2 Commit Review', 'http://2.gitmate.io/'))
@@ -225,6 +227,16 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
                     commit.set_status(CommitStatus(
                         Status.SUCCESS, 'This commit has no issues. :)',
                         'GitMate-2 Commit Review', 'http://2.gitmate.io/'))
+
+            if failed:
+                pr.head.set_status(CommitStatus(
+                    Status.FAILED, 'This PR has issues!',
+                    'GitMate-2 PR Review', 'http://gitmate.io/'))
+            else:
+                pr.head.set_status(CommitStatus(
+                    Status.SUCCESS, 'This PR has no issues. :)',
+                    'GitMate-2 PR Review', 'http://gitmate.io/'))
+
     except Exception as exc:  # pragma: no cover
         print(str(exc))
         print_exc()
