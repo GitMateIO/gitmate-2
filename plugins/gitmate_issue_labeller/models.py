@@ -10,3 +10,8 @@ class Settings(SettingsBase):
         blank=False,
         help_text='The labels to be avoided on issues.',
         default=['invalid', 'duplicate', 'bounty'])
+    keywords = psql_fields.JSONField(
+        help_text='Comma seperated keywords (values) triggering labels (keys) '
+                  'to be set; e.g. type/bug: bug, crash.',
+        default={}
+    )

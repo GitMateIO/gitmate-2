@@ -42,14 +42,15 @@ def matches(expression, pattern, min_match_ratio=0.8):
 @ResponderRegistrar.responder('issue_labeller', IssueActions.OPENED)
 def add_labels_to_issue(
     issue: Issue,
-    blacklisted_labels: [str] = 'Labels which should not be used'
+    blacklisted_labels: [str] = 'Labels which should not be used',
+    keywords: dict() = 'Keywords that trigger respective labels',
 ):
     issue_summary = issue.title.lower() + ' ' + issue.description.lower()
+    keywords_label_dict = {keyword.strip(): value
+                           for value, l_keywords in keywords.items()
+                           for keyword in l_keywords.split(',')}
 
     with lock_igitt_object('label issue', issue):
-        new_labels = set({
-            label for label in issue.available_labels
-            if matches(issue_summary, label, 0.9) and
-            label not in blacklisted_labels})
-
+        new_labels = {label for keyword, label in keywords_label_dict.items()
+                      if keyword in issue_summary}
         issue.labels = new_labels.union(issue.labels)
