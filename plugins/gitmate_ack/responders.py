@@ -18,7 +18,7 @@ def get_keywords(string: str):
 )
 def gitmate_ack(pr: MergeRequest,
                 comment: Comment,
-                ack_strs: str = 'ack',
+                ack_strs: str = 'ack, reack',
                 unack_strs: str = 'unack'):
     """
     A responder to ack and unack commits
