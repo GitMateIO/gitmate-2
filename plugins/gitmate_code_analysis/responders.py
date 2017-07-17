@@ -178,11 +178,11 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
         for commit in pr.commits:
             commit.set_status(CommitStatus(
                 Status.RUNNING, 'GitMate-2 analysis in progress...',
-                'GitMate-2 Commit Review', 'http://gitmate.io'))
+                'review/gitmate/commit', 'http://gitmate.io'))
     else:
         pr.head.set_status(CommitStatus(
             Status.RUNNING, 'GitMate-2 analysis in progress...',
-            'GitMate-2 PR Review', 'http://gitmate.io/'))
+            'review/gitmate/pr', 'http://gitmate.io/'))
 
     ref = get_ref(pr)
 
@@ -201,11 +201,11 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
             if any(s_results for _, s_results in filtered_results.items()):
                 pr.head.set_status(CommitStatus(
                     Status.FAILED, 'This PR has issues!',
-                    'GitMate-2 PR Review', 'http://gitmate.io/'))
+                    'review/gitmate/pr', 'http://gitmate.io/'))
             else:
                 pr.head.set_status(CommitStatus(
                     Status.SUCCESS, 'This PR has no issues. :)',
-                    'GitMate-2 PR Review', 'http://gitmate.io/'))
+                    'review/gitmate/pr', 'http://gitmate.io/'))
         else:  # Run coala per commit
             failed = False
             for commit in pr.commits:
@@ -222,20 +222,20 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
                     failed = True
                     commit.set_status(CommitStatus(
                         Status.FAILED, 'This commit has issues!',
-                        'GitMate-2 Commit Review', 'http://gitmate.io/'))
+                        'review/gitmate/commit', 'http://gitmate.io/'))
                 else:
                     commit.set_status(CommitStatus(
                         Status.SUCCESS, 'This commit has no issues. :)',
-                        'GitMate-2 Commit Review', 'http://gitmate.io/'))
+                        'review/gitmate/commit', 'http://gitmate.io/'))
 
             if failed:
                 pr.head.set_status(CommitStatus(
                     Status.FAILED, 'This PR has issues!',
-                    'GitMate-2 PR Review', 'http://gitmate.io/'))
+                    'review/gitmate/pr', 'http://gitmate.io/'))
             else:
                 pr.head.set_status(CommitStatus(
                     Status.SUCCESS, 'This PR has no issues. :)',
-                    'GitMate-2 PR Review', 'http://gitmate.io/'))
+                    'review/gitmate/pr', 'http://gitmate.io/'))
 
     except Exception as exc:  # pragma: no cover
         print(str(exc))
