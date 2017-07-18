@@ -7,7 +7,6 @@ from gitmate_hooks import ResponderRegistrar
 
 @ResponderRegistrar.responder(
     'auto_label_pending_or_wip',
-    MergeRequestActions.ATTRIBUTES_CHANGED,
     MergeRequestActions.OPENED,
     MergeRequestActions.SYNCHRONIZED
 )

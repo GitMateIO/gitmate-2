@@ -22,7 +22,7 @@ class TestAutoLabelPendingOrWip(GitmateTestCase):
         self.gitlab_data = {
             'object_attributes': {
                 'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
-                'action': 'update',
+                'action': 'open',
                 'iid': 2
             }
         }
