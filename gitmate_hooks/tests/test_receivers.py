@@ -12,10 +12,8 @@ from gitmate_hooks.views import github_webhook_receiver
 
 
 class TestWebhookReceivers(GitmateTestCase):
-
-    def setUp(self):
-        super().setUp(active=True)
-        self.key = settings.WEBHOOK_SECRET
+    active = True
+    key = settings.WEBHOOK_SECRET
 
     def test_github_webhook_receiver_signature_match_failed(self):
         data = {'some-random-key': 'some-random-value'}

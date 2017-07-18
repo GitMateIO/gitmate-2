@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from hashlib import sha1
 import hmac
+import inspect
 import os
 
 from django.apps import apps
@@ -11,6 +12,7 @@ from django.test import TransactionTestCase
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory
 from social_django.models import UserSocialAuth
+import vcr
 
 from gitmate.utils import snake_case_to_camel_case
 from gitmate_config import Providers
@@ -21,7 +23,7 @@ from gitmate_hooks.views import gitlab_webhook_receiver
 
 
 # this is a helper method to reinitate gitmate plugins and is used only
-# for testing purposes and is not a part of the actual gitmate server, 
+# for testing purposes and is not a part of the actual gitmate server,
 # henceforth coverage here is not required.
 def reinit_plugin(name, upmate: bool=False): # pragma: no cover
     """
@@ -57,12 +59,33 @@ class GitmateTestCase(TransactionTestCase):
     A base class for setting up a dummy user, request factory and a repo for
     the user.
     """
+    active = False
+    upmate = True
 
-    def setUp(self, active: bool=False, upmate=True):
+    def _get_cassette_name(self):
+        return '{0}.{1}.yaml'.format(self.__class__.__name__,
+                                     self._testMethodName)
+
+    def _get_vcr(self):
+        testdir = os.path.dirname(inspect.getfile(self.__class__))
+        cassettes_dir = os.path.join(testdir, 'cassettes')
+        return vcr.VCR(
+            cassette_library_dir=cassettes_dir,
+            match_on=['method', 'scheme', 'host', 'port', 'path'],
+            filter_query_parameters=['access_token', 'private_token'],
+            filter_post_data_parameters=['access_token', 'private_token'])
+
+    def setUp(self):
         # Reconfigure gitmate for tests
-        reinit_plugin('testplugin', upmate=upmate)
+        reinit_plugin('testplugin', upmate=self.upmate)
 
         self.factory = APIRequestFactory()
+
+        # use vcrpy recorder
+        myvcr = self._get_vcr()
+        context_manager = myvcr.use_cassette(self._get_cassette_name())
+        self.cassette = context_manager.__enter__()
+        self.addCleanup(context_manager.__exit__, None, None, None)
 
         self.user = User.objects.create_user(
             username='john',
@@ -89,7 +112,7 @@ class GitmateTestCase(TransactionTestCase):
             user=self.user,
             full_name=os.environ['GITHUB_TEST_REPO'],
             provider=Providers.GITHUB.value,
-            active=active)
+            active=self.active)
         self.repo.save()  # Needs an ID before adding relationship
         self.repo.admins.add(self.user)
         self.repo.save()
@@ -97,7 +120,7 @@ class GitmateTestCase(TransactionTestCase):
             user=self.user,
             full_name=os.environ['GITLAB_TEST_REPO'],
             provider=Providers.GITLAB.value,
-            active=active)
+            active=self.active)
         self.gl_repo.save()
         self.gl_repo.admins.add(self.user)
         self.gl_repo.save()

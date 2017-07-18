@@ -11,8 +11,7 @@ from gitmate_config.tests.test_base import GitmateTestCase
 
 
 class TestCommands(GitmateTestCase):
-    def setUp(self):
-        super().setUp(upmate=False)
+    upmate = False
 
     def test_upmate(self):
         # before calling upmate no plugins should be registered
