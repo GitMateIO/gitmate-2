@@ -40,7 +40,7 @@ interactions:
       Content-Encoding: [gzip]
       Content-Security-Policy: [default-src 'none']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 19 Jul 2017 05:27:49 GMT']
+      Date: ['Wed, 19 Jul 2017 05:27:18 GMT']
       ETag: [W/"b8736bdaaabcbcd03cd90abf79cd0a50"]
       Last-Modified: ['Wed, 13 Jan 2016 07:56:15 GMT']
       Server: [GitHub.com]
@@ -51,13 +51,13 @@ interactions:
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [deny]
       X-GitHub-Media-Type: [github.v3; format=json]
-      X-GitHub-Request-Id: ['4018:30C2:C9FD39:FC7069:596EEDD4']
+      X-GitHub-Request-Id: ['91EE:1A082:20A7A40:2ECB30D:596EEDB4']
       X-OAuth-Scopes: ['admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
           delete_repo, gist, notifications, repo, user']
       X-RateLimit-Limit: ['5000']
-      X-RateLimit-Remaining: ['4949']
+      X-RateLimit-Remaining: ['4952']
       X-RateLimit-Reset: ['1500443128']
-      X-Runtime-rack: ['0.050088']
+      X-Runtime-rack: ['0.047628']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -92,7 +92,7 @@ interactions:
       Content-Encoding: [gzip]
       Content-Security-Policy: [default-src 'none']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 19 Jul 2017 05:27:51 GMT']
+      Date: ['Wed, 19 Jul 2017 05:27:20 GMT']
       ETag: [W/"66d479bdf0ac185f56c16d21b045a3d0"]
       Last-Modified: ['Sun, 18 Jun 2017 02:13:10 GMT']
       Server: [GitHub.com]
@@ -103,13 +103,13 @@ interactions:
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [deny]
       X-GitHub-Media-Type: [github.v3; format=json]
-      X-GitHub-Request-Id: ['40AF:30C2:C9FE03:FC7167:596EEDD7']
+      X-GitHub-Request-Id: ['8D45:30C2:C9F281:FC6203:596EEDB7']
       X-OAuth-Scopes: ['admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
           delete_repo, gist, notifications, repo, user']
       X-RateLimit-Limit: ['5000']
-      X-RateLimit-Remaining: ['4948']
+      X-RateLimit-Remaining: ['4951']
       X-RateLimit-Reset: ['1500443128']
-      X-Runtime-rack: ['0.052495']
+      X-Runtime-rack: ['0.058532']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -166,7 +166,7 @@ interactions:
       Content-Encoding: [gzip]
       Content-Security-Policy: [default-src 'none']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 19 Jul 2017 05:27:55 GMT']
+      Date: ['Wed, 19 Jul 2017 05:27:25 GMT']
       ETag: [W/"5422fabc75141fbc66c783d05cf72b01"]
       Last-Modified: ['Sun, 18 Jun 2017 02:13:10 GMT']
       Server: [GitHub.com]
@@ -177,65 +177,13 @@ interactions:
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [deny]
       X-GitHub-Media-Type: [github.v3; format=json]
-      X-GitHub-Request-Id: ['9B8B:1A07F:4D41B6:6BF7E4:596EEDD9']
+      X-GitHub-Request-Id: ['937B:1A082:20A82DA:2ECBEF4:596EEDBA']
       X-OAuth-Scopes: ['admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
           delete_repo, gist, notifications, repo, user']
       X-RateLimit-Limit: ['5000']
-      X-RateLimit-Remaining: ['4947']
+      X-RateLimit-Remaining: ['4950']
       X-RateLimit-Reset: ['1500443128']
-      X-Runtime-rack: ['0.071436']
-      X-XSS-Protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
-    method: GET
-    uri: https://api.github.com/repos/gitmate-test-user/test/issues/7?User-Agent=IGitt
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA+2WzY6bMBDHX6XyOcSQREnWUtWX2F5aVZGBCVg1NrVNVinKu3dsSNrQJW3JHnrI
-        DcPMz+P5+JuWNEYSRkrnasso5bWYF8KVTTrPdEUN1NpSfFFxB5ED66LGgqH+iQprG7B0Q2Yk2Amn
-        zXE3mYcYyVOQdjriEhLtSC1VvIITkvEwFSj3JuwzC7FweCtoR0Jk6So5yMAvBRkpRd1IGQohcsKS
-        xXa1iJPNekZUU6VgCNvMiBNOAlY6K7kqIH/XrWfE15OwlkhdCIXff9vhTF2vt0m8jGeEH7jjZlil
-        8NIu++7x1Ewrh+kJjdTQpPf/cHi/QmRheoyPmOCLm33jca/04b+nCz32Wkr9grzhCa5bf2RLenG/
-        oIQq7kGhe0u1KwFTisf03VoI+6dWHQsvuLY4stbtRO5hFutiIJ8WYu+MAb4ojK0NihCoTWozI2on
-        tJqYySsEIrUpuBLf+R1IRFgkBTmaduDgioi/meyxGnS+La2NOPDs6NNlIANxwCrcwx1AEOuOtZ/p
-        j36GsSbCwY7nlZ/jPZcWTmdJJezzl9AJzpvrGhSaS519BZy+YIpjba0oFKCBQjX5ubadcyUkir5W
-        l+8XGWSoCZkBZOc77pCP4rOO4iRarJ6TJ7basOTpE+7X1PmVzSaK11GyfY4XLFmyJPY2mdS2x3RR
-        eGXbGfiGNw2i29sycfO68qTutrpPYnOx308U6Ln3xVPW3GXlVEZwJljaVOfHTjv7rKW4fAj58B9m
-        bEofQv4Q8v43d6xF/h8hP/0AOgMUNqkLAAA=
-    headers:
-      Access-Control-Allow-Origin: ['*']
-      Access-Control-Expose-Headers: ['ETag, Link, X-GitHub-OTP, X-RateLimit-Limit,
-          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
-          X-Poll-Interval']
-      Cache-Control: ['private, max-age=60, s-maxage=60']
-      Content-Encoding: [gzip]
-      Content-Security-Policy: [default-src 'none']
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 19 Jul 2017 05:27:57 GMT']
-      ETag: [W/"66d479bdf0ac185f56c16d21b045a3d0"]
-      Last-Modified: ['Sun, 18 Jun 2017 02:13:10 GMT']
-      Server: [GitHub.com]
-      Status: [200 OK]
-      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
-      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP', Accept-Encoding]
-      X-Accepted-OAuth-Scopes: ['public_repo, repo']
-      X-Content-Type-Options: [nosniff]
-      X-Frame-Options: [deny]
-      X-GitHub-Media-Type: [github.v3; format=json]
-      X-GitHub-Request-Id: ['4AEE:1A083:94BBF8:CDDE6D:596EEDDC']
-      X-OAuth-Scopes: ['admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
-          delete_repo, gist, notifications, repo, user']
-      X-RateLimit-Limit: ['5000']
-      X-RateLimit-Remaining: ['4946']
-      X-RateLimit-Reset: ['1500443128']
-      X-Runtime-rack: ['0.055659']
+      X-Runtime-rack: ['0.079696']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 version: 1

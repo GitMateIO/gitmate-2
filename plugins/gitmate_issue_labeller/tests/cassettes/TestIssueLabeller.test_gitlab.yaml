@@ -16,14 +16,14 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['1669']
       Content-Type: [application/json]
-      Date: ['Wed, 19 Jul 2017 05:28:01 GMT']
+      Date: ['Wed, 19 Jul 2017 10:22:00 GMT']
       Etag: [W/"466e33ea98b757d935d1b8c1465f6fbc"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [f497062a-c5c0-4174-aa5c-7016c5d2502c]
-      X-Runtime: ['0.212863']
+      X-Request-Id: [ba452a84-fda6-4db0-b115-2f18dcb0b21c]
+      X-Runtime: ['0.295493']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -33,21 +33,22 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.1]
     method: GET
-    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/issues/2?User-Agent=IGitt&per_page=100
   response:
-    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    body: {string: '{"id":5613896,"iid":2,"project_id":3439658,"title":"Don''t assign
+        me to anyone!","description":"I wish I stay alone and no one disturbs me.","state":"reopened","created_at":"2017-06-05T06:17:38.486Z","updated_at":"2017-06-06T03:52:24.802Z","labels":[],"milestone":null,"assignees":[],"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"user_notes_count":0,"upvotes":0,"downvotes":0,"due_date":null,"confidential":false,"weight":null,"web_url":"https://gitlab.com/gitmate-test-user/test/issues/2","subscribed":true}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
-      Content-Length: ['1007']
+      Content-Length: ['716']
       Content-Type: [application/json]
-      Date: ['Wed, 19 Jul 2017 05:28:04 GMT']
-      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Date: ['Wed, 19 Jul 2017 10:22:04 GMT']
+      Etag: [W/"5497a451d4cfeb903d7affc64aa9db62"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [d84e73f2-fb3b-4a00-a180-e7a2e5cec9ee]
-      X-Runtime: ['0.335224']
+      X-Request-Id: [f8254185-6084-4c7a-a5ea-f2f7984de0f3]
+      X-Runtime: ['0.174126']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -57,20 +58,21 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.1]
     method: GET
-    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/issues/2?User-Agent=IGitt&per_page=100
   response:
-    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    body: {string: '{"id":5613896,"iid":2,"project_id":3439658,"title":"Don''t assign
+        me to anyone!","description":"I wish I stay alone and no one disturbs me.","state":"reopened","created_at":"2017-06-05T06:17:38.486Z","updated_at":"2017-06-06T03:52:24.802Z","labels":[],"milestone":null,"assignees":[],"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"user_notes_count":0,"upvotes":0,"downvotes":0,"due_date":null,"confidential":false,"weight":null,"web_url":"https://gitlab.com/gitmate-test-user/test/issues/2","subscribed":true}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
-      Content-Length: ['1007']
+      Content-Length: ['716']
       Content-Type: [application/json]
-      Date: ['Wed, 19 Jul 2017 05:28:07 GMT']
-      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Date: ['Wed, 19 Jul 2017 10:22:08 GMT']
+      Etag: [W/"5497a451d4cfeb903d7affc64aa9db62"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [95b79d0f-4186-48bf-80b3-51f17f38654a]
-      X-Runtime: ['0.275253']
+      X-Request-Id: [4b373dc1-6e78-4f4e-91b6-0164c0c7b0e8]
+      X-Runtime: ['0.215764']
     status: {code: 200, message: OK}
 version: 1

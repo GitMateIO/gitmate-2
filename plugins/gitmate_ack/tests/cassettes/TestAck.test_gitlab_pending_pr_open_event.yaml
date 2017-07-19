@@ -1,0 +1,53 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.1]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":3439658,"description":"","default_branch":"master","tag_list":[],"archived":false,"visibility":"public","ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/test.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/test.git","web_url":"https://gitlab.com/gitmate-test-user/test","owner":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"name":"test","name_with_namespace":"GitMate
+        / test","path":"test","path_with_namespace":"gitmate-test-user/test","container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"created_at":"2017-06-05T04:56:19.418Z","last_activity_at":"2017-07-19T05:14:35.333Z","shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":null},"import_status":"failed","import_error":"The
+        mirror update took too long to complete.","avatar_url":null,"star_count":0,"forks_count":2,"open_issues_count":12,"runners_token":"mJspL93WBs-yfGkkvpos","public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1669']
+      Content-Type: [application/json]
+      Date: ['Wed, 19 Jul 2017 05:20:34 GMT']
+      Etag: [W/"466e33ea98b757d935d1b8c1465f6fbc"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [112f992d-0713-4149-9958-ef195a8eb941]
+      X-Runtime: ['0.236217']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.1]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/24?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":4311386,"iid":24,"project_id":3439658,"title":"Test ack/unack","description":"","state":"opened","created_at":"2017-07-19T05:14:34.989Z","updated_at":"2017-07-19T05:19:05.249Z","target_branch":"master","source_branch":"gitmate-test-user-patch-1","upvotes":0,"downvotes":0,"author":{"name":"Naveen
+        Kumar Sangi","username":"nkprince007","id":889700,"state":"active","avatar_url":"https://gitlab.com/uploads/system/user/avatar/889700/avatar.png","web_url":"https://gitlab.com/nkprince007"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"8c31d04e826dc38e6b3e74143f83f9890b89c71c","merge_commit_sha":null,"user_notes_count":1,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/24","subscribed":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['987']
+      Content-Type: [application/json]
+      Date: ['Wed, 19 Jul 2017 05:20:39 GMT']
+      Etag: [W/"c3e010c5ff1850d327bb985ad71e97db"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [5d419703-9005-4f8f-907c-b4e8eb3334f1]
+      X-Runtime: ['0.234378']
+    status: {code: 200, message: OK}
+version: 1

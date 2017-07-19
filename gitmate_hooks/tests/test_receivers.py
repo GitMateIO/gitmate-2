@@ -8,6 +8,7 @@ from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
+from gitmate_hooks import ResponderRegistrar
 from gitmate_hooks.views import github_webhook_receiver
 
 
@@ -41,7 +42,7 @@ class TestWebhookReceivers(GitmateTestCase):
     def test_github_webhook_receiver_successful_pull_request_opened(self):
         data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO']},
-            'pull_request': {'number': 0},
+            'pull_request': {'number': 7},
             'action': 'opened'
         }
         request = self.factory.post('/webhooks/github', data, format='json')
@@ -56,6 +57,6 @@ class TestWebhookReceivers(GitmateTestCase):
         # Mocking the GitHubMergeRequest as no such pull request exists and
         # resetting all the responders to stop unnecessary actions during
         # testing phase.
-        with patch.object(GitHubMergeRequest, '__init__', return_value=None):
+        with patch.object(ResponderRegistrar, '_responders', return_value={}):
             response = github_webhook_receiver(request)
             self.assertEqual(response.status_code, status.HTTP_200_OK)

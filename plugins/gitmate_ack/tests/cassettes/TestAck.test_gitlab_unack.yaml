@@ -16,14 +16,14 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['1669']
       Content-Type: [application/json]
-      Date: ['Wed, 19 Jul 2017 05:28:01 GMT']
+      Date: ['Wed, 19 Jul 2017 05:20:41 GMT']
       Etag: [W/"466e33ea98b757d935d1b8c1465f6fbc"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [f497062a-c5c0-4174-aa5c-7016c5d2502c]
-      X-Runtime: ['0.212863']
+      X-Request-Id: [2fdeeaa5-788e-40cf-b24a-f9ad6e203ad1]
+      X-Runtime: ['0.180541']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -33,21 +33,22 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.1]
     method: GET
-    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/24?User-Agent=IGitt&per_page=100
   response:
-    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    body: {string: '{"id":4311386,"iid":24,"project_id":3439658,"title":"Test ack/unack","description":"","state":"opened","created_at":"2017-07-19T05:14:34.989Z","updated_at":"2017-07-19T05:19:05.249Z","target_branch":"master","source_branch":"gitmate-test-user-patch-1","upvotes":0,"downvotes":0,"author":{"name":"Naveen
+        Kumar Sangi","username":"nkprince007","id":889700,"state":"active","avatar_url":"https://gitlab.com/uploads/system/user/avatar/889700/avatar.png","web_url":"https://gitlab.com/nkprince007"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"8c31d04e826dc38e6b3e74143f83f9890b89c71c","merge_commit_sha":null,"user_notes_count":1,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/24","subscribed":false}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
-      Content-Length: ['1007']
+      Content-Length: ['987']
       Content-Type: [application/json]
-      Date: ['Wed, 19 Jul 2017 05:28:04 GMT']
-      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Date: ['Wed, 19 Jul 2017 05:20:44 GMT']
+      Etag: [W/"c3e010c5ff1850d327bb985ad71e97db"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [d84e73f2-fb3b-4a00-a180-e7a2e5cec9ee]
-      X-Runtime: ['0.335224']
+      X-Request-Id: [c2b943c3-7a8d-4019-a350-11ef9df6462b]
+      X-Runtime: ['0.371237']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -57,20 +58,21 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.1]
     method: GET
-    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/24/notes/35331765?User-Agent=IGitt&per_page=100
   response:
-    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    body: {string: '{"id":35331765,"body":"Hi there!","attachment":null,"author":{"name":"Naveen
+        Kumar Sangi","username":"nkprince007","id":889700,"state":"active","avatar_url":"https://gitlab.com/uploads/system/user/avatar/889700/avatar.png","web_url":"https://gitlab.com/nkprince007"},"created_at":"2017-07-19T05:19:05.242Z","updated_at":"2017-07-19T05:19:05.242Z","system":false,"noteable_id":4311386,"noteable_type":"MergeRequest"}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
-      Content-Length: ['1007']
+      Content-Length: ['415']
       Content-Type: [application/json]
-      Date: ['Wed, 19 Jul 2017 05:28:07 GMT']
-      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Date: ['Wed, 19 Jul 2017 05:20:49 GMT']
+      Etag: [W/"a5e79caeacded24387c71060b05bc6c8"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [95b79d0f-4186-48bf-80b3-51f17f38654a]
-      X-Runtime: ['0.275253']
+      X-Request-Id: [749d1999-863e-4343-ba42-bca7f3b40252]
+      X-Runtime: ['0.147105']
     status: {code: 200, message: OK}
 version: 1

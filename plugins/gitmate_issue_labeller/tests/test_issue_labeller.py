@@ -20,8 +20,7 @@ class TestIssueLabeller(GitmateTestCase):
     def test_github(self, m_labels, m_avail_labels, m_title, m_desc):
         # needed for the igitt object locking
         GitHubIssue._repository = environ['GITHUB_TEST_REPO']
-        GitHubIssue.number = 0
-        GitHubIssue.refresh = lambda *args: None
+        GitHubIssue.number = 2
         # clear all the labels
         m_labels.return_value = set()
 
@@ -34,7 +33,7 @@ class TestIssueLabeller(GitmateTestCase):
 
         data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO']},
-            'issue': {'number': 0},
+            'issue': {'number': 2},
             'action': 'opened'
         }
 
@@ -51,8 +50,7 @@ class TestIssueLabeller(GitmateTestCase):
     def test_gitlab(self, m_labels, m_avail_labels, m_title, m_desc):
         # needed for the igitt object locking
         GitLabIssue._repository = environ['GITHUB_TEST_REPO']
-        GitLabIssue.number = 0
-        GitLabIssue.refresh = lambda *args: None
+        GitLabIssue.number = 2
         # clear all the labels
         m_labels.return_value = set()
 
@@ -67,7 +65,7 @@ class TestIssueLabeller(GitmateTestCase):
             'object_attributes': {
                 'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
                 'action': 'open',
-                'iid': 0
+                'iid': 2
             }
         }
 

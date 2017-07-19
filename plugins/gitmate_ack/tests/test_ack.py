@@ -20,8 +20,8 @@ class TestAck(GitmateTestCase):
         super().setUpWithPlugin('ack')
         self.github_data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO']},
-            'issue': {'number': 10},
-            'comment': {'id': 0},
+            'issue': {'number': 6},
+            'comment': {'id': 200397973},
             'action': 'created'
         }
         self.gitlab_data = {
@@ -30,11 +30,11 @@ class TestAck(GitmateTestCase):
             },
             'object_attributes': {
                 'action': 'open',
-                'id': 2,
-                'iid': 0,
+                'id': 35331765,
+                'iid': 24,
                 'noteable_type': 'MergeRequest'
             },
-            'merge_request': {'iid': 2}
+            'merge_request': {'iid': 24}
         }
 
     @patch.object(GitHubMergeRequest, 'commits', new_callable=PropertyMock)
@@ -89,7 +89,7 @@ class TestAck(GitmateTestCase):
         mock_commits.return_value = tuple([GitHubCommit()])
         data = {
             **self.github_data,
-            'pull_request': {'number': 0},
+            'pull_request': {'number': 6},
             'action': 'opened',
         }
         response = self.simulate_github_webhook_call('pull_request', data)
