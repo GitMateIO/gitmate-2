@@ -1,18 +1,14 @@
 import json
 
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
-from IGitt.GitHub import GitHubToken
-from IGitt.GitHub.GitHubComment import GitHubComment
-from IGitt.GitHub.GitHubIssue import GitHubIssue
-from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
-from IGitt.GitLab import GitLabOAuthToken
-from IGitt.GitLab.GitLabComment import GitLabComment
-from IGitt.GitLab.GitLabIssue import GitLabIssue
-from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.Interfaces.Actions import IssueActions
 from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.Comment import CommentType
+from igitt_django.models import IGittComment
+from igitt_django.models import IGittIssue
+from igitt_django.models import IGittMergeRequest
+from igitt_django.models import IGittRepository
+from igitt_django.storage import get_object
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -23,7 +19,6 @@ from gitmate_hooks import ResponderRegistrar
 from gitmate_hooks import signature_check
 
 
-@csrf_exempt
 @api_view(['POST'])
 @signature_check(settings.WEBHOOK_SECRET,
                  Providers.GITHUB.value,
@@ -32,76 +27,92 @@ def github_webhook_receiver(request):
     """
     Receives webhooks from GitHub and carries out the approriate action.
     """
-    webhook_data = json.loads(request.body.decode('utf-8'))
+    webhook = json.loads(request.body.decode('utf-8'))
 
     event = request.META['HTTP_X_GITHUB_EVENT']
-    repository = webhook_data['repository']
+    repo_data = webhook['repository']
 
-    repo_obj = Repository.objects.filter(
+    gitmate_repo = Repository.objects.filter(
         active=True,
-        full_name=repository['full_name'],
+        full_name=repo_data['full_name'],
         provider=Providers.GITHUB.value).first()
-    raw_token = repo_obj.user.social_auth.get(
+    raw_token = gitmate_repo.user.social_auth.get(
         provider=Providers.GITHUB.value).extra_data['access_token']
-    token = GitHubToken(raw_token)
+    token = Providers.GITHUB.get_token(raw_token)
+    repo_igitt_model = get_object(
+        IGittRepository,
+        token,
+        full_name=gitmate_repo.full_name,
+        hoster=Providers.GITHUB.value)
+    options = gitmate_repo.get_plugin_settings()
 
     if event == 'issues':
-        issue = webhook_data['issue']
-        issue_obj = GitHubIssue(
-            token, repository['full_name'], issue['number'])
+        issue_data = webhook['issue']
+        issue_igitt_model = get_object(
+            IGittIssue,
+            token,
+            repo=repo_igitt_model,
+            number=issue_data['number'])
+        issue = issue_igitt_model.to_igitt_instance(token)
         trigger_event = {
             'opened': IssueActions.OPENED,
             'closed': IssueActions.CLOSED,
             'reopened': IssueActions.REOPENED,
             'created': IssueActions.COMMENTED
-        }.get(webhook_data['action'], IssueActions.ATTRIBUTES_CHANGED)
+        }.get(webhook['action'], IssueActions.ATTRIBUTES_CHANGED)
 
         ResponderRegistrar.respond(
-            trigger_event, repo_obj, issue_obj,
-            options=repo_obj.get_plugin_settings())
+            trigger_event, gitmate_repo, issue, options=options)
 
     elif event == 'pull_request':
-        pull_request = webhook_data['pull_request']
-        pull_request_obj = GitHubMergeRequest(
-            token, repository['full_name'], pull_request['number'])
+        pr_data = webhook['pull_request']
+        pr_igitt_model = get_object(
+            IGittMergeRequest,
+            token,
+            repo=repo_igitt_model,
+            number=pr_data['number'])
+        pr = pr_igitt_model.to_igitt_instance(token)
         trigger_event = {
             'synchronize': MergeRequestActions.SYNCHRONIZED,
             'opened': MergeRequestActions.OPENED,
             'edited': MergeRequestActions.ATTRIBUTES_CHANGED
-        }.get(webhook_data['action'])
+        }.get(webhook['action'])
 
         # no such webhook event action implemented yet
         if not trigger_event: # pragma: no cover
-            raise NotImplementedError('Unrecgonized action: '
-                                      + event+ '/' + webhook_data['action'])
+            raise NotImplementedError('Unrecognized action: '
+                                      + event+ '/' + webhook['action'])
 
         ResponderRegistrar.respond(
-            trigger_event, repo_obj, pull_request_obj,
-            options=repo_obj.get_plugin_settings())
+            trigger_event, gitmate_repo, pr, options=options)
 
     elif event == 'issue_comment':
-        if webhook_data['action'] != 'deleted':
-            comment = webhook_data['comment']
-            pull_request_obj = GitHubMergeRequest(
-                    token,
-                    repository['full_name'],
-                    webhook_data['issue']['number'])
-            comment_obj = GitHubComment(
-                    token,
-                    repository['full_name'],
-                    CommentType.MERGE_REQUEST,
-                    comment['id'])
+        kwargs = {
+            'repo': repo_igitt_model,
+            'type': CommentType.MERGE_REQUEST,
+            'number':webhook['comment']['id']
+        }
+        if webhook['action'] != 'deleted':
+            comment_igitt_model = get_object(IGittComment, token, **kwargs)
+            comment = comment_igitt_model.to_igitt_instance(token)
+            pr_igitt_model = get_object(
+                IGittMergeRequest,
+                token,
+                repo=repo_igitt_model,
+                number=webhook['issue']['number'])
+            pr = pr_igitt_model.to_igitt_instance(token)
+            trigger_event = MergeRequestActions.COMMENTED
             ResponderRegistrar.respond(
-                    MergeRequestActions.COMMENTED,
-                    repo_obj,
-                    pull_request_obj,
-                    comment_obj,
-                    options=repo_obj.get_plugin_settings())
+                trigger_event, gitmate_repo, pr, comment, options=options)
+        else:
+            try:
+                IGittComment.objects.get(**kwargs).delete()
+            except IGittComment.DoesNotExist:
+                pass
 
     return Response(status=status.HTTP_200_OK)
 
 
-@csrf_exempt
 @api_view(['POST'])
 @signature_check(settings.WEBHOOK_SECRET,
                  Providers.GITLAB.value,
@@ -112,79 +123,85 @@ def gitlab_webhook_receiver(request):
     """
     webhook = json.loads(request.body.decode('utf-8'))
     event = request.META['HTTP_X_GITLAB_EVENT']
-    repository = (webhook['project'] if 'project' in webhook.keys()
-                  else webhook['object_attributes']['target'])
-    repo_obj = Repository.objects.filter(
+    repo_data = (webhook['project'] if 'project' in webhook.keys()
+                 else webhook['object_attributes']['target'])
+    gitmate_repo = Repository.objects.filter(
         active=True,
-        full_name=repository['path_with_namespace'],
+        full_name=repo_data['path_with_namespace'],
         provider=Providers.GITLAB.value).first()
-    raw_token = repo_obj.user.social_auth.get(
+    raw_token = gitmate_repo.user.social_auth.get(
         provider=Providers.GITLAB.value).extra_data['access_token']
-    token = GitLabOAuthToken(raw_token)
+    token = Providers.GITLAB.get_token(raw_token)
+    repo_igitt_model = get_object(
+        IGittRepository,
+        token,
+        full_name=gitmate_repo.full_name,
+        hoster=Providers.GITLAB.value)
+    options = gitmate_repo.get_plugin_settings()
 
     if event == 'Issue Hook':
-        issue = webhook['object_attributes']
-        issue_obj = GitLabIssue(
-            token, repository['path_with_namespace'], issue['iid'])
+        issue_data = webhook['object_attributes']
+        issue_igitt_model = get_object(
+            IGittIssue, token, repo=repo_igitt_model, number=issue_data['iid'])
+        issue = issue_igitt_model.to_igitt_instance(token)
         trigger_event = {
             'open': IssueActions.OPENED,
             'close': IssueActions.CLOSED,
             'reopen': IssueActions.REOPENED,
-        }.get(issue['action'], IssueActions.ATTRIBUTES_CHANGED)
+        }.get(issue_data['action'], IssueActions.ATTRIBUTES_CHANGED)
 
         ResponderRegistrar.respond(
-            trigger_event, repo_obj, issue_obj,
-            options=repo_obj.get_plugin_settings())
+            trigger_event, gitmate_repo, issue, options=options)
 
     elif event == 'Merge Request Hook':
-        pull_request = webhook['object_attributes']
-        ipull_request = GitLabMergeRequest(
-            token, repository['path_with_namespace'], pull_request['iid'])
+        pr_data = webhook['object_attributes']
+        pr_igitt_model = get_object(
+            IGittMergeRequest, token,
+            repo=repo_igitt_model, number=pr_data['iid'])
+        pr = pr_igitt_model.to_igitt_instance(token)
         trigger_event = {
             'update': MergeRequestActions.ATTRIBUTES_CHANGED,
             'open': MergeRequestActions.OPENED,
             'reopen': MergeRequestActions.REOPENED,
-        }.get(pull_request['action'])
+        }.get(pr_data['action'])
 
         # nasty workaround for finding merge request resync
-        if 'oldrev' in pull_request:
+        if 'oldrev' in pr_data:
             trigger_event = MergeRequestActions.SYNCHRONIZED
 
         # no such webhook event action implemented yet
         if not trigger_event: # pragma: no cover
             raise NotImplementedError('Unrecgonized action: '
-                                      + event+ '/' + pull_request['action'])
+                                      + event+ '/' + pr_data['action'])
 
         ResponderRegistrar.respond(
-            trigger_event, repo_obj, ipull_request,
-            options=repo_obj.get_plugin_settings())
+            trigger_event, gitmate_repo, pr, options=options)
 
     elif event == 'Note Hook':
-        comment = webhook['object_attributes']
+        comment_data = webhook['object_attributes']
         comment_type = {
             'MergeRequest': CommentType.MERGE_REQUEST,
             'Commit': CommentType.COMMIT,
             'Issue': CommentType.ISSUE,
             'Snippet': CommentType.SNIPPET
-        }.get(comment['noteable_type'])
+        }.get(comment_data['noteable_type'])
 
         if comment_type == CommentType.MERGE_REQUEST:
-            mr = webhook['merge_request']
-            igitt_mr = GitLabMergeRequest(
+            pr_data = webhook['merge_request']
+            pr_igitt_model = get_object(
+                IGittMergeRequest, token,
+                repo=repo_igitt_model, number=pr_data['iid'])
+            pr = pr_igitt_model.to_igitt_instance(token)
+            comment_igitt_model = get_object(
+                IGittComment,
                 token,
-                repository['path_with_namespace'],
-                mr['iid'])
-            igitt_comment = GitLabComment(
-                token,
-                repository['path_with_namespace'],
-                mr['iid'],
-                comment_type,
-                comment['id'])
+                type=comment_type,
+                repo=repo_igitt_model,
+                number=comment_data['id'],
+                iid=pr_data['iid'])
+            comment = comment_igitt_model.to_igitt_instance(token)
+            trigger_event = MergeRequestActions.COMMENTED
             ResponderRegistrar.respond(
-                MergeRequestActions.COMMENTED,
-                repo_obj,
-                igitt_mr,
-                igitt_comment,
-                options=repo_obj.get_plugin_settings())
+                trigger_event, gitmate_repo, pr, comment, options=options)
 
     return Response(status=status.HTTP_200_OK)
