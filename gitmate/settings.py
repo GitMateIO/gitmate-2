@@ -59,6 +59,7 @@ REQUISITE_APPS = [
     'rest_framework_docs',
     'corsheaders',
     'coala_online',
+    'coafile_bot'
 ]
 
 GITMATE_PLUGINS = [
