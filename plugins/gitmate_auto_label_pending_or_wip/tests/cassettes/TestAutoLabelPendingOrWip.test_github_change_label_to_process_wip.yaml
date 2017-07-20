@@ -7,6 +7,67 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.1]
     method: GET
+    uri: https://api.github.com/repos/gitmate-test-user/test?User-Agent=IGitt
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WYwXLiOBCGX2XK1wWEhxAmrtqaeYjZy14oYQusjW15JBkqceXd92/JxoZJGQZd
+        Uo5Qf2q1ulvdaiOZRcnTy3r9bbOOZ1HFSxElkRXGRrNo3xTFths6SFtyK+b007wxQrNukjpVQkdJ
+        GxXqICsI/zYTJFolfn7+Fi9Xy1nEj9xyvW10gem5tbVJGPODZrWAfN7saIlUVVZUdpGqkjWsl/9+
+        /PsJyIPuMMSOMHCFq2VH8uLAGfaZarktiytVvAZO7jOJvSoKdQLvegd3LcnO4mRhh5LVIQQF8ZYp
+        mwuYFNv8IONIYx9Uz4m22LixW5kRzOCwtMgeU7EThoLkJx8t06JWjtrsTKplbaWqHlT1AgGk0gde
+        yXcegATCgERKPqiUEwVCHOG6DzK8bMtqLY88fSNzaZEKecQphHCvIMDat5oC/h/4DZ2JtGLLs5Li
+        eM8LIz5mkdPBYpIbmCFe/yhe+jSRifNpYz3+hbLHF7IVlt0r/XrmT4axM+7vQdkvQqAbJp8iIDQh
+        D4VexVsIhsRbhr9dAKWIcr5Tmlt1K2lMqnfBadn4X3IRK3gZoraTBydXKsiKTh4caUwj7vLXyV07
+        jGF9TFRNufNJ7p5ImCR7ADTlxshDJUSI9c6MlvVZeKd5leZB1B7RMv/lzpkfQhQlcVB2hdqFYHAz
+        Msdomcm5v3TsNlA3ghLigqnFPlRRQpyZVoedtFOSGGciLjmLQw/RskewtrNmwatDww9B0DMD500X
+        8YG/3yxbJiNmgIBI5ZmWuyY4qw0Y0tPXBYjxIHMOlIHpao3pMmZ696OSxe2/LOWtK34S2BEuvD2c
+        Sv55Tab/b9cjN5UlRMuGFOxTfAcPsGyX43stx0t0TUCIM/QI1v5Vc5tTrsJKNdciQOWOwNodR520
+        WCzaXHBXL5dCh4WtB4DEdZqj6AvQsu0RKG3Qv7n6e09KZqjHC8WzELueGeD5EwzQ1APGJ1+j/QxR
+        z8mPgaUsUHWqKiinDpAxulJW7mV6T+sxGWQXnPa7kVUqZrwoZvBWK1MJ/0W7RweIilIEmccDsAn0
+        /L7DKARcOcTiWnhEy3znmIm6UG+hiWdEocjVAu1ItuUWfcTXZfw8X8bzePVzuUnWz0m8/hdzmjq7
+        OaduTD7CbObLzTx++Rmvk+VTstoQBom0c2h84Yli6l3AtSD04gA5Y/JB7scgleDzk0eUTiot4JlX
+        AXT3isfre+2mJPTMVSlqlBhRUiFUqP17xzeegUa1QqqaCpbGq82JWxSzuJWHob6+6AE5N1sfx1Fi
+        dUPdIkZqrf4TqTXjsSF1jCae5Ku8EKTy59wY+uauW/wr0qzUWnWvSF5/VYuqW79X8mXl20tgIDKa
+        ECX0U78nt8FM7HlT2K2vtOFdJTfW9cW10CX2RS8V9NLVdch+h+RHvdKUcfw3GmdErTptza+Gwx1c
+        Su+n+V/cEPSkIuLyFy3oTrmUqYQ9oTvt94XNjAulzirxx/9HCAc10RMAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 20 Jul 2017 06:21:30 GMT']
+      ETag: [W/"98a67dc4cbd92ec684f01b822b979486"]
+      Last-Modified: ['Wed, 13 Jan 2016 07:56:15 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP', Accept-Encoding]
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['E06B:1D9E3:592506:710DDC:59704BE9']
+      X-OAuth-Scopes: ['admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
+          delete_repo, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4970']
+      X-RateLimit-Reset: ['1500533052']
+      X-Runtime-rack: ['0.045106']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.1]
+    method: GET
     uri: https://api.github.com/repos/gitmate-test-user/test/issues/7?User-Agent=IGitt
   response:
     body:
@@ -31,7 +92,7 @@ interactions:
       Content-Encoding: [gzip]
       Content-Security-Policy: [default-src 'none']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Tue, 18 Jul 2017 08:02:15 GMT']
+      Date: ['Thu, 20 Jul 2017 06:21:38 GMT']
       ETag: [W/"66d479bdf0ac185f56c16d21b045a3d0"]
       Last-Modified: ['Sun, 18 Jun 2017 02:13:10 GMT']
       Server: [GitHub.com]
@@ -42,13 +103,13 @@ interactions:
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [deny]
       X-GitHub-Media-Type: [github.v3; format=json]
-      X-GitHub-Request-Id: ['73DB:1A081:7A1F02:A9A680:596DC086']
+      X-GitHub-Request-Id: ['E8BF:5FF6:AD557E:F5DEE4:59704BF1']
       X-OAuth-Scopes: ['admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
           delete_repo, gist, notifications, repo, user']
       X-RateLimit-Limit: ['5000']
-      X-RateLimit-Remaining: ['4989']
-      X-RateLimit-Reset: ['1500368432']
-      X-Runtime-rack: ['0.051770']
+      X-RateLimit-Remaining: ['4969']
+      X-RateLimit-Reset: ['1500533052']
+      X-Runtime-rack: ['0.053597']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 version: 1

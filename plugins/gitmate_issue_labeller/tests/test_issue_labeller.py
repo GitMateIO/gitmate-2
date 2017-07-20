@@ -35,8 +35,7 @@ class TestIssueLabeller(GitmateTestCase):
     def test_github(self, m_labels, m_title, m_desc):
         # needed for the igitt object locking
         GitHubIssue._repository = environ['GITHUB_TEST_REPO']
-        GitHubIssue.number = 0
-        GitHubIssue.refresh = lambda *args: None
+        GitHubIssue.number = 2
         # clear all the labels
         m_labels.return_value = set()
 
@@ -46,7 +45,7 @@ class TestIssueLabeller(GitmateTestCase):
 
         data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO']},
-            'issue': {'number': 0},
+            'issue': {'number': 2},
             'action': 'opened'
         }
 
