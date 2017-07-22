@@ -22,7 +22,8 @@ def mark_pending_review_or_wip_accordingly(
     """
     with lock_igitt_object('label mr', pr):
         labels = pr.labels
-        if not pr.title.lower().startswith('wip'):
+        # Allows [wip] and WIP:
+        if not 'wip' in pr.title.lower()[:4]:
             labels.add(pending_review_label)
             labels.discard(wip_label)
         else:
