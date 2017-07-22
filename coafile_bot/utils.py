@@ -1,4 +1,4 @@
-from coafile_bot.config import MAX_RETRIES_LIMIT, BOT_TOKEN
+from coafile_bot.config import MAX_RETRIES_LIMIT, BOT_TOKEN, GITHUB_BOT_USER
 
 
 def parse_issue_num(url):
@@ -44,8 +44,9 @@ def create_pr(thread, coafile, retries=MAX_RETRIES_LIMIT):
     try:
         clone.create_file(path='.coafile', message='coafile: Add coafile',
                           content=coafile, branch='master')
+        head = GITHUB_BOT_USER + ':master'
         pr = repo.create_merge_request(title='Add coafile', base='master',
-                                       head='coafile:master')
+                                       head=head)
         return pr
 
     except RuntimeError:
