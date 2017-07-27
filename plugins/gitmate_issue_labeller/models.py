@@ -10,3 +10,8 @@ class Settings(SettingsBase):
                   'to be set; e.g. type/bug: bug, crash.',
         default={}
     )
+    label_texts_as_keywords = models.BooleanField(
+        default=True,
+        help_text='Apply labels if they are mentioned in the issue body '
+                  'automatically.'
+    )

@@ -13,7 +13,7 @@ class TestIssueLabeller(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('issue_labeller')
 
-        settings = [
+        self.settings = [
             {
                 'name': 'issue_labeller',
                 'settings': {
@@ -23,11 +23,12 @@ class TestIssueLabeller(GitmateTestCase):
                         'bears': 'bears',
                         'bear-related': 'bears, stupidshit',
                     },
+                    'label_texts_as_keywords': False,
                 }
             }
         ]
-        self.repo.set_plugin_settings(settings)
-        self.gl_repo.set_plugin_settings(settings)
+        self.repo.set_plugin_settings(self.settings)
+        self.gl_repo.set_plugin_settings(self.settings)
 
     @patch.object(GitHubIssue, 'description', new_callable=PropertyMock)
     @patch.object(GitHubIssue, 'title', new_callable=PropertyMock)
@@ -55,6 +56,39 @@ class TestIssueLabeller(GitmateTestCase):
 
         m_labels.assert_called()
         m_labels.assert_called_with({'bears', 'bear-related'})
+
+    @patch.object(GitHubIssue, 'description', new_callable=PropertyMock)
+    @patch.object(GitHubIssue, 'title', new_callable=PropertyMock)
+    @patch.object(GitHubIssue, 'labels', new_callable=PropertyMock)
+    @patch.object(GitHubIssue, 'available_labels', new_callable=PropertyMock)
+    def test_mention_labels(self, m_available_labels, m_labels,
+                            m_title, m_desc):
+        self.settings[0]['settings']['label_texts_as_keywords'] = True
+        self.repo.set_plugin_settings(self.settings)
+
+        # needed for the igitt object locking
+        GitHubIssue._repository = environ['GITHUB_TEST_REPO']
+        GitHubIssue.number = 0
+        GitHubIssue.refresh = lambda *args: None
+        # clear all the labels
+        m_labels.return_value = set()
+        m_available_labels.return_value = {'shape'}
+
+        # set some random summary
+        m_title.return_value = 'Shape of you'
+        m_desc.return_value = 'Make coala bears sing this song!'
+
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'issue': {'number': 0},
+            'action': 'opened'
+        }
+
+        response = self.simulate_github_webhook_call('issues', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        m_labels.assert_called()
+        m_labels.assert_called_with({'shape', 'bears', 'bear-related'})
 
     @patch.object(GitLabIssue, 'description', new_callable=PropertyMock)
     @patch.object(GitLabIssue, 'title', new_callable=PropertyMock)
