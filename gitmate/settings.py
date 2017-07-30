@@ -70,6 +70,7 @@ GITMATE_PLUGINS = [
     'issue_labeller',
     'bug_spotter',
     'ack',
+    'issue_pr_sync',
 ]
 
 # Application definition
