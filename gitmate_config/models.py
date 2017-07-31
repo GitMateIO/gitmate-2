@@ -8,7 +8,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from IGitt.GitHub.GitHubRepository import GitHubRepository
 from IGitt.GitLab.GitLabRepository import GitLabRepository
-from IGitt.Interfaces.Repository import Repository
+from IGitt.Interfaces.Repository import Repository as IGittRepository
 from rest_framework.reverse import reverse
 
 from gitmate_config import Providers
@@ -151,7 +151,24 @@ class Repository(models.Model):
                 if isinstance(plugin['settings'], dict):
                     plugin_obj.set_settings(self, plugin['settings'])
 
-    def igitt_repo(self) -> Repository:
+    @classmethod
+    def from_igitt_repo(cls, instance: IGittRepository, active: bool=True):
+        """
+        Retrieves a repository model from an IGitt Repository instance.
+
+        :param instance: The IGitt Repository instance.
+        :param active: Filter for active repositories.
+        """
+        return cls.objects.get(
+            full_name=instance.full_name,
+            provider=instance.hoster,
+            active=active)
+
+    @property
+    def igitt_repo(self) -> IGittRepository:
+        """
+        Returns an IGitt Repository object from Repository model.
+        """
         token_str = self.user.social_auth.get(
             provider=self.provider).extra_data['access_token']
         if self.provider == Providers.GITHUB.value:
