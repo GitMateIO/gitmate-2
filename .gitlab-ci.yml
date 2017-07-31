@@ -91,7 +91,7 @@ deploy_master:
     - ssh tomoko@moon.gitmate.io 'bash -s' < .ci/deploy.master.sh
   environment:
     name: master
-    url: api.master.gitmate.io
+    url: https://api.master.gitmate.io
   dependencies:
     - push_master_image
   only:
@@ -109,7 +109,7 @@ deploy_release:
     - ssh tomoko@moon.gitmate.io 'bash -s' < .ci/deploy.release.sh
   environment:
     name: release
-    url: api.gitmate.io
+    url: https://api.gitmate.io
   dependencies:
     - push_release_image
   when: manual
