@@ -1,0 +1,48 @@
+from IGitt.Interfaces.Actions import MergeRequestActions
+from IGitt.Interfaces.Actions import PipelineActions
+from IGitt.Interfaces.Commit import Commit
+from IGitt.Interfaces.CommitStatus import Status
+from IGitt.Interfaces.MergeRequest import MergeRequest
+
+
+from gitmate.utils import lock_igitt_object
+from gitmate_hooks import ResponderRegistrar
+
+
+@ResponderRegistrar.responder(
+    'test_approver', MergeRequestActions.SYNCHRONIZED)
+def store_head_commit_sha(pr: MergeRequest):
+    """
+    Stores the list of merge requests along with their heads and updates it on
+    synchronizing again.
+    """
+    # Don't move to module code! Apps aren't loaded yet.
+    from gitmate_config.models import Repository
+    from .models import MergeRequestModel
+
+    kwargs = {
+        'repo': Repository.from_igitt_repo(pr.repository),
+        'number': pr.number,
+        'head_sha': pr.head.sha
+    }
+    MergeRequestModel.objects.update_or_create(**kwargs, defaults=kwargs)
+
+
+@ResponderRegistrar.responder(
+    'test_approver', PipelineActions.UPDATED)
+def add_approved_label(
+        commit: Commit,
+        approved_label: str='Label to be added on approval',
+        status_labels: {str}='Set of status labels to be removed upon approval'
+):
+    """
+    Labels the PR as approved when the head commit passes all tests.
+    """
+    # Don't move to module code! Apps aren't loaded yet.
+    from .models import MergeRequestModel
+
+    pr = MergeRequestModel.objects.get(head_sha=commit.sha).igitt_pr
+    with lock_igitt_object('label mr', pr):
+        labels = pr.labels
+        if commit.combined_status is Status.SUCCESS:
+            pr.labels = {approved_label} | labels - set(status_labels)
