@@ -13,6 +13,26 @@ from gitmate_config import Providers
 
 from gitmate.celery import app as celery
 
+def run_plugin_for_all_repos(plugin_name: str,
+                             event_name: (str, Enum),
+                             is_active: bool=True):
+    """
+    This will trigger the responders registered with `event_name`
+    for every repo based on active state of a plugin.
+    :param plugin_name: A string containing name of the plugin to check.
+    :param event_name: A string or enum for the type of event.
+                       e.g. MergeRequestActions.COMMENTED
+    :is_active: A boolean value for active state of plugin.
+    """
+    from gitmate_config.models import Plugin
+
+    plugin = Plugin.objects.get(name=plugin_name)
+    for repo in plugin.repository_set.filter(active=is_active):
+        ResponderRegistrar.respond(
+            event_name,
+            repo,
+            repo.igitt_repo,
+            options=repo.get_plugin_settings())
 
 def signature_check(key: str=None,
                     provider: str=None,
@@ -93,6 +113,42 @@ class ResponderRegistrar:
             return function
 
         return _wrapper
+
+    @classmethod
+    def scheduled_responder(cls,
+                            plugin: str,
+                            interval: (crontab, float),
+                            **kwargs):
+        """
+        Registers the decorated function as responder and register 
+        `run_plugin_for_all_repos` as periodic task with plugin name and
+        a responder event as arguments.
+
+        :param plugin: Name of plugin with which responder will be registered.
+        :param interval: Periodic interval in seconds as float or crontab
+                object specifying task trigger time.
+                See http://docs.celeryproject.org/en/latest/reference/celery.schedules.html#celery.schedules.crontab
+        :param kwargs: Keyword arguments to pass to `run_plugin_for_all_repos`.
+
+        >>> from gitmate_hooks import ResponderRegistrar
+        >>> @ResponderRegistrar.scheduled_responder('test', 10.0)
+        ... def test_responder(igitt_repo):
+        ...     print('Hello, World!')
+
+        This will register a `test.test_responder` responder and schedule
+        `run_plugin_for_all_repos` with arguments `('test',
+        'test.test_responder')` with 10 seconds interval.
+        """
+        def _wrapper(function):
+            action = '{}.{}'.format(plugin, function.__name__)
+            periodic_task_args = (plugin, action)
+            function = cls.responder(plugin, action)(function)
+            task = celery.task(run_plugin_for_all_repos, base=ExceptionLoggerTask)
+            celery.add_periodic_task(interval, task.s(), periodic_task_args, kwargs)
+            return function
+
+        return _wrapper
+
 
     @classmethod
     def responder(cls, plugin: str='', *actions: [Enum]):
