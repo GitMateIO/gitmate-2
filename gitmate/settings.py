@@ -159,6 +159,8 @@ SOCIAL_AUTH_GITLAB_SECRET = os.environ.get('SOCIAL_AUTH_GITLAB_SECRET')
 SOCIAL_AUTH_GITLAB_REDIRECT_URL = os.environ.get(
     'SOCIAL_AUTH_GITLAB_REDIRECT_URL')
 SOCIAL_AUTH_GITLAB_SCOPE = ['api']
+SOCIAL_AUTH_GITLAB_API_URL = 'https://' + os.environ.get('GL_INSTANCE_URL',
+                                                         'gitlab.com')
 SOCIAL_AUTH_BITBUCKET_KEY = os.environ.get('SOCIAL_AUTH_BITBUCKET_KEY')
 SOCIAL_AUTH_BITBUCKET_SECRET = os.environ.get('SOCIAL_AUTH_BITBUCKET_SECRET')
 
