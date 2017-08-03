@@ -1,15 +1,22 @@
 
-from coafile_bot.config import BOT_TOKEN, GITHUB_POLL_DELAY
+from coafile_bot.config import GITHUB_POLL_DELAY, GITHUB_TOKEN
 from coafile_bot.task import handle_thread
 from coafile_bot.utils import post_comment
+from gitmate.settings import BOT_USER
 
 from gitmate_hooks import ResponderRegistrar
 
 
 @ResponderRegistrar.scheduler(interval=GITHUB_POLL_DELAY)
 def coafile_bot():
+    """
+    Runs the coafile bot.
+    """
+    if not GITHUB_TOKEN or not BOT_USER:
+        return  # Bot Inactive
+
     from IGitt.GitHub.GitHubNotification import GitHubNotification
-    notifications = GitHubNotification(token=BOT_TOKEN)
+    notifications = GitHubNotification(token=GITHUB_TOKEN)
     threads = notifications.get_threads()
     for thread in threads:
         if thread.reason == "mention" and thread.unread:

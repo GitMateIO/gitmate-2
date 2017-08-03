@@ -17,8 +17,8 @@ before_script:
   - export WEBHOOK_SECRET=foobar
   - export COALA_RESULTS_IMAGE=registry.gitlab.com/gitmate/open-source/coala-incremental-results:latest
   - export RESULTS_BOUNCER_IMAGE=registry.gitlab.com/gitmate/open-source/result-bouncer:latest
-  - export COAFILE_BOT_GITHUB_TOKEN=foobar
-  - export GITHUB_BOT_USER=foo
+  - export BOT_TOKEN=foobar
+  - export BOT_USER=foo
 
 stages:
   - test

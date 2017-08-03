@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 from ast import literal_eval
 import os
+from IGitt.GitHub import GitHubToken
 
 from gitmate.utils import snake_case_to_camel_case
 
@@ -272,3 +273,7 @@ BROKER_URL = os.environ.get('CELERY_BROKER_URL',
 # This is required for coala_online
 # Otherwise it throws NotImplementedError
 CELERY_RESULT_BACKEND = 'amqp'
+
+# coafile Bot Tokens
+BOT_TOKEN = os.environ.get('BOT_TOKEN', None)
+BOT_USER = os.environ.get('BOT_USER', None)

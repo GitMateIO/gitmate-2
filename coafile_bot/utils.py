@@ -1,4 +1,5 @@
-from coafile_bot.config import MAX_RETRIES_LIMIT, BOT_TOKEN, GITHUB_BOT_USER
+from coafile_bot.config import MAX_RETRIES_LIMIT, GITHUB_TOKEN
+from gitmate.settings import BOT_USER
 
 
 def parse_issue_num(url):
@@ -23,7 +24,7 @@ def post_comment(thread, message):
     num = parse_issue_num(thread.data['subject']['url'])
     from IGitt.GitHub.GitHubIssue import GitHubIssue
 
-    issue = GitHubIssue(token=BOT_TOKEN, repository=thread.data['repository']['full_name'], number=num)
+    issue = GitHubIssue(token=GITHUB_TOKEN, repository=thread.data['repository']['full_name'], number=num)
     issue.add_comment(body=message)
 
 
@@ -38,13 +39,13 @@ def create_pr(thread, coafile, retries=MAX_RETRIES_LIMIT):
     """
     from IGitt.GitHub.GitHubRepository import GitHubRepository
 
-    repo = GitHubRepository(token=BOT_TOKEN, repository=thread.data['repository']['full_name'])
+    repo = GitHubRepository(token=GITHUB_TOKEN, repository=thread.data['repository']['full_name'])
     clone = repo.create_fork()
 
     try:
         clone.create_file(path='.coafile', message='coafile: Add coafile',
                           content=coafile, branch='master')
-        head = GITHUB_BOT_USER + ':master'
+        head = BOT_USER + ':master'
         pr = repo.create_merge_request(title='Add coafile', base='master',
                                        head=head)
         return pr
