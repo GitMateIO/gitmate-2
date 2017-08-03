@@ -5,12 +5,32 @@ from IGitt.Interfaces.MergeRequest import MergeRequest
 from IGitt.Interfaces.Comment import Comment
 
 from gitmate_hooks import ResponderRegistrar
+from gitmate.utils import ScheduledTasks
 
 
 def get_keywords(string: str):
     return tuple(elem.strip().lower()
                  for elem in string.split(',') if elem.strip())
 
+@ResponderRegistrar.new_scheduler(
+    ScheduledTasks.DAILY,
+    20.00,
+    'ack')
+@ResponderRegistrar.responder(
+    'ack',
+    ScheduledTasks.DAILY)
+def test_schedule():
+    print('Hello World')
+
+@ResponderRegistrar.new_scheduler(
+    ScheduledTasks.MONTHLY,
+    30.0,
+    'ack')
+@ResponderRegistrar.responder(
+    'ack',
+    ScheduledTasks.MONTHLY)
+def second_test_schedule():
+    print('Hello Arjun')
 
 @ResponderRegistrar.responder(
     'ack',

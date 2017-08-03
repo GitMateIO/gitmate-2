@@ -13,6 +13,20 @@ from gitmate_config import Providers
 
 from gitmate.celery import app as celery
 
+def scheduled_common_loop(plugin_name: str,
+                          schedule_enum):
+    """
+    This function contains a common loop which the
+    scheduled plugins can utilize.
+    """
+    from gitmate_config.models import Plugin
+
+    plugin = Plugin.objects.get(name=plugin_name)
+    for repo in plugin.repository_set.filter(active=True):
+        ResponderRegistrar.respond(
+            schedule_enum,
+            repo,
+            options=repo.get_plugin_settings())
 
 def signature_check(key: str=None,
                     provider: str=None,
@@ -93,6 +107,22 @@ class ResponderRegistrar:
             return function
 
         return _wrapper
+
+    @classmethod
+    def new_scheduler(cls,
+            action,
+            interval,
+            plugin_name,
+            *args,
+            **kwargs):
+        def _wrapper(function):
+            x = (plugin_name, action)
+            print(x)
+            task = celery.task(scheduled_common_loop, base=ExceptionLoggerTask)
+            celery.add_periodic_task(interval, task.s(), x, kwargs)
+            return function
+        return _wrapper
+
 
     @classmethod
     def responder(cls, plugin: str='', *actions: [Enum]):
