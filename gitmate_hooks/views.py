@@ -4,14 +4,17 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from IGitt.GitHub import GitHubToken
 from IGitt.GitHub.GitHubComment import GitHubComment
+from IGitt.GitHub.GitHubCommit import GitHubCommit
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitLab import GitLabOAuthToken
 from IGitt.GitLab.GitLabComment import GitLabComment
+from IGitt.GitLab.GitLabCommit import GitLabCommit
 from IGitt.GitLab.GitLabIssue import GitLabIssue
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.Interfaces.Actions import IssueActions
 from IGitt.Interfaces.Actions import MergeRequestActions
+from IGitt.Interfaces.Actions import PipelineActions
 from IGitt.Interfaces.Comment import CommentType
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -45,7 +48,15 @@ def github_webhook_receiver(request):
         provider=Providers.GITHUB.value).extra_data['access_token']
     token = GitHubToken(raw_token)
 
-    if event == 'issues':
+    if event == 'status':
+        commit = webhook_data['commit']
+        commit_obj = GitHubCommit(
+            token, repository['full_name'], commit['sha'])
+        ResponderRegistrar.respond(
+            PipelineActions.UPDATED, repo_obj, commit_obj,
+            options=repo_obj.get_plugin_settings())
+
+    elif event == 'issues':
         issue = webhook_data['issue']
         issue_obj = GitHubIssue(
             token, repository['full_name'], issue['number'])
@@ -122,7 +133,15 @@ def gitlab_webhook_receiver(request):
         provider=Providers.GITLAB.value).extra_data['access_token']
     token = GitLabOAuthToken(raw_token)
 
-    if event == 'Issue Hook':
+    if event == 'Pipeline Hook':
+        commit = webhook['commit']
+        commit_obj = GitLabCommit(
+            token, repository['path_with_namespace'], commit['id'])
+        ResponderRegistrar.respond(
+            PipelineActions.UPDATED, repo_obj, commit_obj,
+            options=repo_obj.get_plugin_settings())
+
+    elif event == 'Issue Hook':
         issue = webhook['object_attributes']
         issue_obj = GitLabIssue(
             token, repository['path_with_namespace'], issue['iid'])

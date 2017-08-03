@@ -1,0 +1,111 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.1]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/24?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":4311386,"iid":24,"project_id":3439658,"title":"Test ack/unack","description":"","state":"opened","created_at":"2017-07-19T05:14:34.989Z","updated_at":"2017-07-19T05:19:05.249Z","target_branch":"master","source_branch":"gitmate-test-user-patch-1","upvotes":0,"downvotes":0,"author":{"name":"Naveen
+        Kumar Sangi","username":"nkprince007","id":889700,"state":"active","avatar_url":"https://gitlab.com/uploads/-/system/user/avatar/889700/avatar.png","web_url":"https://gitlab.com/nkprince007"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"cannot_be_merged","sha":"8c31d04e826dc38e6b3e74143f83f9890b89c71c","merge_commit_sha":null,"user_notes_count":1,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/24","subscribed":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['992']
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Aug 2017 11:30:51 GMT']
+      Etag: [W/"77c87837e6212449f5b39ba0ee9317c5"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [f3e9fe4b-6361-4ffc-9779-fe726f7e1ed9]
+      X-Runtime: ['0.374922']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.1]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/gitmate-test-user-patch-1?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":"8c31d04e826dc38e6b3e74143f83f9890b89c71c","short_id":"8c31d04e","title":"Add
+        CI","created_at":"2017-06-06T08:53:07.000+00:00","parent_ids":["3fc4b860e0a2c17819934d678decacd914271e5c"],"message":"Add
+        CI","author_name":"GitMate","author_email":"naveendarknight@gmail.com","authored_date":"2017-06-06T08:53:07.000+00:00","committer_name":"GitMate","committer_email":"naveendarknight@gmail.com","committed_date":"2017-06-06T08:53:07.000+00:00","stats":{"additions":4,"deletions":0,"total":4},"status":"failed"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['513']
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Aug 2017 11:30:53 GMT']
+      Etag: [W/"f6157aea9a34c63b1f17d4ca63a84664"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [a951f993-1fa3-4d4d-8151-d47d4f7057e5]
+      X-Runtime: ['0.245416']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.1]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/24?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":4311386,"iid":24,"project_id":3439658,"title":"Test ack/unack","description":"","state":"opened","created_at":"2017-07-19T05:14:34.989Z","updated_at":"2017-07-19T05:19:05.249Z","target_branch":"master","source_branch":"gitmate-test-user-patch-1","upvotes":0,"downvotes":0,"author":{"name":"Naveen
+        Kumar Sangi","username":"nkprince007","id":889700,"state":"active","avatar_url":"https://gitlab.com/uploads/-/system/user/avatar/889700/avatar.png","web_url":"https://gitlab.com/nkprince007"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"cannot_be_merged","sha":"8c31d04e826dc38e6b3e74143f83f9890b89c71c","merge_commit_sha":null,"user_notes_count":1,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/24","subscribed":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['992']
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Aug 2017 11:30:59 GMT']
+      Etag: [W/"77c87837e6212449f5b39ba0ee9317c5"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [1ccf079a-dd78-4d9e-9a2f-f3b043858a01]
+      X-Runtime: ['0.361265']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.1]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/8c31d04e826dc38e6b3e74143f83f9890b89c71c/statuses?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '[{"id":17972470,"sha":"8c31d04e826dc38e6b3e74143f83f9890b89c71c","ref":"gitmate-test-user-patch-1","status":"failed","name":"default","target_url":null,"description":null,"created_at":"2017-06-06T09:00:27.206Z","started_at":null,"finished_at":"2017-06-06T09:00:27.205Z","allow_failure":false,"coverage":null,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80\u0026d=identicon","web_url":"https://gitlab.com/gitmate-test-user"}},{"id":17971836,"sha":"8c31d04e826dc38e6b3e74143f83f9890b89c71c","ref":"gitmate-test-user-patch-1","status":"success","name":"blah_hlah","target_url":null,"description":null,"created_at":"2017-06-06T08:53:08.715Z","started_at":"2017-06-06T08:53:10.360Z","finished_at":"2017-06-06T08:53:31.753Z","allow_failure":false,"coverage":null,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80\u0026d=identicon","web_url":"https://gitlab.com/gitmate-test-user"}}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1128']
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Aug 2017 11:31:03 GMT']
+      Etag: [W/"e83ac4a38647cbd43275b71736843768"]
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/8c31d04e826dc38e6b3e74143f83f9890b89c71c/statuses?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=8c31d04e826dc38e6b3e74143f83f9890b89c71c>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/8c31d04e826dc38e6b3e74143f83f9890b89c71c/statuses?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=8c31d04e826dc38e6b3e74143f83f9890b89c71c>;
+          rel="last"']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Next-Page: ['']
+      X-Page: ['1']
+      X-Per-Page: ['100']
+      X-Prev-Page: ['']
+      X-Request-Id: [1a387842-8e45-479b-9c9a-0d3fa0bfc095]
+      X-Runtime: ['0.325431']
+      X-Total: ['2']
+      X-Total-Pages: ['1']
+    status: {code: 200, message: OK}
+version: 1
