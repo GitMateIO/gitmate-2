@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 from ast import literal_eval
 import os
-from IGitt.GitHub import GitHubToken
+import logging
 
 from gitmate.utils import snake_case_to_camel_case
 
@@ -160,8 +160,13 @@ SOCIAL_AUTH_GITLAB_SECRET = os.environ.get('SOCIAL_AUTH_GITLAB_SECRET')
 SOCIAL_AUTH_GITLAB_REDIRECT_URL = os.environ.get(
     'SOCIAL_AUTH_GITLAB_REDIRECT_URL')
 SOCIAL_AUTH_GITLAB_SCOPE = ['api']
-SOCIAL_AUTH_GITLAB_API_URL = 'https://' + os.environ.get('GL_INSTANCE_URL',
-                                                         'gitlab.com')
+SOCIAL_AUTH_GITLAB_API_URL = os.environ.get('GL_INSTANCE_URL',
+                                            'https://gitlab.com')
+if not SOCIAL_AUTH_GITLAB_API_URL.startswith('http'):  # pragma: no cover
+    SOCIAL_AUTH_GITLAB_API_URL = 'https://' + SOCIAL_AUTH_GITLAB_API_URL
+    logging.warning('Include the protocol in GL_INSTANCE_URL! Omitting it has '
+                    'been deprecated.')
+
 SOCIAL_AUTH_BITBUCKET_KEY = os.environ.get('SOCIAL_AUTH_BITBUCKET_KEY')
 SOCIAL_AUTH_BITBUCKET_SECRET = os.environ.get('SOCIAL_AUTH_BITBUCKET_SECRET')
 
