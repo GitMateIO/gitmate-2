@@ -20,7 +20,11 @@ class TestAck(GitmateTestCase):
         super().setUpWithPlugin('ack')
         self.github_data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO']},
-            'issue': {'number': 10},
+            'issue': {
+                'number': 10,
+                'pull_request': {},
+            },
+
             'comment': {'id': 0},
             'action': 'created'
         }
