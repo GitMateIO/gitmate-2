@@ -98,6 +98,7 @@ class RepositoryViewSet(
 
         return retval
 
+
 class UserViewSet(
     GenericViewSet,
     mixins.RetrieveModelMixin,
