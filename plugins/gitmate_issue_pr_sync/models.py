@@ -8,7 +8,10 @@ from gitmate_config.models import SettingsBase
 
 
 class Settings(SettingsBase):
-    pass
+    sync_assignees = models.BooleanField(
+        default=True,
+        help_text='Synchronize assignees along with the labels.',
+    )
 
 
 class MergeRequestModel(models.Model):
