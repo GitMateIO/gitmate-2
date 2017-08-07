@@ -20,7 +20,7 @@ class TestGitmateApprover(GitmateTestCase):
             {
                 'name': 'approver',
                 'settings': {
-                    'status_labels': ['WIP', 'process/pending_review'],
+                    'status_labels': 'WIP, process/pending_review',
                     'approved_label': 'approved',
                 }
             }
