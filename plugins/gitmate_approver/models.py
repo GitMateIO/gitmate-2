@@ -8,7 +8,7 @@ from gitmate_config.models import SettingsBase
 class Settings(SettingsBase):
     status_labels = psql_fields.ArrayField(
         models.CharField(max_length=40),
-        default=[],
+        default=['process/pending_review', 'process/WIP'],
         help_text='Comma seperated labels to be removed from the merge '
                   'request once it has been approved. e.g. process/WIP, '
                   'status/stale, process/pending_review')
