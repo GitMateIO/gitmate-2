@@ -57,6 +57,57 @@ class TestIssuePRSync(GitmateTestCase):
         m_unassign.assert_called_with('gitmate-test-user')
         m_assign.assert_called_with('sils')
 
+    @patch.object(GitHubMergeRequest, 'assign', return_value=None)
+    @patch.object(GitHubMergeRequest, 'unassign', return_value=None)
+    @patch.object(GitHubMergeRequest, 'labels', new_callable=PropertyMock)
+    def test_no_assignment(self, m_labels, m_unassign, m_assign):
+        settings = [
+            {
+                'name': 'issue_pr_sync',
+                'settings': {
+                    'sync_assignees': False,
+                }
+            }
+        ]
+        self.repo.set_plugin_settings(settings)
+
+        # setting the labels
+        GitHubIssue.labels = {'a', 'b'}
+        GitHubIssue.assignees = ('gitmate-test-user', )
+        GitHubMergeRequest.assignees = tuple()
+        m_labels.return_value = set()
+
+        # testing updated pull requests
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'pull_request': {'number': 110},
+            'action': 'opened'
+        }
+        response = self.simulate_github_webhook_call('pull_request', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        m_labels.assert_called()
+        m_labels.assert_called_with({'a', 'b'})
+        m_assign.assert_not_called()
+
+        # testing updated issue
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'issue': {'number': 104},
+            'action': 'updated'
+        }
+        GitHubIssue.labels = {'a'}
+        GitHubIssue.assignees = ('sils', )
+        GitHubMergeRequest.assignees = ('gitmate-test-user', )
+
+        response = self.simulate_github_webhook_call('issues', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        m_labels.assert_called()
+        m_labels.assert_called_with({'a'})
+        m_unassign.assert_not_called()
+        m_assign.assert_not_called()
+
     @patch.object(GitLabMergeRequest, 'assign', return_value=None)
     @patch.object(GitLabMergeRequest, 'unassign', return_value=None)
     @patch.object(GitLabMergeRequest, 'labels', new_callable=PropertyMock)
