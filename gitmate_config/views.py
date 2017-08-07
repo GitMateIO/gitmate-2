@@ -42,6 +42,9 @@ class RepositoryViewSet(
         ).order_by('-active', 'full_name')
 
     def list(self, request):
+        if int(request.GET.get('cached', '1')) > 0:
+            return super().list(request)
+
         # Update db model
         hoster = {
             Providers.GITHUB.value: GitHub,
@@ -75,6 +78,7 @@ class RepositoryViewSet(
                 # was active?
             except UserSocialAuth.DoesNotExist: # pragma: no cover
                 pass  # User never gave us his key for that provider
+
         return super().list(request)
 
     def update(self, request, *args, **kwargs):
@@ -89,7 +93,7 @@ class RepositoryViewSet(
         instance = self.get_object()
         repo = instance.igitt_repo
         hook_url = 'https://{domain}/webhooks/{provider}'.format(
-            domain = settings.HOOK_DOMAIN, provider=instance.provider)
+            domain=settings.HOOK_DOMAIN, provider=instance.provider)
 
         if instance.active:
             repo.register_hook(hook_url, settings.WEBHOOK_SECRET)

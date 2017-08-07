@@ -29,17 +29,28 @@ class TestRepositories(GitmateTestCase):
         self.repo.delete()
         self.gl_repo.delete()
 
-        get_repos_request = self.factory.get(self.repo_list_url)
-        response = self.repo_list(get_repos_request)
+        cached_get_repos_request = self.factory.get(self.repo_list_url,
+                                                    {'cached': '1'})
+        uncached_get_repos_request = self.factory.get(self.repo_list_url,
+                                                      {'cached': '0'})
+        response = self.repo_list(cached_get_repos_request)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-        get_repos_request.user = self.user
-        response = self.repo_list(get_repos_request)
+        cached_get_repos_request.user = self.user
+
+        response = self.repo_list(cached_get_repos_request)
+        self.assertEqual(response.data, [])
+
+        uncached_get_repos_request.user = self.user
+        response = self.repo_list(uncached_get_repos_request)
         self.assertIn(os.environ['GITHUB_TEST_REPO'],
                       [elem['full_name'] for elem in response.data])
         self.assertIn(os.environ['GITLAB_TEST_REPO'],
                       [elem['full_name'] for elem in response.data])
         self.assertIn('plugins', response.data[0])
+
+        cached_response = self.repo_list(cached_get_repos_request)
+        self.assertEqual(cached_response.data, response.data)
 
     def test_activate_repo(self):
         url = reverse('api:repository-detail', args=(self.repo.pk,))
