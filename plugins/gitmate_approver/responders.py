@@ -33,8 +33,8 @@ def store_head_commit_sha(pr: MergeRequest):
     'approver', PipelineActions.UPDATED)
 def add_approved_label(
         commit: Commit,
-        approved_label: str='Label to be added on approval',
-        status_labels: {str}='Set of status labels to be removed upon approval'
+        approved_label: str='status/approved',
+        status_labels: str='status/pending_review, status/WIP'
 ):
     """
     Labels the PR as approved when the head commit passes all tests.
@@ -42,6 +42,7 @@ def add_approved_label(
     # Don't move to module code! Apps aren't loaded yet.
     from .models import MergeRequestModel
 
+    status_labels = [label.strip() for label in status_labels.split(',')]
     pr = MergeRequestModel.objects.get(head_sha=commit.sha).igitt_pr
     with lock_igitt_object('label mr', pr):
         labels = pr.labels
