@@ -1,11 +1,8 @@
 from django.db import models
 from django.contrib.postgres import fields as psql_fields
 
-from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
-from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.Interfaces.Issue import Issue
 
-from gitmate_config import Providers
 from gitmate_config.models import Repository
 from gitmate_config.models import SettingsBase
 
