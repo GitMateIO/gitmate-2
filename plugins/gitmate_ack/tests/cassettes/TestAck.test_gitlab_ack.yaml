@@ -1,0 +1,56 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.3]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/25?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":4445169,"iid":25,"project_id":3439658,"title":"Create a.txt","description":"Awesome
+        commit message\n\nFix #21, Fixes #22 and Closes gitmate-test-user/test#23.\nThis
+        commit is also related to #31 and fixes #26, #27\nand https://gitlab.com/gitmate-test-user/test/issues/30.","state":"opened","created_at":"2017-07-28T20:00:27.022Z","updated_at":"2017-08-14T22:07:19.034Z","target_branch":"master","source_branch":"test-issue-pr-relate","upvotes":0,"downvotes":0,"author":{"name":"Naveen
+        Kumar Sangi","username":"nkprince007","id":889700,"state":"active","avatar_url":"https://gitlab.com/uploads/-/system/user/avatar/889700/avatar.png","web_url":"https://gitlab.com/nkprince007"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"9ba5b704f5866e468ec2e639fa893ae4c129f2ad","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/25","subscribed":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1177']
+      Content-Type: [application/json]
+      Date: ['Sun, 20 Aug 2017 03:04:32 GMT']
+      Etag: [W/"4f335cc81ccaf752dc263240cecea8d4"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [ab479a83-c805-47c6-baae-4e7b812d9cb8]
+      X-Runtime: ['0.241952']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.3]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/25?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":4445169,"iid":25,"project_id":3439658,"title":"Create a.txt","description":"Awesome
+        commit message\n\nFix #21, Fixes #22 and Closes gitmate-test-user/test#23.\nThis
+        commit is also related to #31 and fixes #26, #27\nand https://gitlab.com/gitmate-test-user/test/issues/30.","state":"opened","created_at":"2017-07-28T20:00:27.022Z","updated_at":"2017-08-14T22:07:19.034Z","target_branch":"master","source_branch":"test-issue-pr-relate","upvotes":0,"downvotes":0,"author":{"name":"Naveen
+        Kumar Sangi","username":"nkprince007","id":889700,"state":"active","avatar_url":"https://gitlab.com/uploads/-/system/user/avatar/889700/avatar.png","web_url":"https://gitlab.com/nkprince007"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"9ba5b704f5866e468ec2e639fa893ae4c129f2ad","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/25","subscribed":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1177']
+      Content-Type: [application/json]
+      Date: ['Sun, 20 Aug 2017 03:04:34 GMT']
+      Etag: [W/"4f335cc81ccaf752dc263240cecea8d4"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [3459f035-d191-470c-a9e0-159491bd61d2]
+      X-Runtime: ['0.188528']
+    status: {code: 200, message: OK}
+version: 1
