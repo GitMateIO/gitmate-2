@@ -55,6 +55,23 @@ def reinit_plugin(name, upmate: bool=False): # pragma: no cover
         management.call_command('upmate', interactive=False)
 
 
+class StreamMock:
+    """
+    A class for mocking standard input, output and error streams.
+    """
+    def __init__(self, value):
+        self.value = value
+
+    def read(self):
+        return self.value.encode()
+
+    def write(self, value):
+        assert self.value == value.decode()
+
+    def close(self):
+        pass
+
+
 class GitmateTestCase(TransactionTestCase):
     """
     A base class for setting up a dummy user, request factory and a repo for

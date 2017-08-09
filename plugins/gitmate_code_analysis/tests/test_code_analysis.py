@@ -5,23 +5,10 @@ import subprocess
 from unittest.mock import patch
 
 from gitmate_config.tests.test_base import GitmateTestCase
+from gitmate_config.tests.test_base import StreamMock
 from IGitt.GitHub.GitHubCommit import GitHubCommit
 from IGitt.GitLab.GitLabCommit import GitLabCommit
 from rest_framework.status import HTTP_200_OK
-
-
-class StreamMock:
-    def __init__(self, value):
-        self.value = value
-
-    def read(self):
-        return self.value.encode()
-
-    def write(self, value):
-        assert self.value == value.decode()
-
-    def close(self):
-        pass
 
 
 PopenResult = namedtuple('ret', 'stdout stdin wait')

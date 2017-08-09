@@ -17,6 +17,7 @@ before_script:
   - export WEBHOOK_SECRET=foobar
   - export COALA_RESULTS_IMAGE=registry.gitlab.com/gitmate/open-source/coala-incremental-results:latest
   - export RESULTS_BOUNCER_IMAGE=registry.gitlab.com/gitmate/open-source/result-bouncer:latest
+  - export REBASER_IMAGE=egistry.gitlab.com/gitmate/open-source/mr-rebaser:latest
   - export BOT_TOKEN=foobar
   - export BOT_USER=foo
 
