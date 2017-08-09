@@ -6,12 +6,14 @@ from gitmate_config.models import SettingsBase
 
 
 class Settings(SettingsBase):
+    approved_label = models.CharField(
+        max_length=40,
+       default='status/approved',
+       help_text='Label for approved pull requests')
     status_labels = models.CharField(max_length=500,
         default='process/pending_review, process/WIP',
-        help_text='Comma seperated labels to be removed from the merge '
-                  'request once it has been approved. e.g. process/WIP, '
-                  'status/stale, process/pending_review')
-    approved_label = models.CharField(max_length=40, default='status/approved')
+        help_text='Labels to be removed from the pull '
+                  'request on approval (comma separated')
 
 
 class MergeRequestModel(models.Model):
