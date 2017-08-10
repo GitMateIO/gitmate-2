@@ -73,6 +73,7 @@ GITMATE_PLUGINS = [
     'ack',
     'issue_pr_sync',
     'approver',
+    'issue_stale_reminder',
 ]
 
 # Application definition
