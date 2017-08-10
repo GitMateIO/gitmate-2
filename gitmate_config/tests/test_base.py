@@ -18,6 +18,7 @@ from gitmate.utils import snake_case_to_camel_case
 from gitmate_config import Providers
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
+from gitmate_hooks import ResponderRegistrar
 from gitmate_hooks.views import github_webhook_receiver
 from gitmate_hooks.views import gitlab_webhook_receiver
 
@@ -139,6 +140,10 @@ class GitmateTestCase(TransactionTestCase):
         self.gl_repo.plugins.add(self.plugin)
         self.gl_repo.active = True
         self.gl_repo.save()
+
+    def simulate_scheduled_responder_call(self, event: str, repo: Repository):
+        ResponderRegistrar.respond(event, repo, repo.igitt_repo,
+                                   options=repo.get_plugin_settings())
 
     def simulate_github_webhook_call(self, event: str, data: dict):
         request = self.factory.post(
