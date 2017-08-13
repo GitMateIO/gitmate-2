@@ -151,6 +151,9 @@ class TestIssuePRSync(GitmateTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         m_labels.assert_called()
-        m_labels.assert_called_with({'a'})
-        m_unassign.assert_called_with('gitmate-test-user')
+        # the label 'b' remains due to other issues
+        m_labels.assert_called_with({'a', 'b'})
+        # no unassign calls because other issues still have 'gitmate-test-user'
+        m_unassign.assert_not_called()
+        # new assignee 'sils' would be added though
         m_assign.assert_called_with('sils')
