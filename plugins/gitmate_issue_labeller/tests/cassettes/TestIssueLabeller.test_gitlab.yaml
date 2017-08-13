@@ -1,0 +1,27 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.3]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/issues/21?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":5658796,"iid":21,"project_id":3439658,"title":"test title","description":"test
+        body","state":"opened","created_at":"2017-06-09T06:56:27.838Z","updated_at":"2017-07-29T15:13:43.227Z","labels":[],"milestone":null,"assignees":[],"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"user_notes_count":0,"upvotes":0,"downvotes":0,"due_date":null,"confidential":false,"weight":null,"web_url":"https://gitlab.com/gitmate-test-user/test/issues/21","subscribed":true}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['666']
+      Content-Type: [application/json]
+      Date: ['Sun, 13 Aug 2017 21:35:19 GMT']
+      Etag: [W/"46762303f32a666891542af31ea5eabf"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [da2d087a-96aa-4a46-a7ec-2a12d47e64f4]
+      X-Runtime: ['0.189588']
+    status: {code: 200, message: OK}
+version: 1

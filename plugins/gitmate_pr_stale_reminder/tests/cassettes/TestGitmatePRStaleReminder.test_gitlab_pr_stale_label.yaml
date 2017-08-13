@@ -1,0 +1,50 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.3]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1007']
+      Content-Type: [application/json]
+      Date: ['Sun, 13 Aug 2017 21:39:13 GMT']
+      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [6da87f21-9779-468a-8a14-fe4582c6f2c4]
+      X-Runtime: ['0.183816']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.3]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1007']
+      Content-Type: [application/json]
+      Date: ['Sun, 13 Aug 2017 21:39:18 GMT']
+      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [4556993c-80bd-4ac7-b65b-d2d3eb575e26]
+      X-Runtime: ['0.296925']
+    status: {code: 200, message: OK}
+version: 1

@@ -34,10 +34,6 @@ class TestIssueLabeller(GitmateTestCase):
     @patch.object(GitHubIssue, 'title', new_callable=PropertyMock)
     @patch.object(GitHubIssue, 'labels', new_callable=PropertyMock)
     def test_github(self, m_labels, m_title, m_desc):
-        # needed for the igitt object locking
-        GitHubIssue._repository = environ['GITHUB_TEST_REPO']
-        GitHubIssue.number = 0
-        GitHubIssue.refresh = lambda *args: None
         # clear all the labels
         m_labels.return_value = set()
 
@@ -47,7 +43,7 @@ class TestIssueLabeller(GitmateTestCase):
 
         data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO']},
-            'issue': {'number': 0},
+            'issue': {'number': 104},
             'action': 'opened'
         }
 
@@ -66,10 +62,6 @@ class TestIssueLabeller(GitmateTestCase):
         self.settings[0]['settings']['label_texts_as_keywords'] = True
         self.repo.set_plugin_settings(self.settings)
 
-        # needed for the igitt object locking
-        GitHubIssue._repository = environ['GITHUB_TEST_REPO']
-        GitHubIssue.number = 0
-        GitHubIssue.refresh = lambda *args: None
         # clear all the labels
         m_labels.return_value = set()
         m_available_labels.return_value = {'shape'}
@@ -80,7 +72,7 @@ class TestIssueLabeller(GitmateTestCase):
 
         data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO']},
-            'issue': {'number': 0},
+            'issue': {'number': 104},
             'action': 'opened'
         }
 
@@ -94,10 +86,6 @@ class TestIssueLabeller(GitmateTestCase):
     @patch.object(GitLabIssue, 'title', new_callable=PropertyMock)
     @patch.object(GitLabIssue, 'labels', new_callable=PropertyMock)
     def test_gitlab(self, m_labels, m_title, m_desc):
-        # needed for the igitt object locking
-        GitLabIssue._repository = environ['GITHUB_TEST_REPO']
-        GitLabIssue.number = 0
-        GitLabIssue.refresh = lambda *args: None
         # clear all the labels
         m_labels.return_value = set()
 
@@ -109,7 +97,7 @@ class TestIssueLabeller(GitmateTestCase):
             'object_attributes': {
                 'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
                 'action': 'open',
-                'iid': 0
+                'iid': 21
             }
         }
 

@@ -5,7 +5,31 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1007']
+      Content-Type: [application/json]
+      Date: ['Sun, 13 Aug 2017 21:36:45 GMT']
+      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [5293172c-e65a-4977-81e8-b6c49a7c4ae0]
+      X-Runtime: ['0.198378']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
   response:
@@ -20,7 +44,7 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['963']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:07:24 GMT']
+      Date: ['Sun, 13 Aug 2017 21:36:47 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
       Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
@@ -33,8 +57,8 @@ interactions:
       X-Page: ['1']
       X-Per-Page: ['100']
       X-Prev-Page: ['']
-      X-Request-Id: [a3f8ad0f-d358-4027-ab2a-48f06341f740]
-      X-Runtime: ['0.195070']
+      X-Request-Id: [4a7c1195-0588-4e8f-8f51-ee38f0f4dfe5]
+      X-Runtime: ['0.123961']
       X-Total: ['2']
       X-Total-Pages: ['1']
     status: {code: 200, message: OK}
@@ -44,7 +68,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/changes?User-Agent=IGitt&per_page=100
   response:
@@ -53,14 +77,14 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['1020']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:07:27 GMT']
+      Date: ['Sun, 13 Aug 2017 21:36:53 GMT']
       Etag: [W/"00fb40c6b4451b413924c29baf40bc0b"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [47343a94-8935-4e26-8dff-894a7354f937]
-      X-Runtime: ['0.503027']
+      X-Request-Id: [b0e8ee50-b2b0-48d6-966f-ad53853286a3]
+      X-Runtime: ['0.249339']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -68,7 +92,31 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1007']
+      Content-Type: [application/json]
+      Date: ['Sun, 13 Aug 2017 21:36:59 GMT']
+      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [dd061a0e-75e5-4b18-9abf-f07cc9bdbf02]
+      X-Runtime: ['0.455960']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
   response:
@@ -83,7 +131,7 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['963']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:07:31 GMT']
+      Date: ['Sun, 13 Aug 2017 21:37:01 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
       Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
@@ -96,8 +144,8 @@ interactions:
       X-Page: ['1']
       X-Per-Page: ['100']
       X-Prev-Page: ['']
-      X-Request-Id: [f330823c-cf7c-4935-abf2-462d8278dcb1]
-      X-Runtime: ['0.307704']
+      X-Request-Id: [befde871-5383-4ed2-94ed-98c9e5d4eb6d]
+      X-Runtime: ['0.093261']
       X-Total: ['2']
       X-Total-Pages: ['1']
     status: {code: 200, message: OK}
@@ -107,7 +155,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/changes?User-Agent=IGitt&per_page=100
   response:
@@ -116,14 +164,14 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['1020']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:07:35 GMT']
+      Date: ['Sun, 13 Aug 2017 21:37:03 GMT']
       Etag: [W/"00fb40c6b4451b413924c29baf40bc0b"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [0d9e1820-fbd6-429c-92d2-1966761f4bbd]
-      X-Runtime: ['0.365317']
+      X-Request-Id: [38ac0fe7-92d2-48a5-9aaf-6c9a4a618aff]
+      X-Runtime: ['0.322376']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -131,7 +179,31 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1007']
+      Content-Type: [application/json]
+      Date: ['Sun, 13 Aug 2017 21:37:09 GMT']
+      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [bb4c7321-532c-4a2b-b283-c0fcd157d97e]
+      X-Runtime: ['0.226761']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
   response:
@@ -146,7 +218,7 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['963']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:07:40 GMT']
+      Date: ['Sun, 13 Aug 2017 21:37:14 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
       Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
@@ -159,8 +231,8 @@ interactions:
       X-Page: ['1']
       X-Per-Page: ['100']
       X-Prev-Page: ['']
-      X-Request-Id: [65001c9a-7f4a-4d00-8f31-c07cde72127d]
-      X-Runtime: ['0.131261']
+      X-Request-Id: [b0b505ca-0798-4760-b409-12aacfa4fa44]
+      X-Runtime: ['0.099323']
       X-Total: ['2']
       X-Total-Pages: ['1']
     status: {code: 200, message: OK}
@@ -170,7 +242,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/changes?User-Agent=IGitt&per_page=100
   response:
@@ -179,14 +251,14 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['1020']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:07:43 GMT']
+      Date: ['Sun, 13 Aug 2017 21:37:16 GMT']
       Etag: [W/"00fb40c6b4451b413924c29baf40bc0b"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [390330b1-c782-4923-9132-9eb1ab24387a]
-      X-Runtime: ['0.276592']
+      X-Request-Id: [37481fa3-5151-438a-829a-e088b724855b]
+      X-Runtime: ['0.210167']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -194,7 +266,31 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1007']
+      Content-Type: [application/json]
+      Date: ['Sun, 13 Aug 2017 21:37:22 GMT']
+      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [9a6c6da1-efdb-4ea5-ad2a-7087355b2104]
+      X-Runtime: ['0.259805']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
   response:
@@ -209,7 +305,7 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['963']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:08:49 GMT']
+      Date: ['Sun, 13 Aug 2017 21:37:24 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
       Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
@@ -222,8 +318,8 @@ interactions:
       X-Page: ['1']
       X-Per-Page: ['100']
       X-Prev-Page: ['']
-      X-Request-Id: [a24c91bd-4620-4434-b56f-0b3f7c8a739e]
-      X-Runtime: ['0.175929']
+      X-Request-Id: [e2cddeba-52f9-4341-bf69-39bcd594eea3]
+      X-Runtime: ['0.087141']
       X-Total: ['2']
       X-Total-Pages: ['1']
     status: {code: 200, message: OK}
@@ -233,7 +329,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/changes?User-Agent=IGitt&per_page=100
   response:
@@ -242,14 +338,14 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['1020']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:08:54 GMT']
+      Date: ['Sun, 13 Aug 2017 21:37:26 GMT']
       Etag: [W/"00fb40c6b4451b413924c29baf40bc0b"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [3e147a1e-f428-4768-a399-d1e32b590b37]
-      X-Runtime: ['0.229369']
+      X-Request-Id: [fefeb8f1-605b-4429-b584-27c3e994c8fa]
+      X-Runtime: ['0.199962']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -257,7 +353,31 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1007']
+      Content-Type: [application/json]
+      Date: ['Sun, 13 Aug 2017 21:37:31 GMT']
+      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [6aea7660-0882-4849-8a7b-1ad12e37984b]
+      X-Runtime: ['0.280682']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
   response:
@@ -272,7 +392,7 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['963']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:08:57 GMT']
+      Date: ['Sun, 13 Aug 2017 21:37:36 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
       Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
@@ -285,8 +405,8 @@ interactions:
       X-Page: ['1']
       X-Per-Page: ['100']
       X-Prev-Page: ['']
-      X-Request-Id: [2c78d2bb-450f-4e73-80aa-14b71d330d43]
-      X-Runtime: ['0.150512']
+      X-Request-Id: [4cc92fa8-1ecc-4293-b00a-2a4eb0870639]
+      X-Runtime: ['0.103460']
       X-Total: ['2']
       X-Total-Pages: ['1']
     status: {code: 200, message: OK}
@@ -296,7 +416,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/changes?User-Agent=IGitt&per_page=100
   response:
@@ -305,14 +425,14 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['1020']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:09:03 GMT']
+      Date: ['Sun, 13 Aug 2017 21:37:45 GMT']
       Etag: [W/"00fb40c6b4451b413924c29baf40bc0b"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [bf5cb0bb-6a53-4ef4-89f3-0beae8ff7555]
-      X-Runtime: ['0.267218']
+      X-Request-Id: [9190c0ee-f833-4838-939c-aa79fc243ed6]
+      X-Runtime: ['0.313295']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -320,7 +440,31 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2?User-Agent=IGitt&per_page=100
+  response:
+    body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['1007']
+      Content-Type: [application/json]
+      Date: ['Sun, 13 Aug 2017 21:37:50 GMT']
+      Etag: [W/"14bb7651d6074e19b13d5dd3cac49847"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [64a94ae3-9c34-43d3-9f08-c839d226ced0]
+      X-Runtime: ['0.215728']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
   response:
@@ -335,7 +479,7 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['963']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:09:06 GMT']
+      Date: ['Sun, 13 Aug 2017 21:37:56 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
       Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
@@ -348,8 +492,8 @@ interactions:
       X-Page: ['1']
       X-Per-Page: ['100']
       X-Prev-Page: ['']
-      X-Request-Id: [747b6c6f-8fa2-4c97-a114-cce46e0b5eeb]
-      X-Runtime: ['0.110196']
+      X-Request-Id: [94742c76-5c0a-4f53-a6e2-de2939d55147]
+      X-Runtime: ['0.084161']
       X-Total: ['2']
       X-Total-Pages: ['1']
     status: {code: 200, message: OK}
@@ -359,7 +503,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.3]
     method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/changes?User-Agent=IGitt&per_page=100
   response:
@@ -368,13 +512,13 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['1020']
       Content-Type: [application/json]
-      Date: ['Tue, 18 Jul 2017 08:09:12 GMT']
+      Date: ['Sun, 13 Aug 2017 21:38:01 GMT']
       Etag: [W/"00fb40c6b4451b413924c29baf40bc0b"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [8abbf195-81d7-4e21-a9c7-af9f74f6eb0c]
-      X-Runtime: ['0.225665']
+      X-Request-Id: [935a6577-41a9-41f7-b4fa-6725dd204c35]
+      X-Runtime: ['0.282217']
     status: {code: 200, message: OK}
 version: 1
