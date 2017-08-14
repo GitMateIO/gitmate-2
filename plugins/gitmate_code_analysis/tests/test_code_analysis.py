@@ -36,7 +36,8 @@ def popen_coala():
 
 
 def fake_fetch(base: str, req_type: str, token: str, url: str,
-               data: dict = None, query_params: dict=None):
+               data: dict = None, query_params: dict=None,
+               headers: dict=frozenset()):
     if '/commits' in url:
         return [{
             'sha': 'deadbeef',
