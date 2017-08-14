@@ -27,16 +27,18 @@ class MergeRequestModel(models.Model):
     @property
     def ack_state(self):
         state = CommitStatus(
-            Status.SUCCESS, 'This PR is reviewed :)',
+            Status.SUCCESS, 'This PR is reviewed. :)',
             'review/gitmate/manual/pr', 'https://gitmate.io')
         for acked in dict(self.acks).values():
-            if acked is False:
+            if acked['status'] in [Status.FAILED.value,
+                                   Status.ERROR.value,
+                                   Status.CANCELED.value]:
                 return CommitStatus(
-                    Status.FAILED, 'This PR needs work',
+                    Status.FAILED, 'This PR needs work. :(',
                     'review/gitmate/manual/pr', 'https://gitmate.io')
-            if acked is None:
+            if acked['status'] == Status.PENDING.value:
                 state = CommitStatus(
-                    Status.PENDING, 'This PR needs review',
+                    Status.PENDING, 'This PR needs review.',
                     'review/gitmate/manual/pr', 'https://gitmate.io')
 
         return state

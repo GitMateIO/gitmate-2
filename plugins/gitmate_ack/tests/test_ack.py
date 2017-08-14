@@ -60,12 +60,13 @@ class TestAck(GitmateTestCase):
             'f6d2b7c66372236a090a2a74df2e47f42a54456b')
 
     @patch.object(GitHubMergeRequest, 'commits', new_callable=PropertyMock)
+    @patch.object(GitHubMergeRequest, 'head', new_callable=PropertyMock)
     @patch.object(GitHubComment, 'body', new_callable=PropertyMock)
     @patch.object(GitHubCommit, 'sha', new_callable=PropertyMock)
     @patch.object(GitHubCommit, 'get_statuses')
     @patch.object(GitHubCommit, 'set_status')
     def test_github_ack(
-            self, m_set_status, m_get_statuses, m_sha, m_body, m_commits
+        self, m_set_status, m_get_statuses, m_sha, m_body, m_head, m_commits
     ):
         m_get_statuses.return_value = (
             CommitStatus(Status.SUCCESS, 'No issues',
@@ -74,6 +75,7 @@ class TestAck(GitmateTestCase):
                          'review/somewhere/else', 'https://some/url'))
         m_sha.return_value = 'f6d2b7c66372236a090a2a74df2e47f42a54456b'
         m_body.return_value = 'ack f6d2b7c'
+        m_head.return_value = self.gh_commit
         m_commits.return_value = tuple([self.gh_commit])
         response = self.simulate_github_webhook_call('pull_request',
                                                      self.gh_pr_data)
@@ -92,12 +94,13 @@ class TestAck(GitmateTestCase):
                           (Status.SUCCESS, 'review/gitmate/manual/pr')])
 
     @patch.object(GitHubMergeRequest, 'commits', new_callable=PropertyMock)
+    @patch.object(GitHubMergeRequest, 'head', new_callable=PropertyMock)
     @patch.object(GitHubComment, 'body', new_callable=PropertyMock)
     @patch.object(GitHubCommit, 'sha', new_callable=PropertyMock)
     @patch.object(GitHubCommit, 'get_statuses')
     @patch.object(GitHubCommit, 'set_status')
     def test_github_unack(
-            self, m_set_status, m_get_statuses, m_sha, m_body, m_commits
+        self, m_set_status, m_get_statuses, m_sha, m_body, m_head, m_commits
     ):
         m_get_statuses.return_value = (
             CommitStatus(Status.FAILED, 'Terrible issues',
@@ -106,6 +109,7 @@ class TestAck(GitmateTestCase):
                          'review/somewhere/else', 'https://some/url'))
         m_sha.return_value = 'f6d2b7c66372236a090a2a74df2e47f42a54456b'
         m_body.return_value = 'unack f6d2b7c'
+        m_head.return_value = self.gh_commit
         m_commits.return_value = tuple([self.gh_commit])
         response = self.simulate_github_webhook_call('pull_request',
                                                      self.gh_pr_data)
@@ -114,9 +118,9 @@ class TestAck(GitmateTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         args = sum([list(args) for args, _ in m_set_status.call_args_list], [])
         # 3 calls to be made as follows
-        # Status.FAILED review/gitmate/manual/pr This PR needs work
-        # Status.FAILED review/gitmate/manual This commit needs work.
-        # Status.FAILED review/gitmate/manual/pr This PR needs work
+        # Status.FAILED review/gitmate/manual/pr
+        # Status.FAILED review/gitmate/manual
+        # Status.FAILED review/gitmate/manual/pr
         self.assertEqual(m_set_status.call_count, 3)
         self.assertEqual([(arg.status, arg.context) for arg in args],
                          [(Status.FAILED, 'review/gitmate/manual/pr'),
@@ -124,28 +128,75 @@ class TestAck(GitmateTestCase):
                           (Status.FAILED, 'review/gitmate/manual/pr')])
 
     @patch.object(GitHubMergeRequest, 'commits', new_callable=PropertyMock)
+    @patch.object(GitHubMergeRequest, 'head', new_callable=PropertyMock)
     @patch.object(GitHubCommit, 'sha', new_callable=PropertyMock)
     @patch.object(GitHubCommit, 'get_statuses')
     @patch.object(GitHubCommit, 'set_status')
     def test_github_pending_pr_open_event(
-            self, m_set_status, m_get_statuses, m_sha, m_commits
+            self, m_set_status, m_get_statuses, m_sha, m_head, m_commits
     ):
         m_get_statuses.return_value = (
             CommitStatus(Status.FAILED, 'Terrible issues',
                          'some/other/review', 'https://some/other/ci'),)
         m_sha.return_value = 'f6d2b7c66372236a090a2a74df2e47f42a54456b'
+        m_head.return_value = self.gh_commit
         m_commits.return_value = tuple([self.gh_commit])
         response = self.simulate_github_webhook_call('pull_request',
                                                      self.gh_pr_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         args = sum([list(args) for args, _ in m_set_status.call_args_list], [])
         # 2 calls to be made as follows
-        # Status.PENDING review/gitmate/manual This commit needs review.
-        # Status.PENDING review/gitmate/manual/pr This PR needs review
+        # Status.PENDING review/gitmate/manual
+        # Status.PENDING review/gitmate/manual/pr
         self.assertEqual(m_set_status.call_count, 2)
         self.assertEqual([(arg.status, arg.context) for arg in args],
                          [(Status.PENDING, 'review/gitmate/manual'),
                           (Status.PENDING, 'review/gitmate/manual/pr')])
+
+    @patch.object(GitLabMergeRequest, 'commits', new_callable=PropertyMock)
+    @patch.object(GitLabCommit, 'unified_diff', new_callable=PropertyMock)
+    @patch.object(GitLabCommit, 'message', new_callable=PropertyMock)
+    @patch.object(GitLabCommit, 'sha', new_callable=PropertyMock)
+    @patch.object(GitLabCommit, 'get_statuses')
+    @patch.object(GitLabCommit, 'set_status')
+    def test_gitlab_unmodified_commit(
+        self, m_set_status, m_get_statuses, m_sha, m_message, m_diff, m_commits
+    ):
+        m_get_statuses.return_value = (
+            CommitStatus(Status.SUCCESS, 'Good to go!',
+                         'review/gitmate/manual', 'https://gitmate.io'),)
+        m_diff.return_value = ('--- a/README.md\n'
+                               '+++ b/README.md\n'
+                               '@@ -1,2 +1,4 @@\n'
+                               ' # test\n'
+                               ' a test repo\n'
+                               '+\n'
+                               '+a commiit that can one acknowledge')
+        m_message.return_value = 'Update README.md'
+        m_commits.return_value = tuple([self.gl_commit])
+        m_sha.return_value = 'f6d2b7c66372236a090a2a74df2e47f42a54456b'
+        response = self.simulate_gitlab_webhook_call('Merge Request Hook',
+                                                     self.gl_pr_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # resyncing merge request with a new unmodified commit
+        m_sha.return_value = '9ba5b704f5866e468ec2e639fa893ae4c129f2ad'
+        m_commits.return_value = tuple([GitLabCommit(
+            self.gl_token, self.gl_repo.full_name, m_sha.return_value)])
+        response = self.simulate_gitlab_webhook_call('Merge Request Hook',
+                                                     self.gl_pr_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        args = sum([list(args) for args, _ in m_set_status.call_args_list], [])
+        # 3 calls to be made as follows
+        # Status.SUCCESS review/gitmate/manual/pr
+        # Status.SUCCESS review/gitmate/manual
+        # Status.SUCCESS review/gitmate/manual/pr
+        self.assertEqual([(arg.status, arg.context) for arg in args],
+                         [(Status.SUCCESS, 'review/gitmate/manual/pr'),
+                          (Status.SUCCESS, 'review/gitmate/manual'),
+                          (Status.SUCCESS, 'review/gitmate/manual/pr')])
+
 
     @patch.object(GitLabMergeRequest, 'commits', new_callable=PropertyMock)
     @patch.object(GitLabComment, 'body', new_callable=PropertyMock)
@@ -169,7 +220,6 @@ class TestAck(GitmateTestCase):
                                                      self.gl_comment_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         args = sum([list(args) for args, _ in m_set_status.call_args_list], [])
-
         # 3 calls to be made as follows
         # Status.SUCCESS review/gitmate/manual/pr
         # Status.SUCCESS review/gitmate/manual
@@ -203,9 +253,9 @@ class TestAck(GitmateTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         args = sum([list(args) for args, _ in m_set_status.call_args_list], [])
         # 3 calls to be made as follows
-        # Status.FAILED review/gitmate/manual/pr This PR needs work
-        # Status.FAILED review/gitmate/manual This commit needs work.
-        # Status.FAILED review/gitmate/manual/pr This PR needs work
+        # Status.FAILED review/gitmate/manual/pr
+        # Status.FAILED review/gitmate/manual
+        # Status.FAILED review/gitmate/manual/pr
         self.assertEqual(m_set_status.call_count, 3)
         self.assertEqual([(arg.status, arg.context) for arg in args],
                          [(Status.FAILED, 'review/gitmate/manual/pr'),
