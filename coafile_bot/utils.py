@@ -56,7 +56,8 @@ def create_pr(thread, coafile, retries=MAX_RETRIES_LIMIT):
                 thread, "Oops! Looks like there was some problem making the coafile PR! Retrying...")
             clone.delete()
             retries -= 1
-            create_pr(thread, coafile, retries)
+            return create_pr(thread, coafile, retries)
+
         else:
             post_comment(
                 thread, "Sorry! coafile-bot is unable to make the PR.")
