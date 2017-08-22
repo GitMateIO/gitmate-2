@@ -1,0 +1,198 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b/diff?per_page=100
+  response:
+    body: {string: '[{"diff":"@@ -1,2 +1,4 @@\n # test\n a test repo\n+\n+a commiit
+        that can one acknowledge\n","new_path":"README.md","old_path":"README.md","a_mode":"100644","b_mode":"100644","new_file":false,"renamed_file":false,"deleted_file":false,"too_large":false}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['252']
+      Content-Type: [application/json]
+      Date: ['Tue, 22 Aug 2017 13:31:54 GMT']
+      Etag: [W/"32cf2c2744cda352ee5a6626a1606b3d"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [19571972-2a9a-47b2-a8ae-3eaf7d8d9796]
+      X-Runtime: ['0.158066']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b?per_page=100
+  response:
+    body: {string: '{"id":"f6d2b7c66372236a090a2a74df2e47f42a54456b","short_id":"f6d2b7c6","title":"Update
+        README.md","created_at":"2016-01-24T20:46:59.000+01:00","parent_ids":["674498fd415cfadc35c5eb28b8951e800f357c6f"],"message":"Update
+        README.md","author_name":"gitmate-test-user","author_email":"hostmaster@gitmate.io","authored_date":"2016-01-24T20:46:59.000+01:00","committer_name":"gitmate-test-user","committer_email":"hostmaster@gitmate.io","committed_date":"2016-01-24T20:46:59.000+01:00","stats":{"additions":2,"deletions":0,"total":2},"status":null}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['541']
+      Content-Type: [application/json]
+      Date: ['Tue, 22 Aug 2017 13:31:59 GMT']
+      Etag: [W/"a3e5ec9d02534a24454bd5ec90ecd0b2"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [e0667e37-4f6e-4723-81a8-34cb8db13855]
+      X-Runtime: ['0.196979']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b/statuses?per_page=100
+  response:
+    body: {string: '[]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      Date: ['Tue, 22 Aug 2017 13:32:03 GMT']
+      Etag: [W/"d751713988987e9331980363e24189ce"]
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b/statuses?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=f6d2b7c66372236a090a2a74df2e47f42a54456b>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b/statuses?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=f6d2b7c66372236a090a2a74df2e47f42a54456b>;
+          rel="last"']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Next-Page: ['']
+      X-Page: ['1']
+      X-Per-Page: ['100']
+      X-Prev-Page: ['']
+      X-Request-Id: [4c36a8fb-1a71-4312-a45d-ae2faec2e310]
+      X-Runtime: ['0.238308']
+      X-Total: ['0']
+      X-Total-Pages: ['1']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b/diff?per_page=100
+  response:
+    body: {string: '[{"diff":"--- a/README.md\n+++ b/README.md\n@@ -1,2 +1,4 @@\n
+        # test\n a test repo\n+\n+a commiit that can one acknowledge\n","new_path":"README.md","old_path":"README.md","a_mode":"100644","b_mode":"100644","new_file":false,"renamed_file":false,"deleted_file":false,"too_large":false}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['286']
+      Content-Type: [application/json]
+      Date: ['Tue, 22 Aug 2017 13:32:07 GMT']
+      Etag: [W/"3913a6aa279f551e3f2f1a6a3ece9334"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [7f6ebb96-e8d3-4710-8435-7e7bbb80aae7]
+      X-Runtime: ['0.308296']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/9ba5b704f5866e468ec2e639fa893ae4c129f2ad/diff?per_page=100
+  response:
+    body: {string: '[{"diff":"@@ -0,0 +1 @@\n+testing issue relativity to merge requests\n\\
+        No newline at end of file\n","new_path":"issue-pr.txt","old_path":"issue-pr.txt","a_mode":"0","b_mode":"100644","new_file":true,"renamed_file":false,"deleted_file":false,"too_large":false}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['262']
+      Content-Type: [application/json]
+      Date: ['Tue, 22 Aug 2017 13:32:10 GMT']
+      Etag: [W/"4c4006e3c570c80aa854fa7a7738bbb2"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [a34025dc-6bb7-4d8b-ac4f-6708eecafea2]
+      X-Runtime: ['0.176566']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/9ba5b704f5866e468ec2e639fa893ae4c129f2ad?per_page=100
+  response:
+    body: {string: '{"id":"9ba5b704f5866e468ec2e639fa893ae4c129f2ad","short_id":"9ba5b704","title":"Create
+        a.txt","created_at":"2017-07-28T19:59:43.000+00:00","parent_ids":["515280bfe8488e1b403e0dd95c41a404355ca184"],"message":"Create
+        a.txt\n\nAwesome commit message\n\nFix #21, Fixes #22 and Closes gitmate-test-user/test#23.\nThis
+        commit is also related to #31 and fixes #26, #27\nand https://gitlab.com/gitmate-test-user/test/issues/30.","author_name":"Naveen
+        Kumar Sangi","author_email":"nkprince007@gmail.com","authored_date":"2017-07-28T19:59:43.000+00:00","committer_name":"Naveen
+        Kumar Sangi","committer_email":"nkprince007@gmail.com","committed_date":"2017-07-28T19:59:43.000+00:00","stats":{"additions":1,"deletions":0,"total":1},"status":null}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['734']
+      Content-Type: [application/json]
+      Date: ['Tue, 22 Aug 2017 13:32:12 GMT']
+      Etag: [W/"c8ce9b37a99d69f43699b2f78620dd7a"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [2a5ea1a4-ef12-443e-ab7a-b14ab1216ace]
+      X-Runtime: ['0.185784']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/9ba5b704f5866e468ec2e639fa893ae4c129f2ad/statuses?per_page=100
+  response:
+    body: {string: '[]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      Date: ['Tue, 22 Aug 2017 13:32:16 GMT']
+      Etag: [W/"d751713988987e9331980363e24189ce"]
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/9ba5b704f5866e468ec2e639fa893ae4c129f2ad/statuses?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=9ba5b704f5866e468ec2e639fa893ae4c129f2ad>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/9ba5b704f5866e468ec2e639fa893ae4c129f2ad/statuses?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=9ba5b704f5866e468ec2e639fa893ae4c129f2ad>;
+          rel="last"']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Next-Page: ['']
+      X-Page: ['1']
+      X-Per-Page: ['100']
+      X-Prev-Page: ['']
+      X-Request-Id: [3f71a303-52e7-4b2c-b839-bcb9b91b6c29]
+      X-Runtime: ['0.094161']
+      X-Total: ['0']
+      X-Total-Pages: ['1']
+    status: {code: 200, message: OK}
+version: 1

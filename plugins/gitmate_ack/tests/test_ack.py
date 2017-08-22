@@ -180,6 +180,44 @@ class TestAck(GitmateTestCase):
                       [(state.status, state.context, state.description)
                        for state in states])
 
+    @patch.object(GitLabMergeRequest, 'head', new_callable=PropertyMock)
+    @patch.object(GitLabMergeRequest, 'commits', new_callable=PropertyMock)
+    @patch.object(GitLabCommit, 'set_status')
+    @patch.object(GitLabComment, 'body', new_callable=PropertyMock)
+    def test_gitlab_delete_old_acks(self, m_body, m_set_status,
+                                    m_commits, m_head):
+        # First MR Sync, create value in ack
+        m_head.return_value = self.gl_commit
+        m_commits.return_value = tuple([self.gl_commit])
+        m_body.return_value = 'unack ' + self.gl_commit.sha
+        response = self.simulate_gitlab_webhook_call('Merge Request Hook',
+                                                     self.gl_pr_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response = self.simulate_gitlab_webhook_call('Note Hook',
+                                                     self.gl_comment_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        args = sum([list(args) for args, _ in m_set_status.call_args_list], [])
+        self.assertEqual([(arg.status, arg.context) for arg in args],
+                         [(Status.PENDING, 'review/gitmate/manual'),
+                          (Status.PENDING, 'review/gitmate/manual/pr'),
+                          (Status.FAILED, 'review/gitmate/manual'),
+                          (Status.FAILED, 'review/gitmate/manual/pr')])
+        m_set_status.reset_mock()
+
+        # Completely new commit, SHA for old commit should be removed
+        new_head = GitLabCommit(self.gl_token, self.gl_repo.full_name,
+                                '9ba5b704f5866e468ec2e639fa893ae4c129f2ad')
+        m_head.return_value = new_head
+        m_commits.return_value = tuple([new_head])
+        response = self.simulate_gitlab_webhook_call('Merge Request Hook',
+                                                     self.gl_pr_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        args = sum([list(args) for args, _ in m_set_status.call_args_list], [])
+
+        self.assertEqual([(arg.status, arg.context) for arg in args],
+                         [(Status.PENDING, 'review/gitmate/manual'),
+                          (Status.PENDING, 'review/gitmate/manual/pr')])
+
     @patch.object(GitLabMergeRequest, 'commits', new_callable=PropertyMock)
     @patch.object(GitLabCommit, 'unified_diff', new_callable=PropertyMock)
     @patch.object(GitLabCommit, 'message', new_callable=PropertyMock)

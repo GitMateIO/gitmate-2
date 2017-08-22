@@ -127,8 +127,10 @@ def add_review_status(pr: MergeRequest):
 
     head = pr.head
 
+    hashes = []
     for commit in pr.commits:
         commit_hash = _get_commit_hash(commit)
+        hashes.append(commit_hash)
 
         # This commit was head of the PR before, deletion of the PR state is not
         # possible so we make it green to clean it up.
@@ -142,6 +144,10 @@ def add_review_status(pr: MergeRequest):
             commit.set_status(_dict_to_status(db_pr.acks[commit_hash]))
         else:
             db_pr.acks[commit_hash] = _status_to_dict(pending(commit))
+
+    for chash in dict(db_pr.acks).keys():
+        if not chash in hashes:
+            del db_pr.acks[chash]
 
     db_pr.last_head = head.sha
     db_pr.save()
