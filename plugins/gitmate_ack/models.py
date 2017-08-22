@@ -23,6 +23,7 @@ class MergeRequestModel(models.Model):
                              related_name='ack_mrs')
     number = models.IntegerField()
     acks = psql_fields.JSONField(default={})
+    last_head = models.CharField(default='', max_length=40)
 
     @property
     def ack_state(self):

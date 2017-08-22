@@ -125,13 +125,24 @@ def add_review_status(pr: MergeRequest):
         number=pr.number,
         defaults={'acks': dict()}) # TODO: works only if set manually
 
+    head = pr.head
+
     for commit in pr.commits:
         commit_hash = _get_commit_hash(commit)
+
+        # This commit was head of the PR before, deletion of the PR state is not
+        # possible so we make it green to clean it up.
+        if commit.sha == db_pr.last_head != head.sha:
+            commit.set_status(CommitStatus(
+                Status.SUCCESS, 'Outdated. Check ' + head.sha[:7] + ' instead.',
+                'review/gitmate/manual/pr', 'https://gitmate.io'))
+
         # copying status from unmodified commits in the same merge request
         if commit_hash in db_pr.acks:
             commit.set_status(_dict_to_status(db_pr.acks[commit_hash]))
         else:
             db_pr.acks[commit_hash] = _status_to_dict(pending(commit))
 
+    db_pr.last_head = head.sha
     db_pr.save()
     pr.head.set_status(db_pr.ack_state)

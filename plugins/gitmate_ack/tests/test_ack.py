@@ -153,6 +153,33 @@ class TestAck(GitmateTestCase):
                          [(Status.PENDING, 'review/gitmate/manual'),
                           (Status.PENDING, 'review/gitmate/manual/pr')])
 
+    @patch.object(GitLabMergeRequest, 'head', new_callable=PropertyMock)
+    @patch.object(GitLabMergeRequest, 'commits', new_callable=PropertyMock)
+    @patch.object(GitLabCommit, 'set_status')
+    def test_gitlab_new_head(self, m_set_status, m_commits, m_head):
+        # First MR Sync
+        m_head.return_value = self.gl_commit
+        m_commits.return_value = tuple([self.gl_commit])
+        response = self.simulate_gitlab_webhook_call('Merge Request Hook',
+                                                     self.gl_pr_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Add a commit on top, now the one before (self.gl_commit) should get a
+        # passing PR state because that's outdated and shouldn't block merges.
+        new_head = GitLabCommit(self.gl_token, self.gl_repo.full_name,
+                                '9ba5b704f5866e468ec2e639fa893ae4c129f2ad')
+        m_head.return_value = new_head
+        m_commits.return_value = tuple([self.gl_commit, new_head])
+        response = self.simulate_gitlab_webhook_call('Merge Request Hook',
+                                                     self.gl_pr_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        states = sum([list(args) for args, _ in m_set_status.call_args_list],
+                     [])
+        self.assertIn((Status.SUCCESS, 'review/gitmate/manual/pr',
+                       'Outdated. Check 9ba5b70 instead.'),
+                      [(state.status, state.context, state.description)
+                       for state in states])
+
     @patch.object(GitLabMergeRequest, 'commits', new_callable=PropertyMock)
     @patch.object(GitLabCommit, 'unified_diff', new_callable=PropertyMock)
     @patch.object(GitLabCommit, 'message', new_callable=PropertyMock)
