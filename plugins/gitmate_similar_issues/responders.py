@@ -1,13 +1,24 @@
-from IGitt.Interfaces.Actions import MergeRequestActions
-from IGitt.Interfaces.MergeRequest import MergeRequest
+from celery.schedules import crontab
+from IGitt.Interfaces.Actions import IssueActions
+from IGitt.Interfaces.Issue import Issue
+from IGitt.Interfaces.Repository import Repository
 
 
 from gitmate_hooks import ResponderRegistrar
 
 
-@ResponderRegistrar.responder(
-    'similar_issues',
-    MergeRequestActions.SYNCHRONIZED
-)
-def gitmate_similar_issues(pr: MergeRequest):
-    pr.add_comment('Hello World!')
+def _update_issues(repo: Repository):
+    # TODO: save issues of repository in database.
+    pass
+
+
+@ResponderRegistrar.scheduled_responder(
+    'similar_issues', crontab(minute='0', hour='6,18'), is_active=True)
+def update_issues(repo: Repository):
+    _update_issues(repo)
+
+
+@ResponderRegistrar.responder('similar_issues', IssueActions.OPENED)
+def gitmate_similar_issues(issue: Issue, repo: Repository):
+    print("HEYA")
+    issue.add_comment(f'This repo has {len(repo.issues)} issues')
