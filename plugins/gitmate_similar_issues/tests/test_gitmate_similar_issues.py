@@ -1,0 +1,55 @@
+"""
+This file contains a sample test case for similar_issues to be used as
+a reference for writing further tests.
+"""
+from os import environ
+from unittest.mock import patch
+from unittest.mock import PropertyMock
+
+from rest_framework import status
+
+from gitmate_config.tests.test_base import GitmateTestCase
+from IGitt.GitHub.GitHubIssue import GitHubIssue
+from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
+from IGitt.GitLab.GitLabIssue import GitLabIssue
+from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
+
+
+class TestGitmateSimilarIssues(GitmateTestCase):
+    def setUp(self):
+        super().setUpWithPlugin('similar_issues')
+
+    # add your mocking decorators here using unittest.mock.patch
+    def test_github(self):
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            # add in your 'pull_request' or 'issue' info here.
+            'pull_request': {'number': 110},
+            'action': 'opened'
+        }
+
+        # simulate webhook for 'pull_request' or 'issues' or 'issue_comment'
+        response = self.simulate_github_webhook_call('pull_request', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # assert your expected calls for the mocked functions
+
+
+    # add your mocking decorators here using unittest.mock.patch
+    def test_gitlab(self):
+        data = {
+            'object_attributes': {
+                'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
+                # add in your 'Merge Request' or 'Issue' info here.
+                'action': 'open',
+                'iid': 25
+            }
+        }
+
+        # simulate webhook for 'Merge Request Hook' or 'Issue Hook' or
+        # 'Note Hook'
+        response = self.simulate_gitlab_webhook_call(
+            'Merge Request Hook', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # assert your expected calls for the mocked functions

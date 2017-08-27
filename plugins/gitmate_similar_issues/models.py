@@ -1,0 +1,8 @@
+from django.db import models
+
+from gitmate_config.models import SettingsBase
+
+
+class Settings(SettingsBase):
+    # Add your custom plugin settings here.
+    pass
