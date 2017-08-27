@@ -4,5 +4,9 @@ from gitmate_config.models import SettingsBase
 
 
 class Settings(SettingsBase):
-    # Add your custom plugin settings here.
-    pass
+    list_duplicates = models.BooleanField(
+        default=True,
+        help_text='Link duplicate issues in a comment')
+    list_similar = models.BooleanField(
+        default=True,
+        help_text='Link similar issues in a comment')
