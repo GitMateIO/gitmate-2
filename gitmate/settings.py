@@ -76,6 +76,7 @@ GITMATE_PLUGINS = [
     'issue_stale_reminder',
     'pr_stale_reminder',
     'rebaser',
+    'similar_issues'
 ]
 
 # Application definition
