@@ -26,8 +26,9 @@ def rebase_merge_request(pr: MergeRequest, comment: Comment):
             'lost!')
         proc = subprocess.Popen(
             ['docker', 'run', '-i', '--rm', environ['REBASER_IMAGE'],
-             'python', 'run.py', pr.repository.clone_url, pr.head_branch_name,
-             pr.base_branch_name],
+             'python', 'run.py',
+             pr.source_repository.clone_url, pr.target_repository.clone_url,
+             pr.head_branch_name, pr.base_branch_name],
             stdout=subprocess.PIPE)
         output = json.loads(proc.stdout.read().decode('utf-8'))
         proc.wait()
