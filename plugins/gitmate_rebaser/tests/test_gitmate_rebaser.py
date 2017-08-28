@@ -72,7 +72,10 @@ class TestGitmateRebaser(GitmateTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         m_comment.assert_called_with('Automated rebase failed! Please rebase '
                                      'your pull request manually via the '
-                                     'command line.')
+                                     'command line.\n\nError:\n'
+                                     '```Command \'[\'git\', \'rebase\', '
+                                     '\'master\']\' returned non-zero exit '
+                                     'status 128.```')
 
     @patch.object(GitLabComment, 'body', new_callable=PropertyMock)
     @patch.object(GitLabMergeRequest, 'add_comment')
@@ -84,7 +87,10 @@ class TestGitmateRebaser(GitmateTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         m_comment.assert_called_with('Automated rebase failed! Please rebase '
                                      'your pull request manually via the '
-                                     'command line.')
+                                     'command line.\n\nError:\n'
+                                     '```Command \'[\'git\', \'rebase\', '
+                                     '\'master\']\' returned non-zero exit '
+                                     'status 128.```')
 
     @patch.object(GitHubComment, 'body', new_callable=PropertyMock)
     @patch.object(GitHubMergeRequest, 'add_comment')

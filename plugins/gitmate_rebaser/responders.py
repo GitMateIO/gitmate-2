@@ -24,16 +24,22 @@ def rebase_merge_request(pr: MergeRequest, comment: Comment):
             'Hey! This pull request is being rebased automatically. Please DO '
             'NOT push while rebase is in progress or your changes would be '
             'lost!')
+        head_clone_url = pr.source_repository.clone_url
+        base_clone_url = pr.target_repository.clone_url
         proc = subprocess.Popen(
             ['docker', 'run', '-i', '--rm', environ['REBASER_IMAGE'],
-             'python', 'run.py',
-             pr.source_repository.clone_url, pr.target_repository.clone_url,
+             'python', 'run.py', head_clone_url, base_clone_url,
              pr.head_branch_name, pr.base_branch_name],
             stdout=subprocess.PIPE)
         output = json.loads(proc.stdout.read().decode('utf-8'))
         proc.wait()
         if output['status'] == 'success':
             pr.add_comment('Automated rebase was successful!')
-        else:
+        elif 'error' in output:
+            # hiding oauth token for safeguarding user privacy
+            error = output['error'].replace(head_clone_url,
+                                            '<hidden_oauth_token>')
+            error = error.replace(base_clone_url, '<hidden_oauth_token>')
             pr.add_comment('Automated rebase failed! Please rebase your pull '
-                           'request manually via the command line.')
+                           'request manually via the command line.\n\nError:\n'
+                           '```{}```'.format(error))
