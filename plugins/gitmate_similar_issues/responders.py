@@ -18,7 +18,7 @@ def update_issues(repo: Repository):
     _update_issues(repo)
 
 
-@ResponderRegistrar.responder('similar_issues', IssueActions.OPENED)
-def gitmate_similar_issues(issue: Issue, repo: Repository):
+@ResponderRegistrar.responder('similar_issues', IssueActions.OPENED, IssueActions.REOPENED)
+def gitmate_similar_issues(issue: Issue, **kwargs):
     print("HEYA")
-    issue.add_comment(f'This repo has {len(repo.issues)} issues')
+    issue.add_comment(f'This repo has {len(issue.repository.issues)} issues')
