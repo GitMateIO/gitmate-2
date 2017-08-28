@@ -1,17 +1,18 @@
 declare -a plugins=(
-    "hello_ee"
+    "hello"
+    "similar"
 )
 
 
 function clone_or_pull {
-    if [ -d "gitmate_$1" ]; then
-        cd gitmate_$1
+    if [ -d "gitmate_$1_ee" ]; then
+        cd gitmate_$1_ee
         echo "Updating $1..."
         git pull
         cd ..
     else
         echo "Cloning $1..."
-        git clone git@gitlab.com:gitmate/ee-plugins/$1.git gitmate_$1
+        git clone git@gitlab.com:gitmate/ee-plugins/$1.git gitmate_$1_ee
     fi
 }
 
