@@ -78,6 +78,12 @@ GITMATE_PLUGINS = [
     'rebaser',
 ]
 
+GITMATE_PLUGINS += [
+    plugin
+    for plugin in os.environ.get('EE_PLUGINS', '').split(' ')
+    if plugin
+]
+
 # Application definition
 INSTALLED_APPS = (REQUISITE_APPS +
                   ['plugins.gitmate_{}.apps.{}Config'.format(
