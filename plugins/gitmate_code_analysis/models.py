@@ -9,6 +9,7 @@ class Settings(SettingsBase):
         default=True,
         help_text='Run analysis only for the head commit of a pull request'
     )
+    coafile_location = models.CharField(default='.coafile', max_length=255)
 
 
 class AnalysisResults(models.Model):
@@ -16,6 +17,7 @@ class AnalysisResults(models.Model):
         Repository, on_delete=models.CASCADE,
         related_name='analysis_result_repository')
     sha = models.CharField(default=None, max_length=40)
+    coafile_location = models.CharField(max_length=255)
     results = psql_fields.JSONField()
 
     def __str__(self):  # pragma: no cover

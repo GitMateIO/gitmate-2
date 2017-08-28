@@ -19,7 +19,7 @@ from IGitt.Interfaces.MergeRequest import MergeRequest
 CONTAINER_TIMEOUT = 60 * 10
 
 
-def analyse(repo, sha, clone_url, ref):
+def analyse(repo, sha, clone_url, ref, coafile_location):
     """
     Spawns a docker container to run code analysis on a specified directory.
 
@@ -32,12 +32,12 @@ def analyse(repo, sha, clone_url, ref):
     try:
         # Cached result available
         return AnalysisResults.objects.get(
-            repo=repo, sha=sha).results
+            repo=repo, sha=sha, coafile_location=coafile_location).results
     except AnalysisResults.DoesNotExist:
         proc = subprocess.Popen(
             ['docker', 'run', '-i', '--rm',
              environ['COALA_RESULTS_IMAGE'],
-             'python3', 'run.py', sha, clone_url, ref],
+             'python3', 'run.py', sha, clone_url, ref, coafile_location],
             stdout=PIPE,
         )
         output = proc.stdout.read().decode('utf-8')
@@ -50,7 +50,8 @@ def analyse(repo, sha, clone_url, ref):
 
         proc.wait()
 
-        AnalysisResults.objects.create(repo=repo, sha=sha, results=results)
+        AnalysisResults.objects.create(repo=repo, sha=sha, results=results,
+                                       coafile_location=coafile_location)
         return results
 
 
@@ -161,7 +162,8 @@ def get_ref(pr):  # pragma: no cover, testing this with mocks is meaningless
     MergeRequestActions.SYNCHRONIZED,
     MergeRequestActions.OPENED
 )
-def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
+def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
+                      coafile_location: str='.coafile'):
     """
     Starts code analysis on the merge request.
     """
@@ -188,11 +190,13 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
 
     try:
         # Spawn a coala container for base commit to generate old results.
-        old_results = analyse(repo, pr.base.sha, igitt_repo.clone_url, ref)
+        old_results = analyse(
+            repo, pr.base.sha, igitt_repo.clone_url, ref, coafile_location)
 
         # Run coala only on head.
         if pr_based_analysis is True:
-            new_results = analyse(repo, pr.head.sha, igitt_repo.clone_url, ref)
+            new_results = analyse(
+                repo, pr.head.sha, igitt_repo.clone_url, ref, coafile_location)
 
             filtered_results = filter_results(old_results, new_results)
             add_comment(pr.head, filtered_results, mr_num=pr.number)
@@ -210,7 +214,8 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True):
             failed = False
             for commit in pr.commits:
                 new_results = analyse(
-                    repo, commit.sha, igitt_repo.clone_url, ref)
+                    repo, commit.sha, igitt_repo.clone_url,
+                    ref, coafile_location)
 
                 filtered_results = filter_results(old_results, new_results)
                 old_results = new_results
