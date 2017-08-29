@@ -1,5 +1,4 @@
 declare -a plugins=(
-    "hello"
     "similar"
 )
 
