@@ -1,6 +1,7 @@
 import json
 import logging
 
+import shlex
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from os import environ
@@ -28,6 +29,9 @@ def analyse(repo, sha, clone_url, ref, coafile_location):
     """
     # Don't move to module code! Apps aren't loaded yet.
     from plugins.gitmate_code_analysis.models import AnalysisResults
+    coafile_location = shlex.quote(
+        coafile_location.replace('..', '').lstrip('/')
+    )
 
     try:
         # Cached result available
