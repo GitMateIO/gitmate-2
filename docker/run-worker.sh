@@ -14,8 +14,11 @@ echo "Creating host_docker group with gid $docker_group_id ..."
 addgroup -S -g $docker_group_id host_docker
 
 # Add the daemon user to the docker group
-echo "Adding $USER to the docker group ..."
-addgroup $USER host_docker
+# The host_docker group might not be created if there's already a group with
+# the id. In that case we just grep for the existing name, this should always
+# work.
+echo "Adding $USER to the $(cat /etc/group | grep $docker_group_id | sed 's/:.*//') group ..."
+addgroup $USER $(cat /etc/group | grep $docker_group_id | sed 's/:.*//')
 
 exec celery worker \
             -A gitmate \
