@@ -1,9 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
 from celery.schedules import crontab
-from IGitt.Interfaces.Actions import IssueActions
 from IGitt.Interfaces.Actions import MergeRequestActions
-from IGitt.Interfaces.Issue import Issue
 from IGitt.Interfaces.MergeRequest import MergeRequest
 from IGitt.Interfaces.Repository import Repository
 
