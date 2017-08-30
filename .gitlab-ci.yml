@@ -52,30 +52,49 @@ run_tests:
 
 build_image:
   stage: test
-  script:
-    - docker build -t $TEST_IMAGE_NAME .
-    - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker push $TEST_IMAGE_NAME
+  script: ./.ci/build_image.sh
   except:
    - master
+
+build_image_ee:
+  stage: test
+  script:
+    - ./clone_ee.sh
+    - export TEST_IMAGE_IMAGE="$TEST_IMAGE_NAME-ee"
+    - ./.ci/build_image.sh
+  except:
+    - master
 
 push_master_image:
   stage: release
   script:
-    - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker pull $TEST_IMAGE_NAME
-    - docker tag $TEST_IMAGE_NAME $MASTER_NAME
-    - docker push $MASTER_NAME
+    - export IMAGE_NAME="$MASTER_NAME"
+    - ./.ci/push_image.sh
   only:
     - master
 
 push_release_image:
   stage: release
   script:
-    - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker pull $TEST_IMAGE_NAME
-    - docker tag $TEST_IMAGE_NAME $RELEASE_NAME
-    - docker push $RELEASE_NAME
+    - export IMAGE_NAME="$RELEASE_NAME"
+    - ./.ci/push_image.sh
+  when: manual
+  only:
+    - master
+
+push_master_image_ee:
+  stage: release
+  script:
+    - export IMAGE_NAME="$MASTER_NAME-ee"
+    - ./.ci/push_image.sh
+  only:
+    - master
+
+push_release_image_ee:
+  stage: release
+  script:
+    - export IMAGE_NAME="$RELEASE_NAME-ee"
+    - ./.ci/push_image.sh
   when: manual
   only:
     - master
