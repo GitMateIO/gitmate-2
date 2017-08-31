@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. ./docker/common.sh
+
 exec celery beat \
             -A gitmate \
 	    --uid=$USER --gid=$USER \

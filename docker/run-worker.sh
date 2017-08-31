@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. ./docker/common.sh
+
 DOCKER_SOCKET=/var/run/docker.sock
 
 do_docker_socket() {
@@ -11,6 +13,11 @@ do_docker_socket() {
     # Get the host's docker group id
     echo "Getting the Docker socket group owner ... "
     export docker_group_id=$(stat -c "%g" $DOCKER_SOCKET)
+
+    if [ ! -e "/var/run/docker.sock" ]; then
+        echo "Please mount the Docker socket to /var/run/docker.sock"
+        exit 1
+    fi
 
     # Create the docker group in this container
     echo "Creating host_docker group with gid $docker_group_id ..."
