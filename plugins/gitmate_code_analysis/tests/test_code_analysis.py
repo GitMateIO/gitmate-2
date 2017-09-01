@@ -215,22 +215,6 @@ class TestCodeAnalysis(GitmateTestCase):
             }
         ])
 
-        def popen_bouncer():
-            return PopenResult(
-                StreamMock('{}'),
-                StreamMock(self.BOUNCER_INPUT),
-                lambda: None
-            )
-
-        def fake_popen(cmd, **kwargs):
-            if 'bouncer.py' in cmd:
-                return popen_bouncer()
-
-            assert 'run.py' in cmd
-            return popen_coala()
-
-        subprocess.Popen = fake_popen
-
         response = self.simulate_gitlab_webhook_call(
             'Merge Request Hook', self.gitlab_data)
         self.assertEqual(response.status_code, HTTP_200_OK)
