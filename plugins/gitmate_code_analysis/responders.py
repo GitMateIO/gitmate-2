@@ -174,6 +174,11 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
     # Don't move to module code! Apps aren't loaded yet.
     from gitmate_config.models import Repository
 
+    # Use constant list of commits for this analysis:
+    # The PR might change while the analysis is in progress
+    COMMITS = pr.commits
+    HEAD = pr.head
+
     igitt_repo = pr.repository
     repo = Repository.objects.filter(
         active=True,
@@ -181,12 +186,12 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
 
     # set status as review in progress
     if pr_based_analysis is False:
-        for commit in pr.commits:
+        for commit in COMMITS:
             commit.set_status(CommitStatus(
                 Status.RUNNING, 'GitMate-2 analysis in progress...',
                 'review/gitmate/commit', 'http://gitmate.io'))
     else:
-        pr.head.set_status(CommitStatus(
+        HEAD.set_status(CommitStatus(
             Status.RUNNING, 'GitMate-2 analysis in progress...',
             'review/gitmate/pr', 'http://gitmate.io/'))
 
@@ -200,23 +205,23 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
         # Run coala only on head.
         if pr_based_analysis is True:
             new_results = analyse(
-                repo, pr.head.sha, igitt_repo.clone_url, ref, coafile_location)
+                repo, HEAD.sha, igitt_repo.clone_url, ref, coafile_location)
 
             filtered_results = filter_results(old_results, new_results)
-            add_comment(pr.head, filtered_results, mr_num=pr.number)
+            add_comment(HEAD, filtered_results, mr_num=pr.number)
 
             # set pr status as failed if any results are found
             if any(s_results for _, s_results in filtered_results.items()):
-                pr.head.set_status(CommitStatus(
+                HEAD.set_status(CommitStatus(
                     Status.FAILED, 'This PR has issues!',
                     'review/gitmate/pr', 'http://gitmate.io/'))
             else:
-                pr.head.set_status(CommitStatus(
+                HEAD.set_status(CommitStatus(
                     Status.SUCCESS, 'This PR has no issues. :)',
                     'review/gitmate/pr', 'http://gitmate.io/'))
         else:  # Run coala per commit
             failed = False
-            for commit in pr.commits:
+            for commit in COMMITS:
                 new_results = analyse(
                     repo, commit.sha, igitt_repo.clone_url,
                     ref, coafile_location)
@@ -238,11 +243,11 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
                         'review/gitmate/commit', 'http://gitmate.io/'))
 
             if failed:
-                pr.head.set_status(CommitStatus(
+                HEAD.set_status(CommitStatus(
                     Status.FAILED, 'This PR has issues!',
                     'review/gitmate/pr', 'http://gitmate.io/'))
             else:
-                pr.head.set_status(CommitStatus(
+                HEAD.set_status(CommitStatus(
                     Status.SUCCESS, 'This PR has no issues. :)',
                     'review/gitmate/pr', 'http://gitmate.io/'))
 
