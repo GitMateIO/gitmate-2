@@ -1,9 +1,8 @@
-from django.apps import AppConfig
-
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
 
-class GitmateRebaserConfig(AppConfig):
+class GitmateRebaserConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_rebaser'
     verbose_name = 'Rebase a pull request when commented upon'
     plugin_category = PluginCategory.PULLS

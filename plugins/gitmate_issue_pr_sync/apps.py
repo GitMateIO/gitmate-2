@@ -1,9 +1,8 @@
-from django.apps import AppConfig
-
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
 
-class GitmateIssuePrSyncConfig(AppConfig):
+class GitmateIssuePrSyncConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_issue_pr_sync'
     verbose_name = 'Synchronize issue labels to related PRs'
     plugin_category = PluginCategory.PULLS

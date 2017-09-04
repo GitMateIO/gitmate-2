@@ -16,6 +16,9 @@ from IGitt.Interfaces.Commit import CommitStatus
 from IGitt.Interfaces.Commit import Status
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
+from gitmate_config.models import Repository
+from .models import AnalysisResults
+
 # timeout for docker container in seconds, setting upto 10 minutes
 CONTAINER_TIMEOUT = 60 * 10
 
@@ -27,8 +30,6 @@ def analyse(repo, sha, clone_url, ref, coafile_location):
     This will auto store results in the db and fetch them instead of doing
     the anlaysis if it's there.
     """
-    # Don't move to module code! Apps aren't loaded yet.
-    from plugins.gitmate_code_analysis.models import AnalysisResults
     coafile_location = shlex.quote(
         coafile_location.replace('..', '').lstrip('/')
     )
@@ -171,9 +172,6 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
     """
     Starts code analysis on the merge request.
     """
-    # Don't move to module code! Apps aren't loaded yet.
-    from gitmate_config.models import Repository
-
     # Use constant list of commits for this analysis:
     # The PR might change while the analysis is in progress
     COMMITS = pr.commits

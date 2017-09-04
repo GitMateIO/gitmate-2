@@ -1,8 +1,8 @@
-from django.apps import AppConfig
-
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
-class GitmateAckConfig(AppConfig):
+
+class GitmateAckConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_ack'
     verbose_name = 'Track manual review state of commits'
     plugin_category = PluginCategory.PULLS

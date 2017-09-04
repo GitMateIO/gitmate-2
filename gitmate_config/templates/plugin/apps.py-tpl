@@ -1,9 +1,9 @@
-{{ unicode_literals }}from django.apps import AppConfig
-
+{{ unicode_literals }}
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
 
-class {{ camel_case_plugin_name }}Config(AppConfig):
+class {{ camel_case_plugin_name }}Config(GitmatePluginConfig):
     name = 'plugins.{{ plugin_name }}'
     verbose_name = '' # Add something verbose here
     plugin_category = PluginCategory.PULLS # Add plugin category here

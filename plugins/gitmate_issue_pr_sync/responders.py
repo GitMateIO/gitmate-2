@@ -5,8 +5,10 @@ from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.Issue import Issue
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
+from gitmate_config.models import Repository
 from gitmate.utils import lock_igitt_object
 from gitmate_hooks import ResponderRegistrar
+from .models import MergeRequestModel
 
 
 @ResponderRegistrar.responder(
@@ -16,10 +18,6 @@ from gitmate_hooks import ResponderRegistrar
 )
 def sync_updated_pr_with_issue(pr: MergeRequest,
                                sync_assignees: bool='Synchronize Assignees'):
-    # Don't move to module code! Apps aren't loaded yet.
-    from gitmate_config.models import Repository
-    from .models import MergeRequestModel
-
     issues = pr.closes_issues
     repo = Repository.from_igitt_repo(pr.repository)
     pr_obj = MergeRequestModel.objects.get_or_create(
@@ -54,9 +52,6 @@ def sync_updated_pr_with_issue(pr: MergeRequest,
 )
 def sync_pr_with_updated_issue(issue: Issue,
                                sync_assignees: bool='Synchronize Assignees'):
-    # Don't move to module code! Apps aren't loaded yet.
-    from .models import MergeRequestModel
-
     issue_num = str(issue.number)
     pr_objects = MergeRequestModel.find_mrs_with_issue(issue)
 

@@ -1,9 +1,8 @@
-from django.apps import AppConfig
-
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
 
-class GitmateIssueLabellerConfig(AppConfig):
+class GitmateIssueLabellerConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_issue_labeller'
     verbose_name = 'Assign mentioned labels'
     plugin_category = PluginCategory.ISSUE

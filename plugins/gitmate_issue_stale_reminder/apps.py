@@ -1,9 +1,8 @@
-from django.apps import AppConfig
-
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
 
-class GitmateIssueStaleReminderConfig(AppConfig):
+class GitmateIssueStaleReminderConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_issue_stale_reminder'
     verbose_name = 'Label inactive issues'
     plugin_category = PluginCategory.ISSUE

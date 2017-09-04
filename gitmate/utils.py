@@ -1,7 +1,8 @@
 from contextlib import contextmanager
 from enum import Enum
+from importlib import import_module
 
-
+from django.apps import AppConfig
 from django_pglocks import advisory_lock
 
 
@@ -43,3 +44,16 @@ class ScheduledTasks(Enum):
     WEEKLY = 2
     # Scheduled to run monthy
     MONTHLY = 3
+
+
+class GitmatePluginConfig(AppConfig):
+    """
+    Base class for all plugins to import responders and register tasks with
+    ``ResponderRegistrar``.
+    """
+    def ready(self):
+        # importing all responders to register tasks
+        try:
+            import_module(self.name + '.responders')
+        except BaseException as exc:
+            print(str(exc))

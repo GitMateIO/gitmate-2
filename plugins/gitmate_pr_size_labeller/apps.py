@@ -1,9 +1,8 @@
-from django.apps import AppConfig
-
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
 
-class GitmatePrSizeLabellerConfig(AppConfig):
+class GitmatePrSizeLabellerConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_pr_size_labeller'
     verbose_name = 'Assign label based on size'
     plugin_category = PluginCategory.PULLS

@@ -1,9 +1,8 @@
-from django.apps import AppConfig
-
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
 
-class GitmatePrStaleReminderConfig(AppConfig):
+class GitmatePrStaleReminderConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_pr_stale_reminder'
     verbose_name = 'Label inactive pull requests'
     plugin_category = PluginCategory.PULLS

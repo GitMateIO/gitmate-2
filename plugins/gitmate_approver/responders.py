@@ -4,9 +4,10 @@ from IGitt.Interfaces.Commit import Commit
 from IGitt.Interfaces.CommitStatus import Status
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
-
+from gitmate_config.models import Repository
 from gitmate.utils import lock_igitt_object
 from gitmate_hooks import ResponderRegistrar
+from .models import MergeRequestModel
 
 
 @ResponderRegistrar.responder(
@@ -19,10 +20,6 @@ def store_head_commit_sha(pr: MergeRequest):
     Stores the list of merge requests along with their heads and updates it on
     synchronizing again.
     """
-    # Don't move to module code! Apps aren't loaded yet.
-    from gitmate_config.models import Repository
-    from .models import MergeRequestModel
-
     MergeRequestModel.objects.update_or_create(
         repo=Repository.from_igitt_repo(pr.repository),
         number=pr.number,
@@ -39,9 +36,6 @@ def add_approved_label(
     """
     Labels the PR as approved when the head commit passes all tests.
     """
-    # Don't move to module code! Apps aren't loaded yet.
-    from .models import MergeRequestModel
-
     status_labels = [label.strip() for label in status_labels.split(',')
                      if label.strip()]
     try:

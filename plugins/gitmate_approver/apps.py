@@ -1,9 +1,8 @@
-from django.apps import AppConfig
-
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
 
-class GitmateApproverConfig(AppConfig):
+class GitmateApproverConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_approver'
     verbose_name = 'Add approved label on passing all tests'
     plugin_category = PluginCategory.PULLS

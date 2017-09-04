@@ -1,9 +1,8 @@
-from django.apps import AppConfig
-
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
 
-class GitmateBugSpotterConfig(AppConfig):
+class GitmateBugSpotterConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_bug_spotter'
     verbose_name = 'Assign label based on risk'
     plugin_category = PluginCategory.PULLS

@@ -1,9 +1,8 @@
-from django.apps import AppConfig
-
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
 
-class GitmateCodeAnalysisConfig(AppConfig):
+class GitmateCodeAnalysisConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_code_analysis'
     verbose_name = 'Code Analysis'
     plugin_category = PluginCategory.ANALYSIS

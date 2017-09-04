@@ -1,9 +1,8 @@
-from django.apps import AppConfig
-
+from gitmate.utils import GitmatePluginConfig
 from gitmate.utils import PluginCategory
 
 
-class GitmateAutoLabelPendingOrWipConfig(AppConfig):
+class GitmateAutoLabelPendingOrWipConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_auto_label_pending_or_wip'
     verbose_name = 'Assign label based on review state'
     plugin_category = PluginCategory.PULLS

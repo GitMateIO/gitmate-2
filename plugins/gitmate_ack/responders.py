@@ -8,7 +8,9 @@ from IGitt.Interfaces.CommitStatus import Status
 from IGitt.Interfaces.Comment import Comment
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
+from gitmate_config.models import Repository
 from gitmate_hooks import ResponderRegistrar
+from .models import MergeRequestModel
 
 
 def _get_commit_hash(commit: Commit):
@@ -75,10 +77,6 @@ def gitmate_ack(pr: MergeRequest,
     """
     A responder to ack and unack commits
     """
-    # Don't move to module code! Apps aren't loaded yet.
-    from gitmate_config.models import Repository
-    from .models import MergeRequestModel
-
     body = comment.body.lower()
     commits = pr.commits
     pattern = r'(^{k}\s)|(\s{k}\s)|(\s{k}$)'
@@ -116,10 +114,6 @@ def add_review_status(pr: MergeRequest):
     MergeRequest SYNCHRONIZED and OPENED events based on their generated
     commit hashes (generated from the unified diff and commit message).
     """
-    # Don't move to module code! Apps aren't loaded yet.
-    from gitmate_config.models import Repository
-    from .models import MergeRequestModel
-
     db_pr, _ = MergeRequestModel.objects.get_or_create(
         repo=Repository.from_igitt_repo(pr.repository),
         number=pr.number,
