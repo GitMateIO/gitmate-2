@@ -1,15 +1,12 @@
+from os import environ
 import json
 import logging
-
 import shlex
-from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
-from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
-from os import environ
 import subprocess
-from subprocess import PIPE
 from traceback import print_exc
 
-from gitmate_hooks import ResponderRegistrar
+from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
+from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.Commit import Commit
 from IGitt.Interfaces.Commit import CommitStatus
@@ -17,7 +14,9 @@ from IGitt.Interfaces.Commit import Status
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
 from gitmate_config.models import Repository
+from gitmate_hooks import ResponderRegistrar
 from .models import AnalysisResults
+
 
 # timeout for docker container in seconds, setting upto 10 minutes
 CONTAINER_TIMEOUT = 60 * 10
@@ -43,7 +42,7 @@ def analyse(repo, sha, clone_url, ref, coafile_location):
             ['docker', 'run', '-i', '--rm',
              environ['COALA_RESULTS_IMAGE'],
              'python3', 'run.py', sha, clone_url, ref, coafile_location],
-            stdout=PIPE,
+            stdout=subprocess.PIPE,
         )
         output = proc.stdout.read().decode('utf-8')
         try:
@@ -76,8 +75,8 @@ def filter_results(old_results: dict, new_results: dict):
         ['docker', 'run', '-i', '--rm',
          environ['RESULTS_BOUNCER_IMAGE'],
          'python3', 'bouncer.py'],
-        stdin=PIPE,
-        stdout=PIPE,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
     )
     proc.stdin.write(json.dumps(results).encode('utf-8'))
     proc.stdin.close()
