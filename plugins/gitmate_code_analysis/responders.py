@@ -22,6 +22,17 @@ from .models import AnalysisResults
 CONTAINER_TIMEOUT = 60 * 10
 
 
+def _set_status(commit: Commit, status: Status, context: str):
+    pr_or_commit = 'PR' if 'pr' in context else 'commit'
+    commit_status = CommitStatus(status, {
+        Status.RUNNING: 'GitMate-2 analysis in progress...',
+        Status.FAILED: 'This {} has issues!'.format(pr_or_commit),
+        Status.SUCCESS: 'This {} has no issues. :)'.format(pr_or_commit),
+        Status.ERROR: 'Oops.. GitMate broke down. :('
+    }.get(status), context, 'http://gitmate.io')
+    commit.set_status(commit_status)
+
+
 def analyse(repo, sha, clone_url, ref, coafile_location):
     """
     Spawns a docker container to run code analysis on a specified directory.
@@ -90,11 +101,13 @@ def describe_patch(diffs):
     patch = ''
     for filename, diff in diffs.items():
         filename = filename.lstrip('/')
-        patch += '\n\n```diff\n'+diff.replace(
-                '--- \n+++ \n',
-                '--- a/'+filename+'\n+++ b/'+filename+'\n'
-        ) + '```'
-    return '\n\nThe issue can be fixed by applying the following patch:'+patch
+        patch += ('\n\n```diff\n' +
+                  diff.replace('--- \n+++ \n',
+                               '--- a/' + filename + '\n'
+                               '+++ b/' + filename + '\n') +
+                  '```')
+    return ('\n\nThe issue can be fixed by applying the following patch:' +
+            patch)
 
 
 def get_file_and_line(result):
@@ -173,8 +186,9 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
     """
     # Use constant list of commits for this analysis:
     # The PR might change while the analysis is in progress
-    COMMITS = pr.commits
+    COMMITS = set(pr.commits)
     HEAD = pr.head
+    ANALYZED_COMMITS = set()
 
     igitt_repo = pr.repository
     repo = Repository.objects.filter(
@@ -184,15 +198,12 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
     # set status as review in progress
     if pr_based_analysis is False:
         for commit in COMMITS:
-            commit.set_status(CommitStatus(
-                Status.RUNNING, 'GitMate-2 analysis in progress...',
-                'review/gitmate/commit', 'http://gitmate.io'))
+            _set_status(commit, Status.RUNNING, 'review/gitmate/commit')
     else:
-        HEAD.set_status(CommitStatus(
-            Status.RUNNING, 'GitMate-2 analysis in progress...',
-            'review/gitmate/pr', 'http://gitmate.io/'))
+        _set_status(HEAD, Status.RUNNING, 'review/gitmate/pr')
 
     ref = get_ref(pr)
+    status = Status.SUCCESS
 
     try:
         # Spawn a coala container for base commit to generate old results.
@@ -209,15 +220,9 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
 
             # set pr status as failed if any results are found
             if any(s_results for _, s_results in filtered_results.items()):
-                HEAD.set_status(CommitStatus(
-                    Status.FAILED, 'This PR has issues!',
-                    'review/gitmate/pr', 'http://gitmate.io/'))
-            else:
-                HEAD.set_status(CommitStatus(
-                    Status.SUCCESS, 'This PR has no issues. :)',
-                    'review/gitmate/pr', 'http://gitmate.io/'))
+                status = Status.FAILED
+
         else:  # Run coala per commit
-            failed = False
             for commit in COMMITS:
                 new_results = analyse(
                     repo, commit.sha, igitt_repo.clone_url,
@@ -230,24 +235,28 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
 
                 # set commit status as failed if any results are found
                 if any(s_results for _, s_results in filtered_results.items()):
-                    failed = True
-                    commit.set_status(CommitStatus(
-                        Status.FAILED, 'This commit has issues!',
-                        'review/gitmate/commit', 'http://gitmate.io/'))
-                else:
-                    commit.set_status(CommitStatus(
-                        Status.SUCCESS, 'This commit has no issues. :)',
-                        'review/gitmate/commit', 'http://gitmate.io/'))
+                    status = Status.FAILED
 
-            if failed:
-                HEAD.set_status(CommitStatus(
-                    Status.FAILED, 'This PR has issues!',
-                    'review/gitmate/pr', 'http://gitmate.io/'))
-            else:
-                HEAD.set_status(CommitStatus(
-                    Status.SUCCESS, 'This PR has no issues. :)',
-                    'review/gitmate/pr', 'http://gitmate.io/'))
+                _set_status(commit, status, 'review/gitmate/commit')
+                ANALYZED_COMMITS.add(commit)
 
-    except Exception as exc:  # pragma: no cover
+        _set_status(pr.head, status, 'review/gitmate/pr')
+
+    except BaseException as exc:  # pragma: no cover
+        # Attempt to set ``Status.ERROR`` for all commits that were not
+        # analyzed when a new push event occured. However, if these commits
+        # continue to be a part of this merge request, the new task would
+        # process it properly.
+        if pr_based_analysis is False:
+            for commit in COMMITS - ANALYZED_COMMITS:
+                try:
+                    _set_status(commit, Status.ERROR, 'review/gitmate/commit')
+                except RuntimeError:
+                    pass
+        else:
+            try:
+                _set_status(HEAD, Status.ERROR, 'review/gitmate/pr')
+            except RuntimeError:
+                pass
         print(str(exc))
         print_exc()
