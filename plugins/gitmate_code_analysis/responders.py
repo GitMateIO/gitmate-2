@@ -203,7 +203,7 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
     _set_status(HEAD, Status.RUNNING, 'review/gitmate/pr')
 
     ref = get_ref(pr)
-    status = Status.SUCCESS
+    pr_status = Status.SUCCESS
 
     try:
         # Spawn a coala container for base commit to generate old results.
@@ -220,7 +220,7 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
 
             # set pr status as failed if any results are found
             if any(s_results for _, s_results in filtered_results.items()):
-                status = Status.FAILED
+                pr_status = Status.FAILED
 
         else:  # Run coala per commit
             for commit in COMMITS:
@@ -235,12 +235,15 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
 
                 # set commit status as failed if any results are found
                 if any(s_results for _, s_results in filtered_results.items()):
+                    pr_status = Status.FAILED
                     status = Status.FAILED
+                else:
+                    status = Status.SUCCESS
 
                 _set_status(commit, status, 'review/gitmate/commit')
                 ANALYZED_COMMITS.add(commit)
 
-        _set_status(pr.head, status, 'review/gitmate/pr')
+        _set_status(pr.head, pr_status, 'review/gitmate/pr')
 
     except BaseException as exc:  # pragma: no cover
         # Attempt to set ``Status.ERROR`` for all commits that were not
