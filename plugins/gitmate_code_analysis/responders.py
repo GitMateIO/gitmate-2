@@ -199,8 +199,8 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
     if pr_based_analysis is False:
         for commit in COMMITS:
             _set_status(commit, Status.RUNNING, 'review/gitmate/commit')
-    else:
-        _set_status(HEAD, Status.RUNNING, 'review/gitmate/pr')
+
+    _set_status(HEAD, Status.RUNNING, 'review/gitmate/pr')
 
     ref = get_ref(pr)
     status = Status.SUCCESS
@@ -253,10 +253,10 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
                     _set_status(commit, Status.ERROR, 'review/gitmate/commit')
                 except RuntimeError:
                     pass
-        else:
-            try:
-                _set_status(HEAD, Status.ERROR, 'review/gitmate/pr')
-            except RuntimeError:
-                pass
+
+        try:
+            _set_status(HEAD, Status.ERROR, 'review/gitmate/pr')
+        except RuntimeError:
+            pass
         print(str(exc))
         print_exc()
