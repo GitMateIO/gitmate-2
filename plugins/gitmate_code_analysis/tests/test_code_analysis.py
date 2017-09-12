@@ -33,6 +33,9 @@ def fake_fetch(base: str, req_type: str, token: str, url: str,
         return {
             'head': {
                 'sha': 'deadbeef',
+                'repo': {
+                    'full_name': environ['GITHUB_TEST_REPO']
+                }
             },
             'base': {
                 'sha': 'deadbeef',

@@ -17,14 +17,70 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['1177']
       Content-Type: [application/json]
-      Date: ['Tue, 22 Aug 2017 10:13:32 GMT']
+      Date: ['Tue, 12 Sep 2017 11:02:21 GMT']
       Etag: [W/"4f335cc81ccaf752dc263240cecea8d4"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [891c7941-42a4-4dea-951c-81104099f297]
-      X-Runtime: ['0.454791']
+      X-Request-Id: [8e18d619-9f9e-4f09-8069-d760880ffc2f]
+      X-Runtime: ['0.179188']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/3439658?per_page=100
+  response:
+    body: {string: '{"id":3439658,"description":"","default_branch":"master","tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/test.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/test.git","web_url":"https://gitlab.com/gitmate-test-user/test","name":"test","name_with_namespace":"GitMate
+        / test","path":"test","path_with_namespace":"gitmate-test-user/test","star_count":0,"forks_count":2,"created_at":"2017-06-05T04:56:19.418Z","last_activity_at":"2017-08-30T12:56:13.206Z","_links":{"self":"http://gitlab.com/api/v4/projects/3439658","issues":"http://gitlab.com/api/v4/projects/3439658/issues","merge_requests":"http://gitlab.com/api/v4/projects/3439658/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/3439658/repository/branches","labels":"http://gitlab.com/api/v4/projects/3439658/labels","events":"http://gitlab.com/api/v4/projects/3439658/events","members":"http://gitlab.com/api/v4/projects/3439658/members"},"archived":false,"visibility":"public","owner":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"failed","import_error":"Mirror
+        update for gitmate-test-user/test failed with the following message: The default
+        branch (master) has diverged from its upstream counterpart and could not be
+        updated automatically.","avatar_url":null,"open_issues_count":12,"runners_token":"mJspL93WBs-yfGkkvpos","public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['2282']
+      Content-Type: [application/json]
+      Date: ['Tue, 12 Sep 2017 11:02:25 GMT']
+      Etag: [W/"5cb67e09e0619cb80f8ed1d06eeaeec4"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [ce25c0dd-cd66-4141-a0c5-1f2722080f3c]
+      X-Runtime: ['0.150552']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/3439658?per_page=100
+  response:
+    body: {string: '{"id":3439658,"description":"","default_branch":"master","tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/test.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/test.git","web_url":"https://gitlab.com/gitmate-test-user/test","name":"test","name_with_namespace":"GitMate
+        / test","path":"test","path_with_namespace":"gitmate-test-user/test","star_count":0,"forks_count":2,"created_at":"2017-06-05T04:56:19.418Z","last_activity_at":"2017-08-30T12:56:13.206Z","_links":{"self":"http://gitlab.com/api/v4/projects/3439658","issues":"http://gitlab.com/api/v4/projects/3439658/issues","merge_requests":"http://gitlab.com/api/v4/projects/3439658/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/3439658/repository/branches","labels":"http://gitlab.com/api/v4/projects/3439658/labels","events":"http://gitlab.com/api/v4/projects/3439658/events","members":"http://gitlab.com/api/v4/projects/3439658/members"},"archived":false,"visibility":"public","owner":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"failed","import_error":"Mirror
+        update for gitmate-test-user/test failed with the following message: The default
+        branch (master) has diverged from its upstream counterpart and could not be
+        updated automatically.","avatar_url":null,"open_issues_count":12,"runners_token":"mJspL93WBs-yfGkkvpos","public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['2282']
+      Content-Type: [application/json]
+      Date: ['Tue, 12 Sep 2017 11:02:30 GMT']
+      Etag: [W/"5cb67e09e0619cb80f8ed1d06eeaeec4"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [d7f5448b-a6d9-4e38-a08e-590fce9a4503]
+      X-Runtime: ['0.178493']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -44,13 +100,69 @@ interactions:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Length: ['1177']
       Content-Type: [application/json]
-      Date: ['Tue, 22 Aug 2017 10:13:37 GMT']
+      Date: ['Tue, 12 Sep 2017 11:02:34 GMT']
       Etag: [W/"4f335cc81ccaf752dc263240cecea8d4"]
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Origin]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [73039034-85ca-4eaf-8c4f-b249e653d442]
-      X-Runtime: ['0.220402']
+      X-Request-Id: [ead7a2d9-a4fb-4691-a444-00be1f7afb9c]
+      X-Runtime: ['0.345717']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/3439658?per_page=100
+  response:
+    body: {string: '{"id":3439658,"description":"","default_branch":"master","tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/test.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/test.git","web_url":"https://gitlab.com/gitmate-test-user/test","name":"test","name_with_namespace":"GitMate
+        / test","path":"test","path_with_namespace":"gitmate-test-user/test","star_count":0,"forks_count":2,"created_at":"2017-06-05T04:56:19.418Z","last_activity_at":"2017-08-30T12:56:13.206Z","_links":{"self":"http://gitlab.com/api/v4/projects/3439658","issues":"http://gitlab.com/api/v4/projects/3439658/issues","merge_requests":"http://gitlab.com/api/v4/projects/3439658/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/3439658/repository/branches","labels":"http://gitlab.com/api/v4/projects/3439658/labels","events":"http://gitlab.com/api/v4/projects/3439658/events","members":"http://gitlab.com/api/v4/projects/3439658/members"},"archived":false,"visibility":"public","owner":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"failed","import_error":"Mirror
+        update for gitmate-test-user/test failed with the following message: The default
+        branch (master) has diverged from its upstream counterpart and could not be
+        updated automatically.","avatar_url":null,"open_issues_count":12,"runners_token":"mJspL93WBs-yfGkkvpos","public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['2282']
+      Content-Type: [application/json]
+      Date: ['Tue, 12 Sep 2017 11:02:39 GMT']
+      Etag: [W/"5cb67e09e0619cb80f8ed1d06eeaeec4"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [6144c214-3299-4166-8fbe-d0ae1c7a7d3d]
+      X-Runtime: ['0.332813']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/3439658?per_page=100
+  response:
+    body: {string: '{"id":3439658,"description":"","default_branch":"master","tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/test.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/test.git","web_url":"https://gitlab.com/gitmate-test-user/test","name":"test","name_with_namespace":"GitMate
+        / test","path":"test","path_with_namespace":"gitmate-test-user/test","star_count":0,"forks_count":2,"created_at":"2017-06-05T04:56:19.418Z","last_activity_at":"2017-08-30T12:56:13.206Z","_links":{"self":"http://gitlab.com/api/v4/projects/3439658","issues":"http://gitlab.com/api/v4/projects/3439658/issues","merge_requests":"http://gitlab.com/api/v4/projects/3439658/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/3439658/repository/branches","labels":"http://gitlab.com/api/v4/projects/3439658/labels","events":"http://gitlab.com/api/v4/projects/3439658/events","members":"http://gitlab.com/api/v4/projects/3439658/members"},"archived":false,"visibility":"public","owner":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"failed","import_error":"Mirror
+        update for gitmate-test-user/test failed with the following message: The default
+        branch (master) has diverged from its upstream counterpart and could not be
+        updated automatically.","avatar_url":null,"open_issues_count":12,"runners_token":"mJspL93WBs-yfGkkvpos","public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['2282']
+      Content-Type: [application/json]
+      Date: ['Tue, 12 Sep 2017 11:02:43 GMT']
+      Etag: [W/"5cb67e09e0619cb80f8ed1d06eeaeec4"]
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [53981d89-8a34-4150-9a46-c83ddc8e30e6]
+      X-Runtime: ['0.297398']
     status: {code: 200, message: OK}
 version: 1

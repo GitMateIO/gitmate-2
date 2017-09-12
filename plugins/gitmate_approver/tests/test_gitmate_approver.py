@@ -2,14 +2,17 @@
 This file contains the test cases for approver plugin and its responders.
 """
 from os import environ
+
 from unittest.mock import patch
 from unittest.mock import PropertyMock
-
 from rest_framework import status
-
-from gitmate_config.tests.test_base import GitmateTestCase
+from IGitt.GitHub.GitHubCommit import GitHubCommit
+from IGitt.GitLab.GitLabCommit import GitLabCommit
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
+from IGitt.Interfaces.CommitStatus import Status
+
+from gitmate_config.tests.test_base import GitmateTestCase
 
 
 class TestGitmateApprover(GitmateTestCase):
@@ -28,9 +31,11 @@ class TestGitmateApprover(GitmateTestCase):
         self.repo.set_plugin_settings(self.settings)
         self.gl_repo.set_plugin_settings(self.settings)
 
+    @patch.object(GitHubCommit, 'combined_status',
+                  new_callable=PropertyMock, return_value=Status.SUCCESS)
     @patch.object(GitHubMergeRequest, 'labels',
                   new_callable=PropertyMock, return_value={'WIP', 'bug'})
-    def test_github_success_on_head_commit(self, m_labels):
+    def test_github_success_on_head_commit(self, m_labels, m_status):
         data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO']},
             'pull_request': {'number': 7},
@@ -51,9 +56,11 @@ class TestGitmateApprover(GitmateTestCase):
         # adds approved_label and removes status_labels
         m_labels.assert_called_with({'approved', 'bug'})
 
+    @patch.object(GitLabCommit, 'combined_status',
+                  new_callable=PropertyMock, return_value=Status.SUCCESS)
     @patch.object(GitLabMergeRequest, 'labels',
                   new_callable=PropertyMock, return_value={'WIP', 'bug'})
-    def test_gitlab_success_on_head_commit(self, m_labels):
+    def test_gitlab_success_on_head_commit(self, m_labels, m_status):
         data = {
             'object_attributes': {
                 'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
