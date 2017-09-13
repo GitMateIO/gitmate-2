@@ -1,5 +1,8 @@
 version: '2'
 services:
+  dind:
+    image: docker:stable-dind
+    privileged: true
   db:
     image: postgres:9.6
     environment:
@@ -25,16 +28,17 @@ services:
   worker:
     build: .
     command: ./docker/run-worker.sh
-    tty: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     env_file: ./docker/environment
+    environment:
+      - DOCKER_HOST=tcp://dind:2375
     links:
       - db
       - rabbit
+      - dind
     depends_on:
       - rabbit
       - backend
+      - dind
   beat:
     build: .
     command: ./docker/run-beat.sh
