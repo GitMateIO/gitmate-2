@@ -79,6 +79,7 @@ GITMATE_PLUGINS = [
     'auto_label_pending_or_wip',
     'pr_size_labeller',
     'issue_labeller',
+    'issue_assigner',
     'bug_spotter',
     'ack',
     'issue_pr_sync',
