@@ -1,5 +1,3 @@
-from difflib import SequenceMatcher
-
 from IGitt.Interfaces.Actions import IssueActions
 from IGitt.Interfaces.Issue import Issue
 
