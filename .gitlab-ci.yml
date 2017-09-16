@@ -52,7 +52,12 @@ run_tests: &run_tests
   - pip3 install -r requirements.txt
   - pip3 install -r test-requirements.txt
   - python3 -m nltk.downloader -d /usr/local/share/nltk_data stopwords
-  - py.test -vv --cov --doctest-modules
+  - >
+    if [ -z "$EE_PLUGINS" ]; then
+        py.test -vv --cov --doctest-modules
+    else
+        py.test -vv --doctest-modules
+    fi
   except:
   - master
 
