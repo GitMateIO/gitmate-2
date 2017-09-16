@@ -1,16 +1,13 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-EE_FOLDERS=$(find plugins/ -name "*_ee" -type d)
+find plugins/ -name "*_ee" -type d | while read folder; do
+    python_files=$(find $folder -maxdepth 1 -name "*.py")
 
-EE_PLUGINS=""
-
-for folder in $EE_FOLDERS; do
-    python_files=(`find $folder -maxdepth 1 -name "*.py"`)
-
-    if [ ${#python_files[@]} -gt 0 ]; then
+    if [ -n "$python_files" ]; then
         plugin_name=$(basename $folder | sed 's/^gitmate_//')
         EE_PLUGINS="$plugin_name $EE_PLUGINS"
+        echo -n "$plugin_name "
     fi
 done
 
-echo $EE_PLUGINS
+echo
