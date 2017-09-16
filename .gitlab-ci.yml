@@ -51,6 +51,7 @@ run_tests: &run_tests
   - apt-get install -y --no-install-recommends libblas-dev liblapack-dev libatlas-base-dev gfortran g++
   - pip3 install -r requirements.txt
   - pip3 install -r test-requirements.txt
+  - python3 -m nltk.downloader -d /usr/local/share/nltk_data stopwords
   - py.test -vv --cov --doctest-modules
   except:
   - master
