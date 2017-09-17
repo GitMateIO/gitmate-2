@@ -25,13 +25,15 @@ before_script:
   - 'echo "EE plugins found: $EE_PLUGINS"'
 
 stages:
+  - check
+  - build
   - test
   - release
   - deploy
 
 check_code:
   image: python:3
-  stage: test
+  stage: check
   script:
   - pip install 'coala-bears[alldeps]'
   - pip install -r requirements.txt
@@ -43,32 +45,8 @@ cache:
   paths:
   - /root/.cache/pip
 
-run_tests: &run_tests
-  image: python:3
-  stage: test
-  script:
-  - apt-get update
-  - apt-get install -y --no-install-recommends libblas-dev liblapack-dev libatlas-base-dev gfortran g++
-  - pip3 install -r requirements.txt
-  - pip3 install -r test-requirements.txt
-  - python3 -m nltk.downloader -d /usr/local/share/nltk_data stopwords
-  - >
-    if [ -z "$EE_PLUGINS" ]; then
-        py.test -vv --cov --doctest-modules
-    else
-        py.test -vv --doctest-modules
-    fi
-  except:
-  - master
-
-run_tests_ee:
-  <<: *run_tests
-  variables:
-    GIT_SUBMODULE_STRATEGY: normal
-  allow_failure: true
-
 build_image: &build_image
-  stage: test
+  stage: build
   script:
     - docker build -t $TEST_IMAGE_NAME .
     - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
@@ -82,6 +60,22 @@ build_image_ee:
     - export TEST_IMAGE_NAME="registry.gitlab.com/$CI_PROJECT_PATH:$CI_COMMIT_SHA-ee"
   variables:
     GIT_SUBMODULE_STRATEGY: normal
+
+run_tests: &run_tests
+  stage: test
+  script:
+    - cp docker-compose.yml docker-compose.yml.orig
+    - 'sed -i "s/build: ./image: $TEST_IMAGE_NAME/g" docker-compose.yml'
+    - diff docker-compose.yml.orig docker-compose.yml
+    - docker-compose run backend docker/run-tests.sh
+  except:
+  - master
+
+run_tests_ee:
+  <<: *run_tests
+  before_script:
+    - export TEST_IMAGE_NAME="registry.gitlab.com/$CI_PROJECT_PATH:$CI_COMMIT_SHA-ee"
+  allow_failure: true
 
 push_master_image:
   stage: release
