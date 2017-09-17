@@ -10,18 +10,7 @@ variables:
 variables:
   DOCKER_DRIVER: overlay
 
-before_script:
-  - export TEST_IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH:$CI_COMMIT_SHA
-  - export MASTER_NAME=registry.gitlab.com/$CI_PROJECT_PATH:latest
-  - export RELEASE_NAME=registry.gitlab.com/$CI_PROJECT_PATH:release
-  - export WEBHOOK_SECRET=foobar
-  - export COALA_RESULTS_IMAGE=registry.gitlab.com/gitmate/open-source/coala-incremental-results:latest
-  - export RESULTS_BOUNCER_IMAGE=registry.gitlab.com/gitmate/open-source/result-bouncer:latest
-  - export REBASER_IMAGE=registry.gitlab.com/gitmate/open-source/mr-rebaser:latest
-  - export BOT_TOKEN=foobar
-  - export BOT_USER=foo
-  - export EE_PLUGINS=$(./docker/list-ee-plugins.sh)
-  - 'echo "EE plugins found: $EE_PLUGINS"'
+before_script: ./.ci/before-script.sh
 
 stages:
   - check
@@ -72,38 +61,38 @@ run_tests: &run_tests
 run_tests_ee:
   <<: *run_tests
   before_script:
-    - export TEST_IMAGE_NAME="registry.gitlab.com/$CI_PROJECT_PATH:$CI_COMMIT_SHA-ee"
+    - ./.ci/before-script.sh
+    - export TEST_IMAGE_NAME="$TEST_IMAGE_NAME-ee"
   allow_failure: true
 
-push_master_image:
+.push_image: &push_image
   stage: release
   script:
     - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - ./.ci/push_image.sh $TEST_IMAGE_NAME $MASTER_NAME
-    - ./.ci/push_image.sh "$TEST_IMAGE_NAME-ee" "$MASTER_NAME-ee"
+    - ./.ci/push_image.sh $TEST_IMAGE_NAME $TARGET_NAME
+    - ./.ci/push_image.sh "$TEST_IMAGE_NAME-ee" "$TARGET_NAME-ee"
   only:
     - master
 
+push_master_image:
+  <<: *push_image
+  before_script:
+    - ./.ci/before_script.sh
+    - export TARGET_NAME="$MASTER_NAME"
+
 push_release_image:
-  stage: release
-  script:
-    - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - ./.ci/push_image.sh $TEST_IMAGE_NAME $RELEASE_NAME
-    - ./.ci/push_image.sh "$TEST_IMAGE_NAME-ee" "$RELEASE_NAME-ee"
+  <<: *push_image
+  before_script:
+    - ./.ci/before_script.sh
+    - export TARGET_NAME="$RELEASE_NAME"
   when: manual
   only:
     - master
 
-deploy_master:
+deploy_master: &deploy_master
   stage: deploy
   image: debian:9
-  script:
-    - which ssh-agent || (apt-get update -y && apt-get install -y --no-install-recommends openssh-client)
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
-    - mkdir -p ~/.ssh
-    - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
-    - ssh tomoko@moon.gitmate.io 'bash -s' < .ci/deploy.master.sh
+  script: .ci/deploy.sh
   environment:
     name: master
     url: https://api.master.gitmate.io
@@ -113,20 +102,12 @@ deploy_master:
     - master
 
 deploy_release:
-  stage: deploy
-  image: debian:9
-  script:
-    - which ssh-agent || (apt-get update -y && apt-get install -y --no-install-recommends openssh-client)
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
-    - mkdir -p ~/.ssh
-    - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
-    - ssh tomoko@moon.gitmate.io 'bash -s' < .ci/deploy.release.sh
+  <<: *deploy_master
+  before_script:
+    - export DEPLOY_RELEASE="YES"
   environment:
     name: release
     url: https://api.gitmate.io
   dependencies:
     - push_release_image
   when: manual
-  only:
-    - master
