@@ -11,7 +11,9 @@ from IGitt.GitLab.GitLabRepository import GitLabRepository
 from IGitt.Interfaces.Repository import Repository as IGittRepository
 from rest_framework.reverse import reverse
 
+from gitmate_config import GitmateActions
 from gitmate_config import Providers
+from gitmate_hooks import ResponderRegistrar
 
 
 class Plugin(models.Model):
@@ -143,9 +145,13 @@ class Repository(models.Model):
             if 'active' in plugin:
                 if plugin['active'] is True:
                     self.plugins.add(plugin_obj)
+                    event = GitmateActions.PLUGIN_ACTIVATED
                 else:
                     self.plugins.remove(plugin_obj)
+                    event = GitmateActions.PLUGIN_DEACTIVATED
                 self.save()
+                # respond to plugin activation / deactivation
+                ResponderRegistrar.respond(event, self, plugin_obj)
 
             if 'settings' in plugin:
                 if isinstance(plugin['settings'], dict):
