@@ -6,6 +6,14 @@ from IGitt.GitLab import GitLabOAuthToken
 default_app_config = 'gitmate_config.apps.GitmateConfigConfig'
 
 
+class GitmateActions(Enum):
+    """
+    An enum to hold different actions related to gitmate.
+    """
+    PLUGIN_ACTIVATED = 'plugin_activated'
+    PLUGIN_DEACTIVATED = 'plugin_deactivated'
+
+
 class Providers(Enum):
     GITHUB = 'github'
     GITLAB = 'gitlab'
