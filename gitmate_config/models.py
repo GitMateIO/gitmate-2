@@ -149,11 +149,11 @@ class Repository(models.Model):
                 if plugin['active'] is True and plugin_exists is False:
                     self.plugins.add(plugin_obj)
                     ResponderRegistrar.respond(
-                        GitmateActions.PLUGIN_ACTIVATED, self, plugin_obj)
+                        GitmateActions.PLUGIN_ACTIVATED, self, self)
                 elif plugin['active'] is False and plugin_exists is True:
                     self.plugins.remove(plugin_obj)
                     ResponderRegistrar.respond(
-                        GitmateActions.PLUGIN_DEACTIVATED, self, plugin_obj)
+                        GitmateActions.PLUGIN_DEACTIVATED, self, self)
                 self.save()
 
             if 'settings' in plugin:
