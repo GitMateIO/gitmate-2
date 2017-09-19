@@ -1,3 +1,4 @@
+from collections import defaultdict
 from enum import Enum
 from hashlib import sha1
 import hmac
@@ -12,6 +13,8 @@ from rest_framework.response import Response
 from gitmate_config import Providers
 
 from gitmate.celery import app as celery
+from gitmate_config import GitmateActions
+
 
 def run_plugin_for_all_repos(plugin_name: str,
                              event_name: (str, Enum),
@@ -66,7 +69,7 @@ def signature_check(key: str=None,
 class ExceptionLoggerTask(Task):
     """
     Celery Task subclass to log exceptions on failure.
-    
+
     For Task inheritance see:
     http://docs.celeryproject.org/en/latest/userguide/tasks.html#task-inheritance
     """
@@ -75,10 +78,10 @@ class ExceptionLoggerTask(Task):
         warning = ('Task {task}[{t_id}] had unexpected failure:\n'
                    '\nargs: {args}\n\nkwargs: {kwargs}\n'
                    '\n{einfo}').format(task=self.name,
-                                         t_id=task_id,
-                                         args=args,
-                                         kwargs=kwargs,
-                                         einfo=einfo)
+                                       t_id=task_id,
+                                       args=args,
+                                       kwargs=kwargs,
+                                       einfo=einfo)
         logger.warn(warning)
         super().on_failure(exc, task_id, args, kwargs, einfo)
 
@@ -89,8 +92,8 @@ class ResponderRegistrar:
     All responders belong to a plugin that can be activated per repository.
     """
 
-    _responders = {}
-    _options = {}
+    _responders = defaultdict(list)
+    _options = defaultdict(list)
     _plugins = {}
 
     @classmethod
@@ -120,7 +123,7 @@ class ResponderRegistrar:
                             interval: (crontab, float),
                             **kwargs):
         """
-        Registers the decorated function as responder and register 
+        Registers the decorated function as responder and register
         `run_plugin_for_all_repos` as periodic task with plugin name and
         a responder event as arguments.
 
@@ -159,50 +162,66 @@ class ResponderRegistrar:
         """
         def _wrapper(function):
             task = celery.task(function, base=ExceptionLoggerTask)
-
             for action in actions:
-                if action not in cls._responders:
-                    cls._responders[action] = []
-
                 cls._responders[action].append(task)
-
             cls._plugins[task] = plugin
-
             argspec = getfullargspec(function)
             if argspec.defaults is not None:
                 cls._options[task] = argspec.args[-len(argspec.defaults):]
-            else:
-                cls._options[task] = []
             return function
-
         return _wrapper
 
     @classmethod
-    def options(cls):
+    def _get_specified_options(cls, responder, options):
         """
-        Creates a dictionary of all registered responders associated with
-        their corresponding option dictionaries.
+        Retrieves the requested options for the given responder.
         """
-        return cls._options
+        keys = set(cls._options[responder]) & set(options.keys())
+        return dict(zip(keys, [options[k] for k in keys]))
 
     @classmethod
-    def respond(cls, event, repo, *args, options={}):
+    def _get_responders(cls, event, repo=None, plugin_name=None):
         """
-        Invoke all responders for the given event with the provided options.
+        Retrieves the list of responders for the specified event. Filters only
+        the ones within a plugin, if ``plugin name`` is specified. Filters only
+        for responders active on a repository, if ``repo`` is specified.
+        """
+        # Don't move to module code! Models aren't loaded yet.
+        from gitmate_config.models import Repository
+
+        responders = cls._responders.get(event, [])
+        plugin_filter = lambda r: plugin_name == cls._plugins[r]
+        repo_filter = lambda r: repo.plugins.filter(
+            name=cls._plugins[r]).exists()
+
+        if repo is not None and isinstance(repo, Repository):
+            responders = list(filter(repo_filter, responders))
+
+        if plugin_name:
+            responders = list(filter(plugin_filter, responders))
+
+        return responders
+
+    @classmethod
+    def respond(cls,
+                event,
+                repo,
+                *args,
+                plugin_name: str=None,
+                options:dict =frozenset()):
+        """
+        Invoke all responders for the given event with the provided options. If
+        a plugin name is specified, invokes responders only within that plugin.
         """
         retvals = []
-        for responder in cls._responders.get(event, []):
+        if isinstance(event, GitmateActions):
+            responders = cls._get_responders(event, plugin_name=plugin_name)
+        else:
+            responders = cls._get_responders(event, repo=repo)
+
+        for responder in responders:
             # Provide the options it wants
-            options_specified = {}
-            for option in cls.options()[responder]:
-                if option in options:
-                    options_specified[option] = options[option]
-
-            # check if plugin is active on the repo
-            plugin = cls._plugins[responder]
-            if repo.plugins.filter(name=plugin).exists() is False:
-                continue
-
+            options_specified = cls._get_specified_options(responder, options)
             try:
                 retvals.append(responder.delay(*args, **options_specified))
             except BaseException:  # pragma: no cover
