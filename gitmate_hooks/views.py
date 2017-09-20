@@ -51,8 +51,7 @@ def github_webhook_receiver(request):
     action, objs = GitHub(GitHubToken(raw_token)).handle_webhook(
         request.META['HTTP_X_GITHUB_EVENT'], webhook_data)
 
-    ResponderRegistrar.respond(action, repo_obj, *objs,
-                               options=repo_obj.get_plugin_settings())
+    ResponderRegistrar.respond(action, repo_obj, *objs)
 
     return Response(status=status.HTTP_200_OK)
 
@@ -79,7 +78,6 @@ def gitlab_webhook_receiver(request):
     action, objs = GitLab(GitLabOAuthToken(raw_token)).handle_webhook(
         request.META['HTTP_X_GITLAB_EVENT'], webhook)
 
-    ResponderRegistrar.respond(action, repo_obj, *objs,
-                               options=repo_obj.get_plugin_settings())
+    ResponderRegistrar.respond(action, repo_obj, *objs)
 
     return Response(status=status.HTTP_200_OK)

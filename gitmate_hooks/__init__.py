@@ -31,11 +31,7 @@ def run_plugin_for_all_repos(plugin_name: str,
 
     plugin = Plugin.objects.get(name=plugin_name)
     for repo in plugin.repository_set.filter(active=is_active):
-        ResponderRegistrar.respond(
-            event_name,
-            repo,
-            repo.igitt_repo,
-            options=repo.get_plugin_settings())
+        ResponderRegistrar.respond(event_name, repo, repo.igitt_repo)
 
 def signature_check(key: str=None,
                     provider: str=None,
@@ -203,15 +199,10 @@ class ResponderRegistrar:
         return responders
 
     @classmethod
-    def respond(cls,
-                event,
-                repo,
-                *args,
-                plugin_name: str=None,
-                options:dict =frozenset()):
+    def respond(cls, event, repo, *args, plugin_name: str=None):
         """
-        Invoke all responders for the given event with the provided options. If
-        a plugin name is specified, invokes responders only within that plugin.
+        Invoke all responders for the given event. If a plugin name is
+        specified, invokes responders only within that plugin.
         """
         retvals = []
         if isinstance(event, GitmateActions):
@@ -221,7 +212,8 @@ class ResponderRegistrar:
 
         for responder in responders:
             # Provide the options it wants
-            options_specified = cls._get_specified_options(responder, options)
+            options_specified = cls._get_specified_options(
+                responder, repo.get_plugin_settings())
             try:
                 retvals.append(responder.delay(*args, **options_specified))
             except BaseException:  # pragma: no cover

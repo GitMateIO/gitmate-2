@@ -13,12 +13,12 @@ class TestResponderRegistrar(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('testplugin')
 
-        @ResponderRegistrar.responder(self.plugin,
+        @ResponderRegistrar.responder(self.plugin.name,
                                       MergeRequestActions.OPENED)
-        def test_responder(obj, test_var: bool = True):
-            return test_var
+        def test_responder(obj, example_bool_setting: bool = True):
+            return example_bool_setting
 
-        @ResponderRegistrar.scheduled_responder(self.plugin,
+        @ResponderRegistrar.scheduled_responder(self.plugin.name,
                 100.00,
                 is_active=True)
         def scheduled_responder_function(obj, example_bool_setting: bool=True):
@@ -27,14 +27,18 @@ class TestResponderRegistrar(GitmateTestCase):
     def test_active_plugin(self):
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.repo, 'example',
-                options={'test_var': True})],
+                MergeRequestActions.OPENED, self.repo, 'example')],
             [True]
         )
+        self.repo.set_plugin_settings([{
+            'name': 'testplugin',
+            'settings': {
+                'example_bool_setting': False
+            }
+        }])
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.repo, 'example',
-                options={'test_var': False})],
+                MergeRequestActions.OPENED, self.repo, 'example')],
             [False]
         )
 
@@ -42,8 +46,7 @@ class TestResponderRegistrar(GitmateTestCase):
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
                 'testplugin.scheduled_responder_function', self.repo,
-                self.repo.igitt_repo,
-                options={'example_bool_setting': True})],
+                self.repo.igitt_repo)],
             [True, True]
         )
 
@@ -60,7 +63,6 @@ class TestResponderRegistrar(GitmateTestCase):
 
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.repo, 'example',
-                options={'test_var': True})],
+                MergeRequestActions.OPENED, self.repo, 'example')],
             []
         )
