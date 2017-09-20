@@ -19,7 +19,7 @@ RUN apk add --no-cache docker postgresql-libs && \
         postgresql-dev \
         python3-dev && \
     pip install --no-cache-dir -r $ROOT/requirements.txt && \
-    python3 -m nltk.downloader -d /usr/local/share/nltk_data stopwords && \
+    python3 -m nltk.downloader -d /usr/local/share/nltk_data all && \
     apk del .build-deps
 
 ADD . $ROOT
