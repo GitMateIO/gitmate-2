@@ -56,6 +56,7 @@ REQUISITE_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'gitmate_config',
+    'gitmate_logger',
     'rest_framework',
     'rest_framework_docs',
     'corsheaders',
@@ -203,7 +204,7 @@ ROOT_URLCONF = 'gitmate.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
