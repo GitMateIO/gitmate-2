@@ -204,6 +204,9 @@ class ResponderRegistrar:
         Invoke all responders for the given event. If a plugin name is
         specified, invokes responders only within that plugin.
         """
+        # Don't move to module code. Apps aren't loaded yet.
+        from gitmate_logger.signals import LoggingExceptionHandler
+
         retvals = []
         if isinstance(event, GitmateActions):
             responders = cls._get_responders(event, plugin_name=plugin_name)
@@ -222,5 +225,7 @@ class ResponderRegistrar:
                 print('Args:        {0!r}'.format(args))
                 print('Options:     {0!r}'.format(options_specified))
                 print_exc()
+                LoggingExceptionHandler.create_from_exception(
+                    __name__, responder.name)
 
         return retvals

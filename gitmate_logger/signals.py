@@ -5,6 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.exceptions import ValidationError
 from django.http import Http404
 from django.http import HttpRequest
+from django.views.debug import ExceptionReporter
 
 from gitmate_logger.models import Error
 
@@ -22,21 +23,27 @@ class LoggingExceptionHandler(object):
     @classmethod
     def create_from_exception(cls,
                               sender,
-                              request: HttpRequest=None,
+                              request:(str, HttpRequest)=None,
                               *args,
                               **kwargs):
         """
         Handles the exception upon receiving the signal.
         """
         kind, info, data = exc_info()
+
         # exclude unimportant errors
         if any([issubclass(kind, e) for e in cls.exclude]):
             return
 
-        if request is not None:
-            Error.objects.create(
-                kind=kind.__name__,
-                path=request.build_absolute_uri(),
-                info=info,
-                data='\n'.join(format_exception(kind, info, data)),
-            ).save()
+        path = None
+        if isinstance(request, str):
+            path = request
+        elif request is not None:
+            path = request.build_absolute_uri()
+
+        Error.objects.create(
+            kind=kind.__name__,
+            path=path,
+            info=info,
+            data='\n'.join(format_exception(kind, info, data)),
+        ).save()
