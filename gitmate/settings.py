@@ -302,3 +302,6 @@ ISSUE_REPORT_URL = os.environ.get('ISSUE_REPORT_URL',
                                   'gitmate-2/issues/new?issue_template=Bug&'
                                   'issue[title]={title}&'
                                   'issue[description]={description}')
+# stripe API key
+STRIPE_API_KEY = os.environ.get('STRIPE_API_KEY', None)
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', None)
