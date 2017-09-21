@@ -1,15 +1,15 @@
 import json
 
-from IGitt.GitHub.GitHub import GitHub
-from IGitt.GitLab.GitLab import GitLab
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 from IGitt.GitHub import GitHubToken
+from IGitt.GitHub.GitHub import GitHub
 from IGitt.GitHub.GitHubComment import GitHubComment
 from IGitt.GitHub.GitHubCommit import GitHubCommit
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitLab import GitLabOAuthToken
+from IGitt.GitLab.GitLab import GitLab
 from IGitt.GitLab.GitLabComment import GitLabComment
 from IGitt.GitLab.GitLabCommit import GitLabCommit
 from IGitt.GitLab.GitLabIssue import GitLabIssue
@@ -24,11 +24,11 @@ from rest_framework.response import Response
 
 from gitmate_config import Providers
 from gitmate_config.models import Repository
+from gitmate_config.models import Customer
 from gitmate_hooks import ResponderRegistrar
 from gitmate_hooks import signature_check
 
 
-@csrf_exempt
 @api_view(['POST'])
 @signature_check(settings.WEBHOOK_SECRET,
                  Providers.GITHUB.value,
@@ -60,7 +60,6 @@ def github_webhook_receiver(request):
     return Response(status=status.HTTP_200_OK)
 
 
-@csrf_exempt
 @api_view(['POST'])
 @signature_check(settings.WEBHOOK_SECRET,
                  Providers.GITLAB.value,
@@ -92,5 +91,23 @@ def gitlab_webhook_receiver(request):
         return Response(status=status.HTTP_200_OK)
 
     ResponderRegistrar.respond(action, repo_obj, *objs)
+
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@signature_check(key=settings.STRIPE_WEBHOOK_SECRET,
+                 provider='stripe',
+                 http_header_name='HTTP_STRIPE_SIGNATURE',
+                 api_key=settings.STRIPE_API_KEY)
+def stripe_webhook_receiver(request):
+    webhook = json.loads(request.body.decode('utf-8'))
+    event = webhook['type']
+    data = webhook['data']
+
+    if event == 'customer.deleted':
+        customer = data['object']
+        customer_object = get_object_or_404(Customer, id=customer['id'])
+        customer_object.delete()
 
     return Response(status=status.HTTP_200_OK)

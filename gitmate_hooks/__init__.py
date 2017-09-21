@@ -11,8 +11,10 @@ from celery import Task
 from celery.utils.log import get_logger
 from rest_framework import status
 from rest_framework.response import Response
-from gitmate_config import Providers
+from stripe.error import SignatureVerificationError
+import stripe
 
+from gitmate_config import Providers
 from gitmate.celery import app as celery
 from gitmate_config import GitmateActions
 
@@ -36,7 +38,8 @@ def run_plugin_for_all_repos(plugin_name: str,
 
 def signature_check(key: str=None,
                     provider: str=None,
-                    http_header_name: str=None):
+                    http_header_name: str=None,
+                    api_key: str=None):
     """
     Decorator for views that checks if the signature from request header
     matches the one registered for webhooks.
@@ -56,6 +59,18 @@ def signature_check(key: str=None,
                 elif provider == Providers.GITLAB.value:
                     if request.META[http_header_name] == key:
                         return function(request, *args, **kwargs)
+
+                elif provider == 'stripe':
+                    stripe.api_key = api_key
+                    try:
+                        _ = stripe.Webhook.construct_event(
+                            request.body.decode('utf-8'),
+                            request.META[http_header_name],
+                            key
+                        )
+                        return function(request, *args, **kwargs)
+                    except (ValueError, SignatureVerificationError):
+                        return Response(status=status.HTTP_400_BAD_REQUEST)
 
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
