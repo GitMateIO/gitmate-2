@@ -1,6 +1,7 @@
 from importlib import import_module
 
 from django.apps import apps
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.forms.models import model_to_dict
@@ -13,10 +14,14 @@ from IGitt.GitLab.GitLabRepository import GitLabRepository
 from IGitt.Interfaces.Organization import Organization as IGittOrganization
 from IGitt.Interfaces.Repository import Repository as IGittRepository
 from rest_framework.reverse import reverse
+import stripe
 
 from gitmate_config import GitmateActions
 from gitmate_config import Providers
 from gitmate_hooks import ResponderRegistrar
+
+
+stripe.api_key = settings.STRIPE_API_KEY
 
 
 class Plugin(models.Model):
@@ -250,3 +255,26 @@ class SettingsBase(models.Model):
     class Meta:
         verbose_name_plural = 'settings'
         abstract = True
+
+
+class Customer(models.Model):
+    id = models.CharField(max_length=64, primary_key=True)
+    org = models.OneToOneField(
+        Organization, on_delete=models.CASCADE, related_name="customer")
+
+    def __str__(self):
+        return '{}:{}'.format(self.id, self.org.primary_user.email)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.id = stripe.Customer.create(
+                email=self.org.primary_user.email)['id']
+        super(Customer, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        stripe.Customer.delete(customer=self.id)
+        super(Customer, self).delete(*args, **kwargs)
+
+    @property
+    def stripe_object(self):
+        return stripe.Customer.retrieve(self.id)
