@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from celery.schedules import crontab
 from IGitt.Interfaces.Actions import IssueActions
+from IGitt.Interfaces.Comment import Comment
 from IGitt.Interfaces.Issue import Issue
 from IGitt.Interfaces.Repository import Repository
 
@@ -36,6 +37,7 @@ def add_stale_label_to_issues(
 )
 def remove_stale_label_from_issues(
         issue: Issue,
+        *args,
         stale_label: str = 'Label to be used for marking stale issues'
 ):
     """

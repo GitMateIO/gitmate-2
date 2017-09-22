@@ -25,7 +25,9 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
 
     @patch.object(GitHubIssue, 'labels', new_callable=PropertyMock)
     @patch.object(GitHubRepository, 'search_issues')
-    def test_github_issue_stale_label(self, m_search_issues, m_issue_labels):
+    def test_github_issue_reopened_stale_label(
+        self, m_search_issues, m_issue_labels
+    ):
         m_issue_labels.return_value = set()
         m_search_issues.return_value = {
             GitHubIssue(self.gh_token, self.repo.full_name, 104)
@@ -47,10 +49,38 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
         # only the 'bug' label remains after removing 'status/STALE'
         m_issue_labels.assert_called_with({'bug'})
 
+    @patch.object(GitHubIssue, 'labels', new_callable=PropertyMock)
+    @patch.object(GitHubRepository, 'search_issues')
+    def test_github_issue_comment_stale_label(
+        self, m_search_issues, m_issue_labels
+    ):
+        m_issue_labels.return_value = set()
+        m_search_issues.return_value = {
+            GitHubIssue(self.gh_token, self.repo.full_name, 104)
+        }
+        self.simulate_scheduled_responder_call(
+            'issue_stale_reminder.add_stale_label_to_issues', self.repo)
+        m_issue_labels.assert_called_with({'status/STALE'})
+
+        # testing added comment to issue
+        data = {
+            'repository': {'full_name': self.repo.full_name},
+            'issue': {'number': 7},
+            'comment': {'id': 0},
+            'action': 'created'
+        }
+        m_issue_labels.return_value = {'bug', 'status/STALE'}
+        response = self.simulate_github_webhook_call('issue_comment', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # only the 'bug' label remains after removing 'status/STALE'
+        m_issue_labels.assert_called_with({'bug'})
 
     @patch.object(GitLabIssue, 'labels', new_callable=PropertyMock)
     @patch.object(GitLabRepository, 'search_issues')
-    def test_gitlab_issue_stale_label(self, m_search_issues, m_issue_labels):
+    def test_gitlab_issue_reopened_stale_label(
+        self, m_search_issues, m_issue_labels
+    ):
         m_issue_labels.return_value = set()
         m_search_issues.return_value = {
             GitLabIssue(self.gl_token, self.gl_repo.full_name, 21)
@@ -69,6 +99,37 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
         }
         m_issue_labels.return_value = {'bug', 'status/STALE'}
         response = self.simulate_gitlab_webhook_call('Issue Hook', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # only the 'bug' label remains after removing 'status/STALE'
+        m_issue_labels.assert_called_with({'bug'})
+
+    @patch.object(GitLabIssue, 'labels', new_callable=PropertyMock)
+    @patch.object(GitLabRepository, 'search_issues')
+    def test_gitlab_issue_commented_stale_label(
+        self, m_search_issues, m_issue_labels
+    ):
+        m_issue_labels.return_value = set()
+        m_search_issues.return_value = {
+            GitLabIssue(self.gl_token, self.gl_repo.full_name, 21)
+        }
+        self.simulate_scheduled_responder_call(
+            'issue_stale_reminder.add_stale_label_to_issues', self.gl_repo)
+        m_issue_labels.assert_called_with({'status/STALE'})
+
+        # testing updated issues
+        data = {
+            'project': {'path_with_namespace': self.gl_repo.full_name},
+            'object_attributes': {
+                'action': 'open',
+                'id': 25,
+                'iid': 0,
+                'noteable_type': 'Issue'
+            },
+            'issue': {'iid': 21}
+        }
+        m_issue_labels.return_value = {'bug', 'status/STALE'}
+        response = self.simulate_gitlab_webhook_call('Note Hook', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # only the 'bug' label remains after removing 'status/STALE'
