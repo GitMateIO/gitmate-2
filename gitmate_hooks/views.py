@@ -48,8 +48,12 @@ def github_webhook_receiver(request):
     raw_token = repo_obj.user.social_auth.get(
         provider=Providers.GITHUB.value).extra_data['access_token']
 
-    action, objs = GitHub(GitHubToken(raw_token)).handle_webhook(
-        request.META['HTTP_X_GITHUB_EVENT'], webhook_data)
+    try:
+        action, objs = GitHub(GitHubToken(raw_token)).handle_webhook(
+            request.META['HTTP_X_GITHUB_EVENT'], webhook_data)
+    except NotImplementedError:  # pragma: no cover
+        # IGitt can't handle it yet, upstream issue, no plugin needs it yet
+        return Response(status=status.HTTP_200_OK)
 
     ResponderRegistrar.respond(action, repo_obj, *objs)
 
@@ -80,8 +84,12 @@ def gitlab_webhook_receiver(request):
     raw_token = repo_obj.user.social_auth.get(
         provider=Providers.GITLAB.value).extra_data['access_token']
 
-    action, objs = GitLab(GitLabOAuthToken(raw_token)).handle_webhook(
-        request.META['HTTP_X_GITLAB_EVENT'], webhook)
+    try:
+        action, objs = GitLab(GitLabOAuthToken(raw_token)).handle_webhook(
+            request.META['HTTP_X_GITLAB_EVENT'], webhook)
+    except NotImplementedError:  # pragma: no cover
+        # IGitt can't handle it yet, upstream issue, no plugin needs it yet
+        return Response(status=status.HTTP_200_OK)
 
     ResponderRegistrar.respond(action, repo_obj, *objs)
 
