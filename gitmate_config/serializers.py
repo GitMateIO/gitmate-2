@@ -17,6 +17,7 @@ class RepositorySerializer(serializers.ModelSerializer):
     )
     admins = serializers.SlugRelatedField(many=True, read_only=True,
                                           slug_field='username')
+    org = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Repository

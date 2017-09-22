@@ -148,6 +148,9 @@ class Repository(models.Model):
 
     active = models.BooleanField(default=False)
 
+    # The organization this repository is related to
+    org = models.ForeignKey(Organization, null=True, related_name='repos')
+
     def __str__(self):
         return self.full_name
 
