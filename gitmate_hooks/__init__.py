@@ -2,7 +2,8 @@ from collections import defaultdict
 from enum import Enum
 from hashlib import sha1
 import hmac
-from inspect import getfullargspec
+from inspect import Parameter
+from inspect import signature
 from traceback import print_exc
 
 from celery.schedules import crontab
@@ -161,9 +162,9 @@ class ResponderRegistrar:
             for action in actions:
                 cls._responders[action].append(task)
             cls._plugins[task] = plugin
-            argspec = getfullargspec(function)
-            if argspec.defaults is not None:
-                cls._options[task] = argspec.args[-len(argspec.defaults):]
+            params = signature(function).parameters.values()
+            cls._options[task] = [param.name for param in params
+                                  if param.default is not Parameter.empty]
             return function
         return _wrapper
 
