@@ -66,11 +66,16 @@ def gitlab_webhook_receiver(request):
     Receives webhooks from GitLab and carries out the appropriate action.
     """
     webhook = json.loads(request.body.decode('utf-8'))
-    repository = (webhook['project'] if 'project' in webhook.keys()
-                  else webhook['object_attributes']['target'])
+    repository = (
+        webhook['project_name'].replace(' / ', '/')
+        if 'project_name' in webhook.keys()
+        else webhook['project']['path_with_namespace']
+        if 'project' in webhook.keys()
+        else webhook['object_attributes']['target']['path_with_namespace']
+    )
     repo_obj = Repository.objects.filter(
         active=True,
-        full_name=repository['path_with_namespace'],
+        full_name=repository,
         provider=Providers.GITLAB.value).first()
     raw_token = repo_obj.user.social_auth.get(
         provider=Providers.GITLAB.value).extra_data['access_token']
