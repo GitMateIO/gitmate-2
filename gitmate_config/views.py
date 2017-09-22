@@ -128,6 +128,15 @@ class UserViewSet(
                 repo.admins.remove(user)
                 repo.user = repo.admins.first()
                 repo.save()
+
+        # Scan for user maintained orgs. If they have multiple admins, make
+        # someone else the maintainer and then remove the user.
+        for org in user.orgs.all():
+            if org.admins.count() > 1:
+                org.admins.remove(user)
+                org.primary_user = org.admins.first()
+                org.save()
+
         return super().destroy(request, *args, **kwargs)
 
 
