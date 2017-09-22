@@ -1,3 +1,6 @@
 [submodule "plugins/gitmate_similar_ee"]
 	path = plugins/gitmate_similar_ee
 	url = ../../../gitmate/ee-plugins/similar.git
+[submodule "plugins/gitmate_reaper_ee"]
+	path = plugins/gitmate_reaper_ee
+	url = ../../../gitmate/ee-plugins/reaper
