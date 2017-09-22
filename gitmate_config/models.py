@@ -6,8 +6,11 @@ from django.db import models
 from django.forms.models import model_to_dict
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from IGitt.GitHub.GitHubOrganization import GitHubOrganization
+from IGitt.GitLab.GitLabOrganization import GitLabOrganization
 from IGitt.GitHub.GitHubRepository import GitHubRepository
 from IGitt.GitLab.GitLabRepository import GitLabRepository
+from IGitt.Interfaces.Organization import Organization as IGittOrganization
 from IGitt.Interfaces.Repository import Repository as IGittRepository
 from rest_framework.reverse import reverse
 
@@ -86,6 +89,42 @@ class Plugin(models.Model):
         for name, value in settings.items():
             setattr(instance, name, value)
         instance.save()
+
+
+class Organization(models.Model):
+    admins = models.ManyToManyField(User, related_name='orgs')
+    name = models.CharField(default=None, max_length=255)
+    primary_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    provider = models.CharField(default=None, max_length=32)
+
+    def __str__(self):
+        return '{}:{}'.format(self.provider, self.name)
+
+    @property
+    def igitt_org(self) -> IGittOrganization:
+        """
+        Returns an IGitt Organization object from Organization model.
+        """
+        token_str = self.primary_user.social_auth.get(
+            provider=self.provider).extra_data['access_token']
+        if self.provider == Providers.GITHUB.value:
+            token = Providers.GITHUB.get_token(token_str)
+            return GitHubOrganization(token, self.name)
+        if self.provider == Providers.GITLAB.value:
+            token = Providers.GITLAB.get_token(token_str)
+            return GitLabOrganization(token, self.name)
+
+        # Other providers aren't implemented yet.
+        raise NotImplementedError
+
+    @classmethod
+    def from_igitt_org(cls, instance: IGittOrganization):
+        """
+        Retrieves an Organization model from an IGitt Organization instance.
+
+        :param instance: The IGitt Object instance.
+        """
+        return cls.objects.get(name=instance.name, provider=instance.hoster)
 
 
 class Repository(models.Model):
