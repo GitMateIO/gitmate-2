@@ -297,4 +297,8 @@ BOT_TOKEN = os.environ.get('BOT_TOKEN', None)
 BOT_USER = os.environ.get('BOT_USER', None)
 
 # gitmate-2 repository details
-ISSUE_REPORT_URL = os.environ.get('ISSUE_REPORT_URL', None)
+ISSUE_REPORT_URL = os.environ.get('ISSUE_REPORT_URL',
+                                  'https://gitlab.com/gitmate/open-source/'
+                                  'gitmate-2/issues/new?issue_template=Bug&'
+                                  'issue[title]={title}&'
+                                  'issue[description]={description}')
