@@ -16,6 +16,8 @@ from rest_framework.viewsets import GenericViewSet
 from social_django.models import UserSocialAuth
 
 from gitmate_config import Providers
+from gitmate_config.models import Customer
+from gitmate_config.models import Organization
 from gitmate_config.models import Repository
 
 from .serializers import PluginSettingsSerializer
@@ -57,23 +59,30 @@ class RepositoryViewSet(
                     provider=provider.value
                 ).extra_data['access_token']
 
-                for repo in hoster[provider.value](
+                for irepo in hoster[provider.value](
                         provider.get_token(raw_token)).master_repositories:
-                    try:
-                        # some user already created this
-                        irepo = Repository.objects.get(
-                            provider=provider.value, full_name=repo.full_name)
-                    except Repository.DoesNotExist:
-                        # Newly created
-                        irepo = Repository(
-                            active=False, user=request.user,
-                            provider=provider.value, full_name=repo.full_name)
-                        irepo.save()
-                    finally:
-                        # add the current users as an admin user since he
-                        # can write to it too. Also, django doesn't add it
-                        # again if it's already there.
-                        irepo.admins.add(request.user)
+
+                    org, _ = Organization.objects.get_or_create(
+                        name=irepo.top_level_org.name,
+                        provider=provider.value,
+                        defaults={'primary_user': request.user})
+
+                    customer, _ = Customer.objects.get_or_create(org=org)
+
+                    # create a repo object with defaults if it does not exist
+                    # else fetch the repo object
+                    repo, _ = Repository.objects.get_or_create(
+                        org=org,
+                        provider=provider.value,
+                        full_name=irepo.full_name,
+                        defaults={'active': False, 'user': request.user})
+
+                    # add the current users as an admin user since he
+                    # can write to it too. Also, django doesn't add it
+                    # again if it's already there.
+                    repo.admins.add(request.user)
+                    repo.save()
+
                 # TODO: validate if a cached repo was removed. Handling if it
                 # was active?
             except UserSocialAuth.DoesNotExist: # pragma: no cover
