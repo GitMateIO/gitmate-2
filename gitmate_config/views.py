@@ -10,12 +10,12 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from social_django.models import UserSocialAuth
 
 from gitmate_config import Providers
+from gitmate_config.models import Organization
 from gitmate_config.models import Repository
 
 from .serializers import PluginSettingsSerializer
@@ -57,23 +57,46 @@ class RepositoryViewSet(
                     provider=provider.value
                 ).extra_data['access_token']
 
-                for repo in hoster[provider.value](
+                # Orgs already checked for master access of the current user
+                checked_orgs = set()
+
+                for igitt_repo in hoster[provider.value](
                         provider.get_token(raw_token)).master_repositories:
-                    try:
-                        # some user already created this
-                        irepo = Repository.objects.get(
-                            provider=provider.value, full_name=repo.full_name)
-                    except Repository.DoesNotExist:
-                        # Newly created
-                        irepo = Repository(
-                            active=False, user=request.user,
-                            provider=provider.value, full_name=repo.full_name)
-                        irepo.save()
-                    finally:
-                        # add the current users as an admin user since he
-                        # can write to it too. Also, django doesn't add it
-                        # again if it's already there.
-                        irepo.admins.add(request.user)
+                    repo, _ = Repository.objects.get_or_create(
+                        provider=provider.value,
+                        full_name=igitt_repo.full_name,
+                        defaults={'active': False, 'user': request.user})
+                    repo.admins.add(request.user)
+
+                    if repo.org is None:
+                        igitt_org = igitt_repo.top_level_org
+
+                        org, created = Organization.objects.get_or_create(
+                            name=igitt_org.name,
+                            provider=provider.value,
+                            defaults={'primary_user': request.user})
+
+                        if created or (
+                            org.name not in checked_orgs
+                            and request.user not in org.admins.all()
+                        ):
+                            masters = {m.identifier for m in igitt_org.masters}
+                            for admin in repo.admins.all():
+                                if admin.social_auth.get(
+                                        provider=repo.provider
+                                ).extra_data['id'] in masters:
+                                    org.admins.add(admin)
+
+                            if created:
+                                # The user who first lists a repo will also be
+                                # able to manage the org as he's the only one
+                                org.admins.add(request.user)
+                                org.save()
+
+                            checked_orgs.add(org.name)
+
+                    repo.save()
+
                 # TODO: validate if a cached repo was removed. Handling if it
                 # was active?
             except UserSocialAuth.DoesNotExist: # pragma: no cover

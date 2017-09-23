@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 
 from gitmate_config.tests.test_base import GitmateTestCase
-from gitmate_config.models import Repository
+from gitmate_config.models import Repository, Organization
 from gitmate_config.views import UserViewSet
 from django.contrib.auth.models import User
 
@@ -78,7 +78,9 @@ class TestApi(GitmateTestCase):
             last_name='Wayne')
 
         self.repo.admins.add(user)
+        self.org.admins.add(user)
         self.repo.save()
+        self.org.save()
 
         destroy_user_request = self.factory.delete(self.user_detail_url)
         destroy_user_request.user = self.user
@@ -93,3 +95,7 @@ class TestApi(GitmateTestCase):
         # verifying the new operating user of self.repo
         self.assertEqual(
             Repository.objects.filter(admins__in=[user]).first().user, user)
+        self.assertEqual(
+            Organization.objects.filter(
+                admins__in=[user]
+            ).first().primary_user, user)

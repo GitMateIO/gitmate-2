@@ -16,7 +16,7 @@ import vcr
 
 from gitmate.utils import snake_case_to_camel_case
 from gitmate_config import Providers
-from gitmate_config.models import Plugin
+from gitmate_config.models import Plugin, Organization
 from gitmate_config.models import Repository
 from gitmate_hooks import ResponderRegistrar
 from gitmate_hooks.views import github_webhook_receiver
@@ -115,14 +115,16 @@ class GitmateTestCase(TransactionTestCase):
         self.auth = UserSocialAuth(
             user=self.user, provider=Providers.GITHUB.value, uid=1)
         self.auth.set_extra_data({
-            'access_token': os.environ['GITHUB_TEST_TOKEN']
+            'access_token': os.environ['GITHUB_TEST_TOKEN'],
+            'id': 16681030,
         })
         self.auth.save()
         self.gl_auth = UserSocialAuth(
             user=self.user, provider=Providers.GITLAB.value, uid=2
         )
         self.gl_auth.set_extra_data({
-            'access_token': os.environ['GITLAB_TEST_TOKEN']
+            'access_token': os.environ['GITLAB_TEST_TOKEN'],
+            'id': 1369631,
         })
         self.gl_auth.save()
 
@@ -132,8 +134,18 @@ class GitmateTestCase(TransactionTestCase):
             provider=Providers.GITHUB.value,
             active=self.active)
         self.repo.save()  # Needs an ID before adding relationship
+
+        self.org = Organization(
+            name=os.environ['GITHUB_TEST_REPO'].split('/', maxsplit=1)[0],
+            primary_user=self.user,
+            provider='github',
+        )
+        self.org.save()  # Needs an ID before adding relationship
+
         self.repo.admins.add(self.user)
+        self.org.admins.add(self.user)
         self.repo.save()
+        self.org.save()
         self.gl_repo = Repository(
             user=self.user,
             full_name=os.environ['GITLAB_TEST_REPO'],
