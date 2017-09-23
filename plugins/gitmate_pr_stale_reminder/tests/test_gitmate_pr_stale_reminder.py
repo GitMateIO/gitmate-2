@@ -27,7 +27,7 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
 
     @patch.object(GitHubMergeRequest, 'labels', new_callable=PropertyMock)
     @patch.object(GitHubRepository, 'search_mrs')
-    def test_github_pr_stale_label(self, m_search_mrs, m_mr_labels):
+    def test_github_pr_sync_stale_label(self, m_search_mrs, m_mr_labels):
         m_mr_labels.return_value = set()
         m_search_mrs.return_value = {
             GitHubMergeRequest(self.gh_token, self.repo.full_name, 7)
@@ -49,10 +49,35 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
         # only the 'bug' label remains after removing 'status/STALE'
         m_mr_labels.assert_called_with({'bug'})
 
+    @patch.object(GitHubMergeRequest, 'labels', new_callable=PropertyMock)
+    @patch.object(GitHubRepository, 'search_mrs')
+    def test_github_pr_comment_stale_label(self, m_search_mrs, m_mr_labels):
+        m_mr_labels.return_value = set()
+        m_search_mrs.return_value = {
+            GitHubMergeRequest(self.gh_token, self.repo.full_name, 7)
+        }
+        self.simulate_scheduled_responder_call(
+            'pr_stale_reminder.add_stale_label_to_merge_requests', self.repo)
+        m_mr_labels.assert_called_with({'status/STALE'})
+
+        # testing updated pull requests
+        data = {
+            'repository': {'full_name': self.repo.full_name},
+            'issue': {'number': 7, 'pull_request': {}},
+            'comment': {'id': 0},
+            'action': 'created'
+        }
+        m_mr_labels.return_value = {'bug', 'status/STALE'}
+        response = self.simulate_github_webhook_call('issue_comment', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # only the 'bug' label remains after removing 'status/STALE'
+        m_mr_labels.assert_called_with({'bug'})
+
 
     @patch.object(GitLabMergeRequest, 'labels', new_callable=PropertyMock)
     @patch.object(GitLabRepository, 'search_mrs')
-    def test_gitlab_pr_stale_label(self, m_search_mrs, m_mr_labels):
+    def test_gitlab_pr_sync_stale_label(self, m_search_mrs, m_mr_labels):
         m_mr_labels.return_value = set()
         m_search_mrs.return_value = {
             GitLabMergeRequest(self.gl_token, self.gl_repo.full_name, 2)
@@ -74,6 +99,36 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
         m_mr_labels.return_value = {'bug', 'status/STALE'}
         response = self.simulate_gitlab_webhook_call(
             'Merge Request Hook', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # only the 'bug' label remains after removing 'status/STALE'
+        m_mr_labels.assert_called_with({'bug'})
+
+    @patch.object(GitLabMergeRequest, 'labels', new_callable=PropertyMock)
+    @patch.object(GitLabRepository, 'search_mrs')
+    def test_gitlab_pr_comment_stale_label(self, m_search_mrs, m_mr_labels):
+        m_mr_labels.return_value = set()
+        m_search_mrs.return_value = {
+            GitLabMergeRequest(self.gl_token, self.gl_repo.full_name, 2)
+        }
+        self.simulate_scheduled_responder_call(
+            'pr_stale_reminder.add_stale_label_to_merge_requests',
+            self.gl_repo)
+        m_mr_labels.assert_called_with({'status/STALE'})
+
+        # testing updated issues
+        data = {
+            'project': {'path_with_namespace': self.gl_repo.full_name},
+            'object_attributes': {
+                'action': 'open',
+                'id': 2,
+                'iid': 0,
+                'noteable_type': 'MergeRequest'
+            },
+            'merge_request': {'iid': 2}
+        }
+        m_mr_labels.return_value = {'bug', 'status/STALE'}
+        response = self.simulate_gitlab_webhook_call('Note Hook', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # only the 'bug' label remains after removing 'status/STALE'

@@ -37,6 +37,7 @@ def add_stale_label_to_merge_requests(
 )
 def remove_stale_label_from_merge_requests(
         pr: MergeRequest,
+        *args,
         stale_label: str = 'Label to be used for marking stale'
 ):
     """
