@@ -111,7 +111,7 @@ deploy_master:
     - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
-    - ssh tomoko@moon.gitmate.io 'bash -s' < .ci/deploy.master.sh
+    - ssh tomoko@marisa.gitmate.io 'bash -s' < .ci/deploy.master.sh
   environment:
     name: master
     url: https://api.master.gitmate.io
