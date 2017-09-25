@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 from ast import literal_eval
 import os
 import logging
+import raven
 
 from gitmate.utils import snake_case_to_camel_case
 
@@ -55,6 +56,7 @@ REQUISITE_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
+    'raven.contrib.django.raven_compat',
     'gitmate_config',
     'gitmate_logger',
     'rest_framework',
@@ -63,6 +65,13 @@ REQUISITE_APPS = [
     'coala_online',
     'coafile_bot'
 ]
+
+RAVEN_CONFIG = {
+    'dsn': os.environ.get('RAVEN_DSN'),
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+}
 
 GITMATE_PLUGINS = [
     'code_analysis',
@@ -231,6 +240,41 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': os.environ.get('DB_ADDRESS', ''),
         'PORT': os.environ.get('DB_PORT', '')
+    }
+}
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+
+    'formatters': {
+        'console': {
+            'format': '[%(asctime)s][%(levelname)s] %(name)s '
+                      '%(filename)s:%(funcName)s:%(lineno)d | %(message)s',
+            'datefmt': '%H:%M:%S',
+        },
+    },
+
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+            },
+        'sentry': {
+            'level': 'WARNING',
+            'class': 'raven.handlers.logging.SentryHandler',
+            'dsn': RAVEN_CONFIG['dsn'],
+        },
+    },
+
+    'loggers': {
+        '': {
+            'handlers': ['console', 'sentry'],
+            'level': 'DEBUG',
+            'propagate': False,
+        }
     }
 }
 
