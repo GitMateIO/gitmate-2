@@ -39,11 +39,11 @@ def github_webhook_receiver(request):
     Receives webhooks from GitHub and carries out the approriate action.
     """
     webhook_data = json.loads(request.body.decode('utf-8'))
-    repository = webhook_data['repository']
+    repository = webhook_data['repository']['full_name']
 
     repo_obj = get_object_or_404(Repository,
                                  active=True,
-                                 full_name=repository['full_name'],
+                                 full_name=repository,
                                  provider=Providers.GITHUB.value)
 
     raw_token = repo_obj.user.social_auth.get(
@@ -51,7 +51,7 @@ def github_webhook_receiver(request):
 
     try:
         action, objs = GitHub(GitHubToken(raw_token)).handle_webhook(
-            request.META['HTTP_X_GITHUB_EVENT'], webhook_data)
+            repository, request.META['HTTP_X_GITHUB_EVENT'], webhook_data)
     except NotImplementedError:  # pragma: no cover
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet
         return Response(status=status.HTTP_200_OK)
@@ -71,13 +71,22 @@ def gitlab_webhook_receiver(request):
     Receives webhooks from GitLab and carries out the appropriate action.
     """
     webhook = json.loads(request.body.decode('utf-8'))
-    repository = (
-        webhook['project_name'].replace(' / ', '/')
-        if 'project_name' in webhook.keys()
-        else webhook['project']['path_with_namespace']
-        if 'project' in webhook.keys()
-        else webhook['object_attributes']['target']['path_with_namespace']
-    )
+
+    def _get_repo_name(data: dict):
+        # Push, Tag, Issue, Note, Wiki Page and Pipeline Hooks
+        if 'project' in data.keys():
+            return data['project']['path_with_namespace']
+
+        # Merge Request Hook
+        if 'object_attributes' in data.keys():
+            return data['object_attributes']['target']['path_with_namespace']
+
+        # Build Hook
+        if 'repository' in data.keys():
+            ssh_url = data['repository']['git_ssh_url']
+            return ssh_url[ssh_url.find(':') + 1: ssh_url.rfind('.git')]
+
+    repository = _get_repo_name(webhook)
 
     repo_obj = get_object_or_404(Repository,
                                  active=True,
@@ -89,7 +98,7 @@ def gitlab_webhook_receiver(request):
 
     try:
         action, objs = GitLab(GitLabOAuthToken(raw_token)).handle_webhook(
-            request.META['HTTP_X_GITLAB_EVENT'], webhook)
+            repository, request.META['HTTP_X_GITLAB_EVENT'], webhook)
     except NotImplementedError:  # pragma: no cover
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet
         return Response(status=status.HTTP_200_OK)

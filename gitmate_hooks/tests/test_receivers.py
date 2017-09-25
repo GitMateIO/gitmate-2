@@ -59,3 +59,15 @@ class TestWebhookReceivers(GitmateTestCase):
         with patch.object(GitHubMergeRequest, '__init__', return_value=None):
             response = github_webhook_receiver(request)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_gitlab_webhook_receiver_with_build_hook(self):
+        data = {
+            'repository': {'git_ssh_url': 'git@example.com:{}.git'.format(
+                environ['GITLAB_TEST_REPO'])},
+            'build_status': 'created',
+            'commit': {'sha': 'somerandomshawewillneverseeanywherebuthere'}
+        }
+        response = self.simulate_gitlab_webhook_call('Build Hook', data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
