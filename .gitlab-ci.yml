@@ -129,7 +129,7 @@ deploy_release:
     - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
-    - ssh tomoko@moon.gitmate.io 'bash -s' < .ci/deploy.release.sh
+    - ssh tomoko@marisa.gitmate.io 'bash -s' < .ci/deploy.release.sh
   environment:
     name: release
     url: https://api.gitmate.io
