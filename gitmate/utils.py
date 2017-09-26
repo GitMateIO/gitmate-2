@@ -20,12 +20,12 @@ class PluginCategory(Enum):
     """
     Enum class to hold types of plugins.
     """
-    # Plugin related to analysis
-    ANALYSIS = 'analysis'
-    # Plugin related to issues
-    ISSUE = 'issue'
-    # Plugin related to Pull Requests
-    PULLS = 'pull_request'
+    # Plugin responding mainly to newly opened issues
+    INITIAL = "initial"
+    # Plugin responding mainly to existing issues
+    MAINTAINANCE = "maintainance"
+    # Plugin unrelated to issues
+    OTHER = "other"
 
 
 def snake_case_to_camel_case(string: str):
