@@ -5,7 +5,7 @@ from gitmate.utils import PluginCategory
 class GitmateAckConfig(GitmatePluginConfig):
     name = 'plugins.gitmate_ack'
     verbose_name = 'Track manual review state of commits'
-    plugin_category = PluginCategory.PULLS
+    plugin_category = PluginCategory.OTHER
     description = ('Sets a status in the pull request depending on whether or not all '
                    'commits have been acknowledged after a manual code review.<br>'
                    'Acknowledge/Unacknowledge commits of a pull request by '
