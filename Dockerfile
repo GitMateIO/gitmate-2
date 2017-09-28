@@ -14,6 +14,7 @@ ADD requirements.txt $ROOT/
 
 RUN apk add --no-cache docker postgresql-libs && \
     apk add --no-cache --virtual .build-deps \
+        git \
         gcc \
         musl-dev \
         postgresql-dev \
