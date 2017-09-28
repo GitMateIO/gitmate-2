@@ -40,9 +40,10 @@ def create_pr(thread, coafile, retries=MAX_RETRIES_LIMIT):
     from IGitt.GitHub.GitHubRepository import GitHubRepository
 
     repo = GitHubRepository(token=GITHUB_TOKEN, repository=thread.data['repository']['full_name'])
-    clone = repo.create_fork()
+
 
     try:
+        clone = repo.create_fork()
         clone.create_file(path='.coafile', message='coafile: Add coafile',
                           content=coafile, branch='master')
         head = BOT_USER + ':master'
@@ -54,7 +55,8 @@ def create_pr(thread, coafile, retries=MAX_RETRIES_LIMIT):
         if retries > 0:
             post_comment(
                 thread, "Oops! Looks like there was some problem making the coafile PR! Retrying...")
-            clone.delete()
+            if clone:
+                clone.delete()
             retries -= 1
             return create_pr(thread, coafile, retries)
 
