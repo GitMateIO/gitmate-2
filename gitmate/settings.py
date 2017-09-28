@@ -170,6 +170,9 @@ SOCIAL_AUTH_GITHUB_SCOPE = [
     'repo',
 ]
 
+import stripe
+stripe.api_key = os.environ.get('STRIPE_KEY')
+
 SOCIAL_AUTH_GITLAB_KEY = os.environ.get(
     'SOCIAL_AUTH_GITLAB_KEY')
 SOCIAL_AUTH_GITLAB_SECRET = os.environ.get('SOCIAL_AUTH_GITLAB_SECRET')
