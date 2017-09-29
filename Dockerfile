@@ -12,9 +12,8 @@ RUN addgroup -S $USER && \
 
 ADD requirements.txt $ROOT/
 
-RUN apk add --no-cache docker postgresql-libs && \
+RUN apk add --no-cache docker postgresql-libs git && \
     apk add --no-cache --virtual .build-deps \
-        git \
         gcc \
         musl-dev \
         postgresql-dev \
