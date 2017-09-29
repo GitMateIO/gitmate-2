@@ -1,6 +1,9 @@
 from contextlib import contextmanager
 from enum import Enum
+from glob import glob
 from importlib import import_module
+from os import listdir
+from os import path
 
 from django.apps import AppConfig
 from django_pglocks import advisory_lock
@@ -16,6 +19,38 @@ def lock_igitt_object(task: str, igitt_object, refresh_needed=True):
         if refresh_needed:
             igitt_object.refresh()
         yield
+
+
+def is_plugin(directory: str) -> bool:
+    """
+    Checks whether the given directory is a GitMate plugin.
+
+    :param directory: The absolute path of the directory to be checked.
+    :return:          True if the directory contains all the files required for
+                      it to be a plugin, otherwise False.
+    """
+    files_to_be_present = {'__init__.py',
+                           'apps.py',
+                           'models.py',
+                           'responders.py',
+                           'migrations/__init__.py'}
+    existing_files = glob(directory + "/**/*.py", recursive=True)
+    return all(path.join(directory, f) in existing_files
+               for f in files_to_be_present)
+
+
+def get_plugins() -> [str]:
+    """
+    Retrieves the list of plugins from the `plugins` directory.
+    """
+    root = path.dirname(path.dirname(path.abspath(__file__)))
+    plugin_dir = path.join(root, 'plugins')
+    return [dir.replace('gitmate_', '')
+            for dir in listdir(plugin_dir)
+            if path.isdir(path.join(plugin_dir, dir))
+            and dir.startswith('gitmate_')
+            and is_plugin(path.abspath(path.join(plugin_dir, dir)))]
+
 
 class PluginCategory(Enum):
     """

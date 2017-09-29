@@ -15,6 +15,7 @@ import os
 import logging
 import raven
 
+from gitmate.utils import get_plugins
 from gitmate.utils import snake_case_to_camel_case
 
 
@@ -73,32 +74,12 @@ RAVEN_CONFIG = {
     'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
 }
 
-GITMATE_PLUGINS = [
-    'code_analysis',
-    'welcome_commenter',
-    'auto_label_pending_or_wip',
-    'pr_size_labeller',
-    'issue_labeller',
-    'issue_assigner',
-    'bug_spotter',
-    'ack',
-    'issue_pr_sync',
-    'approver',
-    'issue_stale_reminder',
-    'pr_stale_reminder',
-    'rebaser',
-]
-
-GITMATE_PLUGINS += [
-    plugin
-    for plugin in os.environ.get('EE_PLUGINS', '').split(' ')
-    if plugin
-]
+GITMATE_PLUGINS = get_plugins()
 
 # Application definition
 INSTALLED_APPS = (REQUISITE_APPS +
                   ['plugins.gitmate_{}.apps.{}Config'.format(
-                      name, snake_case_to_camel_case('gitmate_'+name))
+                      name, snake_case_to_camel_case('gitmate_' + name))
                    for name in GITMATE_PLUGINS])
 
 REST_FRAMEWORK = {
