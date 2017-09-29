@@ -29,16 +29,6 @@ stages:
   - release
   - deploy
 
-check_code:
-  image: python:3
-  stage: test
-  script:
-  - pip install 'coala-bears[alldeps]'
-  - pip install -r requirements.txt
-  - coala --ci
-  except:
-  - master
-
 cache:
   paths:
   - /root/.cache/pip
