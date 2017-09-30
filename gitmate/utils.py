@@ -4,8 +4,10 @@ from glob import glob
 from importlib import import_module
 from os import listdir
 from os import path
+import subprocess
 
 from django.apps import AppConfig
+from django.conf import settings
 from django_pglocks import advisory_lock
 
 
@@ -50,6 +52,20 @@ def get_plugins() -> [str]:
             if path.isdir(path.join(plugin_dir, dir))
             and dir.startswith('gitmate_')
             and is_plugin(path.abspath(path.join(plugin_dir, dir)))]
+
+
+def run_in_container(image: str, *args: [str], stdin: str=None) -> str:
+    """
+    Runs a docker container with the specified image and command and returns
+    the output.
+    """
+    process = subprocess.Popen(['docker', 'run', '-i', '--rm', image, *args],
+                               stdout=subprocess.PIPE)
+    if stdin:
+        process.stdin.write(stdin.encode('utf-8'))
+        process.stdin.close()
+    process.wait(timeout=settings.CONTAINER_TIMEOUT)
+    return process.stdout.read().decode('utf-8')
 
 
 class PluginCategory(Enum):

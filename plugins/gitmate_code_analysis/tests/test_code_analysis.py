@@ -18,7 +18,7 @@ def popen_coala():
     return PopenResult(
         StreamMock('{"file_dicts": {}, "results": {}}'),
         StreamMock(''),
-        lambda: None
+        lambda *args, **kwargs: None
     )
 
 
@@ -94,7 +94,7 @@ class TestCodeAnalysis(GitmateTestCase):
             return PopenResult(
                 StreamMock('{}'),
                 StreamMock(self.BOUNCER_INPUT),
-                lambda: None
+                lambda *args, **kwargs: None
             )
 
         def fake_popen(cmd, **kwargs):
@@ -152,7 +152,7 @@ class TestCodeAnalysis(GitmateTestCase):
                     })
                 ),
                 StreamMock(self.BOUNCER_INPUT),
-                lambda: None
+                lambda *args, **kwargs: None
             )
 
         subprocess.Popen = fake_popen
@@ -194,7 +194,7 @@ class TestCodeAnalysis(GitmateTestCase):
                     })
                 ),
                 StreamMock(self.BOUNCER_INPUT),
-                lambda: None
+                lambda *args, **kwargs: None
             )
 
         subprocess.Popen = fake_popen
@@ -264,7 +264,7 @@ class TestCodeAnalysis(GitmateTestCase):
                     })
                 ),
                 StreamMock(self.BOUNCER_INPUT),
-                lambda: None
+                lambda *args, **kwargs: None
             )
 
         subprocess.Popen = fake_popen
@@ -306,7 +306,7 @@ class TestCodeAnalysis(GitmateTestCase):
                     })
                 ),
                 StreamMock(self.BOUNCER_INPUT),
-                lambda: None
+                lambda *args, **kwargs: None
             )
 
         subprocess.Popen = fake_popen

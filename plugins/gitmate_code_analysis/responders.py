@@ -3,7 +3,7 @@ from traceback import print_exc
 import json
 import logging
 import shlex
-import subprocess
+from traceback import print_exc
 
 from django.conf import settings
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
@@ -14,13 +14,11 @@ from IGitt.Interfaces.Commit import CommitStatus
 from IGitt.Interfaces.Commit import Status
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
+from gitmate.utils import run_in_container
 from gitmate_config.models import Repository
 from gitmate_hooks import ResponderRegistrar
 from .models import AnalysisResults
 
-
-# timeout for docker container in seconds, setting upto 10 minutes
-CONTAINER_TIMEOUT = 60 * 10
 
 
 def _set_status(commit: Commit, status: Status, context: str):
@@ -50,22 +48,15 @@ def analyse(repo, sha, clone_url, ref, coafile_location):
         return AnalysisResults.objects.get(
             repo=repo, sha=sha, coafile_location=coafile_location).results
     except AnalysisResults.DoesNotExist:
-        proc = subprocess.Popen(
-            ['docker', 'run', '-i', '--rm',
-             settings.COALA_RESULTS_IMAGE,
-             'python3', 'run.py', sha, clone_url, ref, coafile_location],
-            stdout=subprocess.PIPE,
-        )
-        output = proc.stdout.read().decode('utf-8')
+        output = run_in_container(settings.COALA_RESULTS_IMAGE,
+                                  'python3', 'run.py', sha, clone_url, ref,
+                                  coafile_location)
         try:
             results = json.loads(output)
         except json.JSONDecodeError:  # pragma: no cover, for debugging
             logging.error('coala image output was not JSON parsable. Output '
                           'was: ' + output)
             raise
-
-        proc.wait()
-
         AnalysisResults.objects.create(repo=repo, sha=sha, results=results,
                                        coafile_location=coafile_location)
         return results
@@ -82,20 +73,9 @@ def filter_results(old_results: dict, new_results: dict):
         'old_results': old_results['results'],
         'new_results': new_results['results']
     }
-
-    proc = subprocess.Popen(
-        ['docker', 'run', '-i', '--rm',
-         settings.RESULTS_BOUNCER_IMAGE,
-         'python3', 'bouncer.py'],
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-    )
-    proc.stdin.write(json.dumps(results).encode('utf-8'))
-    proc.stdin.close()
-    filtered_results = json.loads(proc.stdout.read().decode('utf-8'))
-    proc.wait()
-
-    return filtered_results
+    return json.loads(run_in_container(settings.RESULTS_BOUNCER_IMAGE,
+                                       'python3', 'bouncer.py',
+                                       stdin=json.dumps(results)))
 
 
 def describe_patch(diffs):

@@ -1,12 +1,12 @@
 from os import environ
 import json
-import subprocess
 
 from django.conf import settings
 from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.Comment import Comment
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
+from gitmate.utils import run_in_container
 from gitmate_hooks import ResponderRegistrar
 
 
@@ -27,13 +27,11 @@ def rebase_merge_request(pr: MergeRequest, comment: Comment):
             'lost!')
         head_clone_url = pr.source_repository.clone_url
         base_clone_url = pr.target_repository.clone_url
-        proc = subprocess.Popen(
-            ['docker', 'run', '-i', '--rm', settings.REBASER_IMAGE,
-             'python', 'run.py', head_clone_url, base_clone_url,
-             pr.head_branch_name, pr.base_branch_name],
-            stdout=subprocess.PIPE)
-        output = json.loads(proc.stdout.read().decode('utf-8'))
-        proc.wait()
+        output = run_in_container(settings.REBASER_IMAGE,
+                                  'python', 'run.py', head_clone_url,
+                                  base_clone_url, pr.head_branch_name,
+                                  pr.base_branch_name)
+        output = json.loads(output)
         if output['status'] == 'success':
             pr.add_comment('Automated rebase was successful!')
         elif 'error' in output:

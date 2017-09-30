@@ -339,3 +339,6 @@ RESULTS_BOUNCER_IMAGE = os.environ.get('RESULTS_BOUNCER_IMAGE',
                                         '/result-bouncer:latest'))
 REBASER_IMAGE = os.environ.get('REBASER_IMAGE',
                                REGISTRY_BASE_URL + '/mr-rebaser:latest')
+
+# timeout for docker containers in seconds, setting upto 10 minutes
+CONTAINER_TIMEOUT = 60 * 10

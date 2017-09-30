@@ -23,7 +23,8 @@ PopenResult = namedtuple('ret', 'stdout wait')
 
 def fake_popen_success(cmd, **kwargs):
     if 'run.py' in cmd:
-        return PopenResult(StreamMock('{"status": "success"}'), lambda: None)
+        return PopenResult(StreamMock('{"status": "success"}'),
+                           lambda *args, **kwargs: None)
 
 
 def fake_popen_failure(cmd, **kwargs):
@@ -32,7 +33,7 @@ def fake_popen_failure(cmd, **kwargs):
             StreamMock(
                 '{"status": "error", "error": "Command \'[\'git\', \'rebase\''
                 ', \'master\']\' returned non-zero exit status 128."}'),
-            lambda: None)
+            lambda *args, **kwargs: None)
 
 
 class TestGitmateRebaser(GitmateTestCase):

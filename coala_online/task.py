@@ -1,7 +1,7 @@
 import json
-import subprocess
 
 from gitmate.celery import app as celery
+from gitmate.utils import run_in_container
 from gitmate_hooks import ExceptionLoggerTask
 
 from coala_online.config import COALA_ONLINE_IMAGE
@@ -14,15 +14,5 @@ def run_coala_online(req):
     as keys, and spawns docker container to run coala-quickstart or
     coala on code as specified.
     """
-    req_str = json.dumps(req)
-
-    proc = subprocess.Popen(
-        ['docker', 'run', '-i', '--rm',
-         COALA_ONLINE_IMAGE,
-         'python3', 'run.py', req_str],
-        stdout=subprocess.PIPE,
-    )
-
-    response = json.loads(proc.stdout.read().decode('utf-8'))
-
-    return response
+    return json.loads(run_in_container(COALA_ONLINE_IMAGE,
+                                       'python3', 'run.py', json.dumps(req)))
