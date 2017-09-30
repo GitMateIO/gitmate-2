@@ -21,8 +21,6 @@ before_script:
   - export REBASER_IMAGE=registry.gitlab.com/gitmate/open-source/mr-rebaser:latest
   - export BOT_TOKEN=foobar
   - export BOT_USER=foo
-  - export EE_PLUGINS=$(./docker/list-ee-plugins.sh)
-  - 'echo "EE plugins found: $EE_PLUGINS"'
 
 stages:
   - test
@@ -42,12 +40,7 @@ run_tests: &run_tests
   - pip3 install -r requirements.txt
   - pip3 install -r test-requirements.txt
   - python3 -m nltk.downloader -d /usr/local/share/nltk_data stopwords
-  - >
-    if [ -z "$EE_PLUGINS" ]; then
-        py.test -vv --cov --doctest-modules
-    else
-        py.test -vv --doctest-modules
-    fi
+  - py.test -vv --cov --doctest-modules
   except:
   - master
 
