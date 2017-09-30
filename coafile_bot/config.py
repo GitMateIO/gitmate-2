@@ -1,11 +1,31 @@
-import os
+from django.conf import settings
 from IGitt.GitHub import GitHubToken
+from IGitt.GitHub.GitHubUser import GitHubUser
+from IGitt.GitHub.GitHubNotification import GitHubNotification
+from IGitt.GitLab import GitLabPrivateToken
+from IGitt.GitLab.GitLabUser import GitLabUser
+from IGitt.GitLab.GitLabNotification import GitLabNotification
 
-from gitmate.settings import BOT_TOKEN
 
-GITHUB_POLL_DELAY = 10.0
-MAX_RETRIES_LIMIT = 3
-GITHUB_TOKEN = None
+POLL_DELAY = 10.0
+HOSTER_CONFIG = []
 
-if BOT_TOKEN:
-    GITHUB_TOKEN = GitHubToken(token=BOT_TOKEN)
+try:
+    token = GitHubToken(settings.GITHUB_BOT_TOKEN)
+    HOSTER_CONFIG.append({
+        'token': token,
+        'username': GitHubUser(token).username,
+        'cls': GitHubNotification
+    })
+except BaseException:
+    pass
+
+try:
+    token = GitLabPrivateToken(settings.GITLAB_BOT_TOKEN)
+    HOSTER_CONFIG.append({
+        'token': token,
+        'username': GitLabUser(token).username,
+        'cls': GitLabNotification
+    })
+except BaseException:
+    pass
