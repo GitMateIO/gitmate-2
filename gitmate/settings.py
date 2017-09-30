@@ -338,8 +338,8 @@ BROKER_URL = os.environ.get('CELERY_BROKER_URL',
 CELERY_RESULT_BACKEND = 'amqp'
 
 # coafile Bot Tokens
-BOT_TOKEN = os.environ.get('BOT_TOKEN', None)
-BOT_USER = os.environ.get('BOT_USER', None)
+GITHUB_BOT_TOKEN = os.environ.get('GITHUB_BOT_TOKEN', None)
+GITLAB_BOT_TOKEN = os.environ.get('GITLAB_BOT_TOKEN', None)
 
 # gitmate-2 repository details
 ISSUE_REPORT_URL = os.environ.get('ISSUE_REPORT_URL',

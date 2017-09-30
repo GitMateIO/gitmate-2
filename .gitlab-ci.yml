@@ -19,8 +19,8 @@ before_script:
   - export COALA_RESULTS_IMAGE=registry.gitlab.com/gitmate/open-source/coala-incremental-results:latest
   - export RESULTS_BOUNCER_IMAGE=registry.gitlab.com/gitmate/open-source/result-bouncer:latest
   - export REBASER_IMAGE=registry.gitlab.com/gitmate/open-source/mr-rebaser:latest
-  - export BOT_TOKEN=foobar
-  - export BOT_USER=foo
+  - export GITHUB_BOT_TOKEN=foobar
+  - export GITLAB_BOT_TOKEN=foobar
   - export EE_PLUGINS=$(./docker/list-ee-plugins.sh)
   - 'echo "EE plugins found: $EE_PLUGINS"'
 

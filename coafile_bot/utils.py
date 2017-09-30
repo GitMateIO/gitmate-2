@@ -1,63 +1,42 @@
-from coafile_bot.config import MAX_RETRIES_LIMIT, GITHUB_TOKEN
-from gitmate.settings import BOT_USER
+from typing import Union
+from typing import Optional
+
+from IGitt.Interfaces.Commit import Commit
+from IGitt.Interfaces.Issue import Issue
+from IGitt.Interfaces.MergeRequest import MergeRequest
+from IGitt.Interfaces.Repository import Repository
 
 
-def parse_issue_num(url):
+def post_comment(subject: Union[Commit, Issue, MergeRequest], message: str):
     """
-    Parses issue number from url
-
-    :param url: Url from which issue number is to be parsed
-    :return: Issue number
+    Helper function to add comment based on the type of subject.
     """
-    num_list = url.split('/')
-    return num_list[len(num_list) - 1]
+    if isinstance(subject, Commit):
+        subject.comment(message)
+    elif issubclass(subject, Issue):
+        subject.add_comment(message)
 
 
-def post_comment(thread, message):
+def create_pr(repo: Repository,
+              username: str,
+              subject: Union[Commit, Issue, MergeRequest],
+              coafile: str) -> Optional[MergeRequest]:
     """
-    Post comment on GitHub thread
+    Creates a new merge request with coafile.
 
-    :param thread: Thread on which comment is to be post
-    :param message: Message to comment.
+    :param repo:        The repository where the bot is mentioned.
+    :param username:    The username of the coafile bot.
+    :param subject:     The subject (Commit/MergeRequest/Issue) where the bot
+                        was mentioned.
+    :param coafile:     The content of coafile.
+    :return:            If successful, returns the MergeRequest else None.
     """
-
-    num = parse_issue_num(thread.data['subject']['url'])
-    from IGitt.GitHub.GitHubIssue import GitHubIssue
-
-    issue = GitHubIssue(token=GITHUB_TOKEN, repository=thread.data['repository']['full_name'], number=num)
-    issue.add_comment(body=message)
-
-
-def create_pr(thread, coafile, retries=MAX_RETRIES_LIMIT):
-    """
-    Creates GitHub PR with coafile
-
-    :param thread: Thread object where mention to coafile is done
-    :param coafile: coafile string
-    :param retries: Attempts done to create the PR
-    :return: If successful return PullRequest object
-    """
-    from IGitt.GitHub.GitHubRepository import GitHubRepository
-
-    repo = GitHubRepository(token=GITHUB_TOKEN, repository=thread.data['repository']['full_name'])
-    clone = repo.create_fork()
-
     try:
+        clone = repo.create_fork()
         clone.create_file(path='.coafile', message='coafile: Add coafile',
                           content=coafile, branch='master')
-        head = BOT_USER + ':master'
-        pr = repo.create_merge_request(title='Add coafile', base='master',
-                                       head=head)
-        return pr
-
+        return repo.create_merge_request(title='Add coafile', base='master',
+                                         head=username + ':master')
     except RuntimeError:
-        if retries > 0:
-            post_comment(
-                thread, "Oops! Looks like there was some problem making the coafile PR! Retrying...")
-            clone.delete()
-            retries -= 1
-            return create_pr(thread, coafile, retries)
-
-        else:
-            post_comment(
-                thread, "Sorry! coafile-bot is unable to make the PR.")
+        post_comment(subject,
+                     'Sorry! {} is unable to make the PR.'.format(username))
