@@ -347,3 +347,6 @@ ISSUE_REPORT_URL = os.environ.get('ISSUE_REPORT_URL',
                                   'gitmate-2/issues/new?issue_template=Bug&'
                                   'issue[title]={title}&'
                                   'issue[description]={description}')
+
+# timeout for docker containers in seconds, setting upto 10 minutes
+CONTAINER_TIMEOUT = 60 * 10

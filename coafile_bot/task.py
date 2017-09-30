@@ -1,11 +1,11 @@
 import json
-import subprocess
 
 from coafile_bot.utils import post_comment
 from coafile_bot.utils import create_pr
 from coala_online.config import COALA_ONLINE_IMAGE
 
 from gitmate.celery import app as celery
+from gitmate.utils import run_in_container
 from gitmate_hooks import ExceptionLoggerTask
 
 
@@ -17,26 +17,13 @@ def handle_thread(thread):
     :param thread: Thread object of where coafile mention is made
     :return: coafile string
     """
-    clone_url = 'https://github.com/' + thread.data['repository']['full_name'] + '.git'
-
-    req = {
-        'mode': 'bears',
-        'url': clone_url
-    }
-
-    req_str = json.dumps(req)
-
-    proc = subprocess.Popen(
-        ['docker', 'run', '-i', '--rm',
-         COALA_ONLINE_IMAGE,
-         'python3', 'run.py', req_str],
-        stdout=subprocess.PIPE,
-    )
-
-    response = json.loads(proc.stdout.read().decode('utf-8'))
-
+    clone_url = 'https://github.com/{}/.git'.format(
+        thread.data['repository']['full_name'])
+    req = {'mode': 'bears', 'url': clone_url}
+    response = json.loads(run_in_container(COALA_ONLINE_IMAGE,
+                                           'python3', 'run.py',
+                                           json.dumps(req)))
     coafile = response['coafile']
-
     coafile_pre = '```' + coafile + '```'
     post_comment(thread, coafile_pre)
     pr = create_pr(thread, coafile)

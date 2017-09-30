@@ -1,8 +1,10 @@
 from contextlib import contextmanager
 from enum import Enum
 from importlib import import_module
+import subprocess
 
 from django.apps import AppConfig
+from django.conf import settings
 from django_pglocks import advisory_lock
 
 
@@ -16,6 +18,21 @@ def lock_igitt_object(task: str, igitt_object, refresh_needed=True):
         if refresh_needed:
             igitt_object.refresh()
         yield
+
+
+def run_in_container(image: str, *args: [str], stdin: str=None) -> str:
+    """
+    Runs a docker container with the specified image and command and returns
+    the output.
+    """
+    process = subprocess.Popen(['docker', 'run', '-i', '--rm', image, *args],
+                               stdout=subprocess.PIPE)
+    if stdin:
+        process.stdin.write(input.encode('utf-8'))
+        process.stdin.close()
+    process.wait(timeout=settings.CONTAINER_TIMEOUT)
+    return process.stdout.read().decode('utf-8')
+
 
 class PluginCategory(Enum):
     """
