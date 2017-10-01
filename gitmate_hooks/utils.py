@@ -1,6 +1,7 @@
 import logging
 from collections import defaultdict
 from enum import Enum
+from functools import wraps
 from hashlib import sha1
 import hmac
 from inspect import Parameter
@@ -36,33 +37,45 @@ def run_plugin_for_all_repos(plugin_name: str,
         ResponderRegistrar.respond(event_name, repo, repo.igitt_repo)
 
 
-def signature_check(key: str=None,
-                    provider: str=None,
-                    http_header_name: str=None):
+def signature_check(key: str,
+                    provider: str,
+                    http_header_name: str):
     """
     Decorator for views that checks if the signature from request header
     matches the one registered for webhooks.
     """
-    def decorator(function):
+    def decorator(view):
 
+        @wraps(view)
         def _view_wrapper(request, *args, **kwargs):
-            if key and http_header_name in request.META:
-                if provider == Providers.GITHUB.value:
-                    hashed = hmac.new(bytes(key, 'utf-8'), request.body, sha1)
-                    generated_signature = hashed.hexdigest()
-                    signature = request.META[http_header_name]
 
-                    if generated_signature == signature[5:]:
-                        return function(request, *args, **kwargs)
+            # key not found, verification turned off!
+            if not key:
+                logger = get_logger('celery.worker')
+                logger.warning('Webhook signature verification turned off!'
+                               'Please verify WEBHOOK_SECRET in settings.')
+                return view(request, *args, **kwargs)
 
-                elif provider == Providers.GITLAB.value:
-                    if request.META[http_header_name] == key:
-                        return function(request, *args, **kwargs)
+            # improper request structure
+            if not all([http_header_name in request.META, len(request.body)]):
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if provider == Providers.GITHUB.value:
+                hashed = hmac.new(key.encode('utf-8'), request.body, sha1)
+                generated_signature = hashed.hexdigest()
+                sign = request.META[http_header_name]
+
+                if generated_signature == sign[5:]:
+                    return view(request, *args, **kwargs)
+
+            elif provider == Providers.GITLAB.value:
+                if request.META[http_header_name] == key:
+                    return view(request, *args, **kwargs)
+
+            # signature does not match
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
         return _view_wrapper
-
     return decorator
 
 
