@@ -144,7 +144,7 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 # Put gitmate's corresponding OAuth details here.
-WEBHOOK_SECRET = os.environ.get('WEBHOOK_SECRET')
+WEBHOOK_SECRET = os.environ.get('WEBHOOK_SECRET', 'foobar')
 SOCIAL_AUTH_GITHUB_KEY = os.environ.get('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('SOCIAL_AUTH_GITHUB_SECRET')
 SOCIAL_AUTH_GITHUB_SCOPE = [
@@ -328,3 +328,14 @@ ISSUE_REPORT_URL = os.environ.get('ISSUE_REPORT_URL',
                                   'gitmate-2/issues/new?issue_template=Bug&'
                                   'issue[title]={title}&'
                                   'issue[description]={description}')
+
+# docker registry images
+REGISTRY_BASE_URL = 'registry.gitlab.com/gitmate/open-source'
+COALA_RESULTS_IMAGE = os.environ.get('COALA_RESULTS_IMAGE',
+                                     (REGISTRY_BASE_URL +
+                                      '/coala-incremental-results:latest'))
+RESULTS_BOUNCER_IMAGE = os.environ.get('RESULTS_BOUNCER_IMAGE',
+                                       (REGISTRY_BASE_URL +
+                                        '/result-bouncer:latest'))
+REBASER_IMAGE = os.environ.get('REBASER_IMAGE',
+                               REGISTRY_BASE_URL + '/mr-rebaser:latest')

@@ -1,10 +1,11 @@
 from os import environ
+from traceback import print_exc
 import json
 import logging
 import shlex
 import subprocess
-from traceback import print_exc
 
+from django.conf import settings
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.Interfaces.Actions import MergeRequestActions
@@ -51,7 +52,7 @@ def analyse(repo, sha, clone_url, ref, coafile_location):
     except AnalysisResults.DoesNotExist:
         proc = subprocess.Popen(
             ['docker', 'run', '-i', '--rm',
-             environ['COALA_RESULTS_IMAGE'],
+             settings.COALA_RESULTS_IMAGE,
              'python3', 'run.py', sha, clone_url, ref, coafile_location],
             stdout=subprocess.PIPE,
         )
@@ -84,7 +85,7 @@ def filter_results(old_results: dict, new_results: dict):
 
     proc = subprocess.Popen(
         ['docker', 'run', '-i', '--rm',
-         environ['RESULTS_BOUNCER_IMAGE'],
+         settings.RESULTS_BOUNCER_IMAGE,
          'python3', 'bouncer.py'],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,

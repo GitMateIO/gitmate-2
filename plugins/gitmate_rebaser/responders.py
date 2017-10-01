@@ -2,6 +2,7 @@ from os import environ
 import json
 import subprocess
 
+from django.conf import settings
 from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.Comment import Comment
 from IGitt.Interfaces.MergeRequest import MergeRequest
@@ -27,7 +28,7 @@ def rebase_merge_request(pr: MergeRequest, comment: Comment):
         head_clone_url = pr.source_repository.clone_url
         base_clone_url = pr.target_repository.clone_url
         proc = subprocess.Popen(
-            ['docker', 'run', '-i', '--rm', environ['REBASER_IMAGE'],
+            ['docker', 'run', '-i', '--rm', settings.REBASER_IMAGE,
              'python', 'run.py', head_clone_url, base_clone_url,
              pr.head_branch_name, pr.base_branch_name],
             stdout=subprocess.PIPE)
