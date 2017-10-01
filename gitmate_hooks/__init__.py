@@ -173,10 +173,12 @@ class ResponderRegistrar:
         return _wrapper
 
     @classmethod
-    def _get_specified_options(cls, responder, options):
+    def _filter_matching_options(cls, responder, plugin, repo):
         """
-        Retrieves the requested options for the given responder.
+        Filters the matching options for the given responder out of all the
+        settings registered for the given plugin.
         """
+        options = plugin.get_settings(repo)
         keys = set(cls._options[responder]) & set(options.keys())
         return dict(zip(keys, [options[k] for k in keys]))
 
@@ -210,6 +212,7 @@ class ResponderRegistrar:
         specified, invokes responders only within that plugin.
         """
         # Don't move to module code. Apps aren't loaded yet.
+        from gitmate_config.models import Plugin
         from gitmate_logger.signals import LoggingExceptionHandler
 
         retvals = []
@@ -219,9 +222,12 @@ class ResponderRegistrar:
             responders = cls._get_responders(event, repo=repo)
 
         for responder in responders:
-            # Provide the options it wants
-            options_specified = cls._get_specified_options(
-                responder, repo.get_plugin_settings())
+            # filter options for responder from options of plugin it is
+            # registered in, to avoid naming conflicts when two plugins have
+            # the same model field. e.g. `stale_label`
+            plugin = Plugin.objects.get(name=cls._plugins[responder])
+            options_specified = cls._filter_matching_options(
+                responder, plugin, repo)
             try:
                 retvals.append(responder.delay(*args, **options_specified))
             except BaseException:  # pragma: no cover
