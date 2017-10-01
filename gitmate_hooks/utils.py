@@ -30,10 +30,11 @@ def run_plugin_for_all_repos(plugin_name: str,
     """
     This will trigger the responders registered with `event_name`
     for every repo based on active state of a plugin.
+
     :param plugin_name: A string containing name of the plugin to check.
-    :param event_name: A string or enum for the type of event.
-                       e.g. MergeRequestActions.COMMENTED
-    :is_active: A boolean value for active state of plugin.
+    :param event_name:  A string or enum for the type of event.
+                        e.g. MergeRequestActions.COMMENTED
+    :param is_active:   A boolean value for active state of plugin.
     """
     plugin = Plugin.objects.get(name=plugin_name)
     for repo in plugin.repository_set.filter(active=is_active):
@@ -46,6 +47,12 @@ def signature_check(key: str,
     """
     Decorator for views that checks if the signature from request header
     matches the one registered for webhooks.
+
+    :param key:                 The client key used to verify the hash.
+    :param provider:            The provider for which hash is to be verified.
+    :param http_header_name:    Name of HTTP request header which contains the
+                                secure signature.
+    :return:                    The response generated from the view.
     """
     def decorator(view: Callable):
 
@@ -110,8 +117,34 @@ class ExceptionLoggerTask(Task):
 class ResponderRegistrar:
     """
     This class provides ability to register responders and invoke them.
-
     All responders belong to a plugin that can be activated per repository.
+
+    The decorators which register the functions with celery viz. ``scheduler``,
+    ``scheduled_responder`` and ``responder``, do not take part in the
+    function invocation themselves and are called by celery. Hence, they return
+    the function object as is and not it's return value. This means that the
+    nature of function remains intact even after applying the decorator and
+    hence, say goodbye to ``functools.wraps``.
+
+    >>> from gitmate_hooks.utils import ResponderRegistrar
+    >>> from IGitt.Interfaces.Actions import MergeRequestActions
+    >>> @ResponderRegistrar.responder('test', MergeRequestActions.OPENED)
+    ... def returner(s: str='Hello World!'):
+    ...     '''The ultimate returning function'''
+    ...     return s
+
+    The nature of the function remains the same, although it works with celery
+    too as part of the ``ResponderRegistrar.respond`` call.
+
+    >>> returner()
+    'Hello World!'
+    >>> returner('Squish them bugs!')
+    'Squish them bugs!'
+    >>> returner.__name__
+    'returner'
+    >>> returner.__doc__
+    'The ultimate returning function'
+
     """
 
     _responders = defaultdict(list)
