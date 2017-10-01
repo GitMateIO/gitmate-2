@@ -326,3 +326,35 @@ class TestAck(GitmateTestCase):
                          [(Status.FAILED, 'review/gitmate/manual/pr'),
                           (Status.FAILED, 'review/gitmate/manual'),
                           (Status.FAILED, 'review/gitmate/manual/pr')])
+
+    @patch.object(GitHubMergeRequest, 'commits', new_callable=PropertyMock)
+    @patch.object(GitHubMergeRequest, 'head', new_callable=PropertyMock)
+    @patch.object(GitHubComment, 'body', new_callable=PropertyMock)
+    @patch.object(GitHubCommit, 'sha', new_callable=PropertyMock)
+    @patch.object(GitHubCommit, 'get_statuses')
+    @patch.object(GitHubCommit, 'set_status')
+    def test_github_comment_after_sync_no_data_in_db(
+        self, m_set_status, m_get_statuses, m_sha, m_body, m_head, m_commits
+    ):
+        m_get_statuses.return_value = (
+            CommitStatus(Status.FAILED, 'Terrible issues',
+                         'review/gitmate/manual', 'https://gitmate.io'),
+            CommitStatus(Status.SUCCESS, 'No issues',
+                         'review/somewhere/else', 'https://some/url'))
+        m_sha.return_value = 'f6d2b7c66372236a090a2a74df2e47f42a54456b'
+        m_body.return_value = 'unack f6d2b7c'
+        m_head.return_value = self.gh_commit
+        m_commits.return_value = tuple([self.gh_commit])
+        response = self.simulate_github_webhook_call('issue_comment',
+                                                     self.gh_comment_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        args = sum([list(args) for args, _ in m_set_status.call_args_list], [])
+        # 3 calls to be made as follows
+        # Status.FAILED review/gitmate/manual/pr
+        # Status.FAILED review/gitmate/manual
+        # Status.FAILED review/gitmate/manual/pr
+        self.assertEqual(m_set_status.call_count, 3)
+        self.assertEqual([(arg.status, arg.context) for arg in args],
+                         [(Status.FAILED, 'review/gitmate/manual/pr'),
+                          (Status.FAILED, 'review/gitmate/manual'),
+                          (Status.FAILED, 'review/gitmate/manual/pr')])

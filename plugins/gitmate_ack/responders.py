@@ -81,9 +81,15 @@ def gitmate_ack(pr: MergeRequest,
     commits = pr.commits
     pattern = r'(^{k}\s)|(\s{k}\s)|(\s{k}$)'
 
-    db_pr = MergeRequestModel.objects.get(
+    db_pr, created = MergeRequestModel.objects.get_or_create(
         repo=Repository.from_igitt_repo(pr.repository),
-        number=pr.number)
+        number=pr.number,
+        defaults={'acks': dict()})
+
+    if created:
+        # GitMate was integrated to the repo after syncing the pull request
+        add_review_status(pr)
+        db_pr.refresh_from_db()
 
     for kw in get_keywords(unack_strs):
         if re.search(pattern.format(k=kw), body):

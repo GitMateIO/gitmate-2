@@ -1,0 +1,142 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: [application/vnd.github.v3.diff]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/gitmate-test-user/test/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b
+  response:
+    body: {string: "diff --git a/README.md b/README.md\nindex 1db0477..af6edca 100644\n\
+        --- a/README.md\n+++ b/README.md\n@@ -1,2 +1,4 @@\n # test\n a test repo\n\
+        +\n+a commiit that can one acknowledge\n"}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Length: ['172']
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/vnd.github.v3.diff; charset=utf-8]
+      Date: ['Sun, 01 Oct 2017 16:29:46 GMT']
+      ETag: ['"f8be2aeed80a258c5c824da78ce72354"']
+      Last-Modified: ['Sun, 24 Jan 2016 19:46:59 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP', Accept-Encoding]
+      X-Accepted-OAuth-Scopes: ['']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; param=diff]
+      X-GitHub-Request-Id: ['456E:D7DE:6000855:7B9D2B9:59D117F9']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4999']
+      X-RateLimit-Reset: ['1506878986']
+      X-Runtime-rack: ['0.100678']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/gitmate-test-user/test/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+1XS2/bMAz+K4Z3bFM/4meAYhmwHXcZtsseKGiJioXZlmEpCbYg/32U42xpurSN
+        gwE7FMjBsfx9/EiRIrVxdQnuzBUJD4uUJck0DcNpAn7uQwhpxEWIUSqiEOIoipPCvXaZqmtp3NnG
+        haUpVWefGqiRWBbS1GBwYlCbyVJjR59jDbKitVJpWtQGu/nw2Y1UtM4JQMuhHyQTP5iE0ccgn0XJ
+        LM4/u9u9NUL9WzM1ag0LK+RTaxU5H969efv+3U3NSaLpkFY2Q6hyKDKRZ6xgAljBMQ/SlLE8FXkC
+        mE+BBciztEgIuOx6z41p9czzoJU35Hq5LG4ohl6HrdLeg5B5Nnj2tWfNau/Z5ihYl9nbbaz2zswF
+        bMwdU8uGUiK7SMMI+6Wpq7v7Xh9E+ERsd3ZGuKmPTJ2zoec651kAhVZTGv2ps0otZHOi0CR3Z0GS
+        ZIE/9QmzAgPdseD+pZ4OaWgrlKnGkJk+I5feHv96dRuR4UU30Fhu96mEtnR/SWiCnblNhBCqqtSa
+        +I49uF9DJ0x6v+G/qWSzuISK4BtPmRIppOTm1gZHajNSXg/dUJFrcye5JdO0Lx3ycRIHMAlcN6Rt
+        0x8tPeuy0KyTrZGqGSn1HgVRqm4BjfwJF1AShc3q/vwb53APJQpc2QoZx7HDbry2kytgP2y4OmQo
+        V7QLl/AekRCt+dH2jWXXD7U0eAe8tnUsoNJ43OReavylxh92rpcaf2SUOtUG/qcab6Hr2/nsy36Q
+        TNIoyjPBoyCmUZKzacxiLMKsyPI4wMz3xTSmkVzQETJ+sNvPHWcYO7Nb7wbWYah6tpntt77p2YBs
+        XKMM0PaGNLZwLvvW0v/jWOHwz6djUsgKDwMIIkHOgCIoAs6jtIgTQbFDP/IDgX6aCJ4BhnaEt9Dh
+        knI42VsFS6J0a8WlkGg/PS2BbiMlNAurgcQVlSqOWs/Ts6cFPXvy9A6ldrA+2xphxhkbpsInWuuj
+        N5g9xR8nXncobs+4XLRgWEl7M587k+A6dK6C68iZz782zivHXpLoAfoHxwr52lzRD5w+EaVxTAnG
+        YdA4qkEH2PdGrSvkdMXbftv+AkS3xsT2DgAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sun, 01 Oct 2017 16:29:48 GMT']
+      ETag: [W/"9b82e4d331e33b821173e81899604cda"]
+      Last-Modified: ['Sun, 24 Jan 2016 19:46:59 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP', Accept-Encoding]
+      X-Accepted-OAuth-Scopes: ['']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['456F:D7DE:60008B5:7B9D332:59D117FB']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4998']
+      X-RateLimit-Reset: ['1506878986']
+      X-Runtime-rack: ['0.046773']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/vnd.github.v3.diff]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/gitmate-test-user/test/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b
+  response:
+    body: {string: "diff --git a/README.md b/README.md\nindex 1db0477..af6edca 100644\n\
+        --- a/README.md\n+++ b/README.md\n@@ -1,2 +1,4 @@\n # test\n a test repo\n\
+        +\n+a commiit that can one acknowledge\n"}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Length: ['172']
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/vnd.github.v3.diff; charset=utf-8]
+      Date: ['Sun, 01 Oct 2017 16:29:49 GMT']
+      ETag: ['"f8be2aeed80a258c5c824da78ce72354"']
+      Last-Modified: ['Sun, 24 Jan 2016 19:46:59 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP', Accept-Encoding]
+      X-Accepted-OAuth-Scopes: ['']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; param=diff]
+      X-GitHub-Request-Id: ['4570:D7DB:58A0B7:71500B:59D117FC']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4997']
+      X-RateLimit-Reset: ['1506878986']
+      X-Runtime-rack: ['0.032329']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1
