@@ -1,7 +1,5 @@
 #!/bin/sh
 
-. ./docker/common.sh
-
 echo "Sleeping for 10s, just in case the database server isn't ready..."
 sleep 10
 

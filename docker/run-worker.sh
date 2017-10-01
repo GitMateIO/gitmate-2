@@ -1,7 +1,5 @@
 #!/bin/sh
 
-. ./docker/common.sh
-
 DOCKER_SOCKET=/var/run/docker.sock
 
 do_docker_socket() {
