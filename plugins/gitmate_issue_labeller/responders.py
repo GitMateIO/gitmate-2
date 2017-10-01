@@ -2,7 +2,7 @@ from IGitt.Interfaces.Actions import IssueActions
 from IGitt.Interfaces.Issue import Issue
 
 from gitmate.utils import lock_igitt_object
-from gitmate_hooks import ResponderRegistrar
+from gitmate_hooks.utils import ResponderRegistrar
 
 
 @ResponderRegistrar.responder('issue_labeller', IssueActions.OPENED)

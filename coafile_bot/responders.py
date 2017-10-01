@@ -4,7 +4,7 @@ from coafile_bot.task import handle_thread
 from coafile_bot.utils import post_comment
 from gitmate.settings import BOT_USER
 
-from gitmate_hooks import ResponderRegistrar
+from gitmate_hooks.utils import ResponderRegistrar
 
 
 @ResponderRegistrar.scheduler(interval=GITHUB_POLL_DELAY)

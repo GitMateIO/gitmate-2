@@ -59,6 +59,7 @@ REQUISITE_APPS = [
     'social_django',
     'raven.contrib.django.raven_compat',
     'gitmate_config',
+    'gitmate_hooks',
     'gitmate_logger',
     'rest_framework',
     'rest_framework_docs',

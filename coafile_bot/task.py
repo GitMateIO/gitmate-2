@@ -6,7 +6,7 @@ from coafile_bot.utils import create_pr
 from coala_online.config import COALA_ONLINE_IMAGE
 
 from gitmate.celery import app as celery
-from gitmate_hooks import ExceptionLoggerTask
+from gitmate_hooks.utils import ExceptionLoggerTask
 
 
 @celery.task(base=ExceptionLoggerTask)

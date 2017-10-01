@@ -18,7 +18,7 @@ from gitmate.utils import snake_case_to_camel_case
 from gitmate_config import Providers
 from gitmate_config.models import Plugin, Organization
 from gitmate_config.models import Repository
-from gitmate_hooks import ResponderRegistrar
+from gitmate_hooks.utils import ResponderRegistrar
 from gitmate_hooks.views import github_webhook_receiver
 from gitmate_hooks.views import gitlab_webhook_receiver
 

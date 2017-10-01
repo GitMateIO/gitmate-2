@@ -2,7 +2,7 @@ import json
 import subprocess
 
 from gitmate.celery import app as celery
-from gitmate_hooks import ExceptionLoggerTask
+from gitmate_hooks.utils import ExceptionLoggerTask
 
 from coala_online.config import COALA_ONLINE_IMAGE
 

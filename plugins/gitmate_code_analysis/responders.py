@@ -14,7 +14,7 @@ from IGitt.Interfaces.Commit import Status
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
 from gitmate_config.models import Repository
-from gitmate_hooks import ResponderRegistrar
+from gitmate_hooks.utils import ResponderRegistrar
 from .models import AnalysisResults
 
 

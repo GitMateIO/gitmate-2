@@ -16,7 +16,6 @@ from rest_framework.reverse import reverse
 
 from gitmate_config import GitmateActions
 from gitmate_config import Providers
-from gitmate_hooks import ResponderRegistrar
 
 
 class Plugin(models.Model):
@@ -179,6 +178,9 @@ class Repository(models.Model):
         """
         Sets the plugin settings for all plugins for the specified repo.
         """
+        # Don't move to module code, causes circular dependency!
+        from gitmate_hooks.utils import ResponderRegistrar
+
         for plugin in plugins:
             if 'name' not in plugin:
                 raise Http404

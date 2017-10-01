@@ -6,7 +6,7 @@ from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.Comment import Comment
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
-from gitmate_hooks import ResponderRegistrar
+from gitmate_hooks.utils import ResponderRegistrar
 
 
 @ResponderRegistrar.responder('rebaser', MergeRequestActions.COMMENTED)
