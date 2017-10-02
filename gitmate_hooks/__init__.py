@@ -1,3 +1,4 @@
+import logging
 from collections import defaultdict
 from enum import Enum
 from hashlib import sha1
@@ -224,11 +225,10 @@ class ResponderRegistrar:
             try:
                 retvals.append(responder.delay(*args, **options_specified))
             except BaseException:  # pragma: no cover
-                print('ERROR: A responder failed.')
-                print('Responder:   {0!r}'.format(responder))
-                print('Args:        {0!r}'.format(args))
-                print('Options:     {0!r}'.format(options_specified))
-                print_exc()
+                logging.exception(f'ERROR: A responder failed.\n'
+                                  f'Responder:   {repr(responder)}\n'
+                                  f'Args:        {repr(args)}\n'
+                                  f'Options:     {repr(options_specified})}')
                 LoggingExceptionHandler.create_from_exception(
                     __name__, responder.name)
 
