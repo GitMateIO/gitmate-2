@@ -120,8 +120,8 @@ interactions:
       Content-Type: [application/json]
       Date: ['Tue, 12 Sep 2017 11:09:04 GMT']
       Etag: [W/"e83ac4a38647cbd43275b71736843768"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/8c31d04e826dc38e6b3e74143f83f9890b89c71c/statuses?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=8c31d04e826dc38e6b3e74143f83f9890b89c71c>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/8c31d04e826dc38e6b3e74143f83f9890b89c71c/statuses?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=8c31d04e826dc38e6b3e74143f83f9890b89c71c>;
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/8c31d04e826dc38e6b3e74143f83f9890b89c71c/statuses?id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=8c31d04e826dc38e6b3e74143f83f9890b89c71c>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/8c31d04e826dc38e6b3e74143f83f9890b89c71c/statuses?id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=8c31d04e826dc38e6b3e74143f83f9890b89c71c>;
           rel="last"']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]

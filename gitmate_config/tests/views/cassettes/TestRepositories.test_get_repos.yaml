@@ -247,8 +247,8 @@ interactions:
       Content-Type: [application/json]
       Date: ['Mon, 25 Sep 2017 10:28:49 GMT']
       Etag: [W/"50d69bbfdae107049c5e9c621ea3c015"]
-      Link: ['<https://gitlab.com/api/v4/projects?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&archived=false&membership=true&order_by=created_at&owned=false&page=1&per_page=100&simple=false&sort=desc&starred=false&statistics=false&with_issues_enabled=false&with_merge_requests_enabled=false>;
-          rel="first", <https://gitlab.com/api/v4/projects?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&archived=false&membership=true&order_by=created_at&owned=false&page=1&per_page=100&simple=false&sort=desc&starred=false&statistics=false&with_issues_enabled=false&with_merge_requests_enabled=false>;
+      Link: ['<https://gitlab.com/api/v4/projects?archived=false&membership=true&order_by=created_at&owned=false&page=1&per_page=100&simple=false&sort=desc&starred=false&statistics=false&with_issues_enabled=false&with_merge_requests_enabled=false>;
+          rel="first", <https://gitlab.com/api/v4/projects?archived=false&membership=true&order_by=created_at&owned=false&page=1&per_page=100&simple=false&sort=desc&starred=false&statistics=false&with_issues_enabled=false&with_merge_requests_enabled=false>;
           rel="last"']
       RateLimit-Limit: ['600']
       RateLimit-Observed: ['1']

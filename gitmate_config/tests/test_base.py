@@ -3,6 +3,7 @@ from hashlib import sha1
 import hmac
 import inspect
 import os
+import re
 
 from django.apps import apps
 from django.conf import settings
@@ -22,6 +23,10 @@ from gitmate_hooks.utils import ResponderRegistrar
 from gitmate_hooks.views import github_webhook_receiver
 from gitmate_hooks.views import gitlab_webhook_receiver
 
+
+FILTER_QUERY_PARAMS = ['access_token', 'private_token']
+FILTER_PARAMS_REGEX = re.compile(r'(\??)((?:{})=\w+&?)'.format(
+    '|'.join(FILTER_QUERY_PARAMS)))
 
 # this is a helper method to reinitate gitmate plugins and is used only
 # for testing purposes and is not a part of the actual gitmate server,
@@ -80,6 +85,12 @@ class GitmateTestCase(TransactionTestCase):
     active = False
     upmate = True
 
+    @staticmethod
+    def remove_link_headers(resp):
+        for i, link in enumerate(resp['headers'].get('Link', [])):
+            resp['headers']['Link'][i] = FILTER_PARAMS_REGEX.sub(r'\1', link)
+        return resp
+
     def _get_cassette_name(self):
         return '{0}.{1}.yaml'.format(self.__class__.__name__,
                                      self._testMethodName)
@@ -90,8 +101,9 @@ class GitmateTestCase(TransactionTestCase):
         return vcr.VCR(
             cassette_library_dir=cassettes_dir,
             match_on=['method', 'scheme', 'host', 'port', 'path'],
-            filter_query_parameters=['access_token', 'private_token'],
-            filter_post_data_parameters=['access_token', 'private_token'])
+            filter_query_parameters=FILTER_QUERY_PARAMS,
+            filter_post_data_parameters=FILTER_QUERY_PARAMS,
+            before_record_response=GitmateTestCase.remove_link_headers)
 
     def setUp(self):
         # Reconfigure gitmate for tests

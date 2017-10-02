@@ -67,8 +67,8 @@ interactions:
       Content-Type: [application/json]
       Date: ['Tue, 22 Aug 2017 12:26:43 GMT']
       Etag: [W/"d751713988987e9331980363e24189ce"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b/statuses?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=f6d2b7c66372236a090a2a74df2e47f42a54456b>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b/statuses?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=f6d2b7c66372236a090a2a74df2e47f42a54456b>;
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b/statuses?id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=f6d2b7c66372236a090a2a74df2e47f42a54456b>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/f6d2b7c66372236a090a2a74df2e47f42a54456b/statuses?id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=f6d2b7c66372236a090a2a74df2e47f42a54456b>;
           rel="last"']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
@@ -179,8 +179,8 @@ interactions:
       Content-Type: [application/json]
       Date: ['Tue, 22 Aug 2017 12:26:51 GMT']
       Etag: [W/"d751713988987e9331980363e24189ce"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/9ba5b704f5866e468ec2e639fa893ae4c129f2ad/statuses?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=9ba5b704f5866e468ec2e639fa893ae4c129f2ad>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/9ba5b704f5866e468ec2e639fa893ae4c129f2ad/statuses?access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=9ba5b704f5866e468ec2e639fa893ae4c129f2ad>;
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/9ba5b704f5866e468ec2e639fa893ae4c129f2ad/statuses?id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=9ba5b704f5866e468ec2e639fa893ae4c129f2ad>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/repository/commits/9ba5b704f5866e468ec2e639fa893ae4c129f2ad/statuses?id=gitmate-test-user%2Ftest&page=1&per_page=100&sha=9ba5b704f5866e468ec2e639fa893ae4c129f2ad>;
           rel="last"']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]

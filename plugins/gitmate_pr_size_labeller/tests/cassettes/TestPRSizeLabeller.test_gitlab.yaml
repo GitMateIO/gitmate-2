@@ -46,8 +46,8 @@ interactions:
       Content-Type: [application/json]
       Date: ['Sun, 13 Aug 2017 21:36:47 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="last"']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
@@ -133,8 +133,8 @@ interactions:
       Content-Type: [application/json]
       Date: ['Sun, 13 Aug 2017 21:37:01 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="last"']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
@@ -220,8 +220,8 @@ interactions:
       Content-Type: [application/json]
       Date: ['Sun, 13 Aug 2017 21:37:14 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="last"']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
@@ -307,8 +307,8 @@ interactions:
       Content-Type: [application/json]
       Date: ['Sun, 13 Aug 2017 21:37:24 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="last"']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
@@ -394,8 +394,8 @@ interactions:
       Content-Type: [application/json]
       Date: ['Sun, 13 Aug 2017 21:37:36 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="last"']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
@@ -481,8 +481,8 @@ interactions:
       Content-Type: [application/json]
       Date: ['Sun, 13 Aug 2017 21:37:56 GMT']
       Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&access_token=98f0f5b512132e1a255f6f6b400f6a121c7a35c838bdf6c9cf0750ef09a97b9f&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
+          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
           rel="last"']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
