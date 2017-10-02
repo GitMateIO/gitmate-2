@@ -60,7 +60,8 @@ def run_in_container(image: str, *args: [str], stdin: str=None) -> str:
     the output.
     """
     process = subprocess.Popen(['docker', 'run', '-i', '--rm', image, *args],
-                               stdout=subprocess.PIPE)
+                               stdout=subprocess.PIPE,
+                               stdin=subprocess.PIPE if stdin else None)
     if stdin:
         process.stdin.write(stdin.encode('utf-8'))
         process.stdin.close()
