@@ -34,6 +34,7 @@ def run_plugin_for_all_repos(plugin_name: str,
     for repo in plugin.repository_set.filter(active=is_active):
         ResponderRegistrar.respond(event_name, repo, repo.igitt_repo)
 
+
 def signature_check(key: str=None,
                     provider: str=None,
                     http_header_name: str=None):
@@ -63,6 +64,7 @@ def signature_check(key: str=None,
 
     return decorator
 
+
 class ExceptionLoggerTask(Task):
     """
     Celery Task subclass to log exceptions on failure.
@@ -81,6 +83,7 @@ class ExceptionLoggerTask(Task):
                                        einfo=einfo)
         logger.warn(warning)
         super().on_failure(exc, task_id, args, kwargs, einfo)
+
 
 class ResponderRegistrar:
     """
