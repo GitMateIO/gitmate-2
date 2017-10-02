@@ -44,7 +44,6 @@ run_tests_ee:
   <<: *run_tests
   variables:
     GIT_SUBMODULE_STRATEGY: normal
-  allow_failure: true
 
 build_image: &build_image
   stage: test
