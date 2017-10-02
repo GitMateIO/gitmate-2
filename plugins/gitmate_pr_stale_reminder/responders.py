@@ -6,7 +6,7 @@ from IGitt.Interfaces.MergeRequest import MergeRequest
 from IGitt.Interfaces.Repository import Repository
 
 from gitmate.utils import lock_igitt_object
-from gitmate_hooks import ResponderRegistrar
+from gitmate_hooks.utils import ResponderRegistrar
 
 
 @ResponderRegistrar.scheduled_responder(

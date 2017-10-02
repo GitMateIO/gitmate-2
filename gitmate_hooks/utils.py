@@ -5,7 +5,6 @@ from hashlib import sha1
 import hmac
 from inspect import Parameter
 from inspect import signature
-from traceback import print_exc
 
 from celery.schedules import crontab
 from celery import Task
@@ -16,6 +15,9 @@ from gitmate_config import Providers
 
 from gitmate.celery import app as celery
 from gitmate_config import GitmateActions
+from gitmate_config.models import Plugin
+from gitmate_config.models import Repository
+from gitmate_logger.signals import LoggingExceptionHandler
 
 
 def run_plugin_for_all_repos(plugin_name: str,
@@ -29,8 +31,6 @@ def run_plugin_for_all_repos(plugin_name: str,
                        e.g. MergeRequestActions.COMMENTED
     :is_active: A boolean value for active state of plugin.
     """
-    from gitmate_config.models import Plugin
-
     plugin = Plugin.objects.get(name=plugin_name)
     for repo in plugin.repository_set.filter(active=is_active):
         ResponderRegistrar.respond(event_name, repo, repo.igitt_repo)
@@ -134,7 +134,7 @@ class ResponderRegistrar:
                 See http://docs.celeryproject.org/en/latest/reference/celery.schedules.html#celery.schedules.crontab
         :param kwargs: Keyword arguments to pass to `run_plugin_for_all_repos`.
 
-        >>> from gitmate_hooks import ResponderRegistrar
+        >>> from gitmate_hooks.utils import ResponderRegistrar
         >>> @ResponderRegistrar.scheduled_responder('test', 10.0)
         ... def test_responder(igitt_repo):
         ...     print('Hello, World!')
@@ -189,9 +189,6 @@ class ResponderRegistrar:
         the ones within a plugin, if ``plugin name`` is specified. Filters only
         for responders active on a repository, if ``repo`` is specified.
         """
-        # Don't move to module code! Models aren't loaded yet.
-        from gitmate_config.models import Repository
-
         responders = cls._responders.get(event, [])
         plugin_filter = lambda r: plugin_name == cls._plugins[r]
         repo_filter = lambda r: repo.plugins.filter(
@@ -211,10 +208,6 @@ class ResponderRegistrar:
         Invoke all responders for the given event. If a plugin name is
         specified, invokes responders only within that plugin.
         """
-        # Don't move to module code. Apps aren't loaded yet.
-        from gitmate_config.models import Plugin
-        from gitmate_logger.signals import LoggingExceptionHandler
-
         retvals = []
         if isinstance(event, GitmateActions):
             responders = cls._get_responders(event, plugin_name=plugin_name)

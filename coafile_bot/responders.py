@@ -5,7 +5,7 @@ from coafile_bot.config import POLL_DELAY
 from coafile_bot.config import HOSTER_CONFIG
 from coafile_bot.task import handle_notification
 from coafile_bot.utils import post_comment
-from gitmate_hooks import ResponderRegistrar
+from gitmate_hooks.utils import ResponderRegistrar
 
 
 def run_coafile_bot(token: Token, cls: type, username: str):

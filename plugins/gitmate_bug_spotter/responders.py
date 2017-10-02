@@ -6,7 +6,7 @@ from IGitt.Interfaces.MergeRequest import MergeRequest
 import bugspots
 
 from gitmate.utils import lock_igitt_object
-from gitmate_hooks import ResponderRegistrar
+from gitmate_hooks.utils import ResponderRegistrar
 
 
 def get_hotspot_files(pattern: str, pr: MergeRequest):
