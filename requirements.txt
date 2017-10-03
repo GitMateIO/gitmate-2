@@ -13,7 +13,4 @@ psycopg2~=2.7.1
 bugspots3~=0.3.0
 attrs~=17.2.0
 django-pglocks~=1.0.2
-scikit-learn[alldeps]~=0.19.0
-gensim~=2.3.0
-nltk~=3.2.4
 raven~=6.2.1
