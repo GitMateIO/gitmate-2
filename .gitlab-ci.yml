@@ -35,13 +35,14 @@ run_tests: &run_tests
   - apt-get install -y --no-install-recommends libblas-dev liblapack-dev libatlas-base-dev gfortran g++
   - pip3 install -r requirements.txt
   - pip3 install -r test-requirements.txt
-  - python3 -m nltk.downloader -d /usr/local/share/nltk_data stopwords
   - py.test -vv --cov --doctest-modules
   except:
   - master
 
 run_tests_ee:
   <<: *run_tests
+  before_script:
+    - ./install_deps.sh
   variables:
     GIT_SUBMODULE_STRATEGY: normal
 
