@@ -1,9 +1,6 @@
-from os import environ
-from traceback import print_exc
 import json
 import logging
 import shlex
-from traceback import print_exc
 
 from django.conf import settings
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
@@ -242,5 +239,6 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
             _set_status(HEAD, Status.ERROR, 'review/gitmate/pr')
         except RuntimeError:
             pass
-        print(str(exc))
-        print_exc()
+        # sending info to the raven logger interface
+        logger = logging.getLogger(__name__)
+        logger.error(exc, exc_info=True)
