@@ -65,8 +65,9 @@ def run_in_container(image: str, *args: [str], stdin: str=None) -> str:
     if stdin:
         process.stdin.write(stdin.encode('utf-8'))
         process.stdin.close()
-    process.wait(timeout=settings.CONTAINER_TIMEOUT)
-    return process.stdout.read().decode('utf-8')
+    retval = process.stdout.read().decode('utf-8')
+    process.wait()
+    return retval
 
 
 class PluginCategory(Enum):
