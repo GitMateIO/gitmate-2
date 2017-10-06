@@ -54,7 +54,7 @@ def get_plugins() -> [str]:
             and is_plugin(path.abspath(path.join(plugin_dir, dir)))]
 
 
-def run_in_container(image: str, *args: [str], stdin: str=None) -> str:
+def run_in_container(image: str, *args: [str], stdin: str='') -> str:
     """
     Runs a docker container with the specified image and command and returns
     the output.
@@ -62,11 +62,9 @@ def run_in_container(image: str, *args: [str], stdin: str=None) -> str:
     process = subprocess.Popen(['docker', 'run', '-i', '--rm', image, *args],
                                stdout=subprocess.PIPE,
                                stdin=subprocess.PIPE if stdin else None)
-    if stdin:
-        process.stdin.write(stdin.encode('utf-8'))
-        process.stdin.close()
-    process.wait(timeout=settings.CONTAINER_TIMEOUT)
-    return process.stdout.read().decode('utf-8')
+    stdout, _ = process.communicate(stdin.encode('utf-8'),
+                                    settings.CONTAINER_TIMEOUT)
+    return stdout.decode('utf-8')
 
 
 class PluginCategory(Enum):
