@@ -89,8 +89,9 @@ deploy_master:
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
     - mkdir -p ~/.ssh
+    - openssl aes-256-cbc -k "$SECRET_CONFIG_PASSWORD" -in .ci/ssh_config.enc -out ~/.ssh/config -d
     - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
-    - ssh tomoko@marisa.gitmate.io 'bash -s' < .ci/deploy.master.sh
+    - ssh marisa 'bash -s' < .ci/deploy.master.sh
   environment:
     name: master
     url: https://api.master.gitmate.io
@@ -107,8 +108,9 @@ deploy_release:
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
     - mkdir -p ~/.ssh
+    - openssl aes-256-cbc -k "$SECRET_CONFIG_PASSWORD" -in .ci/ssh_config.enc -out ~/.ssh/config -d
     - echo "$DEPLOY_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
-    - ssh tomoko@marisa.gitmate.io 'bash -s' < .ci/deploy.release.sh
+    - ssh marisa 'bash -s' < .ci/deploy.release.sh
   environment:
     name: release
     url: https://api.gitmate.io
