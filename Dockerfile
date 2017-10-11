@@ -17,7 +17,8 @@ RUN apk add --no-cache docker postgresql-libs git && \
         gcc \
         musl-dev \
         postgresql-dev \
-        python3-dev && \
+        python3-dev \
+        libffi-dev && \
     pip install --no-cache-dir -r $ROOT/requirements.txt && \
     ./install_deps.sh && \
     apk del .build-deps
