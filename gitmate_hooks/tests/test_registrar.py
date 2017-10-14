@@ -2,10 +2,20 @@ from unittest.mock import patch
 
 from IGitt.Interfaces.Actions import MergeRequestActions
 
-from gitmate_config.models import Plugin
 from gitmate_config.tests.test_base import GitmateTestCase
 from gitmate_hooks.utils import ResponderRegistrar, run_plugin_for_all_repos
-from gitmate.utils import ScheduledTasks
+
+
+@ResponderRegistrar.responder('testplugin',
+                              MergeRequestActions.OPENED)
+def some_responder(obj, example_bool_setting: bool = True):
+    return example_bool_setting
+
+@ResponderRegistrar.scheduled_responder('testplugin',
+                                        '*/1 * * * * ',
+                                        is_active=True)
+def scheduled_responder_function(obj, example_bool_setting: bool=True):
+    return example_bool_setting
 
 
 class TestResponderRegistrar(GitmateTestCase):
@@ -13,20 +23,9 @@ class TestResponderRegistrar(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('testplugin')
 
-        @ResponderRegistrar.responder(self.plugin.name,
-                                      MergeRequestActions.OPENED)
-        def test_responder(obj, example_bool_setting: bool = True):
-            return example_bool_setting
-
-        @ResponderRegistrar.scheduled_responder(self.plugin.name,
-                100.00,
-                is_active=True)
-        def scheduled_responder_function(obj, example_bool_setting: bool=True):
-            return example_bool_setting
-
     def test_active_plugin(self):
         self.assertEqual(
-            [result.get() for result in ResponderRegistrar.respond(
+            [job.result for job in ResponderRegistrar.respond(
                 MergeRequestActions.OPENED, self.repo, 'example')],
             [True]
         )
@@ -37,17 +36,17 @@ class TestResponderRegistrar(GitmateTestCase):
             }
         }])
         self.assertEqual(
-            [result.get() for result in ResponderRegistrar.respond(
+            [job.result for job in ResponderRegistrar.respond(
                 MergeRequestActions.OPENED, self.repo, 'example')],
             [False]
         )
 
     def test_active_plugin_scheduled_responder(self):
         self.assertEqual(
-            [result.get() for result in ResponderRegistrar.respond(
+            [job.result for job in ResponderRegistrar.respond(
                 'testplugin.scheduled_responder_function', self.repo,
                 self.repo.igitt_repo)],
-            [True, True]
+            [True]
         )
 
     @patch.object(ResponderRegistrar, 'respond', return_value=None)
@@ -62,7 +61,7 @@ class TestResponderRegistrar(GitmateTestCase):
         self.repo.plugins.all().delete()
 
         self.assertEqual(
-            [result.get() for result in ResponderRegistrar.respond(
+            [job.result for job in ResponderRegistrar.respond(
                 MergeRequestActions.OPENED, self.repo, 'example')],
             []
         )

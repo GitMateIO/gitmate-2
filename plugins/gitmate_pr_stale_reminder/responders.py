@@ -1,6 +1,5 @@
 from datetime import datetime
 from datetime import timedelta
-from celery.schedules import crontab
 from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.MergeRequest import MergeRequest
 from IGitt.Interfaces.Repository import Repository
@@ -10,7 +9,7 @@ from gitmate_hooks.utils import ResponderRegistrar
 
 
 @ResponderRegistrar.scheduled_responder(
-    'pr_stale_reminder', crontab(minute='0', hour='6,18'), is_active=True)
+    'pr_stale_reminder', '0 0 6,18 * *', is_active=True)
 def add_stale_label_to_merge_requests(
         repo: Repository,
         pr_expire_limit: int = 'Expiry limit in no. of day for pull requests',

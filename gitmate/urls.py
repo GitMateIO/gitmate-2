@@ -30,6 +30,7 @@ urlpatterns = [
         kwargs={'path': 'index.html'}),
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('social_django.urls', namespace='auth')),
+    url(r'^django-rq/', include('django_rq.urls')),
     url(r'^api/', include('gitmate_config.urls', namespace='api')),
     url(r'^docs/', include('rest_framework_docs.urls', namespace='docs')),
     url(r'^webhooks/', include('gitmate_hooks.urls', namespace='webhooks')),

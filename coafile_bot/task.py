@@ -1,16 +1,15 @@
 import json
 
+from django_rq import job
 from IGitt.Interfaces import Notification
 
 from coafile_bot.utils import create_pull_request
 from coafile_bot.utils import post_comment
 from coala_online.config import COALA_ONLINE_IMAGE
-from gitmate.celery import app as celery
 from gitmate.utils import run_in_container
-from gitmate_hooks.utils import ExceptionLoggerTask
 
 
-@celery.task(base=ExceptionLoggerTask, ignore_result=True)
+@job
 def handle_notification(notification: Notification, username: str):
     """
     Handler for notifications.

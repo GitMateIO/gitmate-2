@@ -8,15 +8,13 @@ from inspect import signature
 from typing import Callable
 import hmac
 
-from billiard.einfo import ExceptionInfo
-from celery import Task
-from celery.schedules import crontab
-from celery.utils.log import get_logger
+from django_rq import job
+from django_rq import get_scheduler
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rq.job import Job
 
-from gitmate.celery import app as celery
 from gitmate_config import GitmateActions
 from gitmate_config import Providers
 from gitmate_config.models import Plugin
@@ -61,9 +59,8 @@ def signature_check(key: str,
 
             # key not found, verification turned off!
             if not key:
-                logger = get_logger('celery.worker')
-                logger.warning('Webhook signature verification turned off!'
-                               'Please verify WEBHOOK_SECRET in settings.')
+                logging.warning('Webhook signature verification turned off!'
+                                'Please verify WEBHOOK_SECRET in settings.')
                 return view(request, *args, **kwargs)
 
             # improper request structure
@@ -89,39 +86,14 @@ def signature_check(key: str,
     return decorator
 
 
-class ExceptionLoggerTask(Task):
-    """
-    Celery Task subclass to log exceptions on failure.
-
-    For Task inheritance see:
-    http://docs.celeryproject.org/en/latest/userguide/tasks.html#task-inheritance
-    """
-    def on_failure(self,
-                   exc: Exception,
-                   task_id: int,
-                   args: list,
-                   kwargs: dict,
-                   einfo: ExceptionInfo):  # pragma: no cover
-        logger = get_logger('celery.worker')
-        warning = ('Task {task}[{t_id}] had unexpected failure:\n'
-                   '\nargs: {args}\n\nkwargs: {kwargs}\n'
-                   '\n{einfo}').format(task=self.name,
-                                       t_id=task_id,
-                                       args=args,
-                                       kwargs=kwargs,
-                                       einfo=einfo)
-        logger.warning(warning)
-        super().on_failure(exc, task_id, args, kwargs, einfo)
-
-
 class ResponderRegistrar:
     """
     This class provides ability to register responders and invoke them.
     All responders belong to a plugin that can be activated per repository.
 
-    The decorators which register the functions with celery viz. ``scheduler``,
+    The decorators which register the functions with RQ viz. ``scheduler``,
     ``scheduled_responder`` and ``responder``, do not take part in the
-    function invocation themselves and are called by celery. Hence, they return
+    function invocation themselves and are called by RQ. Hence, they return
     the function object as is and not it's return value. This means that the
     nature of function remains intact even after applying the decorator and
     hence, say goodbye to ``functools.wraps``.
@@ -133,8 +105,8 @@ class ResponderRegistrar:
     ...     '''The ultimate returning function'''
     ...     return s
 
-    The nature of the function remains the same, although it works with celery
-    too as part of the ``ResponderRegistrar.respond`` call.
+    The nature of the function remains the same, although it works with RQ too
+    as part of the ``ResponderRegistrar.respond`` call.
 
     >>> returner()
     'Hello World!'
@@ -153,43 +125,42 @@ class ResponderRegistrar:
 
     @classmethod
     def scheduler(cls,
-                  interval: (crontab, float),
+                  interval: str,
                   *args,
                   **kwargs): # pragma: no cover
         """
         Registers the decorated function as a periodic task. The task should
         not accept any arguments.
 
-        :param interval:    Periodic interval in seconds as float or crontab
-                            object specifying task trigger time. See
-                            http://docs.celeryproject.org/en/latest/reference/celery.schedules.html#celery.schedules.crontab
+        :param interval:    A cron string.
+                            e.g. '*/10 * * * *' executes job every 10 seconds
         :param args:        Arguments to pass to scheduled task.
         :param kwargs:      Keyword arguments to pass to scheduled task.
         """
         def _wrapper(function: Callable):
-            task = celery.task(function, base=ExceptionLoggerTask)
-            celery.add_periodic_task(interval, task.s(), args, kwargs)
+            get_scheduler().cron(interval, function)
             return function
         return _wrapper
 
     @classmethod
     def scheduled_responder(cls,
                             plugin: str,
-                            interval: (crontab, float),
+                            interval: str,
                             **kwargs):
         """
         Registers the decorated function as responder and register
         `run_plugin_for_all_repos` as periodic task with plugin name and
         a responder event as arguments.
 
-        :param plugin: Name of plugin with which responder will be registered.
-        :param interval: Periodic interval in seconds as float or crontab
-                object specifying task trigger time.
-                See http://docs.celeryproject.org/en/latest/reference/celery.schedules.html#celery.schedules.crontab
-        :param kwargs: Keyword arguments to pass to `run_plugin_for_all_repos`.
+        :param plugin:      Name of plugin with which responder will be
+                            registered.
+        :param interval:    A cron string.
+                            e.g. '*/10 * * * *' executes job every 10 seconds
+        :param kwargs:      Keyword arguments to pass to
+                            `run_plugin_for_all_repos`.
 
         >>> from gitmate_hooks.utils import ResponderRegistrar
-        >>> @ResponderRegistrar.scheduled_responder('test', 10.0)
+        >>> @ResponderRegistrar.scheduled_responder('test', '*/10 * * * *')
         ... def test_responder(igitt_repo):
         ...     print('Hello, World!')
 
@@ -199,11 +170,11 @@ class ResponderRegistrar:
         """
         def _wrapper(function: Callable):
             action = '{}.{}'.format(plugin, function.__name__)
-            periodic_task_args = (plugin, action)
-            function = cls.responder(plugin, action)(function)
-            task = celery.task(run_plugin_for_all_repos, base=ExceptionLoggerTask)
-            celery.add_periodic_task(interval, task.s(), periodic_task_args, kwargs)
-            return function
+            args = (plugin, action)
+            func = cls.responder(*args)(function)
+            scheduler = get_scheduler()
+            scheduler.cron(interval, func, args=args, kwargs=kwargs)
+            return func
         return _wrapper
 
 
@@ -215,7 +186,7 @@ class ResponderRegistrar:
         is mandatory.
         """
         def _wrapper(function):
-            task = celery.task(function, base=ExceptionLoggerTask)
+            task = job(function)
             for action in actions:
                 cls._responders[action].append(task)
             cls._plugins[task] = plugin_name
@@ -227,7 +198,7 @@ class ResponderRegistrar:
 
     @classmethod
     def _filter_matching_options(cls,
-                                 responder: ExceptionLoggerTask,
+                                 responder: Job,
                                  plugin: Plugin,
                                  repo: Repository) -> dict:
         """
@@ -242,7 +213,7 @@ class ResponderRegistrar:
     def _get_responders(cls,
                         event: Enum,
                         repo: Repository=None,
-                        plugin_name: str=None) -> [ExceptionLoggerTask]:
+                        plugin_name: str=None) -> [Job]:
         """
         Retrieves the list of responders for the specified event. Filters only
         the ones within a plugin, if ``plugin name`` is specified. Filters only
@@ -292,6 +263,6 @@ class ResponderRegistrar:
                                   f'Args:        {repr(args)}\n'
                                   f'Options:     {repr(options_specified)}')
                 LoggingExceptionHandler.create_from_exception(
-                    __name__, responder.name)
+                    __name__, responder.__name__)
 
         return retvals

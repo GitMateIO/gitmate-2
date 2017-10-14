@@ -33,13 +33,6 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = literal_eval(os.environ.get('DJANGO_DEBUG', 'False'))
-if DEBUG and not literal_eval(os.environ.get('FORCE_CELERY',
-                                             'False')):  # pragma: nocover
-    # let celery invoke all tasks locally
-    CELERY_ALWAYS_EAGER = True
-    # make celery raise exceptions when something fails
-    CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
-
 HOOK_DOMAIN = os.environ.get('HOOK_DOMAIN', 'localhost:8000')
 
 # django>=1.11 requires tests to use allowed hosts
@@ -65,7 +58,8 @@ REQUISITE_APPS = [
     'rest_framework_docs',
     'corsheaders',
     'coala_online',
-    'coafile_bot'
+    'coafile_bot',
+    'django_rq'
 ]
 
 RAVEN_CONFIG = {
@@ -226,6 +220,17 @@ DATABASES = {
     }
 }
 
+RQ_QUEUES = {
+    'default': {
+        'URL': os.environ.get('REDIS_BROKER_URL', 'redis://localhost:6379/0'),
+        'DEFAULT_TIMEOUT': 600
+    }
+}
+
+if DEBUG:
+    for queueConfig in RQ_QUEUES.values():
+        queueConfig['ASYNC'] = False
+
 
 LOGGING = {
     'version': 1,
@@ -240,11 +245,17 @@ LOGGING = {
     },
 
     'handlers': {
+        'rq_console': {
+            'level': 'DEBUG',
+            'class': 'rq.utils.ColorizingStreamHandler',
+            'formatter': 'console',
+            'exclude': ['%(asctime)s'],
+        },
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'console'
-            },
+        },
         'sentry': {
             'level': 'WARNING',
             'class': 'raven.handlers.logging.SentryHandler',
@@ -254,7 +265,7 @@ LOGGING = {
 
     'loggers': {
         '': {
-            'handlers': ['console', 'sentry'],
+            'handlers': ['rq_console', 'console', 'sentry'],
             'level': 'DEBUG',
             'propagate': False,
         }
@@ -306,18 +317,6 @@ STATIC_ROOT = os.environ.get('DJANGO_STATIC_ROOT',
 STATIC_URL = '/static/'
 STATICFILES_DIRS = ()
 
-
-# CELERY CONFIG
-CELERY_TASK_SERIALIZER = 'pickle'
-CELERY_ACCEPT_CONTENT = ['json', 'pickle', 'yaml']
-
-# RABBITMQ server base URL
-BROKER_URL = os.environ.get('CELERY_BROKER_URL',
-                            'amqp://admin:password@rabbit/')
-
-# This is required for coala_online
-# Otherwise it throws NotImplementedError
-CELERY_RESULT_BACKEND = 'amqp'
 
 # coafile Bot Tokens
 GITHUB_BOT_TOKEN = os.environ.get('GITHUB_BOT_TOKEN', None)

@@ -7,7 +7,7 @@ from IGitt.GitLab.GitLabUser import GitLabUser
 from IGitt.GitLab.GitLabNotification import GitLabNotification
 
 
-POLL_DELAY = 10.0
+POLL_DELAY = '*/10 * * * *'
 HOSTER_CONFIG = []
 
 try:

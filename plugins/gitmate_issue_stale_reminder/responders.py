@@ -1,9 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
 
-from celery.schedules import crontab
 from IGitt.Interfaces.Actions import IssueActions
-from IGitt.Interfaces.Comment import Comment
 from IGitt.Interfaces.Issue import Issue
 from IGitt.Interfaces.Repository import Repository
 
@@ -12,7 +10,7 @@ from gitmate_hooks.utils import ResponderRegistrar
 
 
 @ResponderRegistrar.scheduled_responder(
-    'issue_stale_reminder', crontab(minute='0', hour='0,12'), is_active=True)
+    'issue_stale_reminder', '0 0 0,12 * *', is_active=True)
 def add_stale_label_to_issues(
         repo: Repository,
         issue_expire_limit: int = 'Expiry limit in no. of days for issues',

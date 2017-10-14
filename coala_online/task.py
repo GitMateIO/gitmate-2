@@ -1,12 +1,12 @@
 import json
 
+from django_rq import job
+
 from coala_online.config import COALA_ONLINE_IMAGE
-from gitmate.celery import app as celery
 from gitmate.utils import run_in_container
-from gitmate_hooks.utils import ExceptionLoggerTask
 
 
-@celery.task(base=ExceptionLoggerTask, serializer='json')
+@job
 def run_coala_online(req):
     """
     Takes in a dict with mode, file_content, bears, url and sections

@@ -2,6 +2,7 @@ image: docker:1.10.3
 services:
   - docker:dind
   - postgres:9.6
+  - redis:alpine
 variables:
   DB_NAME: postgres
   DB_USER: postgres
