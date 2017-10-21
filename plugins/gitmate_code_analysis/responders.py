@@ -10,6 +10,8 @@ from IGitt.Interfaces.Commit import Commit
 from IGitt.Interfaces.Commit import CommitStatus
 from IGitt.Interfaces.Commit import Status
 from IGitt.Interfaces.MergeRequest import MergeRequest
+from django_pglocks import advisory_lock
+
 
 from gitmate.utils import run_in_container
 from gitmate_config.models import Repository
@@ -40,23 +42,24 @@ def analyse(repo, sha, clone_url, ref, coafile_location):
         coafile_location.replace('..', '').lstrip('/')
     )
 
-    try:
-        # Cached result available
-        return AnalysisResults.objects.get(
-            repo=repo, sha=sha, coafile_location=coafile_location).results
-    except AnalysisResults.DoesNotExist:
-        output = run_in_container(settings.COALA_RESULTS_IMAGE,
-                                  'python3', 'run.py', sha, clone_url, ref,
-                                  coafile_location)
+    with advisory_lock('{}:{}'.format(repo, sha), shared=True):
         try:
-            results = json.loads(output)
-        except json.JSONDecodeError:  # pragma: no cover, for debugging
-            logging.error('coala image output was not JSON parsable. Output '
-                          'was: ' + output)
-            raise
-        AnalysisResults.objects.create(repo=repo, sha=sha, results=results,
-                                       coafile_location=coafile_location)
-        return results
+            # Cached result available
+            return AnalysisResults.objects.get(
+                repo=repo, sha=sha, coafile_location=coafile_location).results
+        except AnalysisResults.DoesNotExist:
+            output = run_in_container(settings.COALA_RESULTS_IMAGE,
+                                      'python3', 'run.py', sha, clone_url, ref,
+                                      coafile_location)
+            try:
+                results = json.loads(output)
+            except json.JSONDecodeError:  # pragma: no cover, for debugging
+                logging.error('coala image output was not JSON parsable. Output '
+                              'was: ' + output)
+                raise
+            AnalysisResults.objects.create(repo=repo, sha=sha, results=results,
+                                           coafile_location=coafile_location)
+            return results
 
 
 def filter_results(old_results: dict, new_results: dict):
