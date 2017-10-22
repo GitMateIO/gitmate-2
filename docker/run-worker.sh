@@ -42,4 +42,5 @@ fi
 exec celery worker \
             -A gitmate \
 	    --uid=$USER --gid=$USER \
-	    --loglevel=info
+	    --loglevel=info \
+            $EXTRA_ARGUMENTS

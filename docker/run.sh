@@ -21,4 +21,5 @@ exec gunicorn gitmate.wsgi \
     --bind=0.0.0.0:8000 \
     --log-level=$LOG_LEVEL \
     --log-file=- \
-    --worker-class=gevent
+    --worker-class=gevent \
+    $EXTRA_ARGUMENTS

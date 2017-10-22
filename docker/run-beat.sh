@@ -4,4 +4,5 @@ exec celery beat \
             -A gitmate \
 	    --uid=$USER --gid=$USER \
             --loglevel=info \
-            --pidfile=/tmp/celerybeat.pid
+            --pidfile=/tmp/celerybeat.pid \
+            $EXTRA_ARGUMENTS

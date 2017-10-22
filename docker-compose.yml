@@ -31,6 +31,7 @@ services:
     env_file: ./docker/environment
     environment:
       - DOCKER_HOST=tcp://dind:2375
+      - EXTRA_ARGUMENTS=--autoscale=10,3
     links:
       - db
       - rabbit
