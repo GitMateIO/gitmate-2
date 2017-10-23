@@ -13,6 +13,7 @@ from django.test import TransactionTestCase
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory
 from social_django.models import UserSocialAuth
+import pytest
 import vcr
 
 from gitmate.utils import snake_case_to_camel_case
@@ -77,6 +78,7 @@ class StreamMock:
         pass
 
 
+@pytest.mark.usefixtures('vcrpy_record_mode')
 class GitmateTestCase(TransactionTestCase):
     """
     A base class for setting up a dummy user, request factory and a repo for
@@ -99,6 +101,7 @@ class GitmateTestCase(TransactionTestCase):
         testdir = os.path.dirname(inspect.getfile(self.__class__))
         cassettes_dir = os.path.join(testdir, 'cassettes')
         return vcr.VCR(
+            record_mode=self.vcrpy_record_mode,
             cassette_library_dir=cassettes_dir,
             match_on=['method', 'scheme', 'host', 'port', 'path'],
             filter_query_parameters=FILTER_QUERY_PARAMS,
