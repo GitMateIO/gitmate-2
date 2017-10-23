@@ -28,7 +28,8 @@ class TestIssuePRSync(GitmateTestCase):
 
         # testing updated pull requests
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'pull_request': {'number': 110},
             'action': 'opened'
         }
@@ -41,7 +42,8 @@ class TestIssuePRSync(GitmateTestCase):
 
         # testing updated issue
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'issue': {'number': 104},
             'action': 'updated'
         }
@@ -79,7 +81,8 @@ class TestIssuePRSync(GitmateTestCase):
 
         # testing updated pull requests
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'pull_request': {'number': 110},
             'action': 'opened'
         }
@@ -92,7 +95,8 @@ class TestIssuePRSync(GitmateTestCase):
 
         # testing updated issue
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'issue': {'number': 104},
             'action': 'updated'
         }

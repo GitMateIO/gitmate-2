@@ -36,7 +36,7 @@ class TestBugSpotter(GitmateTestCase):
         self.setUpWithPlugin('bug_spotter')
 
         self.github_data = {
-            'repository': {'full_name': self.repo.full_name},
+            'repository': {'full_name': self.repo.full_name, 'id': 49558751},
             'pull_request': {'number': 7},
             'action': 'synchronize'
         }

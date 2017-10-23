@@ -1,6 +1,7 @@
 import json
 
 from django.conf import settings
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
@@ -8,20 +9,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from IGitt.GitHub import GitHubToken
 from IGitt.GitHub.GitHub import GitHub
-from IGitt.GitHub.GitHubComment import GitHubComment
-from IGitt.GitHub.GitHubCommit import GitHubCommit
-from IGitt.GitHub.GitHubIssue import GitHubIssue
-from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitLab import GitLabOAuthToken
 from IGitt.GitLab.GitLab import GitLab
-from IGitt.GitLab.GitLabComment import GitLabComment
-from IGitt.GitLab.GitLabCommit import GitLabCommit
-from IGitt.GitLab.GitLabIssue import GitLabIssue
-from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
-from IGitt.Interfaces.Actions import IssueActions
-from IGitt.Interfaces.Actions import MergeRequestActions
-from IGitt.Interfaces.Actions import PipelineActions
-from IGitt.Interfaces.Comment import CommentType
 
 from gitmate_config import Providers
 from gitmate_config.models import Repository
@@ -39,11 +28,12 @@ def github_webhook_receiver(request):
     Receives webhooks from GitHub and carries out the approriate action.
     """
     webhook_data = json.loads(request.body.decode('utf-8'))
-    repository = webhook_data['repository']['full_name']
+    repository = webhook_data['repository']
 
     repo_obj = get_object_or_404(Repository,
+                                 (Q(identifier=repository['id'])|
+                                  Q(full_name=repository['full_name'])),
                                  active=True,
-                                 full_name=repository,
                                  provider=Providers.GITHUB.value)
 
     raw_token = repo_obj.user.social_auth.get(
@@ -51,7 +41,9 @@ def github_webhook_receiver(request):
 
     try:
         action, objs = GitHub(GitHubToken(raw_token)).handle_webhook(
-            repository, request.META['HTTP_X_GITHUB_EVENT'], webhook_data)
+            repository['full_name'],
+            request.META['HTTP_X_GITHUB_EVENT'],
+            webhook_data)
     except NotImplementedError:  # pragma: no cover
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet
         return Response(status=status.HTTP_200_OK)

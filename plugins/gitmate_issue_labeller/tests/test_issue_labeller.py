@@ -42,7 +42,8 @@ class TestIssueLabeller(GitmateTestCase):
         m_desc.return_value = 'Make coala bears sing this song!'
 
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'issue': {'number': 104},
             'action': 'opened'
         }
@@ -71,7 +72,8 @@ class TestIssueLabeller(GitmateTestCase):
         m_desc.return_value = 'Make coala bears sing this song!'
 
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'issue': {'number': 104},
             'action': 'opened'
         }

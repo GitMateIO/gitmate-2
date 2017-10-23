@@ -130,6 +130,10 @@ class Organization(models.Model):
 
 
 class Repository(models.Model):
+
+    # The unique identifier for each repository which never changes
+    identifier = models.IntegerField(default=None, null=True)
+
     # The user who operates the repository
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -217,10 +221,19 @@ class Repository(models.Model):
         :param instance: The IGitt Repository instance.
         :param active: Filter for active repositories.
         """
-        return cls.objects.get(
-            full_name=instance.full_name,
-            provider=instance.hoster,
-            active=active)
+        try:
+            return cls.objects.get(
+                identifier=instance.identifier,
+                provider=instance.hoster,
+                active=active)
+        except cls.DoesNotExist:
+            obj = cls.objects.get(
+                full_name=instance.full_name,
+                provider=instance.hoster,
+                active=active)
+            obj.identifier = instance.identifier
+            obj.save()
+            return obj
 
     @property
     def igitt_repo(self) -> IGittRepository:
@@ -231,10 +244,10 @@ class Repository(models.Model):
             provider=self.provider).extra_data['access_token']
         if self.provider == Providers.GITHUB.value:
             token = Providers.GITHUB.get_token(token_str)
-            return GitHubRepository(token, self.full_name)
+            return GitHubRepository(token, self.identifier or self.full_name)
         if self.provider == Providers.GITLAB.value:
             token = Providers.GITLAB.get_token(token_str)
-            return GitLabRepository(token, self.full_name)
+            return GitLabRepository(token, self.identifier or self.full_name)
 
         # Other providers aren't implemented yet.
         raise NotImplementedError

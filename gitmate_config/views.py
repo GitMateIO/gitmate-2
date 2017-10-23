@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from IGitt.GitHub.GitHub import GitHub
@@ -62,10 +63,15 @@ class RepositoryViewSet(
 
                 for igitt_repo in hoster[provider.value](
                         provider.get_token(raw_token)).master_repositories:
-                    repo, _ = Repository.objects.get_or_create(
+                    repo, _ = Repository.objects.filter(
+                        Q(identifier=igitt_repo.identifier) |
+                        Q(full_name=igitt_repo.full_name)
+                    ).get_or_create(
                         provider=provider.value,
-                        full_name=igitt_repo.full_name,
-                        defaults={'active': False, 'user': request.user})
+                        defaults={'active': False,
+                                  'user': request.user,
+                                  'full_name': igitt_repo.full_name,
+                                  'identifier': igitt_repo.identifier})
                     repo.admins.add(request.user)
 
                     if repo.org is None:

@@ -58,7 +58,7 @@ class TestCodeAnalysis(GitmateTestCase):
         self.setUpWithPlugin('code_analysis')
 
         self.github_data = {
-            'repository': {'full_name': self.repo.full_name},
+            'repository': {'full_name': self.repo.full_name, 'id': 49558751},
             'pull_request': {'number': 0},
             'action': 'opened'
         }

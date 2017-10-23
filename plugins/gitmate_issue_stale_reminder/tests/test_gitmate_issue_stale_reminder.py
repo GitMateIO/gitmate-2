@@ -38,7 +38,7 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
 
         # testing updated issue
         data = {
-            'repository': {'full_name': self.repo.full_name},
+            'repository': {'full_name': self.repo.full_name, 'id': 49558751},
             'issue': {'number': 104},
             'action': 'reopened'
         }
@@ -64,7 +64,7 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
 
         # testing added comment to issue
         data = {
-            'repository': {'full_name': self.repo.full_name},
+            'repository': {'full_name': self.repo.full_name, 'id': 49558751},
             'issue': {'number': 7},
             'comment': {'id': 0},
             'action': 'created'

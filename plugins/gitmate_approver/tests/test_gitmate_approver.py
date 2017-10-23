@@ -37,7 +37,8 @@ class TestGitmateApprover(GitmateTestCase):
                   new_callable=PropertyMock, return_value={'WIP', 'bug'})
     def test_github_success_on_head_commit(self, m_labels, m_status):
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'pull_request': {'number': 7},
             'action': 'opened'
         }
@@ -46,7 +47,8 @@ class TestGitmateApprover(GitmateTestCase):
 
         # now check the labels on status change
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'commit': {'sha': 'f6d2b7c66372236a090a2a74df2e47f42a54456b'}
         }
         response = self.simulate_github_webhook_call('status', data)
@@ -88,7 +90,8 @@ class TestGitmateApprover(GitmateTestCase):
                   new_callable=PropertyMock, return_value={'WIP', 'approved'})
     def test_github_failure_on_head_commit(self, m_labels):
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'pull_request': {'number': 110},
             'action': 'synchronize'
         }
@@ -97,7 +100,8 @@ class TestGitmateApprover(GitmateTestCase):
 
         # now check the labels on status change
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'commit': {'sha': '91aaff6db9564480bf340c618c7ced4623c5be2e'}
         }
         response = self.simulate_github_webhook_call('status', data)

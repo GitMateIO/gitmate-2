@@ -22,13 +22,13 @@ class TestAck(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('ack')
         self.gh_comment_data = {
-            'repository': {'full_name': self.repo.full_name},
+            'repository': {'full_name': self.repo.full_name, 'id': 49558751},
             'issue': {'number': 7, 'pull_request': {}},
             'comment': {'id': 0},
             'action': 'created'
         }
         self.gh_pr_data = {
-            'repository': {'full_name': self.repo.full_name},
+            'repository': {'full_name': self.repo.full_name, 'id': 49558751},
             'pull_request': {'number': 7},
             'action': 'opened'
         }

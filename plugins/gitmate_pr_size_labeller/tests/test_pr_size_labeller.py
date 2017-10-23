@@ -13,7 +13,8 @@ class TestPRSizeLabeller(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('pr_size_labeller')
         self.github_data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'pull_request': {'number': 7},
             'action': 'synchronize'
         }

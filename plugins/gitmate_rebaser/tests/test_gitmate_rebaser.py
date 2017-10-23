@@ -40,7 +40,8 @@ class TestGitmateRebaser(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('rebaser')
         self.github_data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'issue': {
                 'number': 108,
                 'pull_request': {},

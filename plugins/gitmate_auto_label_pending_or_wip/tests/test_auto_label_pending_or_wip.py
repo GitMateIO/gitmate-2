@@ -15,7 +15,8 @@ class TestAutoLabelPendingOrWip(GitmateTestCase):
     def setUp(self):
         self.setUpWithPlugin('auto_label_pending_or_wip')
         self.github_data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'pull_request': {'number': 7},
             'action': 'synchronize'
         }

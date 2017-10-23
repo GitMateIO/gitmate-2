@@ -38,7 +38,8 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
 
         # testing updated pull requests
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'pull_request': {'number': 7},
             'action': 'synchronize'
         }
@@ -62,7 +63,8 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
 
         # testing updated pull requests
         data = {
-            'repository': {'full_name': self.repo.full_name},
+            'repository': {'full_name': self.repo.full_name,
+                           'id': 49558751},
             'issue': {'number': 7, 'pull_request': {}},
             'comment': {'id': 0},
             'action': 'created'

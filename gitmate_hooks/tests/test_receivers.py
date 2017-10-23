@@ -49,7 +49,8 @@ class TestWebhookReceivers(GitmateTestCase):
 
     def test_github_webhook_receiver_successful_pull_request_opened(self):
         data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO']},
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
             'pull_request': {'number': 0},
             'action': 'opened'
         }
