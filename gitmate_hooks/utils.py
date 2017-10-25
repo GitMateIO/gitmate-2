@@ -12,6 +12,13 @@ from billiard.einfo import ExceptionInfo
 from celery import Task
 from celery.schedules import crontab
 from celery.utils.log import get_logger
+from django.conf import settings
+from IGitt.GitHub import GitHub
+from IGitt.GitHub import GitHubToken
+from IGitt.GitHub.GitHubUser import GitHubUser
+from IGitt.GitLab import GitLab
+from IGitt.GitLab import GitLabPrivateToken
+from IGitt.GitLab.GitLabUser import GitLabUser
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -21,6 +28,7 @@ from gitmate_config import GitmateActions
 from gitmate_config import Providers
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
+from gitmate_config.utils import store_user
 from gitmate_logger.signals import LoggingExceptionHandler
 
 
@@ -295,3 +303,33 @@ class ResponderRegistrar:
                     __name__, responder.name)
 
         return retvals
+
+
+BOT_TOKENS = {}
+
+
+if settings.GITHUB_GITMATE_BOT_TOKEN:
+    GH_TOKEN = GitHubToken(settings.GITHUB_GITMATE_BOT_TOKEN)
+    GH_USER = store_user(GitHubUser(GH_TOKEN), GH_TOKEN)
+    BOT_TOKENS[Providers.GITHUB] = (GitHub(GH_TOKEN), GH_USER)
+
+if settings.GITLAB_GITMATE_BOT_TOKEN:
+    GL_TOKEN = GitLabPrivateToken(settings.GITLAB_GITMATE_BOT_TOKEN)
+    GL_USER = store_user(GitLabUser(GL_TOKEN), GL_TOKEN)
+    BOT_TOKENS[Providers.GITLAB] = (GitLab(GL_TOKEN), GL_USER)
+
+
+@ResponderRegistrar.scheduler(interval=30)
+def store_gitmate_bot_write_repositories():
+    """
+    Collects the repositories for which the bot account has write access to and
+    stores them in the database.
+    """
+    for provider, hoster_and_user in BOT_TOKENS.items():
+        hoster, user = hoster_and_user
+        for repo in hoster.write_repositories:
+            db_repo, _ = Repository.objects.get_or_create(
+                provider=provider.value,
+                full_name=repo.full_name,
+                defaults={'active': False, 'user': user})
+            db_repo.admins.add(user)

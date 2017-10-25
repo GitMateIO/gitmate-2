@@ -352,3 +352,7 @@ REBASER_IMAGE = os.environ.get('REBASER_IMAGE',
 
 # timeout for docker containers in seconds, setting upto 10 minutes
 CONTAINER_TIMEOUT = 60 * 10
+
+# gitmate bot private token
+GITHUB_GITMATE_BOT_TOKEN = os.environ.get('GITHUB_GITMATE_BOT_TOKEN', None)
+GITLAB_GITMATE_BOT_TOKEN = os.environ.get('GITLAB_GITMATE_BOT_TOKEN', None)
