@@ -8,20 +8,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from IGitt.GitHub import GitHubToken
 from IGitt.GitHub.GitHub import GitHub
-from IGitt.GitHub.GitHubComment import GitHubComment
-from IGitt.GitHub.GitHubCommit import GitHubCommit
-from IGitt.GitHub.GitHubIssue import GitHubIssue
-from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
-from IGitt.GitLab import GitLabOAuthToken
+from IGitt.GitLab import GitLabPrivateToken
 from IGitt.GitLab.GitLab import GitLab
-from IGitt.GitLab.GitLabComment import GitLabComment
-from IGitt.GitLab.GitLabCommit import GitLabCommit
-from IGitt.GitLab.GitLabIssue import GitLabIssue
-from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
-from IGitt.Interfaces.Actions import IssueActions
-from IGitt.Interfaces.Actions import MergeRequestActions
-from IGitt.Interfaces.Actions import PipelineActions
-from IGitt.Interfaces.Comment import CommentType
 
 from gitmate_config import Providers
 from gitmate_config.models import Repository
@@ -46,8 +34,13 @@ def github_webhook_receiver(request):
                                  full_name=repository,
                                  provider=Providers.GITHUB.value)
 
-    raw_token = repo_obj.user.social_auth.get(
-        provider=Providers.GITHUB.value).extra_data['access_token']
+    raw_token = settings.GITHUB_ACTING_BOT_TOKEN
+
+    # TODO: Implement a safer architecture for read / write actions seperately
+    # in IGitt. Also, consider the effect of rate limit in using a single user.
+
+    # TODO: If the task fails with a 403, ask the user to invite the bot to the
+    # repository with `push` access.
 
     try:
         action, objs = GitHub(GitHubToken(raw_token)).handle_webhook(
@@ -93,11 +86,16 @@ def gitlab_webhook_receiver(request):
                                  full_name=repository,
                                  provider=Providers.GITLAB.value)
 
-    raw_token = repo_obj.user.social_auth.get(
-        provider=Providers.GITLAB.value).extra_data['access_token']
+    raw_token = settings.GITLAB_ACTING_BOT_TOKEN
+
+    # TODO: Implement a safer architecture for read / write actions seperately
+    # in IGitt. Also, consider the effect of rate limit in using a single user.
+
+    # TODO: If the task fails with a 403, ask the user to invite the bot to the
+    # repository with `push` access.
 
     try:
-        action, objs = GitLab(GitLabOAuthToken(raw_token)).handle_webhook(
+        action, objs = GitLab(GitLabPrivateToken(raw_token)).handle_webhook(
             repository, request.META['HTTP_X_GITLAB_EVENT'], webhook)
     except NotImplementedError:  # pragma: no cover
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet

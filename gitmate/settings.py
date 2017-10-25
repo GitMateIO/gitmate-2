@@ -323,6 +323,10 @@ CELERY_RESULT_BACKEND = 'amqp'
 GITHUB_BOT_TOKEN = os.environ.get('GITHUB_BOT_TOKEN', None)
 GITLAB_BOT_TOKEN = os.environ.get('GITLAB_BOT_TOKEN', None)
 
+# acting bot personal tokens
+GITHUB_ACTING_BOT_TOKEN = os.environ.get('GITHUB_ACTING_BOT_TOKEN', None)
+GITLAB_ACTING_BOT_TOKEN = os.environ.get('GITLAB_ACTING_BOT_TOKEN', None)
+
 # Scraper Token
 GITHUB_SCRAPER_TOKEN = os.environ.get('GITHUB_SCRAPER_TOKEN', None)
 GITLAB_SCRAPER_TOKEN = os.environ.get('GITLAB_SCRAPER_TOKEN', None)
