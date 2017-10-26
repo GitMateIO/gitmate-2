@@ -19,6 +19,7 @@ from rest_framework.response import Response
 from gitmate.celery import app as celery
 from gitmate_config import GitmateActions
 from gitmate_config import Providers
+from gitmate_config import TaskQueue
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 from gitmate_logger.signals import LoggingExceptionHandler
@@ -155,7 +156,8 @@ class ResponderRegistrar:
     def scheduler(cls,
                   interval: (crontab, float),
                   *args,
-                  **kwargs): # pragma: no cover
+                  queue: Enum = TaskQueue.SHORT,
+                  **kwargs):  # pragma: no cover
         """
         Registers the decorated function as a periodic task. The task should
         not accept any arguments.
@@ -163,11 +165,12 @@ class ResponderRegistrar:
         :param interval:    Periodic interval in seconds as float or crontab
                             object specifying task trigger time. See
                             http://docs.celeryproject.org/en/latest/reference/celery.schedules.html#celery.schedules.crontab
+        :param queue:       Queue to use for the scheduled task.
         :param args:        Arguments to pass to scheduled task.
         :param kwargs:      Keyword arguments to pass to scheduled task.
         """
         def _wrapper(function: Callable):
-            task = celery.task(function, base=ExceptionLoggerTask)
+            task = celery.task(function, base=ExceptionLoggerTask, queue=queue.value)
             celery.add_periodic_task(interval, task.s(), args, kwargs)
             return function
         return _wrapper
@@ -176,6 +179,7 @@ class ResponderRegistrar:
     def scheduled_responder(cls,
                             plugin: str,
                             interval: (crontab, float),
+                            queue: Enum = TaskQueue.SHORT,
                             **kwargs):
         """
         Registers the decorated function as responder and register
@@ -186,6 +190,7 @@ class ResponderRegistrar:
         :param interval: Periodic interval in seconds as float or crontab
                 object specifying task trigger time.
                 See http://docs.celeryproject.org/en/latest/reference/celery.schedules.html#celery.schedules.crontab
+        :param queue: Queue to use for the scheduled_responder's tasks.
         :param kwargs: Keyword arguments to pass to `run_plugin_for_all_repos`.
 
         >>> from gitmate_hooks.utils import ResponderRegistrar
@@ -201,21 +206,23 @@ class ResponderRegistrar:
             action = '{}.{}'.format(plugin, function.__name__)
             periodic_task_args = (plugin, action)
             function = cls.responder(plugin, action)(function)
-            task = celery.task(run_plugin_for_all_repos, base=ExceptionLoggerTask)
+            task = celery.task(run_plugin_for_all_repos, base=ExceptionLoggerTask,
+                               queue=queue.value)
             celery.add_periodic_task(interval, task.s(), periodic_task_args, kwargs)
             return function
         return _wrapper
 
 
     @classmethod
-    def responder(cls, plugin_name: str, *actions: [Enum]):
+    def responder(cls, plugin_name: str, *actions: [Enum],
+                  queue: Enum=TaskQueue.SHORT):
         """
         Registers the decorated function as a responder to the actions
         provided. Specifying description as defaults on option specific args
         is mandatory.
         """
         def _wrapper(function):
-            task = celery.task(function, base=ExceptionLoggerTask)
+            task = celery.task(function, base=ExceptionLoggerTask, queue=queue.value)
             for action in actions:
                 cls._responders[action].append(task)
             cls._plugins[task] = plugin_name
