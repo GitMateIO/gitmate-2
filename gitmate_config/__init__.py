@@ -29,3 +29,9 @@ class Providers(Enum):
             return GitHubToken(raw_token)
         else:
             return GitLabOAuthToken(raw_token)
+
+
+class TaskQueue(Enum):
+    SHORT = 'short'
+    LONG = 'long'
+    MEDIUM = 'medium'
