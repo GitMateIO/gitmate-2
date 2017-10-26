@@ -324,6 +324,9 @@ BROKER_URL = os.environ.get('CELERY_BROKER_URL',
 # Otherwise it throws NotImplementedError
 CELERY_RESULT_BACKEND = 'amqp'
 
+# Setting the task timeout hard limit to 3 hours
+CELERYD_TASK_TIME_LIMIT = 10800
+
 # coafile Bot Tokens
 GITHUB_BOT_TOKEN = os.environ.get('GITHUB_BOT_TOKEN', None)
 GITLAB_BOT_TOKEN = os.environ.get('GITLAB_BOT_TOKEN', None)
