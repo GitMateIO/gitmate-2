@@ -73,7 +73,7 @@ push_master_image:
     - ./.ci/push_image.sh $TEST_IMAGE_NAME $MASTER_NAME
     - ./.ci/push_image.sh "$TEST_IMAGE_NAME-ee" "$MASTER_NAME-ee"
   only:
-    - master
+    - master@gitmate/open-source/gitmate-2
 
 push_release_image:
   stage: release
@@ -83,7 +83,7 @@ push_release_image:
     - ./.ci/push_image.sh "$TEST_IMAGE_NAME-ee" "$RELEASE_NAME-ee"
   when: manual
   only:
-    - master
+    - master@gitmate/open-source/gitmate-2
 
 deploy_master:
   stage: deploy
@@ -101,7 +101,7 @@ deploy_master:
   dependencies:
     - push_master_image
   only:
-    - master
+    - master@gitmate/open-source/gitmate-2
 
 deploy_release:
   stage: deploy
@@ -120,4 +120,4 @@ deploy_release:
     - push_release_image
   when: manual
   only:
-    - master
+    - master@gitmate/open-source/gitmate-2
