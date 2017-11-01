@@ -16,6 +16,7 @@ from rest_framework.viewsets import GenericViewSet
 from social_django.models import UserSocialAuth
 
 from gitmate_config import Providers
+from gitmate_config.models import Plugin
 from gitmate_config.models import Organization
 from gitmate_config.models import Repository
 
@@ -128,6 +129,12 @@ class RepositoryViewSet(
             # increment the repository activation count
             instance.activation_count += 1
             instance.save()
+
+            # turn on default plugins for the first time only
+            if instance.activation_count == 1:
+                plugins = [{'name': plugin.name, 'active': True}
+                           for plugin in Plugin.get_default_list()]
+                instance.set_plugin_settings(plugins)
 
             # register the webhook for repository events
             repo.register_hook(hook_url, settings.WEBHOOK_SECRET)

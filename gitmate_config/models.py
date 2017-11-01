@@ -39,6 +39,15 @@ class Plugin(models.Model):
         except:
             return False
 
+    @classmethod
+    def get_default_list(cls):
+        """
+        Returns set of all the plugins which are to be enabled upon repo
+        activation.
+        """
+        return {plugin for plugin in cls.objects.all()
+                if plugin.config_value('enable_on_repo_activation')}
+
     def import_module(self):
         return import_module(self.config_value('name'))
 
