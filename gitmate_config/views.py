@@ -125,6 +125,11 @@ class RepositoryViewSet(
             domain=settings.HOOK_DOMAIN, provider=instance.provider)
 
         if instance.active:
+            # increment the repository activation count
+            instance.activation_count += 1
+            instance.save()
+
+            # register the webhook for repository events
             repo.register_hook(hook_url, settings.WEBHOOK_SECRET)
         else:
             repo.delete_hook(hook_url)
