@@ -151,6 +151,9 @@ class Repository(models.Model):
 
     active = models.BooleanField(default=False)
 
+    # number of times a repository has been activated
+    activation_count = models.IntegerField(default=0)
+
     # The organization this repository is related to
     org = models.ForeignKey(Organization, null=True, related_name='repos')
 
