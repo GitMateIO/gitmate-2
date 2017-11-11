@@ -2,9 +2,9 @@ from datetime import datetime
 from datetime import timedelta
 
 from celery.schedules import crontab
-from IGitt.Interfaces.Actions import IssueActions
-from IGitt.Interfaces.Comment import Comment
+from IGitt.Interfaces.Actions import IssueActions, MergeRequestActions
 from IGitt.Interfaces.Issue import Issue
+from IGitt.Interfaces.MergeRequest import MergeRequest
 from IGitt.Interfaces.Repository import Repository
 
 from gitmate.utils import lock_igitt_object
@@ -33,15 +33,25 @@ def add_stale_label_to_issues(
 @ResponderRegistrar.responder(
     'issue_stale_reminder',
     IssueActions.REOPENED,
-    IssueActions.COMMENTED
+    IssueActions.COMMENTED,
+    IssueActions.ATTRIBUTES_CHANGED,
+    MergeRequestActions.OPENED,
+    MergeRequestActions.SYNCHRONIZED
 )
 def remove_stale_label_from_issues(
-        issue: Issue,
+        entity: (Issue, MergeRequest),
         *args,
         stale_label: str = 'Label to be used for marking stale issues'
 ):
     """
-    Unassigns the chosen label from issues when they are updated again.
+    Unassigns the chosen label from issues when they are updated again or if
+    they are mentioned from other pull requests.
     """
-    with lock_igitt_object('label issue', issue):
-        issue.labels = issue.labels - {stale_label}
+    if isinstance(entity, MergeRequest):
+        issues = entity.mentioned_issues
+        for issue in issues:
+            with lock_igitt_object('label issue', issue):
+                issue.labels = issue.labels - {stale_label}
+    else:
+        with lock_igitt_object('label issue', entity):
+            entity.labels = entity.labels - {stale_label}
