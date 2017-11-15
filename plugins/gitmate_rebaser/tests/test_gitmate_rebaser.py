@@ -67,7 +67,8 @@ class TestGitmateRebaser(GitmateTestCase):
     @patch.object(GitHubComment, 'body', new_callable=PropertyMock)
     @patch.object(GitHubMergeRequest, 'add_comment')
     def test_github_failed_rebase(self, m_comment, m_body):
-        m_body.return_value = '@{} rebase'.format(self.repo.user.username)
+        m_body.return_value = '@{} rebase'.format(
+            self.repo.user.username.upper())
         subprocess.Popen = fake_popen_failure
         response = self.simulate_github_webhook_call('issue_comment',
                                                      self.github_data)

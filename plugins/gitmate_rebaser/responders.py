@@ -22,7 +22,8 @@ def rebase_merge_request(pr: MergeRequest, comment: Comment):
     """
     username = Repository.from_igitt_repo(pr.repository).user.username
     body = comment.body.lower()
-    compiled_regex = re.compile(REBASE_COMMAND_REGEX.format(username))
+    compiled_regex = re.compile(REBASE_COMMAND_REGEX.format(username),
+                                re.IGNORECASE)
     if compiled_regex.search(body):
         pr.add_comment(
             'Hey! This pull request is being rebased automatically. Please DO '
