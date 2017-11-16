@@ -7,9 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from IGitt.GitHub import GitHubToken
 from IGitt.GitHub.GitHub import GitHub
-from IGitt.GitLab import GitLabOAuthToken
 from IGitt.GitLab.GitLab import GitLab
 
 from gitmate_config import Providers
@@ -27,8 +25,9 @@ def github_webhook_receiver(request):
     """
     Receives webhooks from GitHub and carries out the approriate action.
     """
-    webhook_data = json.loads(request.body.decode('utf-8'))
-    repository = webhook_data['repository']
+    webhook = json.loads(request.body.decode('utf-8'))
+    event = request.META['HTTP_X_GITHUB_EVENT']
+    repository = webhook['repository']
 
     repo_obj = get_object_or_404(Repository,
                                  (Q(identifier=repository['id'])|
@@ -36,19 +35,13 @@ def github_webhook_receiver(request):
                                  active=True,
                                  provider=Providers.GITHUB.value)
 
-    raw_token = repo_obj.user.social_auth.get(
-        provider=Providers.GITHUB.value).extra_data['access_token']
-
     try:
-        action, objs = GitHub(GitHubToken(raw_token)).handle_webhook(
-            request.META['HTTP_X_GITHUB_EVENT'],
-            webhook_data)
+        action, objs = GitHub(repo_obj.token).handle_webhook(event, webhook)
     except NotImplementedError:  # pragma: no cover
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet
         return Response(status=status.HTTP_200_OK)
 
     ResponderRegistrar.respond(action, repo_obj, *objs)
-
     return Response(status=status.HTTP_200_OK)
 
 
@@ -62,6 +55,7 @@ def gitlab_webhook_receiver(request):
     Receives webhooks from GitLab and carries out the appropriate action.
     """
     webhook = json.loads(request.body.decode('utf-8'))
+    event = request.META['HTTP_X_GITLAB_EVENT']
 
     def _get_repo_name(data: dict):
         # Push, Tag, Issue, Note, Wiki Page and Pipeline Hooks
@@ -84,16 +78,11 @@ def gitlab_webhook_receiver(request):
                                  full_name=repository,
                                  provider=Providers.GITLAB.value)
 
-    raw_token = repo_obj.user.social_auth.get(
-        provider=Providers.GITLAB.value).extra_data['access_token']
-
     try:
-        action, objs = GitLab(GitLabOAuthToken(raw_token)).handle_webhook(
-            request.META['HTTP_X_GITLAB_EVENT'], webhook)
+        action, objs = GitLab(repo_obj.token).handle_webhook(event, webhook)
     except NotImplementedError:  # pragma: no cover
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet
         return Response(status=status.HTTP_200_OK)
 
     ResponderRegistrar.respond(action, repo_obj, *objs)
-
     return Response(status=status.HTTP_200_OK)

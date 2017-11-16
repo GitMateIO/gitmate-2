@@ -11,6 +11,7 @@ from IGitt.GitHub.GitHubOrganization import GitHubOrganization
 from IGitt.GitLab.GitLabOrganization import GitLabOrganization
 from IGitt.GitHub.GitHubRepository import GitHubRepository
 from IGitt.GitLab.GitLabRepository import GitLabRepository
+from IGitt.Interfaces import Token as IGittToken
 from IGitt.Interfaces.Organization import Organization as IGittOrganization
 from IGitt.Interfaces.Repository import Repository as IGittRepository
 from rest_framework.reverse import reverse
@@ -267,18 +268,25 @@ class Repository(models.Model):
             return obj
 
     @property
+    def token(self) -> IGittToken:
+        """
+        Returns the IGitt access token for the repository.
+        """
+        raw_token = self.user.social_auth.get(
+            provider=self.provider).access_token
+        return Providers(self.provider).get_token(raw_token)
+
+    @property
     def igitt_repo(self) -> IGittRepository:
         """
         Returns an IGitt Repository object from Repository model.
         """
-        token_str = self.user.social_auth.get(
-            provider=self.provider).extra_data['access_token']
         if self.provider == Providers.GITHUB.value:
-            token = Providers.GITHUB.get_token(token_str)
-            return GitHubRepository(token, self.identifier or self.full_name)
+            return GitHubRepository(self.token,
+                                    self.identifier or self.full_name)
         if self.provider == Providers.GITLAB.value:
-            token = Providers.GITLAB.get_token(token_str)
-            return GitLabRepository(token, self.identifier or self.full_name)
+            return GitLabRepository(self.token,
+                                    self.identifier or self.full_name)
 
         # Other providers aren't implemented yet.
         raise NotImplementedError
