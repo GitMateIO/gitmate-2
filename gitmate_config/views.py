@@ -118,28 +118,34 @@ class RepositoryViewSet(
         is writable (see serializer) so this takes care of
         activation/decativation of the webhook only.
         """
+        instance = self.get_object()
+        active_changed = (request.data['active'] != instance.active
+                          if 'active' in request.data
+                          else False)
+
         retval = super().update(request, *args, **kwargs)
 
-        instance = self.get_object()
-        repo = instance.igitt_repo
-        hook_url = 'https://{domain}/webhooks/{provider}'.format(
-            domain=settings.HOOK_DOMAIN, provider=instance.provider)
+        if active_changed:
+            instance = self.get_object()
+            repo = instance.igitt_repo
+            hook_url = 'https://{domain}/webhooks/{provider}'.format(
+                domain=settings.HOOK_DOMAIN, provider=instance.provider)
 
-        if instance.active:
-            # increment the repository activation count
-            instance.activation_count += 1
-            instance.save()
+            if instance.active:
+                # increment the repository activation count
+                instance.activation_count += 1
+                instance.save()
 
-            # turn on default plugins for the first time only
-            if instance.activation_count == 1:
-                plugins = [{'name': plugin.name, 'active': True}
-                           for plugin in Plugin.get_default_list()]
-                instance.set_plugin_settings(plugins)
+                # turn on default plugins for the first time only
+                if instance.activation_count == 1:
+                    plugins = [{'name': plugin.name, 'active': True}
+                               for plugin in Plugin.get_default_list()]
+                    instance.set_plugin_settings(plugins)
 
-            # register the webhook for repository events
-            repo.register_hook(hook_url, settings.WEBHOOK_SECRET)
-        else:
-            repo.delete_hook(hook_url)
+                # register the webhook for repository events
+                repo.register_hook(hook_url, settings.WEBHOOK_SECRET)
+            else:
+                repo.delete_hook(hook_url)
 
         return retval
 

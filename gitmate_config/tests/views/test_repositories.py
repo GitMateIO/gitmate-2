@@ -54,15 +54,18 @@ class TestRepositories(GitmateTestCase):
 
     def test_activate_repo(self):
         url = reverse('api:repository-detail', args=(self.repo.pk,))
-        activate_repo_request = self.factory.patch(
-            url,
-            {'active': True},
-        )
+        activate_repo_request = self.factory.patch(url, {'active': True})
         activate_repo_request.user = self.user
         response = self.repo_detail(activate_repo_request, pk=self.repo.pk)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('https://localhost:8000/webhooks/github',
                       self.repo.igitt_repo.hooks)
+
+        # Although repo is active, no error :)
+        activate_repo_request = self.factory.patch(url, {'active': True})
+        activate_repo_request.user = self.user
+        response = self.repo_detail(activate_repo_request, pk=self.repo.pk)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         deactivate_repo_request = self.factory.patch(
             url,
