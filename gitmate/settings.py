@@ -229,7 +229,7 @@ DATABASES = {
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
 
     'formatters': {
         'console': {
@@ -244,7 +244,7 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'console'
-            },
+        },
         'sentry': {
             'level': 'WARNING',
             'class': 'raven.handlers.logging.SentryHandler',
@@ -253,10 +253,15 @@ LOGGING = {
     },
 
     'loggers': {
-        '': {
-            'handlers': ['console', 'sentry'],
+        'django': {
+            'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': False,
+            'propagate': True
+        },
+        '': {
+            'handlers': ['sentry'],
+            'level': 'WARNING',
+            'propogate': False
         }
     }
 }
