@@ -15,7 +15,6 @@ import os
 import logging
 import raven
 
-from gitmate_config import TaskQueue
 from gitmate.utils import get_plugins
 from gitmate.utils import snake_case_to_camel_case
 
@@ -330,9 +329,6 @@ CELERYD_TASK_TIME_LIMIT = 10800
 
 # Reserve only one task at a time for a given worker
 CELERYD_PREFETCH_MULTIPLIER = 1
-
-# Set default task queue to short
-CELERY_TASK_DEFAULT_QUEUE = TaskQueue.SHORT
 
 # coafile Bot Tokens
 GITHUB_BOT_TOKEN = os.environ.get('GITHUB_BOT_TOKEN', None)
