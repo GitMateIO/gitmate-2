@@ -1,7 +1,7 @@
 FROM frolvlad/alpine-python-machinelearning:latest
 LABEL maintainer "Muhammad Kaisar Arkhan <yukinagato@protonmail.com>"
 
-ENV USER=gitmate ROOT=/usr/src/app NUM_WORKERS=3 LOG_LEVEL=DEBUG TIMEOUT=30
+ENV USER=gitmate ROOT=/usr/src/app NUM_WORKERS=3 LOG_LEVEL=DEBUG TIMEOUT=30 MIN=3 MAX=10
 
 EXPOSE 8000
 
