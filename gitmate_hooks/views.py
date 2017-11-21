@@ -41,7 +41,6 @@ def github_webhook_receiver(request):
 
     try:
         action, objs = GitHub(GitHubToken(raw_token)).handle_webhook(
-            repository['full_name'],
             request.META['HTTP_X_GITHUB_EVENT'],
             webhook_data)
     except NotImplementedError:  # pragma: no cover
@@ -90,7 +89,7 @@ def gitlab_webhook_receiver(request):
 
     try:
         action, objs = GitLab(GitLabOAuthToken(raw_token)).handle_webhook(
-            repository, request.META['HTTP_X_GITLAB_EVENT'], webhook)
+            request.META['HTTP_X_GITLAB_EVENT'], webhook)
     except NotImplementedError:  # pragma: no cover
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet
         return Response(status=status.HTTP_200_OK)
