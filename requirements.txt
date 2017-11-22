@@ -6,7 +6,7 @@ python3-openid==3.0.10
 IGitt==0.4.1.dev20171117184258
 drfdocs~=0.0.11
 django-cors-headers~=1.3.1
-celery~=4.0.2
+celery~=4.1.0
 gunicorn~=19.7.1
 gevent~=1.2.2
 psycopg2~=2.7.1
