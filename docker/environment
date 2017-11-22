@@ -14,4 +14,3 @@ GITLAB_BOT_TOKEN=foobar
 COALA_RESULTS_IMAGE=registry.gitlab.com/gitmate/open-source/coala-incremental-results:latest
 RESULTS_BOUNCER_IMAGE=registry.gitlab.com/gitmate/open-source/result-bouncer:latest
 REBASER_IMAGE=registry.gitlab.com/gitmate/open-source/mr-rebaser:latest
-ISSUE_REPORT_URL='https://gitlab.com/gitmate/open-source/gitmate-2/issues/new?issue_template=Bug&issue[title]={title}&issue[description]={description}'
