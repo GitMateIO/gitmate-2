@@ -31,8 +31,6 @@ services:
     env_file: ./docker/environment
     environment:
       - DOCKER_HOST=tcp://dind:2375
-      - MIN=3
-      - MAX=10
     links:
       - db
       - rabbit
