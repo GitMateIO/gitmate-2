@@ -332,7 +332,7 @@ CELERYD_TASK_TIME_LIMIT = 10800
 CELERYD_PREFETCH_MULTIPLIER = 1
 
 # Set default task queue to short
-CELERY_TASK_DEFAULT_QUEUE = TaskQueue.SHORT
+CELERY_TASK_DEFAULT_QUEUE = TaskQueue.SHORT.value
 
 # coafile Bot Tokens
 GITHUB_BOT_TOKEN = os.environ.get('GITHUB_BOT_TOKEN', None)
