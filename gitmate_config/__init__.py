@@ -32,6 +32,6 @@ class Providers(Enum):
 
 
 class TaskQueue(Enum):
-    SHORT = 'short'
+    SHORT = 'celery'  # Default queue - always there
     LONG = 'long'
     MEDIUM = 'medium'
