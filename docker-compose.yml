@@ -1,5 +1,10 @@
 version: '3'
 services:
+  frontend:
+    image: registry.gitlab.com/gitmate/open-source/gitmate-2-frontend:latest
+    command: "ng serve --delete-output-path=false -H 0.0.0.0"
+    ports:
+      - "4200:4200"
   dind:
     image: docker:stable-dind
     privileged: true
