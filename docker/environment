@@ -11,6 +11,10 @@ DJANGO_DEBUG=True
 FORCE_CELERY=True
 GITHUB_BOT_TOKEN=foobar
 GITLAB_BOT_TOKEN=foobar
+
+GITHUB_SCRAPER_TOKEN=foobar
+GITLAB_SCRAPER_TOKEN=foobar
+
 COALA_RESULTS_IMAGE=registry.gitlab.com/gitmate/open-source/coala-incremental-results:latest
 RESULTS_BOUNCER_IMAGE=registry.gitlab.com/gitmate/open-source/result-bouncer:latest
 REBASER_IMAGE=registry.gitlab.com/gitmate/open-source/mr-rebaser:latest
