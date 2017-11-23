@@ -41,8 +41,8 @@ fi
 
 exec celery worker \
             -A gitmate \
-	    --uid=$USER --gid=$USER \
-	    --loglevel=info \
-        -Q short,medium,long \
-        --autoscale=$MAX,$MIN \
+            --uid=$USER --gid=$USER \
+            --loglevel=info \
+            -Q short,medium,long \
+            --autoscale=$MAX,$MIN \
             $EXTRA_ARGUMENTS
