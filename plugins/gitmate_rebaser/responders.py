@@ -32,7 +32,7 @@ def rebase_merge_request(pr: MergeRequest, comment: Comment):
         head_clone_url = pr.source_repository.clone_url
         base_clone_url = pr.target_repository.clone_url
         output = run_in_container(settings.REBASER_IMAGE,
-                                  'python', 'run.py', head_clone_url,
+                                  'python', 'run.py', 'rebase', head_clone_url,
                                   base_clone_url, pr.head_branch_name,
                                   pr.base_branch_name)
         output = json.loads(output)
