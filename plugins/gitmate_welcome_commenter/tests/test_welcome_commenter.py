@@ -1,6 +1,7 @@
 from os import environ
 from unittest.mock import patch
 
+from django.core.signing import TimestampSigner
 from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
@@ -11,6 +12,7 @@ from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 class TestWelcomeCommenter(GitmateTestCase):
 
     def setUp(self):
+        self.signer = TimestampSigner()
         super().setUpWithPlugin('welcome_commenter')
 
     @patch.object(GitHubMergeRequest, 'add_comment')
@@ -24,7 +26,10 @@ class TestWelcomeCommenter(GitmateTestCase):
         response = self.simulate_github_webhook_call('pull_request', data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        mock_add_comment.assert_called_once_with('')
+        sign = self.signer.sign('')
+        msg = ("\n\nThis message was posted by [GitMate.io]"
+               "(https://gitmate.io) with timestamp signature {}".format(sign))
+        mock_add_comment.assert_called_once_with(msg)
 
     @patch.object(GitLabMergeRequest, 'add_comment')
     def test_gitlab(self, mock_add_comment):
@@ -39,4 +44,7 @@ class TestWelcomeCommenter(GitmateTestCase):
             'Merge Request Hook', data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        mock_add_comment.assert_called_once_with('')
+        sign = self.signer.sign('')
+        msg = ("\n\nThis message was posted by [GitMate.io]"
+               "(https://gitmate.io) with timestamp signature {}".format(sign))
+        mock_add_comment.assert_called_once_with(msg)

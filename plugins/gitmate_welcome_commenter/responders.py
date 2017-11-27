@@ -1,3 +1,4 @@
+from django.core.signing import TimestampSigner
 from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
@@ -12,4 +13,7 @@ def add_welcome_comment(
     """
     Adds a welcome comment to pull requests.
     """
-    pr.add_comment(autorespond_text)
+    sign = TimestampSigner().sign(autorespond_text)
+    msg = ("{}\n\nThis message was posted by [GitMate.io](https://gitmate.io)"
+           " with timestamp signature {}".format(autorespond_text, sign))
+    pr.add_comment(msg)
