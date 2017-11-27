@@ -13,7 +13,7 @@ def post_comment(subject: Union[Commit, Issue, MergeRequest], message: str):
     """
     if isinstance(subject, Commit):
         subject.comment(message)
-    elif issubclass(subject, Issue):
+    elif isinstance(subject, Issue):
         subject.add_comment(message)
 
 
