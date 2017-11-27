@@ -9,10 +9,9 @@ SOCIAL_AUTH_GITHUB_SECRET=foobar
 HOOK_DOMAIN=api.gitmate.io
 DJANGO_DEBUG=True
 FORCE_CELERY=True
-GITHUB_BOT_TOKEN=foobar
-GITLAB_BOT_TOKEN=foobar
+GITHUB_BOT_TOKEN=f12b88db0d3e8b81f32768dcc63d8a7180cc601e
 
-GITHUB_SCRAPER_TOKEN=foobar
+GITHUB_SCRAPER_TOKEN=d19fdcacbab93522a46de2154edcab6c75c8c49a
 GITLAB_SCRAPER_TOKEN=foobar
 
 COALA_RESULTS_IMAGE=registry.gitlab.com/gitmate/open-source/coala-incremental-results:latest
