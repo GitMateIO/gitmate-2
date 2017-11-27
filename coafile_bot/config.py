@@ -1,3 +1,4 @@
+import logging
 from django.conf import settings
 from IGitt.GitHub import GitHubToken
 from IGitt.GitHub.GitHubUser import GitHubUser
@@ -16,9 +17,10 @@ try:
         'token': token,
         'username': GitHubUser(token).username,
         'cls': GitHubNotification
-    })
-except BaseException:
-    pass
+})
+except RuntimeError:
+    logging.warning(f'coafile bot GitHub token {settings.GITHUB_BOT_TOKEN} '
+                    f'is invalid.')
 
 try:
     token = GitLabPrivateToken(settings.GITLAB_BOT_TOKEN)
@@ -28,4 +30,7 @@ try:
         'cls': GitLabNotification
     })
 except BaseException:
-    pass
+    logging.warning(f'coafile bot GitLab token {settings.GITLAB_BOT_TOKEN} '
+                    f'is invalid.')
+
+logging.info(f'Got coafile bot tokens: {HOSTER_CONFIG}')
