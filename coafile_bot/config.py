@@ -12,24 +12,26 @@ POLL_DELAY = 10.0
 HOSTER_CONFIG = []
 
 try:
-    token = GitHubToken(settings.GITHUB_BOT_TOKEN)
-    HOSTER_CONFIG.append({
-        'token': token,
-        'username': GitHubUser(token).username,
-        'cls': GitHubNotification
-})
+    if settings.GITHUB_BOT_TOKEN:
+        token = GitHubToken(settings.GITHUB_BOT_TOKEN)
+        HOSTER_CONFIG.append({
+            'token': token,
+            'username': GitHubUser(token).username,
+            'cls': GitHubNotification
+        })
 except RuntimeError:
     logging.warning(f'coafile bot GitHub token {settings.GITHUB_BOT_TOKEN} '
                     f'is invalid.')
 
 try:
-    token = GitLabPrivateToken(settings.GITLAB_BOT_TOKEN)
-    HOSTER_CONFIG.append({
-        'token': token,
-        'username': GitLabUser(token).username,
-        'cls': GitLabNotification
-    })
-except BaseException:
+    if settings.GITLAB_BOT_TOKEN:
+        token = GitLabPrivateToken(settings.GITLAB_BOT_TOKEN)
+        HOSTER_CONFIG.append({
+            'token': token,
+            'username': GitLabUser(token).username,
+            'cls': GitLabNotification
+        })
+except RuntimeError:
     logging.warning(f'coafile bot GitLab token {settings.GITLAB_BOT_TOKEN} '
                     f'is invalid.')
 
