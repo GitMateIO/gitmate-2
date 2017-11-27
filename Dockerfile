@@ -10,7 +10,7 @@ WORKDIR $ROOT
 RUN addgroup -S $USER && \
     adduser -h $ROOT -G $USER -S $USER
 
-ADD . $ROOT
+ADD requirements.txt $ROOT
 
 RUN apk add --no-cache docker postgresql-libs git && \
     apk add --no-cache --virtual .build-deps \
@@ -20,7 +20,9 @@ RUN apk add --no-cache docker postgresql-libs git && \
         python3-dev \
         libffi-dev && \
     pip install --no-cache-dir -r $ROOT/requirements.txt && \
-    ./install_deps.sh && \
     apk del .build-deps
+
+ADD . $ROOT
+RUN ./install_deps.sh && apk del .build-deps || true
 
 CMD ["./docker/run.sh"]
