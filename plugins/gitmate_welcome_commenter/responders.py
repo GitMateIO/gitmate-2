@@ -15,5 +15,5 @@ def add_welcome_comment(
     """
     sign = TimestampSigner().sign(autorespond_text)
     msg = ("{}\n\nThis message was posted by [GitMate.io](https://gitmate.io)"
-           " with timestamp signature {}".format(autorespond_text, sign))
+           " with timestamp signature `{}`".format(autorespond_text, sign))
     pr.add_comment(msg)
