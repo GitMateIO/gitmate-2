@@ -35,5 +35,5 @@ def handle_notification(notification: Notification, username: str):
             'for this repository.\n'
             '- Turn on code analysis for automated code reviews on all '
             'your pull requests.\n\n'
-            'Happy Linting! :tada:').format(pr_url=pull_request.url)
+            'Happy Linting! :tada:').format(pr_url=pull_request.web_url)
         post_comment(subject, message)
