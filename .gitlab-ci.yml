@@ -32,10 +32,11 @@ run_tests: &run_tests
     - postgres:9.6
   script:
     - apt-get update
-    - apt-get install -y --no-install-recommends libblas-dev liblapack-dev libatlas-base-dev gfortran g++
+    - apt-get install -y --no-install-recommends libblas-dev liblapack-dev libatlas-base-dev gfortran g++ git
     - pip3 install -r requirements.txt
     - pip3 install -r test-requirements.txt
     - py.test -vv --cov --doctest-modules
+    - sh .ci/no_cassettes.sh
   except:
     - master
 
