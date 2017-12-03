@@ -22,7 +22,6 @@ from gitmate_config import Providers
 from gitmate_config import TaskQueue
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
-from gitmate_logger.signals import LoggingExceptionHandler
 
 
 def run_plugin_for_all_repos(plugin_name: str,
@@ -298,7 +297,5 @@ class ResponderRegistrar:
                                   f'Responder:   {repr(responder)}\n'
                                   f'Args:        {repr(args)}\n'
                                   f'Options:     {repr(options_specified)}')
-                LoggingExceptionHandler.create_from_exception(
-                    __name__, responder.name)
 
         return retvals
