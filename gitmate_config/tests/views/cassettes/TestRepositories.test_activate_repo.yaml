@@ -8758,4 +8758,47 @@ interactions:
       X-Runtime-rack: ['0.057258']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
+- request:
+    body: '{"name": "web", "active": true, "config": {"url": "https://gitmate.localtunnel.me/webhooks/github",
+      "content_type": "json", "secret": "secret"}, "events": ["*"]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['161']
+      Content-Type: [application/json]
+      User-Agent: [IGitt]
+    method: POST
+    uri: https://api.github.com/repos/gitmate-test-user/test/hooks
+  response:
+    body: {string: '{"type":"Repository","id":18605951,"name":"web","active":true,"events":["*"],"config":{"url":"https://gitmate.localtunnel.me/webhooks/github","content_type":"json","secret":"********","insecure_ssl":"0"},"updated_at":"2017-12-03T03:57:58Z","created_at":"2017-12-03T03:57:58Z","url":"https://api.github.com/repos/gitmate-test-user/test/hooks/18605951","test_url":"https://api.github.com/repos/gitmate-test-user/test/hooks/18605951/test","ping_url":"https://api.github.com/repos/gitmate-test-user/test/hooks/18605951/pings","last_response":{"code":null,"status":"unused","message":null}}'}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Length: ['585']
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sun, 03 Dec 2017 03:57:58 GMT']
+      ETag: ['"8851639bccdfe6906fe7a8af30e90bff"']
+      Location: ['https://api.github.com/repos/gitmate-test-user/test/hooks/18605951']
+      Server: [GitHub.com]
+      Status: [201 Created]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: ['admin:repo_hook, public_repo, repo, write:repo_hook']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['EC3B:1462:585547:BC59D9:5A237645']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4993']
+      X-RateLimit-Reset: ['1512276503']
+      X-Runtime-rack: ['0.058510']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 201, message: Created}
 version: 1

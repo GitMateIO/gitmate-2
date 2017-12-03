@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db.models import Count
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
@@ -23,6 +24,8 @@ from gitmate_config.models import Repository
 from .serializers import PluginSettingsSerializer
 from .serializers import RepositorySerializer
 from .serializers import UserSerializer
+from .utils import divert_access_to_orgs
+from .utils import divert_access_to_repos
 
 
 class RepositoryViewSet(
@@ -62,8 +65,12 @@ class RepositoryViewSet(
                 # Orgs already checked for master access of the current user
                 checked_orgs = set()
 
-                for igitt_repo in hoster[provider.value](
-                        provider.get_token(raw_token)).master_repositories:
+                master_repos = hoster[provider.value](
+                    provider.get_token(raw_token)).master_repositories
+                repo_ids = [repo.identifier for repo in master_repos]
+                repo_names = [repo.full_name for repo in master_repos]
+
+                for igitt_repo in master_repos:
                     repo, _ = Repository.objects.filter(
                         Q(identifier=igitt_repo.identifier) |
                         Q(full_name=igitt_repo.full_name)
@@ -103,6 +110,18 @@ class RepositoryViewSet(
                             checked_orgs.add(org.name)
 
                     repo.save()
+
+                # unlink the repositories the user no longer has access to
+                inaccessible_repos = self.get_queryset().exclude(
+                    Q(identifier__in=repo_ids) | Q(full_name__in=repo_names))
+
+                # delete them if he's the only administrator
+                inaccessible_repos.annotate(
+                    num_admins=Count('admins')
+                ).filter(num_admins=1).delete()
+
+                # give the access to someone else otherwise
+                divert_access_to_repos(inaccessible_repos, request.user)
 
                 # TODO: validate if a cached repo was removed. Handling if it
                 # was active?
@@ -170,19 +189,11 @@ class UserViewSet(
         user = self.get_object()
         # Scan for user repos. If they have multiple admins, make someone else
         # the operating user and then remove the user.
-        for repo in user.repository_set.all():
-            if repo.admins.count() > 1:
-                repo.admins.remove(user)
-                repo.user = repo.admins.first()
-                repo.save()
+        divert_access_to_repos(user.repository_set.all(), user)
 
         # Scan for user maintained orgs. If they have multiple admins, make
         # someone else the maintainer and then remove the user.
-        for org in user.orgs.all():
-            if org.admins.count() > 1:
-                org.admins.remove(user)
-                org.primary_user = org.admins.first()
-                org.save()
+        divert_access_to_orgs(user.orgs.all(), user)
 
         return super().destroy(request, *args, **kwargs)
 
