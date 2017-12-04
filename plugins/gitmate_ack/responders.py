@@ -1,6 +1,7 @@
 from hashlib import sha1
 import re
 
+from IGitt.Interfaces import AccessLevel
 from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.Commit import Commit
 from IGitt.Interfaces.CommitStatus import CommitStatus
@@ -10,6 +11,7 @@ from IGitt.Interfaces.MergeRequest import MergeRequest
 
 from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
+from plugins.utils import verify_comment_author_permission
 from .models import MergeRequestModel
 
 
@@ -70,6 +72,7 @@ def pending(commit: Commit):
     'ack',
     MergeRequestActions.COMMENTED
 )
+@verify_comment_author_permission(AccessLevel.CAN_WRITE)
 def gitmate_ack(pr: MergeRequest,
                 comment: Comment,
                 ack_strs: str = 'ack, reack',
