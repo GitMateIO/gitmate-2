@@ -186,7 +186,7 @@ class Repository(models.Model):
             'repository': reverse('api:repository-detail', args=(self.pk,),
                                   request=request),
             'plugins': [plugin.get_settings_with_info(self)
-                        for plugin in Plugin.objects.all()
+                        for plugin in Plugin.objects.order_by('name')
                         if plugin.importable]
         }
 
