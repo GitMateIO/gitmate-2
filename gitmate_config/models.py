@@ -275,7 +275,7 @@ class SettingsBase(models.Model):
     """
     repo = models.OneToOneField(
         Repository, on_delete=models.CASCADE,
-        related_name='%(app_label)s_repository')
+        related_name='%(app_label)s_settings')
 
     class Meta:
         verbose_name_plural = 'settings'
