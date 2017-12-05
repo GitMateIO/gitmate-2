@@ -4,6 +4,7 @@ from django.http import Http404
 import pytest
 from rest_framework.reverse import reverse
 
+from gitmate.exceptions import MissingSettingsError
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 from gitmate_config.tests.test_base import GitmateTestCase
@@ -109,7 +110,8 @@ class TestRepository(GitmateTestCase):
     def test_plugin_set_settings_not_importable(self):
         # create a fake plugin
         plugin = Plugin('fake_plugin')
-        plugin.save()
+        with pytest.raises(MissingSettingsError):
+            plugin.save()
         # try to import it
         assert plugin.importable == False
 

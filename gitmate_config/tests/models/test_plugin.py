@@ -1,7 +1,6 @@
 from inspect import ismodule
 
 from django.core.validators import ValidationError
-from django.db import IntegrityError
 import pytest
 
 from gitmate_config.models import Plugin
@@ -21,7 +20,7 @@ class TestPlugin(GitmateTestCase):
         with pytest.raises(ValidationError):
             plugin.full_clean()
         # trying to save a None name should raise a database error
-        with pytest.raises(IntegrityError):
+        with pytest.raises(ValidationError):
             plugin.save()
         # also empty string must no be allowed
         plugin.name = ''

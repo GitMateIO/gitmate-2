@@ -3,6 +3,7 @@ from importlib import import_module
 from django.apps import apps
 from django.contrib.auth.models import User
 from django.db import models
+from django.db import IntegrityError
 from django.forms.models import model_to_dict
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -14,6 +15,7 @@ from IGitt.Interfaces.Organization import Organization as IGittOrganization
 from IGitt.Interfaces.Repository import Repository as IGittRepository
 from rest_framework.reverse import reverse
 
+from gitmate.exceptions import MissingSettingsError
 from gitmate_config import GitmateActions
 from gitmate_config import Providers
 
@@ -27,6 +29,23 @@ class Plugin(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        # save only if it can be imported
+        if not self.importable:
+            raise MissingSettingsError
+        super(Plugin, self).save(*args, **kwargs)
+
+    @property
+    def settings_model(self):
+        relations = [r for r in Repository._meta.related_objects
+                     if r.name == f'{self.full_name}_settings' and
+                     isinstance(r, models.fields.related.OneToOneRel)]
+        try:
+            return relations[0].model
+        except IndexError:
+            raise MissingSettingsError
+
     @property
     def full_name(self):
         return 'gitmate_' + self.name
@@ -34,9 +53,9 @@ class Plugin(models.Model):
     @property
     def importable(self):
         try:
-            self.import_module().models
+            _ = self.settings_model
             return True
-        except:
+        except MissingSettingsError:
             return False
 
     @classmethod
@@ -200,10 +219,10 @@ class Repository(models.Model):
         for plugin in plugins:
             if 'name' not in plugin:
                 raise Http404
-            plugin_obj = get_object_or_404(Plugin, name=plugin['name'])
 
-            if not plugin_obj.importable:
-                raise Http404
+            # premature 404 because plugin is not saved at all without it being
+            # importable
+            plugin_obj = get_object_or_404(Plugin, name=plugin['name'])
 
             if 'active' in plugin:
                 plugin_exists = self.plugins.filter(pk=plugin_obj.pk).exists()
