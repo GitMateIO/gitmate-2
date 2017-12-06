@@ -1,14 +1,11 @@
 image: docker:1.10.3
 services:
   - docker:dind
-  - postgres:9.6
 variables:
   DB_NAME: postgres
   DB_USER: postgres
   DB_PASSWORD: postgres
-
-variables:
-  DOCKER_DRIVER: overlay
+  DOCKER_DRIVER: overlay2
 
 before_script:
   - which apk && apk add --no-cache bash
@@ -30,14 +27,16 @@ cache:
 run_tests: &run_tests
   image: python:3
   stage: test
+  services:
+    - postgres:9.6
   script:
-  - apt-get update
-  - apt-get install -y --no-install-recommends libblas-dev liblapack-dev libatlas-base-dev gfortran g++
-  - pip3 install -r requirements.txt
-  - pip3 install -r test-requirements.txt
-  - py.test -vv --cov --doctest-modules
+    - apt-get update
+    - apt-get install -y --no-install-recommends libblas-dev liblapack-dev libatlas-base-dev gfortran g++
+    - pip3 install -r requirements.txt
+    - pip3 install -r test-requirements.txt
+    - py.test -vv --cov --doctest-modules
   except:
-  - master
+    - master
 
 run_tests_ee:
   <<: *run_tests
@@ -55,7 +54,7 @@ build_image: &build_image
     - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker push $TEST_IMAGE_NAME
   except:
-   - master
+    - master
 
 build_image_ee:
   <<: *build_image
