@@ -86,9 +86,11 @@ class TestGitmateApprover(GitmateTestCase):
         # adds approved_label and removes status_labels
         m_labels.assert_called_with({'approved', 'bug'})
 
+    @patch.object(GitHubMergeRequest, 'title',
+                  new_callable=PropertyMock, return_value='My first PR')
     @patch.object(GitHubMergeRequest, 'labels',
                   new_callable=PropertyMock, return_value={'WIP', 'approved'})
-    def test_github_failure_on_head_commit(self, m_labels):
+    def test_github_failure_on_head_commit(self, m_labels, m_title):
         data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO'],
                            'id': 49558751},
@@ -111,9 +113,14 @@ class TestGitmateApprover(GitmateTestCase):
         # won't change any labels, removes approved_label if present
         m_labels.assert_called_with({'WIP'})
 
+        m_title.assert_called()
+        m_title.assert_called_with('WIP: My first PR')
+
+    @patch.object(GitLabMergeRequest, 'title',
+                  new_callable=PropertyMock, return_value='My first PR')
     @patch.object(GitLabMergeRequest, 'labels',
                   new_callable=PropertyMock, return_value={'WIP', 'approved'})
-    def test_gitlab_failure_on_head_commit(self, m_labels):
+    def test_gitlab_failure_on_head_commit(self, m_labels, m_title):
         data = {
             'object_attributes': {
                 'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
@@ -136,3 +143,6 @@ class TestGitmateApprover(GitmateTestCase):
         m_labels.assert_called()
         # adds approved_label and removes status_labels
         m_labels.assert_called_with({'WIP'})
+
+        m_title.assert_called()
+        m_title.assert_called_with('WIP: My first PR')

@@ -31,7 +31,8 @@ def store_head_commit_sha(pr: MergeRequest):
 def add_approved_label(
         commit: Commit,
         approved_label: str='status/approved',
-        status_labels: str='status/pending_review, status/WIP'
+        status_labels: str='status/pending_review, status/WIP',
+        mark_wip_on_ci_fail: bool=True
 ):
     """
     Labels the PR as approved when the head commit passes all tests.
@@ -45,6 +46,8 @@ def add_approved_label(
             if commit.combined_status is Status.SUCCESS:
                 pr.labels = {approved_label} | labels - set(status_labels)
             else:
+                if mark_wip_on_ci_fail and 'WIP' not in pr.title.upper():
+                    pr.title = f'WIP: {pr.title}'
                 pr.labels = labels - {approved_label}
     except MergeRequestModel.DoesNotExist:  # pragma: no cover
         # Merge request containing this commit hasn't been opened yet
