@@ -9,9 +9,10 @@ variables:
 
 before_script:
   - which apk && apk add --no-cache bash
-  - export TEST_IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH:$CI_COMMIT_SHA
-  - export MASTER_NAME=registry.gitlab.com/$CI_PROJECT_PATH:latest
-  - export RELEASE_NAME=registry.gitlab.com/$CI_PROJECT_PATH:release
+  - export PROJECT_PATH=$(echo $CI_PROJECT_PATH | awk '{print tolower($0)}')
+  - export TEST_IMAGE_NAME=registry.gitlab.com/$PROJECT_PATH:$CI_COMMIT_SHA
+  - export MASTER_NAME=registry.gitlab.com/$PROJECT_PATH:latest
+  - export RELEASE_NAME=registry.gitlab.com/$PROJECT_PATH:release
   - export GITHUB_BOT_TOKEN=foobar
   - export GITLAB_BOT_TOKEN=foobar
 
@@ -59,7 +60,7 @@ build_image: &build_image
 build_image_ee:
   <<: *build_image
   before_script:
-    - export TEST_IMAGE_NAME="registry.gitlab.com/$CI_PROJECT_PATH:$CI_COMMIT_SHA-ee"
+    - export TEST_IMAGE_NAME="registry.gitlab.com/$PROJECT_PATH:$CI_COMMIT_SHA-ee"
   variables:
     GIT_SUBMODULE_STRATEGY: normal
   only:
