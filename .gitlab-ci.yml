@@ -61,6 +61,7 @@ build_image: &build_image
 build_image_ee:
   <<: *build_image
   before_script:
+    - export PROJECT_PATH=$(echo $CI_PROJECT_PATH | awk '{print tolower($0)}')
     - export TEST_IMAGE_NAME="registry.gitlab.com/$PROJECT_PATH:$CI_COMMIT_SHA-ee"
   variables:
     GIT_SUBMODULE_STRATEGY: normal
