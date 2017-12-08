@@ -79,3 +79,14 @@ class TestWebhookReceivers(GitmateTestCase):
         }
         response = self.simulate_gitlab_webhook_call('Build Hook', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_github_integration_webhook(self):
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
+            'pull_request': {'number': 0},
+            'action': 'opened',
+            'installation': {'id': 60731}
+        }
+        response = self.simulate_github_webhook_call('pull_request', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

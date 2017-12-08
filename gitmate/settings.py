@@ -15,7 +15,9 @@ import os
 import logging
 import raven
 
+from IGitt.GitHub import GitHubJsonWebToken
 from gitmate_config import TaskQueue
+from gitmate import RANDOM_PRIVATE_KEY
 from gitmate.utils import get_plugins
 from gitmate.utils import snake_case_to_camel_case
 
@@ -363,3 +365,8 @@ REBASER_IMAGE = os.environ.get('REBASER_IMAGE',
 
 # timeout for docker containers in seconds, setting upto 10 minutes
 CONTAINER_TIMEOUT = 60 * 10
+
+# github application json web token
+GITHUB_JWT = GitHubJsonWebToken(
+    os.environ.get('GITHUB_APP_PRIVATE_KEY', RANDOM_PRIVATE_KEY),
+    int(os.environ.get('GITHUB_APP_ID', -1)))

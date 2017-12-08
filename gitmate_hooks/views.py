@@ -12,6 +12,7 @@ from IGitt.GitLab.GitLab import GitLab
 
 from gitmate_config import Providers
 from gitmate_config.models import Repository
+from gitmate_config.models import Installation
 from gitmate_hooks.utils import ResponderRegistrar
 from gitmate_hooks.utils import signature_check
 
@@ -27,16 +28,26 @@ def github_webhook_receiver(request):
     """
     webhook = json.loads(request.body.decode('utf-8'))
     event = request.META['HTTP_X_GITHUB_EVENT']
-    repository = webhook['repository']
 
-    repo_obj = get_object_or_404(Repository,
-                                 (Q(identifier=repository['id'])|
-                                  Q(full_name=repository['full_name'])),
-                                 active=True,
-                                 provider=Providers.GITHUB.value)
+    # responding to regular webhook calls for registered events
+    if 'repository' in webhook:
+        repository = webhook['repository']
+        repo_obj = get_object_or_404(Repository,
+                                     (Q(identifier=repository['id'])|
+                                      Q(full_name=repository['full_name'])),
+                                     active=True,
+                                     provider=Providers.GITHUB.value)
+        token = repo_obj.token
+
+    # webhook was received from an installation
+    if 'installation' in webhook:
+        installation_obj, _ = Installation.objects.get_or_create(
+            provider=Providers.GITHUB.value,
+            identifier=webhook['installation']['id'])
+        token = installation_obj.token
 
     try:
-        action, objs = GitHub(repo_obj.token).handle_webhook(event, webhook)
+        action, objs = GitHub(token).handle_webhook(event, webhook)
     except NotImplementedError:  # pragma: no cover
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet
         return Response(status=status.HTTP_200_OK)
