@@ -1,0 +1,75 @@
+interactions:
+- request:
+    body: '{}'
+    headers:
+      Accept: [application/vnd.github.machine-man-preview+json]
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1MTMxNzg4OTcsImV4cCI6MTUxMzE3OTQ5MiwiaXNzIjo1NDA4fQ.HNWcw8JiBP1uvm8k7NsndRKnNPCZIzYSgf35L6jJwZ0450JHsNvq8vUG07-eA5Pro8MJ4C8ybT5TnS4budE3UZ278s7O4XxUHIOZhxkFKb8hKzcwlSJ-dzrvP5wS8U7PUmDImb_PLwsVSR-77vv7O1-18rerZ2L_VkE8fDMDOn9Gs_FCQAjbbHDLhPEdjpG3Zd-EC-rcAIpQALAWAC0aItzOV7NxpjJ0aztKoXdsjP-IBd8B2jfCPeFUNefbihvnu4yVfWUTVB3be813wBfLfoxwm0Vp4AVr4ASAPGxZ2dLv9WVvzmqhgRz3W5wgJ3LPRRLSYE5rFX6h2xoTzX2gtA]
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [IGitt]
+    method: POST
+    uri: https://api.github.com/installations/5408/access_tokens
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAx3MMQ7CMAwAwK8gszb1wNYHMPIFZBKrjUjsKHbaAfF3UOeT7gOVzWhlWOChfrnr
+        kAQTJI2jsjh5VnmOXv6+uTdbEBPvXLRxn9fs23jNUSvuN6TWDK+xMzkHCsJHyGJOpZxLcH2zwPcH
+        7H7LEnMAAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 15:28:20 GMT']
+      Server: [GitHub.com]
+      Status: [404 Not Found]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.machine-man-preview; format=json]
+      X-GitHub-Request-Id: ['F798:0866:12D3FE1:2666A4F:5A314713']
+      X-Runtime-rack: ['0.014252']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{}'
+    headers:
+      Accept: [application/vnd.github.machine-man-preview+json]
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1MTMxNzkxOTYsImV4cCI6MTUxMzE3OTc5MSwiaXNzIjo1NDA4fQ.KjF2U959a-aAJanwcePOLtrEMpmr96mjZhX2S3b3N1lOs-2Lmt_QysULga3OsI8NmCxDOfIOlzqEkkbk61k2xwR6jo748d-IRo5395V4HwSM8yV-1ZG2bA8LcnOi0hF4n0P06zkL5N9JuSMGr2O7T92tU9Yuz4enpBH3DFFPP1CiVNXTLC4qex-B7zOtDWFJYYJJ_jLf-2iwqNNsx7YcTaCp_vC3utiNL-bxL2w4m4r9kiJIAEvvWMxEn8MX2omnVR_11UYhiJqTu6GGmhn25aZ-GSdSwOyYxEomK7lUXcPkE8L67UqDOM_zqoEYZf8T_WZBbng5xVmw3bls4ElgXw]
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [IGitt]
+    method: POST
+    uri: https://api.github.com/installations/73666/access_tokens
+  response:
+    body: {string: '{"token":"v1.de3a5987c65af444e12f1dff6a9e4a4587022fd6","expires_at":"2017-12-13T16:33:18Z"}'}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['public, max-age=60, s-maxage=60']
+      Content-Length: ['91']
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 15:33:18 GMT']
+      ETag: ['"9559162187bc64912277ffea99c4d4e6"']
+      Server: [GitHub.com]
+      Status: [201 Created]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: [Accept]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.machine-man-preview; format=json]
+      X-GitHub-Request-Id: ['5DF1:0867:1D4D090:35B4801:5A31483D']
+      X-Runtime-rack: ['0.020475']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 201, message: Created}
+version: 1

@@ -1,17 +1,20 @@
 from importlib import import_module
 
 from django.apps import apps
+from django.conf import settings as django_settings
 from django.contrib.auth.models import User
 from django.db import models
-from django.db import IntegrityError
 from django.forms.models import model_to_dict
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from IGitt.GitHub import GitHubInstallationToken
+from IGitt.GitHub.GitHubInstallation import GitHubInstallation
 from IGitt.GitHub.GitHubOrganization import GitHubOrganization
 from IGitt.GitLab.GitLabOrganization import GitLabOrganization
 from IGitt.GitHub.GitHubRepository import GitHubRepository
 from IGitt.GitLab.GitLabRepository import GitLabRepository
 from IGitt.Interfaces import Token as IGittToken
+from IGitt.Interfaces.Installation import Installation as IGittInstallation
 from IGitt.Interfaces.Organization import Organization as IGittOrganization
 from IGitt.Interfaces.Repository import Repository as IGittRepository
 from rest_framework.reverse import reverse
@@ -119,6 +122,53 @@ class Plugin(models.Model):
         instance.save()
 
 
+class Installation(models.Model):
+    """
+    A model to store repository integration information.
+    """
+
+    # the provider for the installation
+    provider = models.CharField(default=None, max_length=32)
+
+    # unique identifier for the installation
+    identifier = models.IntegerField(default=-1)
+
+    @classmethod
+    def from_igitt_installation(cls, instance: IGittInstallation):
+        """
+        Retrieves an Installation model from an IGitt Installation object.
+        """
+        return cls.objects.get(provider=instance.hoster,
+                               identifier=instance.identifier)
+
+    @property
+    def igitt_installation(self) -> IGittInstallation:
+        """
+        Returns the corresponding IGitt Installation object from the stored
+        Installation model.
+        """
+        if self.provider == Providers.GITHUB.value:
+            return GitHubInstallation(self.token, self.identifier)
+
+        # Other providers aren't implemented yet.
+        raise NotImplementedError
+
+    @property
+    def token(self) -> IGittToken:
+        """
+        Returns the installation token for the specified configuration.
+        """
+        if self.provider == Providers.GITHUB.value:
+            return GitHubInstallationToken(self.identifier,
+                                           django_settings.GITHUB_JWT)
+
+        # Other providers aren't implemented yet.
+        raise NotImplementedError
+
+    class Meta:
+        unique_together = ('provider', 'identifier')
+
+
 class Organization(models.Model):
     admins = models.ManyToManyField(User, related_name='orgs')
     name = models.CharField(default=None, max_length=255)
@@ -185,6 +235,10 @@ class Repository(models.Model):
 
     # The organization this repository is related to
     org = models.ForeignKey(Organization, null=True, related_name='repos')
+
+    # the installation this repository is related to
+    installation = models.ForeignKey(
+        Installation, null=True, related_name='repos')
 
     def __str__(self):
         return self.full_name
