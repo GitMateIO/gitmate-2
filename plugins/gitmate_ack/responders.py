@@ -11,7 +11,6 @@ from IGitt.Interfaces.MergeRequest import MergeRequest
 
 from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
-from plugins.utils import verify_comment_author_permission
 from .models import MergeRequestModel
 
 
@@ -72,7 +71,6 @@ def pending(commit: Commit):
     'ack',
     MergeRequestActions.COMMENTED
 )
-@verify_comment_author_permission(AccessLevel.CAN_WRITE)
 def gitmate_ack(pr: MergeRequest,
                 comment: Comment,
                 ack_strs: str = 'ack, reack',
@@ -83,6 +81,21 @@ def gitmate_ack(pr: MergeRequest,
     body = comment.body.lower()
     commits = pr.commits
     pattern = r'(^{k}\s)|(\s{k}\s)|(\s{k}$)'
+    perm_level = pr.repository.get_permission_level(comment.author)
+
+    ack_cmt = any([re.search(pattern.format(k=re.escape(kw)), body)
+                   for kw in get_keywords(ack_strs)])
+    unack_cmt = any([re.search(pattern.format(k=re.escape(kw)), body)
+                     for kw in get_keywords(unack_strs)])
+
+    print(ack_cmt, unack_cmt, get_keywords(ack_strs), get_keywords(unack_strs))
+
+    if ((ack_cmt or unack_cmt) and
+            perm_level.value < AccessLevel.CAN_WRITE.value):
+        msg = ('Sorry @{}, you do not have the necessary permission '
+               'levels to perform the action.'.format(comment.author.username))
+        pr.add_comment(msg)
+        return
 
     db_pr, created = MergeRequestModel.objects.get_or_create(
         repo=Repository.from_igitt_repo(pr.repository),
@@ -94,19 +107,17 @@ def gitmate_ack(pr: MergeRequest,
         add_review_status(pr)
         db_pr.refresh_from_db()
 
-    for kw in get_keywords(unack_strs):
-        if re.search(pattern.format(k=kw), body):
-            for commit in commits:
-                if commit.sha[:6] in body:
-                    db_pr.acks[_get_commit_hash(commit)] = _status_to_dict(
-                        unack(commit))
+    if unack_cmt:
+        for commit in commits:
+            if commit.sha[:6] in body:
+                db_pr.acks[_get_commit_hash(commit)] = _status_to_dict(
+                    unack(commit))
 
-    for kw in get_keywords(ack_strs):
-        if re.search(pattern.format(k=kw), body):
-            for commit in commits:
-                if commit.sha[:6] in body:
-                    db_pr.acks[_get_commit_hash(commit)] = _status_to_dict(
-                        ack(commit))
+    if ack_cmt:
+        for commit in commits:
+            if commit.sha[:6] in body:
+                db_pr.acks[_get_commit_hash(commit)] = _status_to_dict(
+                    ack(commit))
 
     db_pr.save()
     pr.head.set_status(db_pr.ack_state)

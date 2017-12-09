@@ -72,6 +72,52 @@ class TestAck(GitmateTestCase):
     @patch.object(GitHubCommit, 'sha', new_callable=PropertyMock)
     @patch.object(GitHubCommit, 'get_statuses')
     @patch.object(GitHubCommit, 'set_status')
+    def test_github_ack_with_special_chars(
+        self, m_set_status, m_get_statuses, m_sha, m_get_perms, m_author,
+        m_body, m_head, m_commits
+    ):
+        self.repo.set_plugin_settings([{
+            'name': 'ack',
+            'settings': {
+                'ack_strs': r'bot\ack, bot\accept'
+            }
+        }])
+
+        m_get_statuses.return_value = (
+            CommitStatus(Status.SUCCESS, 'No issues',
+                         'review/gitmate/manual', 'https://gitmate.io'),
+            CommitStatus(Status.SUCCESS, 'No issues',
+                         'review/somewhere/else', 'https://some/url'))
+        m_sha.return_value = 'f6d2b7c66372236a090a2a74df2e47f42a54456b'
+        m_body.return_value = r'bot\accept f6d2b7c'
+        m_get_perms.return_value = AccessLevel.CAN_WRITE
+        m_author.return_value = GitHubUser(self.gh_token, self.user.username)
+        m_head.return_value = self.gh_commit
+        m_commits.return_value = tuple([self.gh_commit])
+        response = self.simulate_github_webhook_call('pull_request',
+                                                     self.gh_pr_data)
+        response = self.simulate_github_webhook_call('issue_comment',
+                                                     self.gh_comment_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        args = sum([list(args) for args, _ in m_set_status.call_args_list], [])
+        # 3 calls to be made as follows
+        # Status.SUCCESS review/gitmate/manual/pr
+        # Status.SUCCESS review/gitmate/manual
+        # Status.SUCCESS review/gitmate/manual/pr
+        self.assertEqual(m_set_status.call_count, 3)
+        self.assertEqual([(arg.status, arg.context) for arg in args],
+                         [(Status.SUCCESS, 'review/gitmate/manual/pr'),
+                          (Status.SUCCESS, 'review/gitmate/manual'),
+                          (Status.SUCCESS, 'review/gitmate/manual/pr')])
+
+    @patch.object(GitHubMergeRequest, 'commits', new_callable=PropertyMock)
+    @patch.object(GitHubMergeRequest, 'head', new_callable=PropertyMock)
+    @patch.object(GitHubComment, 'body', new_callable=PropertyMock)
+    @patch.object(GitHubComment, 'author', new_callable=PropertyMock)
+    @patch.object(GitHubRepository, 'get_permission_level')
+    @patch.object(GitHubCommit, 'sha', new_callable=PropertyMock)
+    @patch.object(GitHubCommit, 'get_statuses')
+    @patch.object(GitHubCommit, 'set_status')
     def test_github_ack(
         self, m_set_status, m_get_statuses, m_sha, m_get_perms, m_author,
         m_body, m_head, m_commits
@@ -397,13 +443,14 @@ class TestAck(GitmateTestCase):
     @patch.object(GitLabMergeRequest, 'add_comment')
     @patch.object(GitLabCommit, 'sha', new_callable=PropertyMock)
     @patch.object(GitLabComment, 'author', new_callable=PropertyMock)
+    @patch.object(GitLabComment, 'body', new_callable=PropertyMock)
     @patch.object(GitLabUser, 'username', new_callable=PropertyMock)
     @patch.object(GitLabRepository, 'get_permission_level')
     @patch.object(GitLabCommit, 'get_statuses')
     @patch.object(GitLabCommit, 'set_status')
     def test_gitlab_ack_without_minimum_access_level(
-            self, _, m_get_statuses, m_get_perms, m_username, m_author, m_sha,
-            m_add_comment, m_commits
+            self, _, m_get_statuses, m_get_perms, m_username, m_body, m_author,
+            m_sha, m_add_comment, m_commits
     ):
         m_get_statuses.return_value = (
             CommitStatus(Status.SUCCESS, 'No issues',
@@ -413,6 +460,7 @@ class TestAck(GitmateTestCase):
         m_sha.return_value = 'f6d2b7c66372236a090a2a74df2e47f42a54456b'
         m_get_perms.return_value = AccessLevel.CAN_VIEW
         m_username.return_value = self.user.username
+        m_body.return_value = 'unack f6d2b7c'
         m_author.return_value = GitLabUser(self.gl_token, 0)
         m_commits.return_value = tuple([self.gl_commit])
         _ = self.simulate_gitlab_webhook_call('Merge Request Hook',
