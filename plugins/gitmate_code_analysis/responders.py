@@ -6,6 +6,7 @@ from django.conf import settings
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.Interfaces.Actions import MergeRequestActions
+from IGitt.Interfaces.Comment import CommentType
 from IGitt.Interfaces.Commit import Commit
 from IGitt.Interfaces.Commit import CommitStatus
 from IGitt.Interfaces.Commit import Status
@@ -14,9 +15,10 @@ from django_pglocks import advisory_lock
 
 
 from gitmate.utils import run_in_container
+from gitmate_config.enums import Providers
 from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
-from .models import AnalysisResults
+from .models import AnalysisResults, CommentModel
 
 
 def _set_status(commit: Commit, status: Status, context: str):
@@ -109,10 +111,13 @@ def result_table_row(result):
     )
 
 
-def add_comment(commit: Commit, results: dict, mr_num: int=None):
+def add_comment(commit: Commit, results: dict, repo: Repository, mr_num: int=None):
+    def get_iid(comment):
+        return x.iid if repo.provider == Providers.GITLAB.value else None
+
     for section_name, section_results in results.items():
         if len(section_results) > 10:
-            commit.comment(
+            comment = commit.comment(
                 'There are {} results for the section {}. They have been '
                 'shortened and will not be shown inline because they are more '
                 'than 10.\n\n'
@@ -128,20 +133,33 @@ def add_comment(commit: Commit, results: dict, mr_num: int=None):
                               for result in section_results)
                 )
             )
+            if comment.type is not CommentType.COMMIT:
+                CommentModel.objects.create(sha=commit.sha,
+                                        comment_id=comment.number,
+                                        comment_type=comment.type.value,
+                                        iid=get_iid(comment),
+                                        repo=repo)
             continue
         for result in section_results:
             file, line = get_file_and_line(result)
             patch = describe_patch(result['diffs']) if result['diffs'] else ''
 
-            commit.comment(
-                ('{message}\n'
-                 '\n'
-                 '*Origin: {origin}, Section: `{section}`.*{patch}')
-                .format(message=result.get('message'),
-                        origin=result.get('origin'),
-                        section=section_name,
-                        patch=patch),
-                file, line, mr_number=mr_num)
+            comment = commit.comment(
+                        ('{message}\n'
+                         '\n'
+                         '*Origin: {origin}, Section: `{section}`.*{patch}')
+                        .format(message=result.get('message'),
+                                origin=result.get('origin'),
+                                section=section_name,
+                                patch=patch),
+                        file, line, mr_number=mr_num)
+            if comment.type is not CommentType.COMMIT:
+                CommentModel.objects.create(sha=commit.sha,
+                                        comment_id=comment.number,
+                                        comment_type=comment.type.value,
+                                        iid=get_iid(comment),
+                                        mr_number=mr_num,
+                                        repo=repo)
 
 
 def get_ref(pr):  # pragma: no cover, testing this with mocks is meaningless
@@ -196,11 +214,17 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
                 repo, HEAD.sha, igitt_repo.clone_url, ref, coafile_location)
 
             filtered_results = filter_results(old_results, new_results)
-            add_comment(HEAD, filtered_results, mr_num=pr.number)
+            add_comment(HEAD, filtered_results, repo, mr_num=pr.number)
 
             # set pr status as failed if any results are found
             if any(s_results for _, s_results in filtered_results.items()):
                 pr_status = Status.FAILED
+            else:
+                # delete all gitmate comments of that PR
+                for comment in CommentModel.objects.get(repo=repo,
+                                                    mr_number=pr.number):
+                    comment.igitt_comment.delete()
+                    comment.delete()
 
         else:  # Run coala per commit
             for commit in COMMITS:
@@ -211,7 +235,7 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
                 filtered_results = filter_results(old_results, new_results)
                 old_results = new_results
 
-                add_comment(commit, filtered_results, mr_num=pr.number)
+                add_comment(commit, filtered_results, repo, mr_num=pr.number)
 
                 # set commit status as failed if any results are found
                 if any(s_results for _, s_results in filtered_results.items()):
@@ -222,6 +246,14 @@ def run_code_analysis(pr: MergeRequest, pr_based_analysis: bool=True,
 
                 _set_status(commit, status, 'review/gitmate/commit')
                 ANALYZED_COMMITS.add(commit)
+
+            # delete all gitmate comments on shas that no longer exist
+            shas = list(map(lambda commit: commit.sha, COMMITS))
+            for comment in filter(lambda comment: comment.sha not in shas,
+                                  CommentModel.objects.get(repo=repo,
+                                                       mr_number=pr.number)):
+                comment.igitt_comment.delete()
+                comment.delete()
 
         _set_status(pr.head, pr_status, 'review/gitmate/pr')
 

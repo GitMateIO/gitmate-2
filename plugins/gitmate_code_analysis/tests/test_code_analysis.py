@@ -2,12 +2,15 @@ from collections import namedtuple
 import json
 from os import environ
 import subprocess
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from gitmate_config.tests.test_base import GitmateTestCase
 from gitmate_config.tests.test_base import StreamMock
 from IGitt.GitHub.GitHubCommit import GitHubCommit
+from IGitt.GitHub.GitHubComment import GitHubComment
+from IGitt.Interfaces.Comment import CommentType
 from IGitt.GitLab.GitLabCommit import GitLabCommit
+from IGitt.GitLab.GitLabComment import GitLabComment
 from rest_framework.status import HTTP_200_OK
 
 
@@ -115,7 +118,13 @@ class TestCodeAnalysis(GitmateTestCase):
         return self.test_pr_analysis_no_issues_github(pr_based=True)
 
     @patch.object(GitHubCommit, 'comment')
-    def test_pr_analysis_issues_github(self, comment_mock, _):
+    @patch(GitHubComment, autospec=True)
+    def test_pr_analysis_issues_github(self, comment_mock, mock_comment, _):
+        mock_comment.sha = 123
+        mock_comment.number = 345
+        mock_comment.type = CommentType.REVIEW
+        comment_mock.return_value = mock_comment
+
         def fake_popen(cmd, **kwargs):
             if 'bouncer.py' in cmd:
                 return popen_bouncer()
@@ -125,35 +134,35 @@ class TestCodeAnalysis(GitmateTestCase):
 
         def popen_bouncer():
             return PopenResult(
-                StreamMock(
-                    json.dumps({
-                        'section': [
-                            {
-                                'message': 'a message',
-                                'origin': 'I come from here',
-                                'diffs': None,
-                            },
-                            {
-                                'message': 'a message',
-                                'origin': 'I come from here',
-                                'affected_code': [
-                                    {
-                                        'start': {
-                                            'file': 'filename',
-                                            'line': 1
-                                        }
-                                    },
-                                ],
-                                'diffs': {
-                                    'filename': 'unified diff here',
+                    StreamMock(
+                        json.dumps({
+                            'section': [
+                                {
+                                    'message': 'a message',
+                                    'origin': 'I come from here',
+                                    'diffs': None,
                                 },
-                            }
-                        ]
-                    })
-                ),
-                StreamMock(self.BOUNCER_INPUT),
-                lambda *args, **kwargs: None
-            )
+                                {
+                                    'message': 'a message',
+                                    'origin': 'I come from here',
+                                    'affected_code': [
+                                        {
+                                            'start': {
+                                                'file': 'filename',
+                                                'line': 1
+                                            }
+                                        },
+                                    ],
+                                    'diffs': {
+                                        'filename': 'unified diff here',
+                                    },
+                                }
+                            ]
+                        })
+                    ),
+                    StreamMock(self.BOUNCER_INPUT),
+                    lambda *args, **kwargs: None
+                )
 
         subprocess.Popen = fake_popen
         response = self.simulate_github_webhook_call(
@@ -161,6 +170,17 @@ class TestCodeAnalysis(GitmateTestCase):
         self.assertEqual(response.status_code, HTTP_200_OK)
 
         assert comment_mock.call_count == 2
+
+        def popen_bouncer():
+            return PopenResult(
+                StreamMock('{}'),
+                StreamMock(self.BOUNCER_INPUT),
+                lambda *args, **kwargs: None
+            )
+
+        response = self.simulate_github_webhook_call(
+            'pull_request', self.github_data)
+        self.assertEqual(response.status_code, HTTP_200_OK)
 
     @patch.object(GitHubCommit, 'comment')
     def test_pr_analysis_many_issues_github(self, comment_mock, _):
@@ -227,7 +247,14 @@ class TestCodeAnalysis(GitmateTestCase):
         return self.test_pr_analysis_no_issues_gitlab(pr_based=True)
 
     @patch.object(GitLabCommit, 'comment')
-    def test_pr_analysis_issues_gitlab(self, comment_mock, _):
+    @patch(GitLabComment, autospec=True)
+    def test_pr_analysis_issues_gitlab(self, comment_mock, mock_comment, _):
+        mock_comment.sha = 123
+        mock_comment.number = 345
+        mock_comment.iid = 23
+        mock_comment.type = CommentType.MERGE_REQUEST
+        comment_mock.return_value = mock_comment
+
         def fake_popen(cmd, **kwargs):
             if 'bouncer.py' in cmd:
                 return popen_bouncer()
