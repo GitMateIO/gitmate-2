@@ -44,5 +44,5 @@ def rebase_merge_request(pr: MergeRequest, comment: Comment):
                                             '<hidden_oauth_token>')
             error = error.replace(base_clone_url, '<hidden_oauth_token>')
             pr.add_comment('Automated rebase failed! Please rebase your pull '
-                           'request manually via the command line.\n\nError:\n'
-                           '```{}```'.format(error))
+                           'request manually via the command line.\n\n'
+                           'Reason:\n```\n{}\n```'.format(error))
