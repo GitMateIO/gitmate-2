@@ -15,7 +15,15 @@ from celery.utils.log import get_logger
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
+from IGitt.GitLab import GitLabPrivateToken, GitLab, GitLabUser
+from IGitt.GitHub import GitHubToken, GitHub, GitHubUser
+from IGitt.Interfaces.User import User as IGittUser
+from IGitt.Interfaces import Token
+from social_django.models import UserSocialAuth
+from django.contrib.auth.models import User
 
+
+from django.conf import settings
 from gitmate.celery import app as celery
 from gitmate_config import GitmateActions
 from gitmate_config import Providers
@@ -299,3 +307,49 @@ class ResponderRegistrar:
                                   f'Options:     {repr(options_specified)}')
 
         return retvals
+
+
+BOT_TOKENS = {}
+
+
+def store_user(user: IGittUser, token: Token):
+    """
+    Creates and stores an IGitt User object in the database.
+    """
+    db_user, _ = User.objects.get_or_create(username=user.username,
+                                            email=user.data['email'])
+    auth, _ = UserSocialAuth.get_or_create(
+        user=db_user,
+        provider=user.hoster,
+        default={'extra_data': {'private_token': token.value}}
+    )
+
+    auth.save()
+    return user
+
+
+if settings.GITHUB_GITMATE_BOT_TOKEN:
+    GH_TOKEN = GitHubToken(settings.GITHUB_GITMATE_BOT_TOKEN)
+    GH_USER = store_user(GitHubUser(GH_TOKEN), GH_TOKEN)
+    BOT_TOKENS[Providers.GITHUB] = (GitHub(GH_TOKEN), GH_USER)
+
+if settings.GITLAB_GITMATE_BOT_TOKEN:
+    GL_TOKEN = GitLabPrivateToken(settings.GITLAB_GITMATE_BOT_TOKEN)
+    GL_USER = store_user(GitLabUser(GL_TOKEN), GL_TOKEN)
+    BOT_TOKENS[Providers.GITLAB] = (GitLab(GL_TOKEN), GL_USER)
+
+
+@ResponderRegistrar.scheduler(interval=30)
+def store_gitmate_bot_write_repositories():
+    """
+    Collects the repositories for which the bot account has write access to and
+    stores them in the database.
+    """
+    for provider, hoster_and_user in BOT_TOKENS.items():
+        hoster, user = hoster_and_user
+        for repo in hoster.write_repositories:
+            db_repo, _ = Repository.objects.get_or_create(
+                provider=provider.value,
+                full_name=repo.full_name,
+                defaults={'active': False, 'user': user})
+            db_repo.admins.add(user)
