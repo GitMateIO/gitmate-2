@@ -274,7 +274,11 @@ class Repository(models.Model):
         """
         raw_token = self.user.social_auth.get(
             provider=self.provider).access_token
-        return Providers(self.provider).get_token(raw_token)
+
+        return Providers(self.provider).get_token(
+            raw_token,
+            private_token='private_token' in self.user.social_auth.get(provider=self.provider).extra_data
+        )
 
     @property
     def igitt_repo(self) -> IGittRepository:
