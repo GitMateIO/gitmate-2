@@ -27,8 +27,10 @@ class Providers(Enum):
         """
         if self.value == 'github':
             return GitHubToken(raw_token)
-        else:
+        elif self.value == 'gitlab':
             return GitLabOAuthToken(raw_token)
+        else:
+            raise NotImplementedError
 
 
 class TaskQueue(Enum):
