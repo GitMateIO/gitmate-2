@@ -37,7 +37,6 @@ def add_stale_label_to_issues(
     'issue_stale_reminder',
     IssueActions.REOPENED,
     IssueActions.COMMENTED,
-    IssueActions.ATTRIBUTES_CHANGED,
     MergeRequestActions.OPENED,
     MergeRequestActions.SYNCHRONIZED
 )
