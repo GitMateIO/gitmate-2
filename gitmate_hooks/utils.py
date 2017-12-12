@@ -38,7 +38,7 @@ def run_plugin_for_all_repos(plugin_name: str,
     """
     plugin = Plugin.objects.get(name=plugin_name)
     for repo in plugin.repository_set.filter(active=is_active):
-        ResponderRegistrar.respond(event_name, repo, repo.igitt_repo)
+        ResponderRegistrar.respond(event_name, repo.igitt_repo, repo=repo)
 
 
 def signature_check(key: str,
@@ -270,8 +270,8 @@ class ResponderRegistrar:
     @classmethod
     def respond(cls,
                 event: Enum,
-                repo: Repository,
                 *args,
+                repo: Repository=None,
                 plugin_name: str=None):
         """
         Invoke all responders for the given event. If a plugin name is

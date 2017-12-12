@@ -41,7 +41,7 @@ def github_webhook_receiver(request):
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet
         return Response(status=status.HTTP_200_OK)
 
-    ResponderRegistrar.respond(action, repo_obj, *objs)
+    ResponderRegistrar.respond(action, *objs, repo=repo_obj)
     return Response(status=status.HTTP_200_OK)
 
 
@@ -84,5 +84,5 @@ def gitlab_webhook_receiver(request):
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet
         return Response(status=status.HTTP_200_OK)
 
-    ResponderRegistrar.respond(action, repo_obj, *objs)
+    ResponderRegistrar.respond(action, *objs, repo=repo_obj)
     return Response(status=status.HTTP_200_OK)

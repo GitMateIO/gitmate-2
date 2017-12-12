@@ -186,7 +186,7 @@ class GitmateTestCase(TransactionTestCase):
         self.gl_repo.save()
 
     def simulate_scheduled_responder_call(self, event: str, repo: Repository):
-        ResponderRegistrar.respond(event, repo, repo.igitt_repo)
+        ResponderRegistrar.respond(event, repo.igitt_repo, repo=repo)
 
     def simulate_github_webhook_call(self, event: str, data: dict):
         request = self.factory.post(

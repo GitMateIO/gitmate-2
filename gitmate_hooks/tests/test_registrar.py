@@ -27,7 +27,7 @@ class TestResponderRegistrar(GitmateTestCase):
     def test_active_plugin(self):
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.repo, 'example')],
+                MergeRequestActions.OPENED, 'example', repo=self.repo)],
             [True]
         )
         self.repo.set_plugin_settings([{
@@ -38,15 +38,16 @@ class TestResponderRegistrar(GitmateTestCase):
         }])
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.repo, 'example')],
+                MergeRequestActions.OPENED, 'example', repo=self.repo)],
             [False]
         )
 
     def test_active_plugin_scheduled_responder(self):
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                'testplugin.scheduled_responder_function', self.repo,
-                self.repo.igitt_repo)],
+                'testplugin.scheduled_responder_function',
+                self.repo.igitt_repo,
+                repo=self.repo)],
             [True, True]
         )
 
@@ -63,6 +64,6 @@ class TestResponderRegistrar(GitmateTestCase):
 
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, self.repo, 'example')],
+                MergeRequestActions.OPENED, 'example', repo=self.repo)],
             []
         )
