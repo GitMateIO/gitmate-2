@@ -16,7 +16,8 @@ from gitmate_hooks.utils import ResponderRegistrar
 def add_stale_label_to_issues(
         repo: Repository,
         issue_expire_limit: int = 'Expiry limit in no. of days for issues',
-        stale_label: str = 'Label to be used for marking stale'
+        stale_label: str = 'Label to be used for marking stale',
+        unassign: bool = 'Unassign assignees if an issue goes stale',
 ):
     """
     Assigns the chosen label to issues which haven't been updated in a certain
@@ -28,6 +29,8 @@ def add_stale_label_to_issues(
         with lock_igitt_object('label issue', issue):
             if stale_label not in issue.labels:
                 issue.labels = issue.labels | {stale_label}
+            if unassign and issue.assignees:
+                issue.assignees = {}
 
 
 @ResponderRegistrar.responder(
