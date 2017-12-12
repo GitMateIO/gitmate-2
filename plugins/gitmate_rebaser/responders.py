@@ -26,9 +26,9 @@ def rebase_merge_request(pr: MergeRequest, comment: Comment):
                                 re.IGNORECASE)
     if compiled_regex.search(body):
         pr.add_comment(
-            'Hey! This pull request is being rebased automatically. Please DO '
-            'NOT push while rebase is in progress or your changes would be '
-            'lost!')
+            'Hey, I\'m [GitMate.io](https://gitmate.io)! This pull request is '
+            'being rebased automatically. DO NOT push while rebase is '
+            'in progress or your changes would be lost!')
         head_clone_url = pr.source_repository.clone_url
         base_clone_url = pr.target_repository.clone_url
         output = run_in_container(settings.REBASER_IMAGE,
