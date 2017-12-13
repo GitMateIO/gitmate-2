@@ -122,3 +122,25 @@ class TestRepositories(GitmateTestCase):
                 full_name='some_repo',
                 active=False
             ).igitt_repo
+
+    def test_accessless_repo_deletion(self):
+        uncached_get_repos_request = self.factory.get(self.repo_list_url,
+                                                      {'cached': '0'})
+        uncached_get_repos_request.user = self.user
+        response = self.repo_list(uncached_get_repos_request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('gitmate-test-user/delete-test',
+                      [elem['full_name'] for elem in response.data])
+        no_of_repos_old = len(response.data)
+
+        # Repository `gitmate-test-user/delete-test` deleted via the UI, as
+        # the oauth token doesn't have administrator access and it is not
+        # advisable creating and sharing a token that does have admin access.
+
+        response = self.repo_list(uncached_get_repos_request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertNotIn('gitmate-test-user/delete-test',
+                         [elem['full_name'] for elem in response.data])
+
+        # ensuring only one repository was deleted from the database
+        self.assertEqual(len(response.data), no_of_repos_old - 1)

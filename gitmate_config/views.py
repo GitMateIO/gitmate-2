@@ -111,9 +111,12 @@ class RepositoryViewSet(
 
                     repo.save()
 
-                # unlink the repositories the user no longer has access to
-                inaccessible_repos = self.get_queryset().exclude(
-                    Q(identifier__in=repo_ids) | Q(full_name__in=repo_names))
+                # unlink the repositories in the current provider for which the
+                # user no longer has access to
+                inaccessible_repos = self.get_queryset().filter(
+                    provider=provider.value).exclude(
+                        Q(identifier__in=repo_ids) |
+                        Q(full_name__in=repo_names))
 
                 # delete them if he's the only administrator
                 inaccessible_repos.annotate(

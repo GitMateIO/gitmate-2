@@ -1,0 +1,1096 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/user/repos?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2dUW+jyhWA/0rkp1aNY8B2nFiqbt+qlbraapv70qqKiE1s7trGApxt1tr/3jNn
+        BmZgBjAzh93byi+rxMt8HIYZDF/OYf51HsXr0dL3ZnNvOvWC29Eh3Eej5SiPsnx0O3o97XbP4qNN
+        nO/DPBqz/xon6WYitkm+HqJ0tDyPdskmPkDb+obAYTuZBoE3ewy821H4FuZh+nxKd7D1Ns+P2XIy
+        4R9mwR00355eTlmUrpJDHh3yu1Wyn5wmRftf3v48A+QmFRjGHsEHNdwxFiTeHHDZxBDZNt/vapHw
+        ALCZocFrstslX4FWj/+SHU7K1qxzkRQfNg4kaH2eJPk2gu6EQ/zOOibOcrvgsOUZDjrLn+M1Y2Vw
+        ntJobRWgaAvhsQHy/TxJo2OC0NNLtkrjYx4nB7tAKwQgwmgMD/G30J4IhAxALES7kLAlEKI3GLF2
+        CN70PDmm8Vu4emddlUarKH6DE+CArTGAmr8f2Rz/pPQaOy1xHj2H6z2bw6/hLou+344wlBw2xg9u
+        YbL2mS3FFWIdled7tDzAJYWN/fRLSW2dudix2kQs0IzT0dstAJiO0ByO/Uv07kBhrc8T+FfMmhVM
+        7PAlScM86bpMtAVXwZwn6q9sbORRuHcIGpsDZpskLj2IzQETZ9kpumiYth0yUrJJMRMOp/0Lv6hd
+        Mv7bwLw9xBlmWbw5RJFDz5WI86S45r6k4WG1dYEWhPOE/4RnONw4hMlaA+Rll7w4UOAbcIKI8yTb
+        hvz7JX92i4wxGaGCTKNXxzAZoUTmqdM5xhAZogTC11kOp9shxoIwOYue3IWHzSncuDBLBLuAw5f1
+        JvzWeWvSNk8kA4Ds/iuNX06ulzFJYVHyb3+Y1y5dKSESiTcU7bcqrYeu3Jbgwe/3cdc3eRtPACqD
+        3BnKxmUdzH7vvunoCpURzhN5xeUXdMG271VxRS9iVPcgbu8dhkFBmJz/dAzzLbs6wY6OYRrZBywA
+        k/NLCLdAd3d3520U4s3wPkqd5ipvD6AwXW3hrs4+xnNBgPsXeCbDe+tXFuIa7rV3Sbh26NMSATh+
+        8uzj5O3Vc36Euz+H4LC5ytvHO3gcTQ4u11DJUMmHJI9f49UlzxRtU6uCOf+SxYdVdBvCLTCM0jxe
+        xTBu4RmOnTu4ZYxc+oa3h0OAJ3j+7LCLYAg79HYaccJ5wp8G19Fxl7w7XmsUCJuuaQTPF+vnMIcH
+        ksDzF2PvcRwET/5iOZ8vvcU/YZvTcd25zfGUbZsxDwwDl04xkuEnEA4tj/n4dMH0ATTLsq1s9hfZ
+        aAk/6j5ENFrtYEjW5s2l+3urf4d1NYQgt8k+OsKdRPF4lcXf4GdQLco9wSo5HaCX4cOvYQ43q/D9
+        Kz8q7iMKwDbMnvnsHS3z9MQe/eCTY5r8Fq3yTP1MXi+UDb/GX+JKQ3aXUz7v8Yc2ufN9nKaJ8EH8
+        8VBc38DsiAfP5BgdREBq1PEqOmTlUfOnOXaEyuaVI8Zf1tFreNrlz/xGG8bdPsxyUFjwuBulezhq
+        5iWY0FIfhuE/YYiV8bALET/A799vhUTzZ94smHvzikQb+8Dt1Gi41VWkcRF4FWnV68pVpElJfNHY
+        +P8UaXiNGEql8cuUk0wb+zQ6DTjDCDUAD6rUgE8j1QBEqtWAN5RYAzShWgPaEHINsOR6jZ1sCsEG
+        HLi/o1Zsgkor2QSUULMVYdKKNqAOoNqASizbeJxC2cG1nUS3AVTlsAcYAuHGQqVXbpKK6g67wE26
+        4dEjglS7iXFaRzuLNxHuMOoN4EPKNzHQWOyE+o33CDN49AIO2GQKDlgDSjigE2q4ciDQiThADqHi
+        2BkqhR69jAP8D9NxsC9yIQfMIZQcG23S7LGrsCbl/GDsB0+Bv5wtln5glnL6NpqU0zeBe59eUm7s
+        W2m5spmNmJP77K3m8LHqKueKjA+waj9Pzvn30/nDopRza5DbIputzdCxv/DD9FC3bfd0rAEAMa3u
+        /v7B96YdGW/Txoy3oj1VxpsIrUcSj2hhn/OG3UeT9KagyLLekEmX9oa4gXQdZ6upczDK3BLfEOmU
+        +YYE/PMXBHNJjg5rUMvmQsYAyk7EVkmggyhF8tuvfJoSJ73hPqtXC2pjZ9iFXRJcHeRm7zQarcPT
+        8IOYPG0vbj5Pw5FYPY1K7fa0HRAYPo1J6fk0OJnt08hOzk+jEZo/I5vG/xnRBBbQyCVKutPYhEZQ
+        YxN5QY1Ll4ynoQkdocYmNIVNbFdfqHHrao89l9rKSA3Opnl9B9buUKMXJLrkPW0XQ3hEbSeEyXwG
+        NmYF0jlFbQ/OZlEjDuAXtX0QWEaNSZX0p4EpjaMGH8I7ajsZ3D5qeyRzkBqZ0kRq8Et85PQp8Jbe
+        FIoXm31kdRujjyw38fskCdYj7mUlGxr3cZMNiOxiQ1kHXD2lUpk2gKfkSZQ8h7D4WU8h9ObBw8yf
+        yxTCaH/M3zv9ZLHV1UyW1cSdiWI4Aa5mkqAiF3uStiQXkVczSViOiz1aXCcGcZLlpcoqi1DGR+Ah
+        MRTiLEIlwOHcIw+cwDpyEJ1v5LxBTCNHUzlGTiO3ixxL6xXFyXbJIlQGJbVL5NExKqFFlFAqf6iE
+        SZNFqHQptTPksVLaQk4k9oQcSm0IRah0WYTqiaIp3a1c4umyCGuTlNYEFieLlwATO0AOH8z+yYFG
+        lEVYPYEDGD8eMY3r46yhLB+nU/k9dSC4ZxEqp4nc6YkzNEAWoRL1j/F4/FBoDR5nkrs7Mdo6sghZ
+        ae/jkz9bzv1lMDNbO30bzdrpm1yaRShPYX9fh4doUd6r77Ofo8P9Xu3c78DOzR7nkEA49y9+SR6e
+        +ovekse2vCYNFi8XxH67qrmrmju9NL28kV9V8V17pC/MQ27jG/N+5dN0iKRBcZmomLlReMM+vmEJ
+        luxvAC7vzFOvRQ75giweAkGHmAEyBJE7nJ5DPIGdQw6dnEPcIG4OyVRqDmHkZg6ptGKOn2ZnL4cY
+        ai1XQgmtXMmkknIySEInh1BqJYdQSiNXRElU1ltetimreiWUOlWPHz2hjUNg3Zg5J+eV47NOdsvK
+        K4OlLeiVp2swEycix9dtU5TzqsN2iMw7jJdGwyFqKAuHcCoJhzDS7Dokkis4fnKGMnBI/zECDndF
+        698QSa7f+DBrtW/3Y88f+9MnD16sd7/05yb7ZtpGs29Qw+s9PHke5N0tZ/e9c+ZYqP3lm9Kqd5ac
+        usd+6o21bDRvsFaC/Lub8k6639XL9SBIu5fr+T5Ure6Mr9cDZuX1erhpcdRWL9i7KDfucTa7n06D
+        h9K+wV0AvictqKXH/TXOP8LnHz6VL41nW2ipceVmhXebBdOpP39sX57Cay7WFe0dinXVkNqLdNUt
+        exXnys6x9mt1hEsxrnquHNaekBi64luF6Vp0K1F9U9pky/5FtrItTXGtGktDUS35ihLq+JCzvSrJ
+        Pn74/PnT55vk9WaVrCM2P9ll4S62UWbm/V3sywzNe8syE8PZlJmgVJrMxO7tyEwQW0FmYhHYMRPW
+        To2ZSI5ezIR0kWImXt/aVxNj4/SuuyaitQtrAtqJsCaafU2rieimwExEe/9lojllo5mAbploJqKb
+        9mohWtSlmmh1LbXpV41qQgJC82h9bJeJSVJ5agITeS4T2q3K1Ex0N1wmro3eMnFo3JaJbCe2TCQH
+        q2XCOSotE5KoPtSEHkJmmfbjYrJMPEeNZUJ21X1692N/zhaHmEIGmdFhLcY+eC4QVNMlOKoZ1oaa
+        HBaoMP9x6QOma3EIQ5xdAqu5SYe9am7YWtlpaFbxVmx5TL4kxCMTHLq3muqLQsBHclGI0d/f8y2+
+        oVVdGKJYFLCyMoTyYcvSEGrTgdeGOLPV/WCVB1wlE45ALGf6SfyaHdf/gXX7ioUvcC1CtggFrH54
+        yXoS0E1915O4XHfNZ6DWasuvBuPXFNdFXXd7L3XTqwCD5J1sIqfKVYC1L6sge8q5tlOirgKs35Kq
+        hiu7OqmbTNgmzuHbXl3CeMKc/ThLTukqkmK8ci3pmV7WEZqLNCvDorBnEjaERpP0AX2a3AmFWJM0
+        QsMmocOoNsknc24SSS/fJJvYwilDoWeCWtt8dUxT60RTCjrZA3CVYwsfWiz62h2wdeJaK5rc3cnO
+        IJV4Ektt8ySZXOspQTtVmbafQevktlYsvfGrTpM631H9qWeRoPK0tWuGk4HVsWif+tYaPvS0cyFq
+        6w6IPKHsjMGEodwFmTmUSFqFKLn0LlGyh5OKch8/yC7KHRJrRgmm943KgGxNnoNVaUvxOGtInivF
+        4/0yeFx6+DY5o3j0sQJ2sZw9diTPtc16CwNZHuxlRayX7L0tna6tfUVO8hVfuZ4MFjN495mFn3x6
+        P0b/WKXxERP2lMVr/7ccJaxcJQ3lxw9PN38TKXjQKYWnHMHnsBGKyiaDIzL3MlhOJx/9bJP5OH/w
+        gql8p90HGBrsMNVVceVoKf736iuvvhInNFuNuX0JelZtoJrdq6+sdUhjQeuACXvFPG5SlMWbGjft
+        qrK8WFjbSZXQMZAwyVL5EwE2dXCQvD2hduRAetPIuQ5ykQPcfSLnkCpEjnS1hpxCJgo5jsYNipNn
+        rQN5e5iHDqvQ1r6/0ScSSD8ZmqvnkySKbDxOo7J5nEYh8Mq47MtP62eSStOJ0IjMXIXmlHXHSXU/
+        BuO3z/oP9U5jw7+OtFNuMjznotJ6kORirYjVpYy0HiStPuMRuhkzzqCWZJzq6sU4hUSFcRSZ/RI9
+        T1MVWh8kwzouHjqN1uIsMpMlRk2XvHoYe4snf7qEBRPmmO52Oq6hRmb9HObgEALPV+UVJNehmTLK
+        K8iam4K56q78rJ2iy30VHlJfRaU2ujBTDps0iyjv3iiioPixXuAJH3UlyvGML6aljmnyW7TKYYEB
+        +VlLmpzS8Adlyf1MAwU92TeXTui9jnUVoHJ0toD6TC2ZTlT4qiYqi3fVBSphjGguim0En7O0wfnC
+        v58HHWu8NpeNiuYOVaMilvaCUbFRr1pR7AnrLDmltUuFqDgdDsWhSKCrC+U415JQpPRNhsNG/QtB
+        sRlNDaiIoKH8k+z1aOKk84pPMUcb34wGb2NL0vcbyDe7gdtuVvt58wfxA0uA+yMzzT3lkWn/F+ez
+        aY17CySd4KyQdCSVRNLJvTWSjrAVSTqJQCXpUDuZpHMcdZIOdBFKOq1vwadOgHnoIJXMPGutZMbZ
+        iSUzy14t6Tw3uaTz7PWSznJKCtNxbopJ57mVdzbyLDSTzqpbIZghfUSTDmRTrA7to5p0YtHaaTEB
+        HUukm3SwW0mnieeesaVTbaSTTqHRTjrXTjzpHAf1pMMc5ZMOJMq30sFDCCh9Ly4KSqc5Sigd2F68
+        OcfCTNRQXrCc4pvDdA3lPYyD4ImVZYJjmho1FGwy9VgOFWio+aIjh0qLsktENTXoKNxsatYqo7RG
+        jToKzIWeFKW8dkt5/5iNi6Ks2YRQ7V45Bm/2Mr9wDIiVF47Bhk6vG+twRv/+LxRi65QVrwAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:21:01 GMT']
+      ETag: [W/"35d811657225cd00da06b0edf2c3b5bd"]
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: ['']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['3ADA:791B:12DA9DD:2CB32FD:5A318BAB']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4999']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.204415']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/GitMateIO/gitmate-2-frontend?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2YTW+zRhDHv0rEtXYwjp00SNXT26NIjSKlPvVirWFttgGW7i52E5Tv3v++YMBK
+        Yxw45mLZeOe3w+zM7MxUHou98H6xuL1ZLmYTLycZ9UJvx1RGFJ3Op1vBc0Xz2Jt42zJN127BT6Ye
+        seDhyf9wKT/kVHhh5aV8x3IAj+vB0TsGi/nNTbC8n3hkTxQR61KkWJYoVcjQ9+1DObsGPSk3paQi
+        Mnqo64hnfunX8j/2vy2A3AmH0WwPD05wBXMkKw6c9NsqJSpLT1SwO5v17ZVbnqb8APlTjT/dwj+K
+        aTsaBMt3X0FArPK5SihMhtd41y/PpLpQHSNS4eykWrNYQyQOQdD4MpWcEBTS5/1e+YIW3NDKjYwE
+        KxTj+YWqdUSB4mJHcvZGvoCCqARBK3WhEkYEonQPl7tQ1spUfiHYnkSv2hyCRpTtYd2v8E6EgVOv
+        hQ7Sp5ZltM2ZomsSZzretiSV9H3iGR0UFpsHE8RXLz//OKhjejxT7P748Pz89HzFt1eIlJRsTKS4
+        ZODzguZTyUsR0Y9ZWy5ejlp9GqzmKJoQ/H/cmWM6z0GQihd96i/0dThMQyofny7AIkQ92XBBFD+X
+        PHqo2qFVfvundjhFSTb8FQwFtITzl+E0QwGNSVnSXpHQww4GJv065vIy29ik2CfSevAtBloTKdku
+        p3S4HY6kyq8z+EaQPEpGYNegyrffjC+Q3XClNQSsTco3w2HIEr4hVb5MiL3C1HoUPTVagzpkQbfj
+        KK1BR7ISY3iDUViTjlxcqgqOMVzjGuRXzsopyXcl2Y2APpL0vYPKYUfezpZEPaKtQYGrCz7BNuVI
+        +bKBaZ1tfYJcMYKZG1ZDNpXP58VUH3u0yihjkSxj58qRHljH6cTIWGztz6d8/ft8HdVTcQ2q/CbR
+        2+vEbTHY4u4+qTVub+QakOEOU4P86peCqETnP+xXEEEHq+84frUhqP+ur6+rhBJT32dUjBH4FgMe
+        EVGCknawxlUNQvGFltP0EFutcIyeIuUkHm7vIwlUe76DtbaYtncUaI6Hq2oobWzGUioVz0fI2Q2q
+        vUHOFduyqE971SNAO7Tqh2R5RCckTSfwbsUiBn9HA6uPF7UwHcFgFoMXwtzCdlophesPPwlBLajy
+        bX8c0yLlr+OksRZLx76gaNHiNVHoquaz4G46u50Gy1VwF94swmD5F9aURXyyJgimwa+r2W04vw9n
+        gV5TlDLpYIL5NAhWwSJc3oWLe70Eydm5Pr5hzIJPTFe6M44PGiw9O4G0lEkj/XsjG/78ZBjkZKMU
+        PnwSdhfuvj+9T3vKQ/OEZ7RA4eOFOQJMt8pv+D6/Wyw75UvEyxyHcDPxDkShHkdx0DyqSx4c0gr9
+        959mvKHZRK5tOmi6bDwqBP+bRkp2HjaZKFSi1P04Vh7YC+uK6hLt+MQ0pbUemNBlTAju5mX2bVwG
+        xeTLdfm6+3Y6tQRTFtFc4r0r3eDiNVBLQH830Ht8WF394VbAKEX8L/pW0+avtP91p3PdWZcDS18D
+        MXSwbXQIXVuKePp3bVZj45huSZmqte1UtD5EKkwN4clUZDCpnh1pbd1Mw1pMe7nnrKezpf2OXZFl
+        +GEt/ykJ3NRcU/Uy+495BHPoEqr7j6D6tuzKtKdO33PMJsC/55jNjPrzie/3HLM7ZUdd1xmCIs77
+        zzFzqg7Ig61s1u7gXJKev/8H6VLAJM4YAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:21:04 GMT']
+      ETag: [W/"839cdf68c941a1345fa45d65d41ead7b"]
+      Last-Modified: ['Sat, 18 Nov 2017 06:29:01 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['6753:3948:230659D:49B432E:5A318BAE']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4998']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.060326']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/GitMateIO/gitmate-2?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+1YTW/jNhD9Kwtd60SWnewmAortbbGHRYogp14MWqItNpKokpTdRMh/7xtSny7s
+        OPQ1l0Bm+B4fh5zhzDSBSIP4/ubm63K5uJsFJSt4EAdbYQpm+NUimAWbOs9X7fgPYX5h/OdDOJ4h
+        9yVXQdwEudyKEvB+GuDEH90slsvo9n4WsB0zTK1qlWNaZkyl4zB0g3p+DdKsXteaq0SWhpfmOpFF
+        WIcd/vvu9xtQblVLQ9wBBg7oKtEyOTjodDiWlJkiP5DgVrbzxzM3Ms/lHvhDxSeXCHsYmc9SiHLr
+        QwFYE0qTcZgM23ijzQttPijHQhocmTYrkRKJxiEonn5MUguCIDrvtyZUvJKWrV7rRInKCFl+UNoE
+        CiqptqwUr8yDClANBhL1QREWAijf4cp9EOswTVgpsWPJC5lD8YSLHazrw3cABp15qcglH0aWIZsL
+        w1csLcjfNizX/G0WWA0Gk+3ADP511j2f+HLK+6PEor9+Pj4+PH6Rmy+JTDl5FYWFayGhYCPVc7/U
+        SQ+09h38arIesbxj8qNw+BnAkPLMX7w5CNuE+Nu6RgJ/ZWupmJHvuf1xYROSJhz/pBtiOCu8BVsw
+        SDIp/S1nwSARWtf8rIt6fLOWQ4edJ5R1sXah6pz7f5zWoaGRaS22JefeFusJmrCLomvFyiTzp+zw
+        Tei+7KmyrbdEwoJincu1Nwe8M7QETagz5t4Ks7pEFTESfkKo+OYiiYTvCY264FytPCLo6fBEGRyx
+        t74OHzatBXNWbmu29WfsCXC69IBu2eu76cRxnxgYQEc5khLr+rJANXCQQveSw3/9TThQDIQ2NTid
+        bZzY9Ci9sNsuCvHeM32crYVPrvSFlHQPD2np9/vZxGmZhG/CIZ66YN0y+1qzjdadvjF/m3R7H32H
+        D5vfKmYyikBYpmKK+4pt4WGzZshwrq+vm4wzm8EWXF3glQ4NGqaSDLmar76mwyMTQWZkc+INyUuR
+        I+eSpd627AlA5o7MV6NDj8+5QkXnLcyCx2yFyLk2svSPkQPDmLeURmxEck4pcNyNJiTNdy3KhM9Y
+        ns9wK41IBO4paiw6MSR93N8qDg35qJ9dDZBzXFlvKyvu8E3oCraUV7l8uSiijCjIMRVHJp+umEGa
+        v5hH367mX6+i26foW7yM4sXtX5hTV+nBnCi6iu6e5st4Po9v5jSnqnU2oYkWV9HyKbqPI9Dc0RSE
+        x/bu4gvlPv6iyp/W2kNNQEUGQFpnA+iPARL/+H8LooUkOS7hgZect9bu8G06DYO8TBa8Ql7g+g9a
+        vOLrnhocozc+kXUJ6y5nwZ4ZJJt4U4ehLi8AwZ8vJpMlkTK9ct46lHAYqpT8mydGTwaH+BAbVVOx
+        h5l78SymUEpd+hFXa7Ua5oihQinZNmNKuHUfDtFWaUtIWfGy1dSJBzAXCS81ttxQ6YUt2BYFdtC2
+        iR7an7pK/0VZFcSO3RaJ9Ila1ZVuMchGSwT0uzOWtVzKN6zOzcpl2VipYNrYpSquChiLWg6koy2F
+        nS3oUgatXSheuW+sCs+X+5X+p2a4XvYR6Hfq/mXHsFNKMQ7+pTg9Qh3KLTRuV3w2wAbX/GyADc3N
+        063CzwbYtD2LBGrSPYOnn98AK7nZoyU0ilTjgqYNfIu3/wB7eoIq9RYAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:21:08 GMT']
+      ETag: [W/"a5623e6a59614a9037264b3457075278"]
+      Last-Modified: ['Sat, 18 Nov 2017 03:00:40 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['72EC:7916:134B8B3:28422F5:5A318BB2']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4997']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.060531']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/gitmate-test-user/delete-test?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62YzXLbOAzH30XXdUIr7qYdz+x0H6K97MVDS7TFjSRqScqeRJN33z9I6sttY9Xm
+        xSNTwo8gCIAAu0TmyTZNP6XPmz+/fF4lNa9Esk1yUQorHqwwNlklh7Ysd+HNUdqKh1cPrRGazb9V
+        51roZNslpTrKGqgfBAB0kz4/f0nXm/Uq4Sduud61usTnhbWN2TLmB83mEfJFu6eZMlVbUdvHTFWs
+        Zb3819Nfn4A86oAhdoKBC1wjA8mLA2fYz1QrbFVeqOI1cHI/kzioslRn8C5XsGhKNoiToR1K1sd7
+        UBDvmLKFgEmxzHcyjjT2RvWcaIeFG7uTOcEMNkuL/DYVgzAUJD9575gWjXLUdm8yLRsrVX2jqjME
+        kEofeS3f+B1IIAxIpOSNSjlRIMQJrnsjw8t2rNHyxLNXMpcWmZAn7MI93AsIsPa1ofD/Dr+hPZFW
+        7HheURwfeGnE+ypxOlh85AZWiNffipeLbJGLYdOTbY00QzGgXwb6h0HsTPtjSF5MQbwrdl8AQpgC
+        A5u8iNcINKJ0DL8hpjIEPt8rza26lkeWKDvDdWz6l5zHCl5FWITDAFcoFcPCDgOcNKYVi/x6iSkc
+        zbA+hOq22vucuCRwlkzgOdCbGyOPtRARLDugOtan8L3mdVbEgPekjvkn5xH8GEFtogC2L9U+Ag1n
+        LXOojpmC+2PM7uJoSmwizdBaHCKpTaQBbXUUn3AqE2oA4yy1cI8IOvck1gVLl7w+tvwYgz2g6EBB
+        6XDkb1drpSVxN7IAptJQy30bK32ONNLalybIGzFMPcJGtKt6Pi6oFplkUkM5o1SVvFZzLOEG0CxY
+        osHJry8noP/Xy6WlqhOpY2Pm9wdMmON+q4cTptd5OlPoWCK4TU9i3R8NtwVlQ0zYcC3uX0AAsW7P
+        UeI9Pj52heCu1K+EjpIDPAdArrMCZev9Onc9CXUZ+lHXSBxI5RyNRal4HsHmAwpYv8n36+05Ux9p
+        UPVGUNZhptxKlujeVR0jh4+s6Qy1svIgsyX91ZJQneG6r0bWmVhxtATwciszCb9Ha0t7jFJZxLCZ
+        52BJuPTwTVUpEAIRdkPj/oRIHfM9cy6aUr1GymkTGKUBLdCP5Ttu0bg9rdPPD+nTQ7r59rTerjfb
+        dP0Pvmmb/Oo3TWuKX2NSwiBVhwjAE+5oProYmXZhdPMCcWOKUfzvUXiLx1/fKQXhrIQrX8Tf785/
+        ujxjlwKgfKEq0aAi6ttUI9/wjNurSU2TqbbGLmDwzC2KddQL41BfB/WAgpudzwbJ1uqWWmmMNFr9
+        KzJrpmNjHpp8eJYvciZI1drQN/umd5y8klqrcMXm2+yQP3FZFhp51Yg6KDTVWmaiNsOqfRdMK5x8
+        Plux+5OLA29Lu/MNBvyy4sa6K4VG6AqrpkseuiQMlwt+/eSB/ZIonfln3DkgCajzzvzXcniQO0v6
+        z/wbNwSlqdyZv9GCzrS5TC3sGc38ZJHTAi/YLH3/H02425IbFQAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:21:10 GMT']
+      ETag: [W/"b8dd2736c335cf467625ac58b300d87a"]
+      Last-Modified: ['Wed, 13 Dec 2017 20:03:10 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['396B:7916:134BA40:28425FB:5A318BB5']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4996']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.058441']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/gitmate-test-user/empty?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62YzXLjNgzH30XXOqadTba7nulsH6K99OKhJVpiI5EqSdnjaPLu/YPUl70ZyTV7
+        ycgM8SMIAiDANpFZsttuXp+/vWxfX1eJ4pVIdomoandJVsmxKct9N5ZLV3Ennpyw7qmxwrB+lj4r
+        YZJdm5Q6lwriP00Fyi/09eu37ebLZpXwE3fc7BtTYnrhXG13jIVB+2UN+aI50BqpVk4ot051xRrW
+        y/84/fYCZG46DLETDNzgatmRgjhwln2mWuGq8kaVoIGX+0ziqMtSn8G73cFdS7JBnEzsUVLlMSiI
+        t0y7QsCk2OYHGUda96B6XrTFxq3by4xgFodlRPaYip0wFCQ/+WiZEbX21OZgUyNrJ7V6UNUrBJDa
+        5FzJdx6BBMKCREo+qJQXBUKc4LoPMoJsy2ojTzy9kLmMSIU84RRiuDcQYN2lppD/E35DZyKd2POs
+        ojg+8tKKj1XidXCY5AdWiNf/FC9DnsjEcNzJTiG1kPebt4E7G77eqD8H4wAn0oKtZxEISgBggTdx
+        ieKQfMvwt4udFAHOD9pwp5fyxbyCV6CWTX+SezjBqyjFPQCgQus4S3oAQNLaRtzlrfMb9xzL+pBQ
+        TXUIOe6eQJhHBwJ05dbKXAkRZcEB0rI+DR8MV2kRh+0ZLQtf/rR5HqUqyQNzKPUhioPbkXlIy2zB
+        w8Xj9rHaEZUYV1AjjtGqEmOAOhN53l5NggxI3HUORx+lZ89gbWfRkqu84XkcdYBQksd1nvP3xfpl
+        PnZGCpBUqBl5aOKT3MghTUOJgHiPM+mIGaG+7pgvaRYMMKlfvAmqSi7d9/PEDnHl9v8Dlvz0Fk2/
+        l8uTZXWJ0bIxJ4ek39FjrNtl/V7P6RpdVxDlEj2Dtb/U3BWUubBUzY2IUbpDsPbAUTqt1+u2ENyX
+        0JUwkREcCEBxkxYoBGP0bHsGqh50db4oP5KaGYr0UvMsyrYDBMBwjDG6BsL0/GvUjlEKesCUWMkS
+        ba1WcTl2pEzZSjt5lOk9Pcl8uF2B2h9WqlSsOMpoeK2TqYQfoxGkU0TBKeIsFAjYBh4EQvNRCrh0
+        lNWNCIyWha4yE3WpL9FZaIKhIDYCvUq25w5NzfNm++vT5vvT8/c/ti+71+3u+eUvzGnqbHFO3dhi
+        AYO02vk1vvB+MfdoEPoUeo/A+tYWo+Dvo9gOn5+9sXRiaQkHvYmk+9c83d51y6JQtdCVqFF79A2b
+        le/4xgvOpIZIdaNgbQyeuUOxi7t6HOrrjh5QcLsPEZ3snGmoncRIbfTfInV2OjZmkcnEs3yTV4JU
+        Fw0dZGgCx8UraYzunplCw9nlPTwYdc2sroXqFJpqLVOh7LDr0BvSDifTr3bsf2TiyJvS7UOZDv+r
+        uHW+ra6FqbBreuigh7KuwQ77J0/rt0SJKXyj70Zo6/Pe/tNw+IvP/v208B8/BKWp7Lj+jxF0/1zL
+        KOHOaHEnm5wWV53Nth//AjCuBlYTFAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:21:13 GMT']
+      ETag: [W/"71cc0ccd8c0b2131a8c34ed1d4aad1b2"]
+      Last-Modified: ['Fri, 29 Sep 2017 14:51:24 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['CB1B:7912:C277ED:1B2876F:5A318BB8']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4995']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.049020']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/gitmate-test-user/test?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WYwXLiOBCGX2XK1wWEk5BkXbU18xCzl71QwhZYG9vySDJU4sq779+SDIZJGRZd
+        Uo5Rf/rVUre71SeySLKnP1er15dVOksaXoskS6wwNpkl266q1uHVTtqaWzGnn+adEZqFQerQCJ1k
+        fVKpnWxg/NtIkGiW9Pn5NV0+LmcJ33PL9brTFYaX1rYmY8y/NI8L2JfdhqbIVWNFYxe5qlnHBvvv
+        +7+egNzpgCF2ghcXuFYGkjcHzrCvpJW2ri6keAXO7iuLraoqdQDvcgU3TcmO5uRhh5LNLgYF854p
+        Wwq4FMv8JOdIY++U50x7LNzYtSwIZrBZWhT3SQzGEEjn5LNnWrTKUbuNybVsrVTNnVLPEEAqveON
+        /OARSCAMSCTyTlHOFAixx9G9k+Fte9Zquef5O7lLi1zIPXYhhnsBAda+txTwf+Pc0J5IK9a8qCmO
+        t7wy4nOWOA0Wg9yLGeL1f8XLkCYKcdxtzMe/Ufb4Rr7CtFul3478yTB2zv09KIdJCHTF5VMEhCbs
+        IehNvMdgyLxn+BsCKEeU843S3KprSWNS3hmnZ+N/6YhYwesY2c4enFKpKC86e3CkMZ246bxOrtph
+        DBtiounqjU9yt0TCJNkDoJQbI3eNEDHeOzJ6NmThjeZNXkZRB0TP/JPbZ76LEUrmoGwqtYnB4MvI
+        HKNnpuT+o2PXkdoISogzphbbWKGEODKtjttpJ5IYRyI+chabHqNyQLA+eLPiza7juyjokYH9pg/x
+        jn9cLVsmI+YEAZHKMy03XXRWO2FIp68LEONR7jxRTkxXa0yXMdOrH5Usbv11La994ieBgXB22uOp
+        dD4vyfT/9XrkqlhC9OyUgn2KD/AIz4YcP6gcTxGagJjDMCBY/0fLbUm5CjO1XIsIyYHA+g1HnbRY
+        LPpScFcv10LHha0HgMR1XqLoi1DZDwiUNujfXP29JZEF6vFK8SLGr0cGeH4HI5R6wHjnW7SfMfKc
+        /RhYywpVp2qicuoJMkY3ysqtzG9pPSaD7IzTfzeyycWMV9UMp9XKXOL8ot2jDURFKaLc4wFYBHp+
+        32FUAkc5xuNaeETPfOdYiLZS77GJZ0ShyNUC7Uix5hZ9xMMyfZ4v03n6+HP5kq2es3T1D8Z0bXF1
+        TNuZcoR5macP8+Xrz+UyS5fZ0zNhkEjDgcYTriim7gVcC0I3DrAzpjzZ/ThZZXj84hIlWOUVTuZF
+        AN084/7yu3bVEjpLVYsWJUaSNQgVav8+8PxwVivkqmvgadzaHLhFMYuv8unVUF8MgJKbtY/jJLO6
+        o24Rb1qt/hW5NeN3p9QxGniQb/LMkMqfY2Pom7swOUTWUmsVbpG8/pDrcB8UelXViiYIGlSnKZZS
+        yVw05rhu3/bRwkcGuLCiocOqnQsKseVdZde+Fsf5q7mxrnNuha6xcrrLoLuw0EN7H9BJG5ZFOck/
+        o7VGXKvD2vzqOA6MS/rDMP+LewXhVGac/6IFfXXObRphD+hfh4XSNo5KqeC39PM/9xcziPMTAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:21:17 GMT']
+      ETag: [W/"dbc9cd814db63b989cc7488b5e8bfa2f"]
+      Last-Modified: ['Wed, 13 Jan 2016 07:56:15 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['9230:7916:134BE3D:2842E58:5A318BBC']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4994']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.063240']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/orgs/GitMateIO/members?per_page=100&role=admin
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5WT0WqDMBSG3yXXpenGuoEw9hS7KkPSeKoHYhKSo6UNffeeaBhMGOiVEv7vy59j
+        PCVhXItWVCKiiWInsBHV8ePl/fh62Ak1KlKhHoLhQEfkYyXlvBgP+xapG85DhKCdJbC0166Xgyz4
+        1/j5xsI2FEs2C15Y2DwW0UyzLcrSpaPeLDaf95yiJXRxxrgrU8ua/4nlL8Fl5ne07UaaiSQddcDT
+        4cqPfFCMtL7ElE4yP2psMh951AGa1UVKnmtcLTdIMoB3k2g4Rx3QEzq7vtAfii0utMriXW2zMJVv
+        Ua6yfuspzRSMfInWY3M8SR9wVPqWjx5AA448xI2qBccmunng+/rNHzePFAlq1fT5T7koE+Hx8wSj
+        T9jqOwMAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:21:20 GMT']
+      ETag: [W/"dc742da77663e5f92330a553a6400ac9"]
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: ['admin:org, read:org, repo, user, write:org']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['955B:7916:134BFEC:28431A1:5A318BBF']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4993']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.043214']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects?membership=True&per_page=100
+  response:
+    body: {string: '[{"id":4266603,"description":"","default_branch":null,"tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/empty.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/empty.git","web_url":"https://gitlab.com/gitmate-test-user/empty","name":"empty","name_with_namespace":"GitMate
+        / empty","path":"empty","path_with_namespace":"gitmate-test-user/empty","avatar_url":null,"star_count":0,"forks_count":0,"created_at":"2017-09-29T14:22:56.063Z","last_activity_at":"2017-09-29T14:22:56.063Z","_links":{"self":"http://gitlab.com/api/v4/projects/4266603","issues":"http://gitlab.com/api/v4/projects/4266603/issues","merge_requests":"http://gitlab.com/api/v4/projects/4266603/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/4266603/repository/branches","labels":"http://gitlab.com/api/v4/projects/4266603/labels","events":"http://gitlab.com/api/v4/projects/4266603/events","members":"http://gitlab.com/api/v4/projects/4266603/members"},"archived":false,"visibility":"public","owner":{"id":1369631,"name":"GitMate","username":"gitmate-test-user","state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80\u0026d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"resolve_outdated_diff_discussions":false,"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"finished","open_issues_count":0,"public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}},{"id":3439658,"description":"","default_branch":"master","tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/test.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/test.git","web_url":"https://gitlab.com/gitmate-test-user/test","name":"test","name_with_namespace":"GitMate
+        / test","path":"test","path_with_namespace":"gitmate-test-user/test","avatar_url":null,"star_count":0,"forks_count":2,"created_at":"2017-06-05T04:56:19.418Z","last_activity_at":"2017-12-10T21:58:08.858Z","_links":{"self":"http://gitlab.com/api/v4/projects/3439658","issues":"http://gitlab.com/api/v4/projects/3439658/issues","merge_requests":"http://gitlab.com/api/v4/projects/3439658/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/3439658/repository/branches","labels":"http://gitlab.com/api/v4/projects/3439658/labels","events":"http://gitlab.com/api/v4/projects/3439658/events","members":"http://gitlab.com/api/v4/projects/3439658/members"},"archived":false,"visibility":"public","owner":{"id":1369631,"name":"GitMate","username":"gitmate-test-user","state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80\u0026d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"resolve_outdated_diff_discussions":null,"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"failed","open_issues_count":14,"public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['4178']
+      Content-Type: [application/json]
+      Date: ['Wed, 13 Dec 2017 20:21:23 GMT']
+      Etag: [W/"813256f562f73cac433c03413afcbbe4"]
+      Link: ['<https://gitlab.com/api/v4/projects?archived=false&membership=true&order_by=created_at&owned=false&page=1&per_page=100&simple=false&sort=desc&starred=false&statistics=false&with_issues_enabled=false&with_merge_requests_enabled=false>;
+          rel="first", <https://gitlab.com/api/v4/projects?archived=false&membership=true&order_by=created_at&owned=false&page=1&per_page=100&simple=false&sort=desc&starred=false&statistics=false&with_issues_enabled=false&with_merge_requests_enabled=false>;
+          rel="last"']
+      RateLimit-Limit: ['600']
+      RateLimit-Observed: ['1']
+      RateLimit-Remaining: ['599']
+      RateLimit-Reset: ['1513196543']
+      RateLimit-ResetTime: ['Thu, 13 Dec 2017 20:22:23 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Next-Page: ['']
+      X-Page: ['1']
+      X-Per-Page: ['100']
+      X-Prev-Page: ['']
+      X-Request-Id: [dff00077-860e-4443-9e70-635b31824e5d]
+      X-Runtime: ['0.476632']
+      X-Total: ['2']
+      X-Total-Pages: ['1']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest?per_page=100
+  response:
+    body: {string: '{"id":3439658,"description":"","default_branch":"master","tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/test.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/test.git","web_url":"https://gitlab.com/gitmate-test-user/test","name":"test","name_with_namespace":"GitMate
+        / test","path":"test","path_with_namespace":"gitmate-test-user/test","avatar_url":null,"star_count":0,"forks_count":2,"created_at":"2017-06-05T04:56:19.418Z","last_activity_at":"2017-12-10T21:58:08.858Z","_links":{"self":"http://gitlab.com/api/v4/projects/3439658","issues":"http://gitlab.com/api/v4/projects/3439658/issues","merge_requests":"http://gitlab.com/api/v4/projects/3439658/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/3439658/repository/branches","labels":"http://gitlab.com/api/v4/projects/3439658/labels","events":"http://gitlab.com/api/v4/projects/3439658/events","members":"http://gitlab.com/api/v4/projects/3439658/members"},"archived":false,"visibility":"public","owner":{"id":1369631,"name":"GitMate","username":"gitmate-test-user","state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"resolve_outdated_diff_discussions":null,"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"failed","import_error":"Mirror
+        update for gitmate-test-user/test failed with the following message: The default
+        branch (master) has diverged from its upstream counterpart and could not be
+        updated automatically.","open_issues_count":14,"runners_token":"mJspL93WBs-yfGkkvpos","public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['2323']
+      Content-Type: [application/json]
+      Date: ['Wed, 13 Dec 2017 20:21:26 GMT']
+      Etag: [W/"7f4eb007ed26a39210de14001e1bdaca"]
+      RateLimit-Limit: ['600']
+      RateLimit-Observed: ['2']
+      RateLimit-Remaining: ['598']
+      RateLimit-Reset: ['1513196546']
+      RateLimit-ResetTime: ['Thu, 13 Dec 2017 20:22:26 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [9430ed97-d610-4688-98e6-5a5452ca5a8c]
+      X-Runtime: ['0.258087']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Fempty?per_page=100
+  response:
+    body: {string: '{"id":4266603,"description":"","default_branch":null,"tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/empty.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/empty.git","web_url":"https://gitlab.com/gitmate-test-user/empty","name":"empty","name_with_namespace":"GitMate
+        / empty","path":"empty","path_with_namespace":"gitmate-test-user/empty","avatar_url":null,"star_count":0,"forks_count":0,"created_at":"2017-09-29T14:22:56.063Z","last_activity_at":"2017-09-29T14:22:56.063Z","_links":{"self":"http://gitlab.com/api/v4/projects/4266603","issues":"http://gitlab.com/api/v4/projects/4266603/issues","merge_requests":"http://gitlab.com/api/v4/projects/4266603/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/4266603/repository/branches","labels":"http://gitlab.com/api/v4/projects/4266603/labels","events":"http://gitlab.com/api/v4/projects/4266603/events","members":"http://gitlab.com/api/v4/projects/4266603/members"},"archived":false,"visibility":"public","owner":{"id":1369631,"name":"GitMate","username":"gitmate-test-user","state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"resolve_outdated_diff_discussions":false,"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"finished","import_error":null,"open_issues_count":0,"runners_token":"jF4NeXvdzpiSR3HnCEaZ","public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['2144']
+      Content-Type: [application/json]
+      Date: ['Wed, 13 Dec 2017 20:21:29 GMT']
+      Etag: [W/"2aa5cd26b6ea539272d52f946ec349ee"]
+      RateLimit-Limit: ['600']
+      RateLimit-Observed: ['3']
+      RateLimit-Remaining: ['597']
+      RateLimit-Reset: ['1513196549']
+      RateLimit-ResetTime: ['Thu, 13 Dec 2017 20:22:29 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [f36ed54b-263c-4a9b-9d57-5e8ad3ec98e8]
+      X-Runtime: ['0.234727']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/groups/gitmate-test-user/members?per_page=100
+  response:
+    body: {string: '{"message":"404 Group Not Found"}'}
+    headers:
+      Cache-Control: [no-cache]
+      Content-Length: ['33']
+      Content-Type: [application/json]
+      Date: ['Wed, 13 Dec 2017 20:21:32 GMT']
+      RateLimit-Limit: ['600']
+      RateLimit-Observed: ['4']
+      RateLimit-Remaining: ['596']
+      RateLimit-Reset: ['1513196552']
+      RateLimit-ResetTime: ['Thu, 13 Dec 2017 20:22:32 GMT']
+      Server: [nginx]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [28211e78-8213-465e-8672-6b30e8607cea]
+      X-Runtime: ['0.057019']
+    status: {code: 404, message: Not Found}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/user?per_page=100
+  response:
+    body: {string: '{"id":1369631,"name":"GitMate","username":"gitmate-test-user","state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user","created_at":"2017-06-02T07:14:25.112Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null,"last_sign_in_at":"2017-09-19T14:30:33.360Z","confirmed_at":"2017-06-02T07:17:21.578Z","last_activity_on":"2017-09-24","email":"naveendarknight@gmail.com","theme_id":null,"color_scheme_id":1,"projects_limit":100000,"current_sign_in_at":"2017-09-19T19:37:42.606Z","identities":[],"can_create_group":true,"can_create_project":true,"two_factor_enabled":false,"external":false,"shared_runners_minutes_limit":2000}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['779']
+      Content-Type: [application/json]
+      Date: ['Wed, 13 Dec 2017 20:21:34 GMT']
+      Etag: [W/"d6d7c880f3f1baa30897d5b57f90a470"]
+      RateLimit-Limit: ['600']
+      RateLimit-Observed: ['5']
+      RateLimit-Remaining: ['595']
+      RateLimit-Reset: ['1513196554']
+      RateLimit-ResetTime: ['Thu, 13 Dec 2017 20:22:34 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [5a1909b3-7f58-4abf-ae4c-dfc18227b894]
+      X-Runtime: ['0.068856']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/user/repos?per_page=100
+  response:
+    body:
+      string: !!binary |
+        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
+        b5oAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:33:32 GMT']
+      ETag: [W/"2ae7877185499ea684c04187988be886"]
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: ['']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['8C76:7912:C37A87:1B4A92E:5A318E9B']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4979']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.080809']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/GitMateIO/gitmate-2-frontend?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2YTW+zRhDHv0rEtXYwjp00SNXT26NIjSKlPvVirWFttgGW7i52E5Tv3v++YMBK
+        Yxw45mLZeOe3w+zM7MxUHou98H6xuL1ZLmYTLycZ9UJvx1RGFJ3Op1vBc0Xz2Jt42zJN127BT6Ye
+        seDhyf9wKT/kVHhh5aV8x3IAj+vB0TsGi/nNTbC8n3hkTxQR61KkWJYoVcjQ9+1DObsGPSk3paQi
+        Mnqo64hnfunX8j/2vy2A3AmH0WwPD05wBXMkKw6c9NsqJSpLT1SwO5v17ZVbnqb8APlTjT/dwj+K
+        aTsaBMt3X0FArPK5SihMhtd41y/PpLpQHSNS4eykWrNYQyQOQdD4MpWcEBTS5/1e+YIW3NDKjYwE
+        KxTj+YWqdUSB4mJHcvZGvoCCqARBK3WhEkYEonQPl7tQ1spUfiHYnkSv2hyCRpTtYd2v8E6EgVOv
+        hQ7Sp5ZltM2ZomsSZzretiSV9H3iGR0UFpsHE8RXLz//OKhjejxT7P748Pz89HzFt1eIlJRsTKS4
+        ZODzguZTyUsR0Y9ZWy5ejlp9GqzmKJoQ/H/cmWM6z0GQihd96i/0dThMQyofny7AIkQ92XBBFD+X
+        PHqo2qFVfvundjhFSTb8FQwFtITzl+E0QwGNSVnSXpHQww4GJv065vIy29ik2CfSevAtBloTKdku
+        p3S4HY6kyq8z+EaQPEpGYNegyrffjC+Q3XClNQSsTco3w2HIEr4hVb5MiL3C1HoUPTVagzpkQbfj
+        KK1BR7ISY3iDUViTjlxcqgqOMVzjGuRXzsopyXcl2Y2APpL0vYPKYUfezpZEPaKtQYGrCz7BNuVI
+        +bKBaZ1tfYJcMYKZG1ZDNpXP58VUH3u0yihjkSxj58qRHljH6cTIWGztz6d8/ft8HdVTcQ2q/CbR
+        2+vEbTHY4u4+qTVub+QakOEOU4P86peCqETnP+xXEEEHq+84frUhqP+ur6+rhBJT32dUjBH4FgMe
+        EVGCknawxlUNQvGFltP0EFutcIyeIuUkHm7vIwlUe76DtbaYtncUaI6Hq2oobWzGUioVz0fI2Q2q
+        vUHOFduyqE971SNAO7Tqh2R5RCckTSfwbsUiBn9HA6uPF7UwHcFgFoMXwtzCdlophesPPwlBLajy
+        bX8c0yLlr+OksRZLx76gaNHiNVHoquaz4G46u50Gy1VwF94swmD5F9aURXyyJgimwa+r2W04vw9n
+        gV5TlDLpYIL5NAhWwSJc3oWLe70Eydm5Pr5hzIJPTFe6M44PGiw9O4G0lEkj/XsjG/78ZBjkZKMU
+        PnwSdhfuvj+9T3vKQ/OEZ7RA4eOFOQJMt8pv+D6/Wyw75UvEyxyHcDPxDkShHkdx0DyqSx4c0gr9
+        959mvKHZRK5tOmi6bDwqBP+bRkp2HjaZKFSi1P04Vh7YC+uK6hLt+MQ0pbUemNBlTAju5mX2bVwG
+        xeTLdfm6+3Y6tQRTFtFc4r0r3eDiNVBLQH830Ht8WF394VbAKEX8L/pW0+avtP91p3PdWZcDS18D
+        MXSwbXQIXVuKePp3bVZj45huSZmqte1UtD5EKkwN4clUZDCpnh1pbd1Mw1pMe7nnrKezpf2OXZFl
+        +GEt/ykJ3NRcU/Uy+495BHPoEqr7j6D6tuzKtKdO33PMJsC/55jNjPrzie/3HLM7ZUdd1xmCIs77
+        zzFzqg7Ig61s1u7gXJKev/8H6VLAJM4YAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:33:36 GMT']
+      ETag: [W/"839cdf68c941a1345fa45d65d41ead7b"]
+      Last-Modified: ['Sat, 18 Nov 2017 06:29:01 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['BDF2:7912:C37BA1:1B4AB2A:5A318E9E']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4978']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.050952']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/gitmate-test-user/empty?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62YzXLjNgzH30XXOqadTba7nulsH6K99OKhJVpiI5EqSdnjaPLu/YPUl70ZyTV7
+        ycgM8SMIAiDANpFZsttuXp+/vWxfX1eJ4pVIdomoandJVsmxKct9N5ZLV3Ennpyw7qmxwrB+lj4r
+        YZJdm5Q6lwriP00Fyi/09eu37ebLZpXwE3fc7BtTYnrhXG13jIVB+2UN+aI50BqpVk4ot051xRrW
+        y/84/fYCZG46DLETDNzgatmRgjhwln2mWuGq8kaVoIGX+0ziqMtSn8G73cFdS7JBnEzsUVLlMSiI
+        t0y7QsCk2OYHGUda96B6XrTFxq3by4xgFodlRPaYip0wFCQ/+WiZEbX21OZgUyNrJ7V6UNUrBJDa
+        5FzJdx6BBMKCREo+qJQXBUKc4LoPMoJsy2ojTzy9kLmMSIU84RRiuDcQYN2lppD/E35DZyKd2POs
+        ojg+8tKKj1XidXCY5AdWiNf/FC9DnsjEcNzJTiG1kPebt4E7G77eqD8H4wAn0oKtZxEISgBggTdx
+        ieKQfMvwt4udFAHOD9pwp5fyxbyCV6CWTX+SezjBqyjFPQCgQus4S3oAQNLaRtzlrfMb9xzL+pBQ
+        TXUIOe6eQJhHBwJ05dbKXAkRZcEB0rI+DR8MV2kRh+0ZLQtf/rR5HqUqyQNzKPUhioPbkXlIy2zB
+        w8Xj9rHaEZUYV1AjjtGqEmOAOhN53l5NggxI3HUORx+lZ89gbWfRkqu84XkcdYBQksd1nvP3xfpl
+        PnZGCpBUqBl5aOKT3MghTUOJgHiPM+mIGaG+7pgvaRYMMKlfvAmqSi7d9/PEDnHl9v8Dlvz0Fk2/
+        l8uTZXWJ0bIxJ4ek39FjrNtl/V7P6RpdVxDlEj2Dtb/U3BWUubBUzY2IUbpDsPbAUTqt1+u2ENyX
+        0JUwkREcCEBxkxYoBGP0bHsGqh50db4oP5KaGYr0UvMsyrYDBMBwjDG6BsL0/GvUjlEKesCUWMkS
+        ba1WcTl2pEzZSjt5lOk9Pcl8uF2B2h9WqlSsOMpoeK2TqYQfoxGkU0TBKeIsFAjYBh4EQvNRCrh0
+        lNWNCIyWha4yE3WpL9FZaIKhIDYCvUq25w5NzfNm++vT5vvT8/c/ti+71+3u+eUvzGnqbHFO3dhi
+        AYO02vk1vvB+MfdoEPoUeo/A+tYWo+Dvo9gOn5+9sXRiaQkHvYmk+9c83d51y6JQtdCVqFF79A2b
+        le/4xgvOpIZIdaNgbQyeuUOxi7t6HOrrjh5QcLsPEZ3snGmoncRIbfTfInV2OjZmkcnEs3yTV4JU
+        Fw0dZGgCx8UraYzunplCw9nlPTwYdc2sroXqFJpqLVOh7LDr0BvSDifTr3bsf2TiyJvS7UOZDv+r
+        uHW+ra6FqbBreuigh7KuwQ77J0/rt0SJKXyj70Zo6/Pe/tNw+IvP/v208B8/BKWp7Lj+jxF0/1zL
+        KOHOaHEnm5wWV53Nth//AjCuBlYTFAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:33:39 GMT']
+      ETag: [W/"71cc0ccd8c0b2131a8c34ed1d4aad1b2"]
+      Last-Modified: ['Fri, 29 Sep 2017 14:51:24 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['C713:791B:12F2529:2CEB5D0:5A318EA2']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4977']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.045656']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/GitMateIO/gitmate-2?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+1YTW/jNhD9Kwtd60SWnewmAortbbGHRYogp14MWqItNpKokpTdRMh/7xtSny7s
+        OPQ1l0Bm+B4fh5zhzDSBSIP4/ubm63K5uJsFJSt4EAdbYQpm+NUimAWbOs9X7fgPYX5h/OdDOJ4h
+        9yVXQdwEudyKEvB+GuDEH90slsvo9n4WsB0zTK1qlWNaZkyl4zB0g3p+DdKsXteaq0SWhpfmOpFF
+        WIcd/vvu9xtQblVLQ9wBBg7oKtEyOTjodDiWlJkiP5DgVrbzxzM3Ms/lHvhDxSeXCHsYmc9SiHLr
+        QwFYE0qTcZgM23ijzQttPijHQhocmTYrkRKJxiEonn5MUguCIDrvtyZUvJKWrV7rRInKCFl+UNoE
+        CiqptqwUr8yDClANBhL1QREWAijf4cp9EOswTVgpsWPJC5lD8YSLHazrw3cABp15qcglH0aWIZsL
+        w1csLcjfNizX/G0WWA0Gk+3ADP511j2f+HLK+6PEor9+Pj4+PH6Rmy+JTDl5FYWFayGhYCPVc7/U
+        SQ+09h38arIesbxj8qNw+BnAkPLMX7w5CNuE+Nu6RgJ/ZWupmJHvuf1xYROSJhz/pBtiOCu8BVsw
+        SDIp/S1nwSARWtf8rIt6fLOWQ4edJ5R1sXah6pz7f5zWoaGRaS22JefeFusJmrCLomvFyiTzp+zw
+        Tei+7KmyrbdEwoJincu1Nwe8M7QETagz5t4Ks7pEFTESfkKo+OYiiYTvCY264FytPCLo6fBEGRyx
+        t74OHzatBXNWbmu29WfsCXC69IBu2eu76cRxnxgYQEc5khLr+rJANXCQQveSw3/9TThQDIQ2NTid
+        bZzY9Ci9sNsuCvHeM32crYVPrvSFlHQPD2np9/vZxGmZhG/CIZ66YN0y+1qzjdadvjF/m3R7H32H
+        D5vfKmYyikBYpmKK+4pt4WGzZshwrq+vm4wzm8EWXF3glQ4NGqaSDLmar76mwyMTQWZkc+INyUuR
+        I+eSpd627AlA5o7MV6NDj8+5QkXnLcyCx2yFyLk2svSPkQPDmLeURmxEck4pcNyNJiTNdy3KhM9Y
+        ns9wK41IBO4paiw6MSR93N8qDg35qJ9dDZBzXFlvKyvu8E3oCraUV7l8uSiijCjIMRVHJp+umEGa
+        v5hH367mX6+i26foW7yM4sXtX5hTV+nBnCi6iu6e5st4Po9v5jSnqnU2oYkWV9HyKbqPI9Dc0RSE
+        x/bu4gvlPv6iyp/W2kNNQEUGQFpnA+iPARL/+H8LooUkOS7hgZect9bu8G06DYO8TBa8Ql7g+g9a
+        vOLrnhocozc+kXUJ6y5nwZ4ZJJt4U4ehLi8AwZ8vJpMlkTK9ct46lHAYqpT8mydGTwaH+BAbVVOx
+        h5l78SymUEpd+hFXa7Ua5oihQinZNmNKuHUfDtFWaUtIWfGy1dSJBzAXCS81ttxQ6YUt2BYFdtC2
+        iR7an7pK/0VZFcSO3RaJ9Ila1ZVuMchGSwT0uzOWtVzKN6zOzcpl2VipYNrYpSquChiLWg6koy2F
+        nS3oUgatXSheuW+sCs+X+5X+p2a4XvYR6Hfq/mXHsFNKMQ7+pTg9Qh3KLTRuV3w2wAbX/GyADc3N
+        063CzwbYtD2LBGrSPYOnn98AK7nZoyU0ilTjgqYNfIu3/wB7eoIq9RYAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:33:42 GMT']
+      ETag: [W/"a5623e6a59614a9037264b3457075278"]
+      Last-Modified: ['Sat, 18 Nov 2017 03:00:40 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['AD44:7912:C37D26:1B4AF33:5A318EA5']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4976']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.058696']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/gitmate-test-user/test?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WYwXLiOBCGX2XK1wWEk5BkXbU18xCzl71QwhZYG9vySDJU4sq779+SDIZJGRZd
+        Uo5Rf/rVUre71SeySLKnP1er15dVOksaXoskS6wwNpkl266q1uHVTtqaWzGnn+adEZqFQerQCJ1k
+        fVKpnWxg/NtIkGiW9Pn5NV0+LmcJ33PL9brTFYaX1rYmY8y/NI8L2JfdhqbIVWNFYxe5qlnHBvvv
+        +7+egNzpgCF2ghcXuFYGkjcHzrCvpJW2ri6keAXO7iuLraoqdQDvcgU3TcmO5uRhh5LNLgYF854p
+        Wwq4FMv8JOdIY++U50x7LNzYtSwIZrBZWhT3SQzGEEjn5LNnWrTKUbuNybVsrVTNnVLPEEAqveON
+        /OARSCAMSCTyTlHOFAixx9G9k+Fte9Zquef5O7lLi1zIPXYhhnsBAda+txTwf+Pc0J5IK9a8qCmO
+        t7wy4nOWOA0Wg9yLGeL1f8XLkCYKcdxtzMe/Ufb4Rr7CtFul3478yTB2zv09KIdJCHTF5VMEhCbs
+        IehNvMdgyLxn+BsCKEeU843S3KprSWNS3hmnZ+N/6YhYwesY2c4enFKpKC86e3CkMZ246bxOrtph
+        DBtiounqjU9yt0TCJNkDoJQbI3eNEDHeOzJ6NmThjeZNXkZRB0TP/JPbZ76LEUrmoGwqtYnB4MvI
+        HKNnpuT+o2PXkdoISogzphbbWKGEODKtjttpJ5IYRyI+chabHqNyQLA+eLPiza7juyjokYH9pg/x
+        jn9cLVsmI+YEAZHKMy03XXRWO2FIp68LEONR7jxRTkxXa0yXMdOrH5Usbv11La994ieBgXB22uOp
+        dD4vyfT/9XrkqlhC9OyUgn2KD/AIz4YcP6gcTxGagJjDMCBY/0fLbUm5CjO1XIsIyYHA+g1HnbRY
+        LPpScFcv10LHha0HgMR1XqLoi1DZDwiUNujfXP29JZEF6vFK8SLGr0cGeH4HI5R6wHjnW7SfMfKc
+        /RhYywpVp2qicuoJMkY3ysqtzG9pPSaD7IzTfzeyycWMV9UMp9XKXOL8ot2jDURFKaLc4wFYBHp+
+        32FUAkc5xuNaeETPfOdYiLZS77GJZ0ShyNUC7Uix5hZ9xMMyfZ4v03n6+HP5kq2es3T1D8Z0bXF1
+        TNuZcoR5macP8+Xrz+UyS5fZ0zNhkEjDgcYTriim7gVcC0I3DrAzpjzZ/ThZZXj84hIlWOUVTuZF
+        AN084/7yu3bVEjpLVYsWJUaSNQgVav8+8PxwVivkqmvgadzaHLhFMYuv8unVUF8MgJKbtY/jJLO6
+        o24Rb1qt/hW5NeN3p9QxGniQb/LMkMqfY2Pom7swOUTWUmsVbpG8/pDrcB8UelXViiYIGlSnKZZS
+        yVw05rhu3/bRwkcGuLCiocOqnQsKseVdZde+Fsf5q7mxrnNuha6xcrrLoLuw0EN7H9BJG5ZFOck/
+        o7VGXKvD2vzqOA6MS/rDMP+LewXhVGac/6IFfXXObRphD+hfh4XSNo5KqeC39PM/9xcziPMTAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 13 Dec 2017 20:33:45 GMT']
+      ETag: [W/"dbc9cd814db63b989cc7488b5e8bfa2f"]
+      Last-Modified: ['Wed, 13 Jan 2016 07:56:15 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['F7A4:7912:C37E1C:1B4B115:5A318EA7']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4975']
+      X-RateLimit-Reset: ['1513200061']
+      X-Runtime-rack: ['0.057950']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects?membership=True&per_page=100
+  response:
+    body: {string: '[{"id":4266603,"description":"","default_branch":null,"tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/empty.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/empty.git","web_url":"https://gitlab.com/gitmate-test-user/empty","name":"empty","name_with_namespace":"GitMate
+        / empty","path":"empty","path_with_namespace":"gitmate-test-user/empty","avatar_url":null,"star_count":0,"forks_count":0,"created_at":"2017-09-29T14:22:56.063Z","last_activity_at":"2017-09-29T14:22:56.063Z","_links":{"self":"http://gitlab.com/api/v4/projects/4266603","issues":"http://gitlab.com/api/v4/projects/4266603/issues","merge_requests":"http://gitlab.com/api/v4/projects/4266603/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/4266603/repository/branches","labels":"http://gitlab.com/api/v4/projects/4266603/labels","events":"http://gitlab.com/api/v4/projects/4266603/events","members":"http://gitlab.com/api/v4/projects/4266603/members"},"archived":false,"visibility":"public","owner":{"id":1369631,"name":"GitMate","username":"gitmate-test-user","state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80\u0026d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"resolve_outdated_diff_discussions":false,"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"finished","open_issues_count":0,"public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}},{"id":3439658,"description":"","default_branch":"master","tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/test.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/test.git","web_url":"https://gitlab.com/gitmate-test-user/test","name":"test","name_with_namespace":"GitMate
+        / test","path":"test","path_with_namespace":"gitmate-test-user/test","avatar_url":null,"star_count":0,"forks_count":2,"created_at":"2017-06-05T04:56:19.418Z","last_activity_at":"2017-12-10T21:58:08.858Z","_links":{"self":"http://gitlab.com/api/v4/projects/3439658","issues":"http://gitlab.com/api/v4/projects/3439658/issues","merge_requests":"http://gitlab.com/api/v4/projects/3439658/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/3439658/repository/branches","labels":"http://gitlab.com/api/v4/projects/3439658/labels","events":"http://gitlab.com/api/v4/projects/3439658/events","members":"http://gitlab.com/api/v4/projects/3439658/members"},"archived":false,"visibility":"public","owner":{"id":1369631,"name":"GitMate","username":"gitmate-test-user","state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80\u0026d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"resolve_outdated_diff_discussions":null,"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"failed","open_issues_count":14,"public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['4178']
+      Content-Type: [application/json]
+      Date: ['Wed, 13 Dec 2017 20:33:49 GMT']
+      Etag: [W/"813256f562f73cac433c03413afcbbe4"]
+      Link: ['<https://gitlab.com/api/v4/projects?archived=false&membership=true&order_by=created_at&owned=false&page=1&per_page=100&simple=false&sort=desc&starred=false&statistics=false&with_issues_enabled=false&with_merge_requests_enabled=false>;
+          rel="first", <https://gitlab.com/api/v4/projects?archived=false&membership=true&order_by=created_at&owned=false&page=1&per_page=100&simple=false&sort=desc&starred=false&statistics=false&with_issues_enabled=false&with_merge_requests_enabled=false>;
+          rel="last"']
+      RateLimit-Limit: ['600']
+      RateLimit-Observed: ['2']
+      RateLimit-Remaining: ['598']
+      RateLimit-Reset: ['1513197289']
+      RateLimit-ResetTime: ['Thu, 13 Dec 2017 20:34:49 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Next-Page: ['']
+      X-Page: ['1']
+      X-Per-Page: ['100']
+      X-Prev-Page: ['']
+      X-Request-Id: [e544830b-b82d-43b7-bf4e-dc191da720c7]
+      X-Runtime: ['0.321369']
+      X-Total: ['2']
+      X-Total-Pages: ['1']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Fempty?per_page=100
+  response:
+    body: {string: '{"id":4266603,"description":"","default_branch":null,"tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/empty.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/empty.git","web_url":"https://gitlab.com/gitmate-test-user/empty","name":"empty","name_with_namespace":"GitMate
+        / empty","path":"empty","path_with_namespace":"gitmate-test-user/empty","avatar_url":null,"star_count":0,"forks_count":0,"created_at":"2017-09-29T14:22:56.063Z","last_activity_at":"2017-09-29T14:22:56.063Z","_links":{"self":"http://gitlab.com/api/v4/projects/4266603","issues":"http://gitlab.com/api/v4/projects/4266603/issues","merge_requests":"http://gitlab.com/api/v4/projects/4266603/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/4266603/repository/branches","labels":"http://gitlab.com/api/v4/projects/4266603/labels","events":"http://gitlab.com/api/v4/projects/4266603/events","members":"http://gitlab.com/api/v4/projects/4266603/members"},"archived":false,"visibility":"public","owner":{"id":1369631,"name":"GitMate","username":"gitmate-test-user","state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"resolve_outdated_diff_discussions":false,"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"finished","import_error":null,"open_issues_count":0,"runners_token":"jF4NeXvdzpiSR3HnCEaZ","public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['2144']
+      Content-Type: [application/json]
+      Date: ['Wed, 13 Dec 2017 20:33:52 GMT']
+      Etag: [W/"2aa5cd26b6ea539272d52f946ec349ee"]
+      RateLimit-Limit: ['600']
+      RateLimit-Observed: ['3']
+      RateLimit-Remaining: ['597']
+      RateLimit-Reset: ['1513197292']
+      RateLimit-ResetTime: ['Thu, 13 Dec 2017 20:34:52 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [e0466a45-f61a-451f-8e75-ad0f37019453]
+      X-Runtime: ['0.242783']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest?per_page=100
+  response:
+    body: {string: '{"id":3439658,"description":"","default_branch":"master","tag_list":[],"ssh_url_to_repo":"git@gitlab.com:gitmate-test-user/test.git","http_url_to_repo":"https://gitlab.com/gitmate-test-user/test.git","web_url":"https://gitlab.com/gitmate-test-user/test","name":"test","name_with_namespace":"GitMate
+        / test","path":"test","path_with_namespace":"gitmate-test-user/test","avatar_url":null,"star_count":0,"forks_count":2,"created_at":"2017-06-05T04:56:19.418Z","last_activity_at":"2017-12-10T21:58:08.858Z","_links":{"self":"http://gitlab.com/api/v4/projects/3439658","issues":"http://gitlab.com/api/v4/projects/3439658/issues","merge_requests":"http://gitlab.com/api/v4/projects/3439658/merge_requests","repo_branches":"http://gitlab.com/api/v4/projects/3439658/repository/branches","labels":"http://gitlab.com/api/v4/projects/3439658/labels","events":"http://gitlab.com/api/v4/projects/3439658/events","members":"http://gitlab.com/api/v4/projects/3439658/members"},"archived":false,"visibility":"public","owner":{"id":1369631,"name":"GitMate","username":"gitmate-test-user","state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"resolve_outdated_diff_discussions":null,"container_registry_enabled":true,"issues_enabled":true,"merge_requests_enabled":true,"wiki_enabled":true,"jobs_enabled":true,"snippets_enabled":true,"shared_runners_enabled":true,"lfs_enabled":true,"creator_id":1369631,"namespace":{"id":1652018,"name":"gitmate-test-user","path":"gitmate-test-user","kind":"user","full_path":"gitmate-test-user","parent_id":null,"plan":"early_adopter"},"import_status":"failed","import_error":"Mirror
+        update for gitmate-test-user/test failed with the following message: The default
+        branch (master) has diverged from its upstream counterpart and could not be
+        updated automatically.","open_issues_count":14,"runners_token":"mJspL93WBs-yfGkkvpos","public_jobs":true,"ci_config_path":null,"shared_with_groups":[],"only_allow_merge_if_pipeline_succeeds":false,"request_access_enabled":false,"only_allow_merge_if_all_discussions_are_resolved":false,"printing_merge_request_link_enabled":true,"approvals_before_merge":0,"permissions":{"project_access":{"access_level":40,"notification_level":3},"group_access":null}}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Length: ['2323']
+      Content-Type: [application/json]
+      Date: ['Wed, 13 Dec 2017 20:33:55 GMT']
+      Etag: [W/"7f4eb007ed26a39210de14001e1bdaca"]
+      RateLimit-Limit: ['600']
+      RateLimit-Observed: ['4']
+      RateLimit-Remaining: ['596']
+      RateLimit-Reset: ['1513197295']
+      RateLimit-ResetTime: ['Thu, 13 Dec 2017 20:34:55 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [ef278eba-3fa8-4634-ab9c-177e9e2b11a9]
+      X-Runtime: ['0.173237']
+    status: {code: 200, message: OK}
+version: 1
