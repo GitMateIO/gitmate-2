@@ -8,3 +8,4 @@ class GitmateHooksConfig(AppConfig):
 
     def ready(self):
         import gitmate_hooks.utils as _
+        import gitmate_hooks.responders as _
