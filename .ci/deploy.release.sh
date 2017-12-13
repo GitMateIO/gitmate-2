@@ -21,4 +21,4 @@ cd $COMPOSE_LOCATION
 
 docker-compose pull --parallel
 
-docker-compose up -d --scale worker=2
+docker-compose up -d --scale worker=6
