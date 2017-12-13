@@ -45,8 +45,6 @@ class TestRepository(GitmateTestCase):
         # Don't allow saving if not linked to a user
         with pytest.raises(ValidationError):
             repo.full_clean()
-        with pytest.raises(IntegrityError):
-            repo.save()
 
     def test_set_plugin_settings(self):
         # add a plugin into it

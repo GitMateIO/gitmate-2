@@ -214,7 +214,7 @@ class Repository(models.Model):
     identifier = models.IntegerField(default=None, null=True)
 
     # The user who operates the repository
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
     # The users who can control the repository
     admins = models.ManyToManyField(User, related_name='admin_repos')
