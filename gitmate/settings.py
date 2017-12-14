@@ -322,7 +322,7 @@ CELERY_ACCEPT_CONTENT = ['json', 'pickle', 'yaml']
 # RABBITMQ server base URL
 BROKER_URL = os.environ.get('CELERY_BROKER_URL',
                             'amqp://admin:password@rabbit/')
-broker_pool_limit = None
+CELERY_BROKER_POOL_LIMIT = None
 
 # This is required for coala_online
 # Otherwise it throws NotImplementedError
@@ -332,7 +332,9 @@ CELERY_RESULT_BACKEND = 'amqp'
 CELERYD_TASK_TIME_LIMIT = 3600
 
 # Reserve only one task at a time for a given worker
-CELERYD_PREFETCH_MULTIPLIER = 1
+# See http://docs.celeryproject.org/en/latest/userguide/optimizing.html#reserve-one-task-at-a-time
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+CELERY_TASK_ACKS_LATE = True
 
 # Set default task queue to short
 CELERY_TASK_DEFAULT_QUEUE = TaskQueue.SHORT.value
