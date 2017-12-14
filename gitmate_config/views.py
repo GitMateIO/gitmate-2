@@ -118,6 +118,15 @@ class RepositoryViewSet(
                         Q(identifier__in=repo_ids) |
                         Q(full_name__in=repo_names))
 
+                assert all(repo.full_name not in repo_names and
+                           repo.identifier not in repo_ids
+                           for repo in inaccessible_repos)
+                assert all(repo.user == request.user
+                           for repo in inaccessible_repos)
+                assert all(repo.admin in repo.admins.all() and
+                           len(repo.admins.all()) == 1
+                           for repo in inaccessible_repos)
+
                 # delete them if he's the only administrator
                 inaccessible_repos.annotate(
                     num_admins=Count('admins')
