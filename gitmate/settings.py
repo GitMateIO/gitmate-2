@@ -328,8 +328,8 @@ broker_pool_limit = None
 # Otherwise it throws NotImplementedError
 CELERY_RESULT_BACKEND = 'amqp'
 
-# Setting the task timeout hard limit to 3 hours
-CELERYD_TASK_TIME_LIMIT = 10800
+# Setting the task timeout hard limit to one hour
+CELERYD_TASK_TIME_LIMIT = 3600
 
 # Reserve only one task at a time for a given worker
 CELERYD_PREFETCH_MULTIPLIER = 1
