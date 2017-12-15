@@ -3,7 +3,7 @@ import shutil
 from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
-import bugspots
+import bugspots3
 
 from gitmate.utils import lock_igitt_object
 from gitmate_hooks.utils import ResponderRegistrar
@@ -15,7 +15,7 @@ def get_hotspot_files(pattern: str, pr: MergeRequest):
     """
     _, path = pr.repository.get_clone()
     try:
-        b = bugspots.Bugspots(grep=pattern, path=path)
+        b = bugspots3.Bugspots(grep=pattern, path=path)
         return {hotspot.filename for hotspot in b.get_hotspots()}
     finally:
         shutil.rmtree(path)

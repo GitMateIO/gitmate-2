@@ -1,9 +1,8 @@
 from unittest.mock import MagicMock
 from unittest.mock import patch
 from unittest.mock import PropertyMock
-import attr
-import bugspots
 import shutil
+
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitHub.GitHubRepository import GitHubRepository
@@ -11,6 +10,8 @@ from IGitt.GitLab.GitLabIssue import GitLabIssue
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.GitLab.GitLabRepository import GitLabRepository
 from rest_framework import status
+import attr
+import bugspots3
 
 from gitmate_config.tests.test_base import GitmateTestCase
 
@@ -61,7 +62,7 @@ class TestBugSpotter(GitmateTestCase):
         m_clone.return_value = None, '/path/doesnt/exist/nowhere'
         m_labels.return_value.__ior__ = MagicMock()
 
-        bugspots.Bugspots = generate_fake_bugspots({'file1'})
+        bugspots3.Bugspots = generate_fake_bugspots({'file1'})
 
         response = self.simulate_github_webhook_call(
             'pull_request', self.github_data)
@@ -69,7 +70,7 @@ class TestBugSpotter(GitmateTestCase):
         m_clone.assert_called()
         m_labels.assert_called()
 
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         m_labels().__ior__.assert_called_with({'review carefully!'})
 
     @patch.object(GitHubIssue, 'labels', new_callable=PropertyMock)
@@ -81,7 +82,7 @@ class TestBugSpotter(GitmateTestCase):
         m_clone.return_value = None, '/path/doesnt/exist/nowhere'
         m_labels.return_value.add = MagicMock()
 
-        bugspots.Bugspots = generate_fake_bugspots({'another_file'})
+        bugspots3.Bugspots = generate_fake_bugspots({'another_file'})
 
         response = self.simulate_github_webhook_call(
             'pull_request', self.github_data)
@@ -89,7 +90,7 @@ class TestBugSpotter(GitmateTestCase):
         m_clone.assert_called()
         m_labels.assert_not_called()
 
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         m_labels().add.assert_not_called()
 
     @patch.object(GitLabIssue, 'labels', new_callable=PropertyMock)
@@ -101,7 +102,7 @@ class TestBugSpotter(GitmateTestCase):
         m_clone.return_value = None, '/path/doesnt/exist/nowhere'
         m_labels.return_value.__ior__ = MagicMock()
 
-        bugspots.Bugspots = generate_fake_bugspots({'file1'})
+        bugspots3.Bugspots = generate_fake_bugspots({'file1'})
 
         response = self.simulate_gitlab_webhook_call(
             'Merge Request Hook', self.gitlab_data)
@@ -109,7 +110,7 @@ class TestBugSpotter(GitmateTestCase):
         m_clone.assert_called()
         m_labels.assert_called()
 
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         m_labels().__ior__.assert_called_with({'review carefully!'})
 
     @patch.object(GitLabIssue, 'labels', new_callable=PropertyMock)
@@ -121,7 +122,7 @@ class TestBugSpotter(GitmateTestCase):
         m_clone.return_value = None, '/path/doesnt/exist/nowhere'
         m_labels.return_value.add = MagicMock()
 
-        bugspots.Bugspots = generate_fake_bugspots({'another_file'})
+        bugspots3.Bugspots = generate_fake_bugspots({'another_file'})
 
         response = self.simulate_gitlab_webhook_call(
             'Merge Request Hook', self.gitlab_data)
@@ -129,5 +130,5 @@ class TestBugSpotter(GitmateTestCase):
         m_clone.assert_called()
         m_labels.assert_not_called()
 
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         m_labels().add.assert_not_called()
