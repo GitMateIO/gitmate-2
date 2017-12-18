@@ -13,6 +13,7 @@ class GitmateActions(Enum):
 
 class Providers(Enum):
     GITHUB = 'github'
+    GITHUB_APP = 'github-app'
     GITLAB = 'gitlab'
 
     def get_token(self, raw_token, private_token=False):
@@ -22,7 +23,7 @@ class Providers(Enum):
         :param raw_token: The token string
         :return: IGitt Token object
         """
-        if self.value == 'github':
+        if self.value in ['github', 'github-app']:
             return GitHubToken(raw_token)
         elif self.value == 'gitlab':
             return (GitLabPrivateToken(raw_token)
