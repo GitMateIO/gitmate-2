@@ -43,6 +43,7 @@ def get_matched_command(body: str, username: str):
             'fastforward': ('fastforward', 'fastforwarded'),
             'ff': ('fastforward', 'fastforwarded')
         }.get(match.group(1), (None, None))
+    return None, None
 
 
 @ResponderRegistrar.responder('rebaser', MergeRequestActions.COMMENTED)

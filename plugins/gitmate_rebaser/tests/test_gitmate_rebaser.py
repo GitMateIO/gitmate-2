@@ -181,3 +181,16 @@ class TestGitmateRebaser(GitmateTestCase):
             f'Hey @{self.repo.user.username}, you do not have the access to '
             'perform the rebase action with [GitMate.io](https://gitmate.io). '
             'Please ask a maintainer to give you access. :warning:')
+
+    @patch.object(GitHubComment, 'body', new_callable=PropertyMock)
+    @patch.object(GitHubMergeRequest, 'add_comment')
+    @patch.object(GitHubComment, 'author', new_callable=PropertyMock)
+    def test_irrelevant_comment(self, m_author, m_comment, m_body):
+        m_body.return_value = f'Life is full of 0s and 1s'
+        m_author.return_value = GitHubUser(
+            self.repo.token, self.repo.user.username)
+        subprocess.Popen = fake_popen_success
+        response = self.simulate_github_webhook_call('issue_comment',
+                                                     self.github_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        m_comment.assert_not_called()
