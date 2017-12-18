@@ -47,12 +47,12 @@ def github_webhook_receiver(request):
         token = installation_obj.token
 
     try:
-        action, objs = GitHub(token).handle_webhook(event, webhook)
+        for action, objs in GitHub(token).handle_webhook(event, webhook):
+            ResponderRegistrar.respond(action, *objs, repo=repo_obj)
     except NotImplementedError:  # pragma: no cover
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet
         return Response(status=status.HTTP_200_OK)
 
-    ResponderRegistrar.respond(action, *objs, repo=repo_obj)
     return Response(status=status.HTTP_200_OK)
 
 
@@ -90,10 +90,11 @@ def gitlab_webhook_receiver(request):
                                  provider=Providers.GITLAB.value)
 
     try:
-        action, objs = GitLab(repo_obj.token).handle_webhook(event, webhook)
+        for action, objs in GitLab(repo_obj.token).handle_webhook(
+                event, webhook):
+            ResponderRegistrar.respond(action, *objs, repo=repo_obj)
     except NotImplementedError:  # pragma: no cover
         # IGitt can't handle it yet, upstream issue, no plugin needs it yet
         return Response(status=status.HTTP_200_OK)
 
-    ResponderRegistrar.respond(action, *objs, repo=repo_obj)
     return Response(status=status.HTTP_200_OK)
