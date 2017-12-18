@@ -18,9 +18,9 @@ import raven
 from IGitt.GitHub import GitHubJsonWebToken
 
 from gitmate import RANDOM_PRIVATE_KEY
-from gitmate_config.enums import TaskQueue
 from gitmate.utils import get_plugins
 from gitmate.utils import snake_case_to_camel_case
+from gitmate_config.enums import TaskQueue
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -149,6 +149,8 @@ SOCIAL_AUTH_PIPELINE = (
 
 # Put gitmate's corresponding OAuth details here.
 WEBHOOK_SECRET = os.environ.get('WEBHOOK_SECRET', 'foobar')
+SOCIAL_AUTH_GITHUB_APP_KEY = os.environ.get('SOCIAL_AUTH_GITHUB_APP_KEY')
+SOCIAL_AUTH_GITHUB_APP_SECRET = os.environ.get('SOCIAL_AUTH_GITHUB_APP_SECRET')
 SOCIAL_AUTH_GITHUB_KEY = os.environ.get('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('SOCIAL_AUTH_GITHUB_SECRET')
 SOCIAL_AUTH_GITHUB_SCOPE = [
@@ -176,7 +178,7 @@ SOCIAL_AUTH_BITBUCKET_KEY = os.environ.get('SOCIAL_AUTH_BITBUCKET_KEY')
 SOCIAL_AUTH_BITBUCKET_SECRET = os.environ.get('SOCIAL_AUTH_BITBUCKET_SECRET')
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.github.GithubOAuth2',
+    'gitmate.backends.GitHubAppOAuth2',
     'social_core.backends.gitlab.GitLabOAuth2',
     'social_core.backends.bitbucket.BitbucketOAuth',
     'django.contrib.auth.backends.ModelBackend'
