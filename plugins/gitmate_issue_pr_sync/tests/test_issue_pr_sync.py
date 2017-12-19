@@ -7,24 +7,34 @@ from rest_framework import status
 from gitmate_config.tests.test_base import GitmateTestCase
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
+from IGitt.GitHub.GitHubUser import GitHubUser
 from IGitt.GitLab.GitLabIssue import GitLabIssue
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
+from IGitt.GitLab.GitLabUser import GitLabUser
 
 
 class TestIssuePRSync(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('issue_pr_sync')
+        self.gh_user = GitHubUser(self.repo.token, 'gitmate-test-user')
+        self.gh_user_2 = GitHubUser(self.repo.token, 'gitmate-test-user-2')
+        self.gl_user = GitLabUser(self.gl_repo.token, 1)
+        self.gl_user_2 = GitLabUser(self.gl_repo.token, 2)
 
-    @patch.object(GitHubMergeRequest, 'assign', return_value=None)
-    @patch.object(GitHubMergeRequest, 'unassign', return_value=None)
+    @patch.object(GitHubMergeRequest, 'assignees', new_callable=PropertyMock)
     @patch.object(GitHubMergeRequest, 'labels', new_callable=PropertyMock)
-    def test_github(self, m_labels, m_unassign, m_assign):
-
-        # setting the labels
+    @patch.object(GitHubMergeRequest, 'closes_issues',
+                  new_callable=PropertyMock)
+    def test_github_fresh_pr_with_issues(
+            self, m_cl_iss, m_labels, m_assignees
+    ):
+        # setting the assignees & labels
+        m_cl_iss.return_value = {
+            GitHubIssue(self.repo.token, self.repo.full_name, 0)}
         GitHubIssue.labels = {'a', 'b'}
-        GitHubIssue.assignees = ('gitmate-test-user', )
-        GitHubMergeRequest.assignees = tuple()
         m_labels.return_value = set()
+        GitHubIssue.assignees = {self.gh_user}
+        m_assignees.return_value = set()
 
         # testing updated pull requests
         data = {
@@ -36,92 +46,65 @@ class TestIssuePRSync(GitmateTestCase):
         response = self.simulate_github_webhook_call('pull_request', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        m_labels.assert_called()
         m_labels.assert_called_with({'a', 'b'})
-        m_assign.assert_called_with('gitmate-test-user')
+        m_assignees.assert_called_with({self.gh_user})
 
-        # testing updated issue
+        # testing updated issue assignees
         data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO'],
                            'id': 49558751},
-            'issue': {'number': 104},
+            'issue': {'number': 0},
             'action': 'updated'
         }
-        GitHubIssue.labels = {'a'}
-        GitHubIssue.assignees = ('sils', )
-        GitHubMergeRequest.assignees = ('gitmate-test-user', )
+        GitHubIssue.assignees = {self.gh_user_2}
+        m_assignees.return_value = {self.gh_user}
 
         response = self.simulate_github_webhook_call('issues', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        m_labels.assert_called()
-        m_labels.assert_called_with({'a'})
-        m_unassign.assert_called_with('gitmate-test-user')
-        m_assign.assert_called_with('sils')
+        m_assignees.assert_called_with({self.gh_user, self.gh_user_2})
 
-    @patch.object(GitHubMergeRequest, 'assign', return_value=None)
-    @patch.object(GitHubMergeRequest, 'unassign', return_value=None)
-    @patch.object(GitHubMergeRequest, 'labels', new_callable=PropertyMock)
-    def test_no_assignment(self, m_labels, m_unassign, m_assign):
-        settings = [
-            {
-                'name': 'issue_pr_sync',
-                'settings': {
-                    'sync_assignees': False,
-                }
-            }
-        ]
-        self.repo.set_plugin_settings(settings)
-
-        # setting the labels
-        GitHubIssue.labels = {'a', 'b'}
-        GitHubIssue.assignees = ('gitmate-test-user', )
-        GitHubMergeRequest.assignees = tuple()
+        # testing LABELED event
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
+            'issue': {'number': 0},
+            'action': 'labeled',
+            'label': {'name': 'type/bug'}
+        }
         m_labels.return_value = set()
-
-        # testing updated pull requests
-        data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
-                           'id': 49558751},
-            'pull_request': {'number': 110},
-            'action': 'opened'
-        }
-        response = self.simulate_github_webhook_call('pull_request', data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        m_labels.assert_called()
-        m_labels.assert_called_with({'a', 'b'})
-        m_assign.assert_not_called()
-
-        # testing updated issue
-        data = {
-            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
-                           'id': 49558751},
-            'issue': {'number': 104},
-            'action': 'updated'
-        }
-        GitHubIssue.labels = {'a'}
-        GitHubIssue.assignees = ('sils', )
-        GitHubMergeRequest.assignees = ('gitmate-test-user', )
-
         response = self.simulate_github_webhook_call('issues', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        m_labels.assert_called_with({'type/bug'})
 
-        m_labels.assert_called()
-        m_labels.assert_called_with({'a'})
-        m_unassign.assert_not_called()
-        m_assign.assert_not_called()
+        # testing UNLABELED event
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
+            'issue': {'number': 0},
+            'action': 'unlabeled',
+            'label': {'name': 'type/bug'}
+        }
+        m_labels.return_value = {'type/bug', 'good first issue'}
+        response = self.simulate_github_webhook_call('issues', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        m_labels.assert_called_with({'good first issue'})
 
-    @patch.object(GitLabMergeRequest, 'assign', return_value=None)
-    @patch.object(GitLabMergeRequest, 'unassign', return_value=None)
+
+    @patch.object(GitLabMergeRequest, 'assignees', new_callable=PropertyMock)
     @patch.object(GitLabMergeRequest, 'labels', new_callable=PropertyMock)
-    def test_gitlab(self, m_labels, m_unassign, m_assign):
-
-        # setting the labels
+    @patch.object(GitLabMergeRequest, 'closes_issues',
+                  new_callable=PropertyMock)
+    def test_gitlab_fresh_pr_with_issues(
+            self, m_cl_iss, m_labels, m_assignees
+    ):
+        # setting the assignees & labels
+        m_cl_iss.return_value = {
+            GitLabIssue(self.gl_repo.token, self.gl_repo.full_name, 0)}
         GitLabIssue.labels = {'a', 'b'}
-        GitLabIssue.assignees = ('gitmate-test-user', )
-        GitLabMergeRequest.assignees = tuple()
         m_labels.return_value = set()
+        GitLabIssue.assignees = {self.gl_user}
+        m_assignees.return_value = set()
 
         # testing updated pull requests
         data = {
@@ -135,29 +118,60 @@ class TestIssuePRSync(GitmateTestCase):
             'Merge Request Hook', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        m_labels.assert_called()
         m_labels.assert_called_with({'a', 'b'})
-        m_assign.assert_called_with('gitmate-test-user')
+        m_assignees.assert_called_with({self.gl_user})
 
-        # testing updated issue
+        # testing updated issue assignees
         data = {
             'object_attributes': {
                 'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
                 'action': 'update',
-                'iid': 21
-            }
+                'iid': 0
+            },
+            'changes': []
         }
-        GitLabIssue.labels = {'a'}
-        GitLabIssue.assignees = ('sils', )
-        GitLabMergeRequest.assignees = ('gitmate-test-user', )
+        GitLabIssue.assignees = {self.gl_user_2}
+        m_assignees.return_value = {self.gl_user}
 
         response = self.simulate_gitlab_webhook_call('Issue Hook', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        m_labels.assert_called()
-        # the label 'b' remains due to other issues
-        m_labels.assert_called_with({'a', 'b'})
-        # no unassign calls because other issues still have 'gitmate-test-user'
-        m_unassign.assert_not_called()
-        # new assignee 'sils' would be added though
-        m_assign.assert_called_with('sils')
+        m_assignees.assert_called_with({self.gl_user, self.gl_user_2})
+
+        # testing LABELED event
+        data = {
+            'object_attributes': {
+                'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
+                'action': 'update',
+                'iid': 0
+            },
+            'changes': {
+                'labels': {
+                    'previous': [],
+                    'current': [{'title': 'type/bug'}]
+                }
+            }
+        }
+        m_labels.return_value = set()
+        response = self.simulate_gitlab_webhook_call('Issue Hook', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        m_labels.assert_called_with({'type/bug'})
+
+        # testing UNLABELED event
+        data = {
+            'object_attributes': {
+                'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
+                'action': 'update',
+                'iid': 0
+            },
+            'changes': {
+                'labels': {
+                    'previous': [{'title': 'type/bug'}, {'title': 'first'}],
+                    'current': [{'title': 'first'}]
+                }
+            }
+        }
+        m_labels.return_value = {'type/bug', 'first'}
+        response = self.simulate_gitlab_webhook_call('Issue Hook', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        m_labels.assert_called_with({'first'})

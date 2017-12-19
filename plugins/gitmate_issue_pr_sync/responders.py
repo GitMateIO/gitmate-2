@@ -28,21 +28,34 @@ def sync_updated_pr_with_issue(pr: MergeRequest,
         labels = pr.labels
         for issue in issues:
             labels = issue.labels | labels
-            data[issue.number]['labels'] = list(issue.labels)
         pr.labels = labels
 
     if sync_assignees:
         with lock_igitt_object('assign mr', pr):
             assignees = pr.assignees
             for issue in issues:
-                assignees = set(issue.assignees) | set(assignees)
-                data[issue.number]['assignees'] = list(issue.assignees)
-            # TODO: reduce the number of requests sent
-            for assignee in assignees - set(pr.assignees):
-                pr.assign(assignee)
+                assignees |= issue.assignees
+                data[str(issue.number)]['assignees'] = True
+            pr.assignees = assignees
 
     pr_obj.closes_issues = data
     pr_obj.save()
+
+
+@ResponderRegistrar.responder('issue_pr_sync', IssueActions.LABELED)
+def sync_label_add_from_issue_with_pr(issue: Issue, label: str):
+    for pr_object in MergeRequestModel.find_mrs_with_issue(issue):
+        pr = pr_object.igitt_pr
+        with lock_igitt_object('label mr', pr):
+            pr.labels |= {label}
+
+
+@ResponderRegistrar.responder('issue_pr_sync', IssueActions.UNLABELED)
+def sync_label_remove_from_issue_with_pr(issue: Issue, label: str):
+    for pr_object in MergeRequestModel.find_mrs_with_issue(issue):
+        pr = pr_object.igitt_pr
+        with lock_igitt_object('label mr', pr):
+            pr.labels -= {label}
 
 
 @ResponderRegistrar.responder(
@@ -52,42 +65,13 @@ def sync_updated_pr_with_issue(pr: MergeRequest,
 )
 def sync_pr_with_updated_issue(issue: Issue,
                                sync_assignees: bool='Synchronize Assignees'):
-    issue_num = str(issue.number)
-    pr_objects = MergeRequestModel.find_mrs_with_issue(issue)
 
-    for pr_object in pr_objects:
+    if not sync_assignees:  # pragma: no cover
+        return
+
+    for pr_object in MergeRequestModel.find_mrs_with_issue(issue):
         pr = pr_object.igitt_pr
-        pr_data = pr_object.closes_issues[issue_num]
-        closes_issues = pr_object.closes_issues
-        other_labels = frozenset().union(*[closes_issues[num]['labels']
-                                           for num in closes_issues.keys()
-                                           if num != issue_num])
-
-        with lock_igitt_object('label pr', pr):
-            labels = pr.labels - set(pr_data['labels'])
-            pr.labels = issue.labels | labels | other_labels
-
-        if sync_assignees:
-            other_assignees = frozenset().union(
-                *[closes_issues[num]['assignees']
-                  for num in closes_issues.keys()
-                  if num != issue_num])
-
-            with lock_igitt_object('assign mr', pr):
-                assignees = set(pr.assignees) - set(pr_data['assignees'])
-                assignees = set(issue.assignees) | assignees | other_assignees
-
-                # TODO: reduce the number of requests sent
-                for assignee in assignees - set(pr.assignees):
-                    pr.assign(assignee)
-
-                for assignee in set(pr_data['assignees']) - assignees:
-                    pr.unassign(assignee)
-
-        pr_object.closes_issues.update({
-            issue_num: {
-                'labels': list(issue.labels),
-                'assignees': list(issue.assignees)
-            }
-        })
+        with lock_igitt_object('assign mr', pr):
+            pr.assignees |= issue.assignees
+        pr_object.closes_issues.update({str(issue.number): True})
         pr_object.save()
