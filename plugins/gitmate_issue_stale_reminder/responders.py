@@ -30,7 +30,12 @@ def add_stale_label_to_issues(
             if stale_label not in issue.labels:
                 issue.labels = issue.labels | {stale_label}
             if unassign and issue.assignees:
+                users = ', '.join(f'@{a.username}' for a in issue.assignees)
                 issue.assignees = {}
+                issue.comment('This issue seems stale!\n\n' + users +
+                              ' please reassign yourself if you\'re still '
+                              'working on this.\n\n'
+                              '(Powered by [GitMate.io](https://gitmate.io))')
 
 
 @ResponderRegistrar.responder(
