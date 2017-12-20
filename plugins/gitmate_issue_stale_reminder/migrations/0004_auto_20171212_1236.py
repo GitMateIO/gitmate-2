@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='settings',
             name='unassign',
-            field=models.BooleanField(default=True, help_text='Unassign assignees if an issue goes stale'),
+            field=models.BooleanField(default=False, help_text='Unassign assignees if an issue goes stale'),
         ),
         migrations.AlterField(
             model_name='settings',
