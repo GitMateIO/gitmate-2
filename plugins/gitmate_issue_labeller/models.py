@@ -11,7 +11,7 @@ class Settings(SettingsBase):
         default={}
     )
     label_texts_as_keywords = models.BooleanField(
-        default=True,
+        default=False,
         help_text='Apply labels if they are mentioned in the issue body '
                   'automatically.'
     )
