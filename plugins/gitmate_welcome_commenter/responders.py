@@ -14,6 +14,6 @@ def add_welcome_comment(
     Adds a welcome comment to pull requests.
     """
     sign = TimestampSigner().sign(autorespond_text)
-    msg = ("{}\n\nThis message was posted by [GitMate.io](https://gitmate.io)"
-           " with timestamp signature `{}`".format(autorespond_text, sign))
+    msg = ("{}\n\n(Powered by [GitMate.io](https://gitmate.io))\n\n"
+           "<!-- Timestamp signature `{}` -->".format(autorespond_text, sign))
     pr.add_comment(msg)

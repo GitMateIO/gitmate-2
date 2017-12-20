@@ -27,8 +27,8 @@ class TestWelcomeCommenter(GitmateTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         sign = self.signer.sign('')
-        msg = ("\n\nThis message was posted by [GitMate.io]"
-               "(https://gitmate.io) with timestamp signature `{}`".format(sign))
+        msg = ("\n\n(Powered by [GitMate.io](https://gitmate.io))\n\n"
+               "<!-- Timestamp signature `{}` -->".format(sign))
         mock_add_comment.assert_called_once_with(msg)
 
     @patch.object(GitLabMergeRequest, 'add_comment')
@@ -45,6 +45,6 @@ class TestWelcomeCommenter(GitmateTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         sign = self.signer.sign('')
-        msg = ("\n\nThis message was posted by [GitMate.io]"
-               "(https://gitmate.io) with timestamp signature `{}`".format(sign))
+        msg = ("\n\n(Powered by [GitMate.io](https://gitmate.io))\n\n"
+               "<!-- Timestamp signature `{}` -->".format(sign))
         mock_add_comment.assert_called_once_with(msg)
