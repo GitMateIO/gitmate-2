@@ -88,7 +88,7 @@ push_rc_image:
   only:
     - master@gitmate/open-source/gitmate-2
 
-push_release_image:
+push_release_image: &push_release_image
   stage: release
   script:
     - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
@@ -97,6 +97,12 @@ push_release_image:
   when: manual
   only:
     - master@gitmate/open-source/gitmate-2
+
+push_hotfix_image:
+  <<: *push_release_image
+  when: on_success
+  only:
+    - /^hotfix\/.*$/@gitmate/open-source/gitmate-2
 
 deploy_master:
   stage: deploy
@@ -135,7 +141,7 @@ deploy_rc:
   only:
     - master@gitmate/open-source/gitmate-2
 
-deploy_release:
+deploy_release: &deploy_release
   stage: deploy
   image: debian:9
   script:
@@ -153,3 +159,9 @@ deploy_release:
   when: manual
   only:
     - master@gitmate/open-source/gitmate-2
+
+deploy_hotfix:
+  <<: *deploy_release
+  when: on_success
+  only:
+    - /^hotfix\/.*$/@gitmate/open-source/gitmate-2
