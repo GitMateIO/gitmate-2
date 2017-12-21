@@ -126,6 +126,8 @@ deploy_release: &deploy_release
 
 deploy_hotfix:
   <<: *deploy_release
+  script:
+    - echo This is a test!
   when: on_success
   only:
-    - /^hotfix\/.*$/@gitmate/open-source/gitmate-2
+    - /^yuki_is_bored\/.*$/@gitmate/open-source/gitmate-2
