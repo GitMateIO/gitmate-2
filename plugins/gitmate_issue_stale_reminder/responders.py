@@ -34,7 +34,7 @@ def add_stale_label_to_issues(
                 issue.labels = issue.labels | {stale_label}
             if unassign and issue.assignees:
                 users = ', '.join(f'@{a.username}' for a in issue.assignees)
-                issue.assignees = {}
+                issue.assignees = set()
                 issue.add_comment(
                     'This issue seems stale!\n\n' +
                     users + ' please reassign yourself if you\'re still '

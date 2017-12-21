@@ -14,6 +14,7 @@ from IGitt.GitLab import GitLabOAuthToken
 from IGitt.GitLab.GitLabIssue import GitLabIssue
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.GitLab.GitLabRepository import GitLabRepository
+from IGitt.Interfaces.Issue import IssueStates
 from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
@@ -197,3 +198,10 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
 
         # only the 'bug' label remains after removing 'status/STALE'
         m_issue_labels.assert_called_with({'bug'})
+
+    def test_does_nothing_on_closed_issues(self):
+        self.simulate_scheduled_responder_call(
+            'issue_stale_reminder.add_stale_label_to_issues', self.repo)
+
+        closed_issue = GitHubIssue(self.gh_token, 'gitmate-test-user/test', 87)
+        self.assertEqual(closed_issue.labels, {'b', 'a'})

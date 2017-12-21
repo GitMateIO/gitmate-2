@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/gitmate-test-user/test/issues/5?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+1VXW/aMBT9K5OfAScRtCXSNLGtb52QEHvZVEUmMYk1x87sGyoW9b/v2kkpMC0F
+        1EfeEjjn+OR+HDekNpLEpACobEwpq8QoF1DUq1GqS2p4pS3FH0oGfAjcwrC23FD3RIW1Nbd0QgbE
+        4wRos00u1kMZyVZc2ssldpZoq9RQxUr+jMr4MSVX8C7aL1ooyzfvJdoqoWQBpTyqwF5D/tOKqpbS
+        N0JkJA6ju3EYBcF0QFRdrrgh8WRAQIDk2OnvVYa9/LC4n339dj8qMyS5lpK4IVLnQiHECmk7rclt
+        eDOJggFhGwbMHLfG/2iDbmScTqoVYE389NS0o3/afByjYG46FeeSuIP7Zs+pWdp56a9KB1prKfUT
+        so5tHg71qzDdMdBM+yxUfiYbGQ3VUHCsDlp205YL+9ao7Znw6Aa3zEIiMse3WFXDs5ONdHi08aTQ
+        QeP31gvVK5saUYHQ6vSqHLBQRZucKfGHnaeCLDdFPhpO/hKPRtYpi7VXwhbe0MqIDUu37tMNT7nY
+        YBHPlDrioRJsK784bkuwpAJ4wrLSbcqaScufX3KLxD8ffe/AwVOpLXfbJXX6Cx9aMC6StSJXHCEK
+        l/b13bb0UkjMVq12/+/SJsYtTA1H9SxhgCdEQXgzDMJhNF6Gt3F0FwfTH3he7Rf8ADMdBuNlMI2D
+        sMO05vZl/oGwGgptErSrU+Fbj0d+mT88zD7PF7PlfIFHudhJDP+N1wAaavr3ufcucUrtVdK/6W/l
+        XybW6wvTc+S47qMYpMWlGp5McCRWOtu2IdfVeoWv14h1AX2NWLzW9oMZh+4asb0R+/wXRX4q36gK
+        AAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 21 Dec 2017 08:55:19 GMT']
+      ETag: [W/"a5f0103836bf821b92c8671cc33b7a52"]
+      Last-Modified: ['Thu, 07 Dec 2017 22:38:14 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['CAB4:7F59:AC784F:15EA144:5A3B76F5']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4772']
+      X-RateLimit-Reset: ['1513848745']
+      X-Runtime-rack: ['0.068427']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

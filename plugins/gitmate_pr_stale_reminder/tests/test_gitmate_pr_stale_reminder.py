@@ -135,3 +135,10 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
 
         # only the 'bug' label remains after removing 'status/STALE'
         m_mr_labels.assert_called_with({'bug'})
+
+    def test_does_nothing_on_closed_pull_requests(self):
+        self.simulate_scheduled_responder_call(
+            'pr_stale_reminder.add_stale_label_to_merge_request', self.repo)
+
+        closed_issue = GitHubMergeRequest(self.gh_token, 'gitmate-test-user/test', 5)
+        self.assertEqual(closed_issue.labels, {'b', 'a'})

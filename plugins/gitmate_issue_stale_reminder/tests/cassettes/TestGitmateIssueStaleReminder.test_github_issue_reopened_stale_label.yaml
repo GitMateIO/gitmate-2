@@ -105,4 +105,152 @@ interactions:
       X-Runtime-rack: ['0.067992']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
+- request:
+    body: '{"assignees": ["gitmate-test-user"]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['36']
+      Content-Type: [application/json]
+      User-Agent: [IGitt]
+    method: DELETE
+    uri: https://api.github.com/repos/gitmate-test-user/test/issues/104/assignees
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62Uy27bMBBFf6Xg2g4l2a5iAkW6KdBVukk3LQqDlsYSEYoUyJECV/C/d0i/YgdI
+        oyCAFzI19/BqXgPrnGaC1YitF5zLVt1UCutufVPYhjtored00EiEKYLHaefB8fDElfcdeJ4mczZh
+        MVKhddvVu4mE0XIN2r8f8cwU37MGbmQDO2LTBzVg8IPoRxqBof847J5F0BobfZWHZ4V5S0lUyUQ2
+        TxeLRTa7nTDTNWtwTFC9JgwVaqC6fwetLd0WqsrEwLStlKHzwsqNoogJi5RlPss/58sJk71E6a7r
+        Ew99cuicwCqsQUpKbKKOH/V3/ZfQK5U7YAKbhdtf68GA8/xs6PXEnOM2lj7tibTXbi9b/ALPTyJy
+        tX9WphoPINHALdZAqSL7ofsq5f/XepdWomCg4fO4UmVAeMqyg3KMnYOEzDwZ8jHEiY6sbu0Lp1pU
+        1ozK0IWQQNZV0qi/cjSIhJ70cXGM+aQoIOFbpu4yo3vFwFunellsQxocFKB6yul42pWUYLhtw0z9
+        DLNEGVYIK1k2YZ42UnvYHdcbE7//xGpiCLctGArXtngEmocYSoPmvaoMUIDptD7/93txQ8Pp0ZrT
+        +9M6EhltOgfELlcSiZ8laT5N6Ld8yBIxX4g0/UX3dW15FZNm0yx9SG7FLBdpHmIKbf0Bc3DRYW3d
+        iszZQsWS0wX3P+6/UfDaltvjRvn09cWCYrt/QnHHoGwGAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 21 Dec 2017 08:37:20 GMT']
+      ETag: [W/"a6bc4ac17dd336d0b81f2bcb0c715c4c"]
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: ['']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['C939:7F59:AAD454:15B41A1:5A3B72BF']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4875']
+      X-RateLimit-Reset: ['1513848745']
+      X-Runtime-rack: ['0.127659']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"body": "This issue seems stale!\n\n@gitmate-test-user please reassign
+      yourself if you''re still working on this.\n\n(Powered by [GitMate.io](https://gitmate.io))"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['164']
+      Content-Type: [application/json]
+      User-Agent: [IGitt]
+    method: POST
+    uri: https://api.github.com/repos/gitmate-test-user/test/issues/104/comments
+  response:
+    body: {string: '{"url":"https://api.github.com/repos/gitmate-test-user/test/issues/comments/353290824","html_url":"https://github.com/gitmate-test-user/test/issues/104#issuecomment-353290824","issue_url":"https://api.github.com/repos/gitmate-test-user/test/issues/104","id":353290824,"user":{"login":"gitmate-test-user","id":16681030,"avatar_url":"https://avatars3.githubusercontent.com/u/16681030?v=4","gravatar_id":"","url":"https://api.github.com/users/gitmate-test-user","html_url":"https://github.com/gitmate-test-user","followers_url":"https://api.github.com/users/gitmate-test-user/followers","following_url":"https://api.github.com/users/gitmate-test-user/following{/other_user}","gists_url":"https://api.github.com/users/gitmate-test-user/gists{/gist_id}","starred_url":"https://api.github.com/users/gitmate-test-user/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/gitmate-test-user/subscriptions","organizations_url":"https://api.github.com/users/gitmate-test-user/orgs","repos_url":"https://api.github.com/users/gitmate-test-user/repos","events_url":"https://api.github.com/users/gitmate-test-user/events{/privacy}","received_events_url":"https://api.github.com/users/gitmate-test-user/received_events","type":"User","site_admin":false},"created_at":"2017-12-21T08:37:22Z","updated_at":"2017-12-21T08:37:22Z","author_association":"OWNER","body":"This
+        issue seems stale!\n\n@gitmate-test-user please reassign yourself if you''re
+        still working on this.\n\n(Powered by [GitMate.io](https://gitmate.io))"}'}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Length: ['1522']
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 21 Dec 2017 08:37:22 GMT']
+      ETag: ['"2717e2025bb6decb77bc017a5f502af4"']
+      Location: ['https://api.github.com/repos/gitmate-test-user/test/issues/comments/353290824']
+      Server: [GitHub.com]
+      Status: [201 Created]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: ['']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['FFAD:7F5A:115C124:1F84092:5A3B72C1']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4874']
+      X-RateLimit-Reset: ['1513848745']
+      X-Runtime-rack: ['0.270405']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 201, message: Created}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [IGitt]
+    method: GET
+    uri: https://api.github.com/repos/gitmate-test-user/test/issues/104?per_page=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62Uy27bMBBFf6Xg2g4l2a5jAkW6KdBVukk3LQqDksYyEYoUyJECV/C/d0i/IgdI
+        oyCAFzJ17+FoXj1rnWaCbREbLziXjbqpFG7b/KawNXfQWM/poJYIUwSP09aD4+GJK+9b8DxN5mzC
+        olKhdbv1u4mE0TIH7d+PeBYUP7B6bmQNe2LTB9Vg8IPoJxqBofs47IFF0C3W+ioPzwrzlpKokols
+        ni4Wi2x2O2GmrXNwTFC9JgwVaqC6fwetLd0WqspEz7StlKHzwsqNIsWERcpqOVt+Xq4mTHYSpbuu
+        Tzz0ybFzAquwBikpsYlafvLfdV9Cr1TuiAlsFm5/rQcDzvNLQK8n5qLbWPq0J/JeRzts8QGen00U
+        1eFZmWo8gEw9t7gFShWFH7qvUv5/rTcMJRp6Gj6Pa1UGhKcsOyjHhHO0UDBPhuLo40RHVpv7wqkG
+        lTWjMjQwEsi6Shr1V44GkdGTPy6OMZ8UDWR8y9QNM3pw9LxxqpPFLqTBQQGqo5yOp11ZCYa7JszU
+        zzBLlGGFsJZlHeZpI7WH/Wm9MfH7T6wmBrltwJBc2+IRaB6ilAbNe1UZIIFptb789wdzTcPp0Zrz
+        +/M6EjPadA6IXa4lEj9L0uU0od/qIUvEfCHS9Bfd1zbllSbNpln6kNyK2VJkWdAU2voj5hhFi1vr
+        1hScLVQsOV1w/+P+G4lzW+5OG+XT1xcL6oLLSRZw+3+vI0CbfQYAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit,
+          X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+          X-Poll-Interval']
+      Cache-Control: ['private, max-age=60, s-maxage=60']
+      Content-Encoding: [gzip]
+      Content-Security-Policy: [default-src 'none']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 21 Dec 2017 08:37:24 GMT']
+      ETag: [W/"8814b63de6d5441c14b1db428e94d6e3"]
+      Last-Modified: ['Thu, 21 Dec 2017 08:37:22 GMT']
+      Server: [GitHub.com]
+      Status: [200 OK]
+      Strict-Transport-Security: [max-age=31536000; includeSubdomains; preload]
+      Vary: ['Accept, Authorization, Cookie, X-GitHub-OTP']
+      X-Accepted-OAuth-Scopes: [repo]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [deny]
+      X-GitHub-Media-Type: [github.v3; format=json]
+      X-GitHub-Request-Id: ['C93C:7F5A:115C286:1F84339:5A3B72C3']
+      X-OAuth-Scopes: ['admin:gpg_key, admin:org, admin:org_hook, admin:public_key,
+          admin:repo_hook, gist, notifications, repo, user']
+      X-RateLimit-Limit: ['5000']
+      X-RateLimit-Remaining: ['4870']
+      X-RateLimit-Reset: ['1513848745']
+      X-Runtime-rack: ['0.057388']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
 version: 1
