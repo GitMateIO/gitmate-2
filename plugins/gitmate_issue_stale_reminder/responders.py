@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from celery.schedules import crontab
 from IGitt.Interfaces.Actions import IssueActions, MergeRequestActions
-from IGitt.Interfaces.Issue import Issue
+from IGitt.Interfaces.Issue import Issue, IssueStates
 from IGitt.Interfaces.MergeRequest import MergeRequest
 from IGitt.Interfaces.Repository import Repository
 
@@ -25,7 +25,10 @@ def add_stale_label_to_issues(
     """
     minimum_issue_update_time = (datetime.now() -
                                  timedelta(days=issue_expire_limit)).date()
-    for issue in repo.search_issues(updated_before=minimum_issue_update_time):
+    for issue in repo.search_issues(
+            updated_before=minimum_issue_update_time,
+            state=IssueStates.OPEN,
+    ):
         with lock_igitt_object('label issue', issue):
             if stale_label not in issue.labels:
                 issue.labels = issue.labels | {stale_label}
