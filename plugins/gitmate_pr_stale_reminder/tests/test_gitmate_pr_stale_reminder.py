@@ -141,4 +141,4 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
             'pr_stale_reminder.add_stale_label_to_merge_request', self.repo)
 
         closed_issue = GitHubMergeRequest(self.gh_token, 'gitmate-test-user/test', 5)
-        self.assertEqual(closed_issue.labels, {'b', 'a'})
+        self.assertEqual(closed_issue.labels, set())

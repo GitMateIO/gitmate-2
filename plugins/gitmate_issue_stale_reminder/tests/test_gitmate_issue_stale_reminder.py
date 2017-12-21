@@ -204,4 +204,4 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
             'issue_stale_reminder.add_stale_label_to_issues', self.repo)
 
         closed_issue = GitHubIssue(self.gh_token, 'gitmate-test-user/test', 87)
-        self.assertEqual(closed_issue.labels, {'b', 'a'})
+        self.assertEqual(closed_issue.labels, set())

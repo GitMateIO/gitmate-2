@@ -23,17 +23,20 @@ class TestIssuePRSync(GitmateTestCase):
 
     @patch.object(GitHubMergeRequest, 'assignees', new_callable=PropertyMock)
     @patch.object(GitHubMergeRequest, 'labels', new_callable=PropertyMock)
+    @patch.object(GitHubIssue, 'assignees', new_callable=PropertyMock)
+    @patch.object(GitHubIssue, 'labels', new_callable=PropertyMock)
     @patch.object(GitHubMergeRequest, 'closes_issues',
                   new_callable=PropertyMock)
     def test_github_fresh_pr_with_issues(
-            self, m_cl_iss, m_labels, m_assignees
+            self, m_cl_iss, m_iss_labels, m_iss_assignees, m_labels,
+            m_assignees
     ):
         # setting the assignees & labels
         m_cl_iss.return_value = {
             GitHubIssue(self.repo.token, self.repo.full_name, 0)}
-        GitHubIssue.labels = {'a', 'b'}
+        m_iss_labels.return_value = {'a', 'b'}
         m_labels.return_value = set()
-        GitHubIssue.assignees = {self.gh_user}
+        m_iss_assignees.return_value = {self.gh_user}
         m_assignees.return_value = set()
 
         # testing updated pull requests
@@ -56,7 +59,7 @@ class TestIssuePRSync(GitmateTestCase):
             'issue': {'number': 0},
             'action': 'updated'
         }
-        GitHubIssue.assignees = {self.gh_user_2}
+        m_iss_assignees.return_value = {self.gh_user_2}
         m_assignees.return_value = {self.gh_user}
 
         response = self.simulate_github_webhook_call('issues', data)
@@ -93,17 +96,20 @@ class TestIssuePRSync(GitmateTestCase):
 
     @patch.object(GitLabMergeRequest, 'assignees', new_callable=PropertyMock)
     @patch.object(GitLabMergeRequest, 'labels', new_callable=PropertyMock)
+    @patch.object(GitLabIssue, 'assignees', new_callable=PropertyMock)
+    @patch.object(GitLabIssue, 'labels', new_callable=PropertyMock)
     @patch.object(GitLabMergeRequest, 'closes_issues',
                   new_callable=PropertyMock)
     def test_gitlab_fresh_pr_with_issues(
-            self, m_cl_iss, m_labels, m_assignees
+            self, m_cl_iss, m_iss_labels, m_iss_assignees, m_labels,
+            m_assignees
     ):
         # setting the assignees & labels
         m_cl_iss.return_value = {
             GitLabIssue(self.gl_repo.token, self.gl_repo.full_name, 0)}
-        GitLabIssue.labels = {'a', 'b'}
+        m_iss_labels.return_value = {'a', 'b'}
         m_labels.return_value = set()
-        GitLabIssue.assignees = {self.gl_user}
+        m_iss_assignees.return_value = {self.gl_user}
         m_assignees.return_value = set()
 
         # testing updated pull requests
@@ -130,7 +136,7 @@ class TestIssuePRSync(GitmateTestCase):
             },
             'changes': []
         }
-        GitLabIssue.assignees = {self.gl_user_2}
+        m_iss_assignees.return_value = {self.gl_user_2}
         m_assignees.return_value = {self.gl_user}
 
         response = self.simulate_gitlab_webhook_call('Issue Hook', data)
