@@ -105,7 +105,7 @@ deploy_master:
   only:
     - master@gitmate/open-source/gitmate-2
 
-deploy_release:
+deploy_release: &deploy_release
   stage: deploy
   image: debian:9
   script:
@@ -123,3 +123,9 @@ deploy_release:
   when: manual
   only:
     - master@gitmate/open-source/gitmate-2
+
+deploy_hotfix:
+  <<: *deploy_release
+  when: on_success
+  only:
+    - /^hotfix\/.*$/@gitmate/open-source/gitmate-2
