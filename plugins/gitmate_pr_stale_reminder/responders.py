@@ -2,7 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from celery.schedules import crontab
 from IGitt.Interfaces.Actions import MergeRequestActions
-from IGitt.Interfaces.MergeRequest import MergeRequest
+from IGitt.Interfaces.MergeRequest import MergeRequest, MergeRequestStates
 from IGitt.Interfaces.Repository import Repository
 
 from gitmate.utils import lock_igitt_object
@@ -22,7 +22,10 @@ def add_stale_label_to_merge_requests(
     """
     minimum_pr_update_time = (datetime.now() -
                               timedelta(days=pr_expire_limit)).date()
-    for pr in repo.search_mrs(updated_before=minimum_pr_update_time):
+    for pr in repo.search_mrs(
+            updated_before=minimum_pr_update_time,
+            state=MergeRequestStates.OPEN,
+    ):
         with lock_igitt_object('label mr', pr):
             if stale_label not in pr.labels:
                 pr.labels = pr.labels | {stale_label}
