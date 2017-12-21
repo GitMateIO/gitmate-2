@@ -1,6 +1,8 @@
+import logging
 import shutil
 
 from IGitt.Interfaces.Actions import MergeRequestActions
+from IGitt.Interfaces.CommitStatus import CommitStatus, Status
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
 import bugspots3
@@ -31,6 +33,23 @@ def label_hotspots(
     pattern: str = 'Pattern for matching against',
     hotspot_label: str = 'Label to be added if hotspot found',
 ):
-    if len(get_hotspot_files(pattern, pr).intersection(pr.affected_files)):
-        with lock_igitt_object('label mr', pr):
-            pr.labels |= {hotspot_label}
+    pr.head.set_status(CommitStatus(
+        Status.RUNNING, 'review/gitmate/risk', 'https://gitmate.io'))
+    try:
+        num_files = len(get_hotspot_files(pattern, pr).intersection(
+            pr.affected_files))
+        if num_files:
+            with lock_igitt_object('label mr', pr):
+                pr.labels |= {hotspot_label}
+    except Exception:  # pragma: no cover
+        pr.head.set_status(CommitStatus(
+            Status.ERROR, 'Risk analysis failed :/',
+            'review/gitmate/risk', 'https://gitmate.io'))
+        raise
+    else:
+        pr.head.set_status(
+            CommitStatus(
+                Status.SUCCESS, f'There are {num_files} risky files',
+                'review/gitmate/risk', 'https://gitmate.io'
+            )
+        )
