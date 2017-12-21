@@ -7,10 +7,12 @@ from unittest.mock import patch
 from unittest.mock import PropertyMock
 
 from IGitt.GitHub import GitHubToken
+from IGitt.GitHub.GitHubComment import GitHubComment
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitHub.GitHubRepository import GitHubRepository
 from IGitt.GitLab import GitLabOAuthToken
+from IGitt.GitLab.GitLabComment import GitLabComment
 from IGitt.GitLab.GitLabIssue import GitLabIssue
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.GitLab.GitLabRepository import GitLabRepository
@@ -52,7 +54,10 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
 
     @patch.object(GitHubMergeRequest, 'labels', new_callable=PropertyMock)
     @patch.object(GitHubRepository, 'search_mrs')
-    def test_github_pr_comment_stale_label(self, m_search_mrs, m_mr_labels):
+    @patch.object(GitHubComment, 'body', new_callable=PropertyMock)
+    def test_github_pr_comment_stale_label(
+            self, m_body, m_search_mrs, m_mr_labels
+    ):
         m_mr_labels.return_value = set()
         m_search_mrs.return_value = {
             GitHubMergeRequest(self.gh_token, self.repo.full_name, 7)
@@ -69,6 +74,7 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
             'comment': {'id': 0},
             'action': 'created'
         }
+        m_body.return_value = 'This is a mistake.'
         m_mr_labels.return_value = {'bug', 'status/STALE'}
         response = self.simulate_github_webhook_call('issue_comment', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -108,7 +114,10 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
 
     @patch.object(GitLabMergeRequest, 'labels', new_callable=PropertyMock)
     @patch.object(GitLabRepository, 'search_mrs')
-    def test_gitlab_pr_comment_stale_label(self, m_search_mrs, m_mr_labels):
+    @patch.object(GitLabComment, 'body', new_callable=PropertyMock)
+    def test_gitlab_pr_comment_stale_label(
+            self, m_body, m_search_mrs, m_mr_labels
+    ):
         m_mr_labels.return_value = set()
         m_search_mrs.return_value = {
             GitLabMergeRequest(self.gl_token, self.gl_repo.full_name, 2)
@@ -129,6 +138,7 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
             },
             'merge_request': {'iid': 2}
         }
+        m_body.return_value = 'I will find you and I will fix you.'
         m_mr_labels.return_value = {'bug', 'status/STALE'}
         response = self.simulate_gitlab_webhook_call('Note Hook', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

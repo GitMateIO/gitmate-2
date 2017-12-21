@@ -7,10 +7,12 @@ from unittest.mock import patch
 from unittest.mock import PropertyMock
 
 from IGitt.GitHub import GitHubToken
+from IGitt.GitHub.GitHubComment import GitHubComment
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitHub.GitHubRepository import GitHubRepository
 from IGitt.GitLab import GitLabOAuthToken
+from IGitt.GitLab.GitLabComment import GitLabComment
 from IGitt.GitLab.GitLabIssue import GitLabIssue
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.GitLab.GitLabRepository import GitLabRepository
@@ -54,8 +56,9 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
 
     @patch.object(GitHubIssue, 'labels', new_callable=PropertyMock)
     @patch.object(GitHubRepository, 'search_issues')
+    @patch.object(GitHubComment, 'body', new_callable=PropertyMock)
     def test_github_issue_comment_stale_label(
-        self, m_search_issues, m_issue_labels
+        self, m_body, m_search_issues, m_issue_labels
     ):
         m_issue_labels.return_value = set()
         m_search_issues.return_value = {
@@ -72,6 +75,7 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
             'comment': {'id': 0},
             'action': 'created'
         }
+        m_body.return_value = 'Luke is back!'
         m_issue_labels.return_value = {'bug', 'status/STALE'}
         response = self.simulate_github_webhook_call('issue_comment', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -139,8 +143,9 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
 
     @patch.object(GitLabIssue, 'labels', new_callable=PropertyMock)
     @patch.object(GitLabRepository, 'search_issues')
+    @patch.object(GitLabComment, 'body', new_callable=PropertyMock)
     def test_gitlab_issue_commented_stale_label(
-        self, m_search_issues, m_issue_labels
+        self, m_body, m_search_issues, m_issue_labels
     ):
         m_issue_labels.return_value = set()
         m_search_issues.return_value = {
@@ -161,6 +166,7 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
             },
             'issue': {'iid': 21}
         }
+        m_body.return_value = 'Hello world, dudes!'
         m_issue_labels.return_value = {'bug', 'status/STALE'}
         response = self.simulate_gitlab_webhook_call('Note Hook', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

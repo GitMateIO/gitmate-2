@@ -1,4 +1,3 @@
-import logging
 from collections import defaultdict
 from enum import Enum
 from functools import wraps
@@ -6,8 +5,16 @@ from hashlib import sha1
 from inspect import Parameter
 from inspect import signature
 from typing import Callable
+from typing import Union
+import re
 import hmac
+import logging
 
+from IGitt.Interfaces.Actions import IssueActions
+from IGitt.Interfaces.Actions import MergeRequestActions
+from IGitt.Interfaces.Comment import Comment
+from IGitt.Interfaces.Issue import Issue
+from IGitt.Interfaces.MergeRequest import MergeRequest
 from billiard.einfo import ExceptionInfo
 from celery import Task
 from celery.schedules import crontab
@@ -22,6 +29,26 @@ from gitmate_config import Providers
 from gitmate_config import TaskQueue
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
+
+
+COMMENT_FOOTER_REGEX = re.compile(
+    r'\(Powered by \[GitMate\.io\]\(https:\/\/gitmate\.io\)\)')
+
+
+def block_comment(func):
+    """
+    Block events when the comment contains a timestamp signature.
+    """
+
+    @wraps(func)
+    def wrapped(klass, event: Enum, *args, **kwargs):
+        if event in [MergeRequestActions.COMMENTED, IssueActions.COMMENTED]:
+            comment = args[1]
+            assert issubclass(comment.__class__, Comment)
+            if COMMENT_FOOTER_REGEX.search(comment.body):
+                return []
+        return func(klass, event, *args, **kwargs)
+    return wrapped
 
 
 def run_plugin_for_all_repos(plugin_name: str,
@@ -268,6 +295,7 @@ class ResponderRegistrar:
         return responders
 
     @classmethod
+    @block_comment
     def respond(cls,
                 event: Enum,
                 *args,
