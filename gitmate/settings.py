@@ -371,3 +371,6 @@ CONTAINER_TIMEOUT = 60 * 10
 GITHUB_JWT = GitHubJsonWebToken(
     os.environ.get('GITHUB_APP_PRIVATE_KEY', RANDOM_PRIVATE_KEY),
     int(os.environ.get('GITHUB_APP_ID', -1)))
+
+# store SVM models for labels here
+GITMATE_MODELS_DIR = os.environ.get('GITMATE_MODELS_DIR', None)
