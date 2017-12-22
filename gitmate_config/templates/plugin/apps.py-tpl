@@ -1,6 +1,6 @@
 {{ unicode_literals }}
+from gitmate.enums import PluginCategory
 from gitmate.utils import GitmatePluginConfig
-from gitmate.utils import PluginCategory
 
 
 class {{ camel_case_plugin_name }}Config(GitmatePluginConfig):

@@ -1,5 +1,5 @@
 from gitmate.utils import GitmatePluginConfig
-from gitmate.utils import PluginCategory
+from gitmate.enums import PluginCategory
 
 
 class GitmateCodeAnalysisConfig(GitmatePluginConfig):

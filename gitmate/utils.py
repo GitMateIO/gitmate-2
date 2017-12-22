@@ -1,5 +1,4 @@
 from contextlib import contextmanager
-from enum import Enum
 from glob import glob
 from importlib import import_module
 from os import listdir
@@ -69,35 +68,11 @@ def run_in_container(image: str, *args: [str], stdin: str=None) -> str:
     return retval
 
 
-class PluginCategory(Enum):
-    """
-    Enum class to hold types of plugins.
-    """
-    # Plugin related to analysis
-    ANALYSIS = 'analysis'
-    # Plugin related to issues
-    ISSUE = 'issue'
-    # Plugin related to Pull Requests
-    PULLS = 'pull_request'
-
-
 def snake_case_to_camel_case(string: str):
     """
     Converts a string from snake_case to CamelCase.
     """
     return ''.join(group.capitalize() or '_' for group in string.split('_'))
-
-
-class ScheduledTasks(Enum):
-    """
-    Task schedules type
-    """
-    # Scheduled to run daily
-    DAILY = 1
-    # Scheduled to run weekly
-    WEEKLY = 2
-    # Scheduled to run monthy
-    MONTHLY = 3
 
 
 class GitmatePluginConfig(AppConfig):
