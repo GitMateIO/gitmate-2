@@ -14,7 +14,7 @@ from gitmate_config import Providers
 from gitmate_config.models import Repository
 from gitmate_config.models import Installation
 from gitmate_hooks.utils import ResponderRegistrar
-from gitmate_hooks.utils import signature_check
+from gitmate_hooks.decorators import signature_check
 
 
 @csrf_exempt

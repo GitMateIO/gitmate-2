@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from gitmate_config.tests.test_base import GitmateTestCase
 from gitmate_hooks.views import github_webhook_receiver
-from gitmate_hooks.utils import signature_check
+from gitmate_hooks.decorators import signature_check
 
 
 class TestWebhookReceivers(GitmateTestCase):

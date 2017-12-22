@@ -1,51 +1,21 @@
 from collections import defaultdict
 from enum import Enum
-from functools import wraps
-from hashlib import sha1
 from inspect import Parameter
 from inspect import signature
 from typing import Callable
-import re
-import hmac
 import logging
 
-from IGitt.Interfaces.Actions import IssueActions
-from IGitt.Interfaces.Actions import MergeRequestActions
-from IGitt.Interfaces.Comment import Comment
 from billiard.einfo import ExceptionInfo
 from celery import Task
 from celery.schedules import crontab
 from celery.utils.log import get_logger
-from rest_framework import status
-from rest_framework.request import Request
-from rest_framework.response import Response
 
 from gitmate.celery import app as celery
 from gitmate_config import GitmateActions
-from gitmate_config import Providers
 from gitmate_config import TaskQueue
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
-
-
-COMMENT_FOOTER_REGEX = re.compile(
-    r'\(Powered by \[GitMate\.io\]\(https:\/\/gitmate\.io\)\)')
-
-
-def block_comment(func):
-    """
-    Block events when the comment contains a timestamp signature.
-    """
-
-    @wraps(func)
-    def wrapped(klass, event: Enum, *args, **kwargs):
-        if event in [MergeRequestActions.COMMENTED, IssueActions.COMMENTED]:
-            comment = args[1]
-            assert issubclass(comment.__class__, Comment)
-            if COMMENT_FOOTER_REGEX.search(comment.body):
-                return []
-        return func(klass, event, *args, **kwargs)
-    return wrapped
+from gitmate_hooks.decorators import block_comment
 
 
 def run_plugin_for_all_repos(plugin_name: str,
@@ -63,54 +33,6 @@ def run_plugin_for_all_repos(plugin_name: str,
     plugin = Plugin.objects.get(name=plugin_name)
     for repo in plugin.repository_set.filter(active=is_active):
         ResponderRegistrar.respond(event_name, repo.igitt_repo, repo=repo)
-
-
-def signature_check(key: str,
-                    provider: str,
-                    http_header_name: str):
-    """
-    Decorator for views that checks if the signature from request header
-    matches the one registered for webhooks.
-
-    :param key:                 The client key used to verify the hash.
-    :param provider:            The provider for which hash is to be verified.
-    :param http_header_name:    Name of HTTP request header which contains the
-                                secure signature.
-    :return:                    The response generated from the view.
-    """
-    def decorator(view: Callable):
-
-        @wraps(view)
-        def _view_wrapper(request: Request, *args, **kwargs):
-
-            # key not found, verification turned off!
-            if not key:
-                logger = get_logger('celery.worker')
-                logger.warning('Webhook signature verification turned off!'
-                               'Please verify WEBHOOK_SECRET in settings.')
-                return view(request, *args, **kwargs)
-
-            # improper request structure
-            if not all([http_header_name in request.META, len(request.body)]):
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-
-            if provider == Providers.GITHUB.value:
-                hashed = hmac.new(key.encode('utf-8'), request.body, sha1)
-                generated_signature = hashed.hexdigest()
-                sign = request.META[http_header_name]
-
-                if generated_signature == sign[5:]:
-                    return view(request, *args, **kwargs)
-
-            elif provider == Providers.GITLAB.value:
-                if request.META[http_header_name] == key:
-                    return view(request, *args, **kwargs)
-
-            # signature does not match
-            return Response(status=status.HTTP_403_FORBIDDEN)
-
-        return _view_wrapper
-    return decorator
 
 
 class ExceptionLoggerTask(Task):
