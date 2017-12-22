@@ -16,8 +16,9 @@ import logging
 import raven
 
 from IGitt.GitHub import GitHubJsonWebToken
-from gitmate_config import TaskQueue
+
 from gitmate import RANDOM_PRIVATE_KEY
+from gitmate_config.enums import TaskQueue
 from gitmate.utils import get_plugins
 from gitmate.utils import snake_case_to_camel_case
 

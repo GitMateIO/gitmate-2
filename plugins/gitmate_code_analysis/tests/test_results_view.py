@@ -2,7 +2,7 @@ from urllib.parse import quote_plus
 
 from rest_framework import status
 
-from gitmate_config import Providers
+from gitmate_config.enums import Providers
 from gitmate_config.tests.test_base import GitmateTestCase
 from plugins.gitmate_code_analysis.models import AnalysisResults
 from plugins.gitmate_code_analysis.views import get_analysis_result

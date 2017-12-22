@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from IGitt.GitHub.GitHub import GitHub
 from IGitt.GitLab.GitLab import GitLab
 
-from gitmate_config import Providers
+from gitmate_config.enums import Providers
 from gitmate_config.models import Repository
 from gitmate_config.models import Installation
 from gitmate_hooks.utils import ResponderRegistrar

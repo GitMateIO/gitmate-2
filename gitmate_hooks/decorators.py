@@ -13,7 +13,7 @@ from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from gitmate_config import Providers
+from gitmate_config.enums import Providers
 
 
 COMMENT_FOOTER_REGEX = re.compile(

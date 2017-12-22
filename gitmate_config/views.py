@@ -16,7 +16,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from social_django.models import UserSocialAuth
 
-from gitmate_config import Providers
+from gitmate_config.enums import Providers
 from gitmate_config.models import Plugin
 from gitmate_config.models import Organization
 from gitmate_config.models import Repository

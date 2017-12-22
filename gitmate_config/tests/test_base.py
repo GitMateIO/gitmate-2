@@ -17,7 +17,7 @@ import pytest
 import vcr
 
 from gitmate.utils import snake_case_to_camel_case
-from gitmate_config import Providers
+from gitmate_config.enums import Providers
 from gitmate_config.models import Plugin, Organization
 from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar

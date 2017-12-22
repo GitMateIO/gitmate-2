@@ -20,8 +20,8 @@ from IGitt.Interfaces.Repository import Repository as IGittRepository
 from rest_framework.reverse import reverse
 
 from gitmate.exceptions import MissingSettingsError
-from gitmate_config import GitmateActions
-from gitmate_config import Providers
+from gitmate_config.enums import GitmateActions
+from gitmate_config.enums import Providers
 
 
 class Plugin(models.Model):

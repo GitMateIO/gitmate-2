@@ -1,5 +1,5 @@
 
-from gitmate_config import Providers
+from gitmate_config.enums import Providers
 from gitmate_config.models import Installation
 from gitmate_config.tests.test_base import GitmateTestCase
 

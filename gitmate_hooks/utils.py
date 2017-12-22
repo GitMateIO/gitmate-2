@@ -11,8 +11,8 @@ from celery.schedules import crontab
 from celery.utils.log import get_logger
 
 from gitmate.celery import app as celery
-from gitmate_config import GitmateActions
-from gitmate_config import TaskQueue
+from gitmate_config.enums import GitmateActions
+from gitmate_config.enums import TaskQueue
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 from gitmate_hooks.decorators import block_comment
