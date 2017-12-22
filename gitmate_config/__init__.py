@@ -1,6 +1,8 @@
 from enum import Enum
+
 from IGitt.GitHub import GitHubToken
-from IGitt.GitLab import GitLabOAuthToken, GitLabPrivateToken
+from IGitt.GitLab import GitLabOAuthToken
+from IGitt.GitLab import GitLabPrivateToken
 
 
 default_app_config = 'gitmate_config.apps.GitmateConfigConfig'

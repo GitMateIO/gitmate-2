@@ -2,20 +2,20 @@ from collections import defaultdict
 from enum import Enum
 from functools import wraps
 from hashlib import sha1
+import hmac
 from inspect import Parameter
 from inspect import signature
-from typing import Callable
-import re
-import hmac
 import logging
+import re
+from typing import Callable
 
-from IGitt.Interfaces.Actions import IssueActions
-from IGitt.Interfaces.Actions import MergeRequestActions
-from IGitt.Interfaces.Comment import Comment
 from billiard.einfo import ExceptionInfo
 from celery import Task
 from celery.schedules import crontab
 from celery.utils.log import get_logger
+from IGitt.Interfaces.Actions import IssueActions
+from IGitt.Interfaces.Actions import MergeRequestActions
+from IGitt.Interfaces.Comment import Comment
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -26,7 +26,6 @@ from gitmate_config import Providers
 from gitmate_config import TaskQueue
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
-
 
 COMMENT_FOOTER_REGEX = re.compile(
     r'\(Powered by \[GitMate\.io\]\(https:\/\/gitmate\.io\)\)')

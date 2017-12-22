@@ -1,9 +1,8 @@
 import shutil
 
+import bugspots3
 from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.MergeRequest import MergeRequest
-
-import bugspots3
 
 from gitmate.utils import lock_igitt_object
 from gitmate_hooks.utils import ResponderRegistrar

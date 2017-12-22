@@ -1,8 +1,10 @@
+import shutil
 from unittest.mock import MagicMock
 from unittest.mock import patch
 from unittest.mock import PropertyMock
-import shutil
 
+import attr
+import bugspots3
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitHub.GitHubRepository import GitHubRepository
@@ -10,8 +12,6 @@ from IGitt.GitLab.GitLabIssue import GitLabIssue
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.GitLab.GitLabRepository import GitLabRepository
 from rest_framework import status
-import attr
-import bugspots3
 
 from gitmate_config.tests.test_base import GitmateTestCase
 

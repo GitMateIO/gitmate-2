@@ -1,7 +1,7 @@
 import os
 
-from IGitt.Interfaces.Repository import Repository as IGittRepository
 from django.contrib.auth.models import User
+from IGitt.Interfaces.Repository import Repository as IGittRepository
 from rest_framework import status
 from rest_framework.reverse import reverse
 from social_django.models import UserSocialAuth

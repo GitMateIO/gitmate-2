@@ -1,13 +1,13 @@
+from os import path
+
+from django.conf import settings
+from django.conf.urls import include
+from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
 
 from .views import PluginSettingsViewSet
 from .views import RepositoryViewSet
 from .views import UserViewSet
-
-from os import path
-from django.conf import settings
-from django.conf.urls import include
-from django.conf.urls import url
 
 router = DefaultRouter()
 router.register(r'repos', RepositoryViewSet, base_name='repository')

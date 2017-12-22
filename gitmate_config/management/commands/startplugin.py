@@ -1,6 +1,5 @@
-from os import makedirs
-
 from importlib import import_module
+from os import makedirs
 
 from django.core.management.base import CommandError
 from django.core.management.templates import TemplateCommand

@@ -4,12 +4,12 @@ from os import environ
 import subprocess
 from unittest.mock import patch
 
-from gitmate_config.tests.test_base import GitmateTestCase
-from gitmate_config.tests.test_base import StreamMock
 from IGitt.GitHub.GitHubCommit import GitHubCommit
 from IGitt.GitLab.GitLabCommit import GitLabCommit
 from rest_framework.status import HTTP_200_OK
 
+from gitmate_config.tests.test_base import GitmateTestCase
+from gitmate_config.tests.test_base import StreamMock
 
 PopenResult = namedtuple('ret', 'stdout stdin wait')
 

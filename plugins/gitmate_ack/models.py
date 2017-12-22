@@ -1,9 +1,10 @@
-from IGitt.Interfaces.CommitStatus import Status, CommitStatus
-
-from django.db import models
 from django.contrib.postgres import fields as psql_fields
+from django.db import models
+from IGitt.Interfaces.CommitStatus import CommitStatus
+from IGitt.Interfaces.CommitStatus import Status
 
-from gitmate_config.models import SettingsBase, Repository
+from gitmate_config.models import Repository
+from gitmate_config.models import SettingsBase
 
 
 class Settings(SettingsBase):

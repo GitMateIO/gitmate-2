@@ -3,14 +3,15 @@ import re
 
 from IGitt.Interfaces import AccessLevel
 from IGitt.Interfaces.Actions import MergeRequestActions
+from IGitt.Interfaces.Comment import Comment
 from IGitt.Interfaces.Commit import Commit
 from IGitt.Interfaces.CommitStatus import CommitStatus
 from IGitt.Interfaces.CommitStatus import Status
-from IGitt.Interfaces.Comment import Comment
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
 from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
+
 from .models import MergeRequestModel
 
 

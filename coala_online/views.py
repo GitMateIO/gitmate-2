@@ -1,8 +1,9 @@
-import json
 from collections import defaultdict
+import json
 
 from django.http import JsonResponse
-from rest_framework.decorators import api_view, throttle_classes
+from rest_framework.decorators import api_view
+from rest_framework.decorators import throttle_classes
 
 from coala_online.task import run_coala_online
 from coala_online.throttle import throttle

@@ -1,8 +1,10 @@
 from datetime import datetime
 from datetime import timedelta
+
 from celery.schedules import crontab
 from IGitt.Interfaces.Actions import MergeRequestActions
-from IGitt.Interfaces.MergeRequest import MergeRequest, MergeRequestStates
+from IGitt.Interfaces.MergeRequest import MergeRequest
+from IGitt.Interfaces.MergeRequest import MergeRequestStates
 from IGitt.Interfaces.Repository import Repository
 
 from gitmate.utils import lock_igitt_object

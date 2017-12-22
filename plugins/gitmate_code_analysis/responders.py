@@ -3,6 +3,7 @@ import logging
 import shlex
 
 from django.conf import settings
+from django_pglocks import advisory_lock
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.Interfaces.Actions import MergeRequestActions
@@ -10,12 +11,11 @@ from IGitt.Interfaces.Commit import Commit
 from IGitt.Interfaces.Commit import CommitStatus
 from IGitt.Interfaces.Commit import Status
 from IGitt.Interfaces.MergeRequest import MergeRequest
-from django_pglocks import advisory_lock
-
 
 from gitmate.utils import run_in_container
 from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
+
 from .models import AnalysisResults
 
 

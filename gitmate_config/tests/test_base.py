@@ -10,20 +10,20 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core import management
 from django.test import TransactionTestCase
+import pytest
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory
 from social_django.models import UserSocialAuth
-import pytest
 import vcr
 
 from gitmate.utils import snake_case_to_camel_case
 from gitmate_config import Providers
-from gitmate_config.models import Plugin, Organization
+from gitmate_config.models import Organization
+from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
 from gitmate_hooks.views import github_webhook_receiver
 from gitmate_hooks.views import gitlab_webhook_receiver
-
 
 FILTER_QUERY_PARAMS = ['access_token', 'private_token']
 FILTER_PARAMS_REGEX = re.compile(r'(\??)((?:{})=\w+&?)'.format(

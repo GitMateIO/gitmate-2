@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
 from gitmate_config.models import Repository
+
 from .models import AnalysisResults
 from .serializers import ResultsSerializer
 

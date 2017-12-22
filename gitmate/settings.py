@@ -11,16 +11,16 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 from ast import literal_eval
-import os
 import logging
-import raven
+import os
 
 from IGitt.GitHub import GitHubJsonWebToken
-from gitmate_config import TaskQueue
+import raven
+
 from gitmate import RANDOM_PRIVATE_KEY
 from gitmate.utils import get_plugins
 from gitmate.utils import snake_case_to_camel_case
-
+from gitmate_config import TaskQueue
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

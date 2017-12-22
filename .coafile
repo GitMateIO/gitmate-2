@@ -6,7 +6,7 @@ use_spaces = True
 
 [all.python.analysis]
 ignore += **/tests.py
-bears = LineLengthBear, QuotesBear, SpaceConsistencyBear
+bears = LineLengthBear, QuotesBear, SpaceConsistencyBear, PyImportSortBear
 preferred_quotation = '
 ignore_length_regex = https?://
 

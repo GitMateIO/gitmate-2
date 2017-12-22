@@ -3,11 +3,11 @@ from unittest.mock import MagicMock
 from unittest.mock import patch
 from unittest.mock import PropertyMock
 
+from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
+from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
-from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
-from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 
 
 class TestAutoLabelPendingOrWip(GitmateTestCase):

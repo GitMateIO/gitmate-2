@@ -10,8 +10,8 @@ from django.shortcuts import get_object_or_404
 from IGitt.GitHub import GitHubInstallationToken
 from IGitt.GitHub.GitHubInstallation import GitHubInstallation
 from IGitt.GitHub.GitHubOrganization import GitHubOrganization
-from IGitt.GitLab.GitLabOrganization import GitLabOrganization
 from IGitt.GitHub.GitHubRepository import GitHubRepository
+from IGitt.GitLab.GitLabOrganization import GitLabOrganization
 from IGitt.GitLab.GitLabRepository import GitLabRepository
 from IGitt.Interfaces import Token as IGittToken
 from IGitt.Interfaces.Installation import Installation as IGittInstallation

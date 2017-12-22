@@ -4,15 +4,15 @@ from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from IGitt.GitHub.GitHub import GitHub
+from IGitt.GitLab.GitLab import GitLab
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from IGitt.GitHub.GitHub import GitHub
-from IGitt.GitLab.GitLab import GitLab
 
 from gitmate_config import Providers
-from gitmate_config.models import Repository
 from gitmate_config.models import Installation
+from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
 from gitmate_hooks.utils import signature_check
 

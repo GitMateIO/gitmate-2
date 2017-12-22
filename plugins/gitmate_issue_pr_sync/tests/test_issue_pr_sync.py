@@ -2,15 +2,15 @@ from os import environ
 from unittest.mock import patch
 from unittest.mock import PropertyMock
 
-from rest_framework import status
-
-from gitmate_config.tests.test_base import GitmateTestCase
 from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitHub.GitHubUser import GitHubUser
 from IGitt.GitLab.GitLabIssue import GitLabIssue
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.GitLab.GitLabUser import GitLabUser
+from rest_framework import status
+
+from gitmate_config.tests.test_base import GitmateTestCase
 
 
 class TestIssuePRSync(GitmateTestCase):

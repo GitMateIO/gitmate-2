@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.db.models import Count
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from django.core.exceptions import PermissionDenied
 from IGitt.GitHub.GitHub import GitHub
 from IGitt.GitLab.GitLab import GitLab
 from rest_framework import mixins
@@ -13,12 +13,11 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
-
 from social_django.models import UserSocialAuth
 
 from gitmate_config import Providers
-from gitmate_config.models import Plugin
 from gitmate_config.models import Organization
+from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 
 from .serializers import PluginSettingsSerializer

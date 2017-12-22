@@ -6,8 +6,8 @@ only basic operations on Django models.
 from typing import List
 
 from IGitt.Interfaces.Actions import InstallationActions
-from IGitt.Interfaces.Repository import Repository as IGittRepository
 from IGitt.Interfaces.Installation import Installation as IGittInstallation
+from IGitt.Interfaces.Repository import Repository as IGittRepository
 
 from gitmate_config.models import Installation
 from gitmate_config.models import Repository

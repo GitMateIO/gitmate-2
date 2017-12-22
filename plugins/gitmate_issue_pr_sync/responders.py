@@ -5,9 +5,10 @@ from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.Issue import Issue
 from IGitt.Interfaces.MergeRequest import MergeRequest
 
-from gitmate_config.models import Repository
 from gitmate.utils import lock_igitt_object
+from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
+
 from .models import MergeRequestModel
 
 

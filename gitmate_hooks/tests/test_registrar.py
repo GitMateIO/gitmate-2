@@ -3,12 +3,12 @@ from unittest.mock import PropertyMock
 
 from IGitt.GitHub.GitHubComment import GitHubComment
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
-from IGitt.Interfaces.Comment import CommentType
 from IGitt.Interfaces.Actions import MergeRequestActions
+from IGitt.Interfaces.Comment import CommentType
 
 from gitmate_config.tests.test_base import GitmateTestCase
-from gitmate_hooks.utils import run_plugin_for_all_repos
 from gitmate_hooks.utils import ResponderRegistrar
+from gitmate_hooks.utils import run_plugin_for_all_repos
 
 
 class TestResponderRegistrar(GitmateTestCase):

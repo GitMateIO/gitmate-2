@@ -4,11 +4,10 @@ a reference for writing further tests.
 """
 from collections import namedtuple
 from os import environ
+import subprocess
 from unittest.mock import patch
 from unittest.mock import PropertyMock
-import subprocess
 
-from rest_framework import status
 from IGitt.GitHub.GitHubComment import GitHubComment
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitHub.GitHubRepository import GitHubRepository
@@ -18,10 +17,10 @@ from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.GitLab.GitLabRepository import GitLabRepository
 from IGitt.GitLab.GitLabUser import GitLabUser
 from IGitt.Interfaces import AccessLevel
+from rest_framework import status
 
 from gitmate_config.tests.test_base import GitmateTestCase
 from gitmate_config.tests.test_base import StreamMock
-
 
 PopenResult = namedtuple('ret', 'stdout wait')
 

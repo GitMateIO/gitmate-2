@@ -1,7 +1,8 @@
 from django.contrib.postgres import fields as psql_fields
 from django.db import models
 
-from gitmate_config.models import Repository, SettingsBase
+from gitmate_config.models import Repository
+from gitmate_config.models import SettingsBase
 
 
 class Settings(SettingsBase):

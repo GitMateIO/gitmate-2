@@ -11,7 +11,6 @@ from gitmate.utils import run_in_container
 from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
 
-
 COMMAND_REGEX = r'@(?:{}|gitmate-bot)\s+((?:rebase|merge|fastforward|ff))'
 
 
