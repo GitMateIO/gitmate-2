@@ -1,4 +1,3 @@
-from os import environ
 
 from gitmate_config import Providers
 from gitmate_config.models import Installation

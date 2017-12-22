@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.models import User
-from django.db.models import Count
 from django.db.models import QuerySet
 
 from .models import Organization
@@ -50,7 +49,7 @@ class _SettingsBaseModelAdminTemplate(admin.ModelAdmin):
 
     def __init__(self, model, site):
         self.list_display = [field.name for field in model._meta.fields
-                             if field.name != "id"]
+                             if field.name != 'id']
         super(_SettingsBaseModelAdminTemplate, self).__init__(model, site)
 
 
@@ -63,7 +62,7 @@ class _SettingsBaseGenericModelFormMeta(type):
     def __new__(cls, clsname, bases, attrs):
         # making sure we are using the correct class
         if len(bases) < 1:  # pragma: no cover
-            raise ValueError("SettingsBaseAdminForm requires a base class")
+            raise ValueError('SettingsBaseAdminForm requires a base class')
         assert issubclass(bases[0], SettingsBase)
 
         meta = type('SettingsBaseAdminModelFormMeta',
@@ -87,7 +86,7 @@ class SettingsBaseGenericModelAdminMeta(type):
     def __new__(cls, clsname, bases, attrs):
         # making sure we are using the correct class
         if len(bases) < 1:  # pragma: no cover
-            raise ValueError("SettingsBaseAdminForm requires a base class")
+            raise ValueError('SettingsBaseAdminForm requires a base class')
 
         # django ModelAdmin classes are required to have a Meta member class
         # with a 'model' attribute that points to the model type
@@ -113,7 +112,7 @@ def register_all_setting_models(mixins=None, **attr_dict):
         mixins = ()
 
     mixins = tuple(mixins)
-    models =  SettingsBase.__subclasses__()
+    models = SettingsBase.__subclasses__()
     model_admins = [
         SettingsBaseGenericModelAdminMeta(x.__name__, (x,) + mixins, attr_dict)
         for x in models

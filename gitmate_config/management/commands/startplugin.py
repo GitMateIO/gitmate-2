@@ -33,7 +33,6 @@ class Command(TemplateCommand):
         except ImportError:
             # make a new directory for the plugin
             makedirs(target, exist_ok=True)
-            pass
         else:
             raise CommandError(
                 '%r conflicts with the name of an existing Python module and '

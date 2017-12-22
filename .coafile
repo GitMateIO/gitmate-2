@@ -1,18 +1,18 @@
 [all]
-files = *.py
+files = **.py
 ignore = **/migrations/**
 language = python
 use_spaces = True
 
 [all.python.analysis]
 ignore += **/tests.py
-bears = LineLengthBear, RadonBear, QuotesBear, SpaceConsistencyBear
+bears = LineLengthBear, QuotesBear, SpaceConsistencyBear
 preferred_quotation = '
-ignore_length_regex = ^.https?://
+ignore_length_regex = https?://
 
 [all.python.spacing]
 bears = PEP8Bear, PyCommentedCodeBear, PyUnusedCodeBear
-ignore = **/migrations/**, **/__init__.py, **/conftest.py, **/views.py, **/admin.py, **/apps.py
+ignore = **/migrations/**
 remove_all_unused_imports = True
 
 [all.commit]

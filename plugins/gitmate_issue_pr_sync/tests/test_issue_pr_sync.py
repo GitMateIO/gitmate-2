@@ -93,7 +93,6 @@ class TestIssuePRSync(GitmateTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         m_labels.assert_called_with({'good first issue'})
 
-
     @patch.object(GitLabMergeRequest, 'assignees', new_callable=PropertyMock)
     @patch.object(GitLabMergeRequest, 'labels', new_callable=PropertyMock)
     @patch.object(GitLabIssue, 'assignees', new_callable=PropertyMock)

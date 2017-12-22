@@ -10,4 +10,5 @@ class GitmateRebaserConfig(GitmatePluginConfig):
                    'pull request when someone adds a comment with the keywords'
                    '<tt>rebase</tt>, <tt>merge</tt> or <tt>fastforward</tt> '
                    'mentioning the authorized username.'
-                   '<br>Example comment:<br><br><tt>"@gitmate-bot rebase"</tt>')
+                   '<br>Example comment:<br><br><tt>"@gitmate-bot rebase"'
+                   '</tt>')

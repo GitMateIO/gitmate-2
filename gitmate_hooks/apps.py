@@ -7,5 +7,5 @@ class GitmateHooksConfig(AppConfig):
     description = 'Provides a handling mechanism for incoming webhooks.'
 
     def ready(self):
-        import gitmate_hooks.utils as _
-        import gitmate_hooks.responders as _
+        import gitmate_hooks.utils  # Ignore PyUnusedCodeBear
+        import gitmate_hooks.responders

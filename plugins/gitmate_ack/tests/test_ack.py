@@ -327,7 +327,6 @@ class TestAck(GitmateTestCase):
                           (Status.SUCCESS, 'review/gitmate/manual'),
                           (Status.SUCCESS, 'review/gitmate/manual/pr')])
 
-
     @patch.object(GitLabMergeRequest, 'commits', new_callable=PropertyMock)
     @patch.object(GitLabComment, 'body', new_callable=PropertyMock)
     @patch.object(GitLabComment, 'author', new_callable=PropertyMock)

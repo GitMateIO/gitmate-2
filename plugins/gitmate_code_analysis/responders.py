@@ -19,7 +19,6 @@ from gitmate_hooks.utils import ResponderRegistrar
 from .models import AnalysisResults
 
 
-
 def _set_status(commit: Commit, status: Status, context: str):
     pr_or_commit = 'PR' if 'pr' in context else 'commit'
     commit_status = CommitStatus(status, {
@@ -54,8 +53,8 @@ def analyse(repo, sha, clone_url, ref, coafile_location):
             try:
                 results = json.loads(output)
             except json.JSONDecodeError:  # pragma: no cover, for debugging
-                logging.error('coala image output was not JSON parsable. Output '
-                              'was: ' + output)
+                logging.error('coala image output was not JSON parsable. '
+                              'Output was: ' + output)
                 raise
             AnalysisResults.objects.create(repo=repo, sha=sha, results=results,
                                            coafile_location=coafile_location)

@@ -19,7 +19,7 @@ def coala_online(request):
     """
     request = json.loads(request.body.decode('utf-8'))
 
-    req = defaultdict(lambda : None)
+    req = defaultdict(lambda: None)
 
     req['mode'] = request['mode']
     req['file_content'] = request.get('file_data', None)

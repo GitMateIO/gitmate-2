@@ -4,7 +4,6 @@ from os import environ
 from unittest.mock import patch
 
 from django.conf import settings
-from django.test import override_settings
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from rest_framework import status
 from rest_framework.response import Response

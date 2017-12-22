@@ -78,8 +78,8 @@ def apply_command_on_merge_request(
             return
 
         pr.add_comment(
-            f'Hey! I\'m [GitMate.io](https://gitmate.io)! This pull request is '
-            f'being {cmd_past} automatically. Please **DO NOT** push while '
+            f'Hey! I\'m [GitMate.io](https://gitmate.io)! This pull request is'
+            f' being {cmd_past} automatically. Please **DO NOT** push while '
             f'{cmd} is in progress or your changes would be lost permanently '
             ':warning:')
         head_clone_url = pr.source_repository.clone_url

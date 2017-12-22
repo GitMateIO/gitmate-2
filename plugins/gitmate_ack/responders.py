@@ -146,12 +146,12 @@ def add_review_status(pr: MergeRequest):
         commit_hash = _get_commit_hash(commit)
         hashes.append(commit_hash)
 
-        # This commit was head of the PR before, deletion of the PR state is not
-        # possible so we make it green to clean it up.
+        # This commit was head of the PR before, deletion of the PR state is
+        # not possible so we make it green to clean it up.
         if commit.sha == db_pr.last_head != head.sha:
             commit.set_status(CommitStatus(
-                Status.SUCCESS, 'Outdated. Check ' + head.sha[:7] + ' instead.',
-                'review/gitmate/manual/pr', 'https://gitmate.io'))
+                Status.SUCCESS, 'Outdated. Check ' + head.sha[:7] +
+                ' instead.', 'review/gitmate/manual/pr', 'https://gitmate.io'))
 
         # copying status from unmodified commits in the same merge request
         if commit_hash in db_pr.acks:

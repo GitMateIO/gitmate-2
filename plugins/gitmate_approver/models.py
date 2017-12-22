@@ -1,4 +1,3 @@
-from django.contrib.postgres import fields as psql_fields
 from django.db import models
 
 from gitmate_config.models import Repository
@@ -6,7 +5,8 @@ from gitmate_config.models import SettingsBase
 
 
 class Settings(SettingsBase):
-    status_labels = models.CharField(max_length=500,
+    status_labels = models.CharField(
+        max_length=500,
         default='process/pending_review, process/WIP',
         help_text='Comma seperated labels to be removed from the merge '
                   'request once it has been approved. e.g. process/WIP, '

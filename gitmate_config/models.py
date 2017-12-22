@@ -57,7 +57,7 @@ class Plugin(models.Model):
     @property
     def importable(self):
         try:
-            _ = self.settings_model
+            self.settings_model
             return True
         except MissingSettingsError:
             return False
@@ -276,7 +276,6 @@ class Repository(models.Model):
                 raise Http404
 
             # premature 404 because plugin is not saved at all without it being
-            # importable
             plugin_obj = get_object_or_404(Plugin, name=plugin['name'])
 
             if 'active' in plugin:
@@ -335,7 +334,8 @@ class Repository(models.Model):
 
         return Providers(self.provider).get_token(
             raw_token,
-            private_token='private_token' in self.user.social_auth.get(provider=self.provider).extra_data
+            private_token='private_token' in self.user.social_auth.get(
+                provider=self.provider).extra_data
         )
 
     @property

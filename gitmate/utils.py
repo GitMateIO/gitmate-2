@@ -7,7 +7,6 @@ from os import path
 import subprocess
 
 from django.apps import AppConfig
-from django.conf import settings
 from django_pglocks import advisory_lock
 
 
@@ -36,7 +35,7 @@ def is_plugin(directory: str) -> bool:
                            'models.py',
                            'responders.py',
                            'migrations/__init__.py'}
-    existing_files = glob(directory + "/**/*.py", recursive=True)
+    existing_files = glob(directory + '/**/*.py', recursive=True)
     return all(path.join(directory, f) in existing_files
                for f in files_to_be_present)
 
@@ -88,6 +87,7 @@ def snake_case_to_camel_case(string: str):
     """
     return ''.join(group.capitalize() or '_' for group in string.split('_'))
 
+
 class ScheduledTasks(Enum):
     """
     Task schedules type
@@ -105,6 +105,7 @@ class GitmatePluginConfig(AppConfig):
     Base class for all plugins to import responders and register tasks with
     ``ResponderRegistrar``.
     """
+
     def ready(self):
         # importing all responders to register tasks
         try:

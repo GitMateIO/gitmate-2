@@ -22,7 +22,9 @@ def get_analysis_result(request):
     sha = request.GET.get('sha')
     if not all((repo, sha, provider)):
         return Response(
-            data={'detail': '`repo`, `provider` or `sha` GET parameter missing'},
+            data={
+                'detail': '`repo`, `provider` or `sha` GET parameter missing'
+            },
             status=HTTP_400_BAD_REQUEST)
     db_repo = get_object_or_404(
         Repository,

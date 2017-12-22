@@ -7,8 +7,8 @@ class GitmatePrSizeLabellerConfig(GitmatePluginConfig):
     verbose_name = 'Assign label based on size'
     plugin_category = PluginCategory.PULLS
     description = (
-        'Sets size labels on new pull requests in this repository'\
-        ' (XS/S/M/L/XL/XXL). '\
-        'The number of changed lines of code is taken into account as well '\
+        'Sets size labels on new pull requests in this repository'
+        ' (XS/S/M/L/XL/XXL). '
+        'The number of changed lines of code is taken into account as well '
         'as the number of commits and that of files changed.'
     )

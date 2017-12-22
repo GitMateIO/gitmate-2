@@ -1,4 +1,3 @@
-from IGitt.Interfaces.Repository import Repository as IGittRepository
 from IGitt.Interfaces.CommitStatus import Status, CommitStatus
 
 from django.db import models

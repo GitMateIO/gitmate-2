@@ -32,7 +32,9 @@ FILTER_PARAMS_REGEX = re.compile(r'(\??)((?:{})=\w+&?)'.format(
 # this is a helper method to reinitate gitmate plugins and is used only
 # for testing purposes and is not a part of the actual gitmate server,
 # henceforth coverage here is not required.
-def reinit_plugin(name, upmate: bool=False): # pragma: no cover
+
+
+def reinit_plugin(name, upmate: bool=False):  # pragma: no cover
     """
     Reinitialize gitmate with plugin and upmate, if specified.
     """
@@ -65,6 +67,7 @@ class StreamMock:
     """
     A class for mocking standard input, output and error streams.
     """
+
     def __init__(self, value):
         self.value = value
 

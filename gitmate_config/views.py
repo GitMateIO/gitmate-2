@@ -128,7 +128,7 @@ class RepositoryViewSet(
 
                 # TODO: validate if a cached repo was removed. Handling if it
                 # was active?
-            except UserSocialAuth.DoesNotExist: # pragma: no cover
+            except UserSocialAuth.DoesNotExist:  # pragma: no cover
                 pass  # User never gave us his key for that provider
 
         return super().list(request)

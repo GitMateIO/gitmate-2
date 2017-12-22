@@ -6,11 +6,9 @@ from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.Interfaces.Comment import CommentType
 from IGitt.Interfaces.Actions import MergeRequestActions
 
-from gitmate_config.models import Plugin
 from gitmate_config.tests.test_base import GitmateTestCase
 from gitmate_hooks.utils import run_plugin_for_all_repos
 from gitmate_hooks.utils import ResponderRegistrar
-from gitmate.utils import ScheduledTasks
 
 
 class TestResponderRegistrar(GitmateTestCase):

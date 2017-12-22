@@ -33,7 +33,7 @@ def github_webhook_receiver(request):
     if 'repository' in webhook:
         repository = webhook['repository']
         repo_obj = get_object_or_404(Repository,
-                                     (Q(identifier=repository['id'])|
+                                     (Q(identifier=repository['id']) |
                                       Q(full_name=repository['full_name'])),
                                      active=True,
                                      provider=Providers.GITHUB.value)

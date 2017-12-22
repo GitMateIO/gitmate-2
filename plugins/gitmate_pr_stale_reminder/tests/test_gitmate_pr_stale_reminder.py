@@ -8,12 +8,10 @@ from unittest.mock import PropertyMock
 
 from IGitt.GitHub import GitHubToken
 from IGitt.GitHub.GitHubComment import GitHubComment
-from IGitt.GitHub.GitHubIssue import GitHubIssue
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.GitHub.GitHubRepository import GitHubRepository
 from IGitt.GitLab import GitLabOAuthToken
 from IGitt.GitLab.GitLabComment import GitLabComment
-from IGitt.GitLab.GitLabIssue import GitLabIssue
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.GitLab.GitLabRepository import GitLabRepository
 from rest_framework import status
@@ -82,7 +80,6 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
         # only the 'bug' label remains after removing 'status/STALE'
         m_mr_labels.assert_called_with({'bug'})
 
-
     @patch.object(GitLabMergeRequest, 'labels', new_callable=PropertyMock)
     @patch.object(GitLabRepository, 'search_mrs')
     def test_gitlab_pr_sync_stale_label(self, m_search_mrs, m_mr_labels):
@@ -150,5 +147,6 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
         self.simulate_scheduled_responder_call(
             'pr_stale_reminder.add_stale_label_to_merge_request', self.repo)
 
-        closed_issue = GitHubMergeRequest(self.gh_token, 'gitmate-test-user/test', 5)
+        closed_issue = GitHubMergeRequest(
+            self.gh_token, 'gitmate-test-user/test', 5)
         self.assertEqual(closed_issue.labels, set())

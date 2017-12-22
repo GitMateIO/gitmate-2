@@ -28,7 +28,8 @@ class Providers(Enum):
         if self.value == 'github':
             return GitHubToken(raw_token)
         elif self.value == 'gitlab':
-            return GitLabPrivateToken(raw_token) if private_token else GitLabOAuthToken(raw_token)
+            return (GitLabPrivateToken(raw_token)
+                    if private_token else GitLabOAuthToken(raw_token))
         else:
             raise NotImplementedError
 

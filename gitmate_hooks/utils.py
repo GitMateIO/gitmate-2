@@ -5,7 +5,6 @@ from hashlib import sha1
 from inspect import Parameter
 from inspect import signature
 from typing import Callable
-from typing import Union
 import re
 import hmac
 import logging
@@ -13,8 +12,6 @@ import logging
 from IGitt.Interfaces.Actions import IssueActions
 from IGitt.Interfaces.Actions import MergeRequestActions
 from IGitt.Interfaces.Comment import Comment
-from IGitt.Interfaces.Issue import Issue
-from IGitt.Interfaces.MergeRequest import MergeRequest
 from billiard.einfo import ExceptionInfo
 from celery import Task
 from celery.schedules import crontab
@@ -123,6 +120,7 @@ class ExceptionLoggerTask(Task):
     For Task inheritance see:
     http://docs.celeryproject.org/en/latest/userguide/tasks.html#task-inheritance
     """
+
     def on_failure(self,
                    exc: Exception,
                    task_id: int,
@@ -196,7 +194,9 @@ class ResponderRegistrar:
         :param kwargs:      Keyword arguments to pass to scheduled task.
         """
         def _wrapper(function: Callable):
-            task = celery.task(function, base=ExceptionLoggerTask, queue=queue.value)
+            task = celery.task(function,
+                               base=ExceptionLoggerTask,
+                               queue=queue.value)
             celery.add_periodic_task(interval, task.s(), args, kwargs)
             return function
         return _wrapper
@@ -232,12 +232,13 @@ class ResponderRegistrar:
             action = '{}.{}'.format(plugin, function.__name__)
             periodic_task_args = (plugin, action)
             function = cls.responder(plugin, action)(function)
-            task = celery.task(run_plugin_for_all_repos, base=ExceptionLoggerTask,
+            task = celery.task(run_plugin_for_all_repos,
+                               base=ExceptionLoggerTask,
                                queue=queue.value)
-            celery.add_periodic_task(interval, task.s(), periodic_task_args, kwargs)
+            celery.add_periodic_task(
+                interval, task.s(), periodic_task_args, kwargs)
             return function
         return _wrapper
-
 
     @classmethod
     def responder(cls, plugin_name: str, *actions: [Enum],
@@ -248,7 +249,9 @@ class ResponderRegistrar:
         is mandatory.
         """
         def _wrapper(function):
-            task = celery.task(function, base=ExceptionLoggerTask, queue=queue.value)
+            task = celery.task(function,
+                               base=ExceptionLoggerTask,
+                               queue=queue.value)
             for action in actions:
                 cls._responders[action].append(task)
             cls._plugins[task] = plugin_name
@@ -282,8 +285,10 @@ class ResponderRegistrar:
         for responders active on a repository, if ``repo`` is specified.
         """
         responders = cls._responders.get(event, [])
-        plugin_filter = lambda r: plugin_name == cls._plugins[r]
-        repo_filter = lambda r: repo.plugins.filter(
+
+        def plugin_filter(r): return plugin_name == cls._plugins[r]
+
+        def repo_filter(r): return repo.plugins.filter(
             name=cls._plugins[r]).exists()
 
         if repo is not None and isinstance(repo, Repository):
