@@ -123,12 +123,17 @@ class Installation(models.Model):
     """
     A model to store repository integration information.
     """
+    # The users who have adminstrative access over the installation
+    admins = models.ManyToManyField(User, related_name='installations')
 
     # the provider for the installation
     provider = models.CharField(default=None, max_length=32)
 
     # unique identifier for the installation
     identifier = models.IntegerField(default=-1)
+
+    def __str__(self):  # pragma: no cover
+        return f'{self.provider}-installation#{self.identifier}'
 
     @classmethod
     def from_igitt_installation(cls, instance: IGittInstallation):
