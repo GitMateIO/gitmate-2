@@ -4,19 +4,22 @@ from django.contrib import admin
 from gitmate_config.models import SettingsBase
 
 
+class DisplayAllAdmin(admin.ModelAdmin):
+    def __init__(self, model, site):
+        self.list_display = [field.name
+                             for field in model._meta.fields
+                             if field.name != 'id']
+        super(DisplayAllAdmin, self).__init__(model, site)
+
+
 class _SettingsBaseModelFormTemplate(forms.ModelForm):
     # template methods / search fields go in here
     pass
 
 
-class _SettingsBaseModelAdminTemplate(admin.ModelAdmin):
+class _SettingsBaseModelAdminTemplate(DisplayAllAdmin):
     # any relevant behavioural specifics
     search_fields = ('repo__full_name', )
-
-    def __init__(self, model, site):
-        self.list_display = [field.name for field in model._meta.fields
-                             if field.name != 'id']
-        super(_SettingsBaseModelAdminTemplate, self).__init__(model, site)
 
 
 class _SettingsBaseGenericModelFormMeta(type):
