@@ -8,6 +8,7 @@ from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from rest_framework import status
 from rest_framework.response import Response
 
+from gitmate_config.models import Installation
 from gitmate_config.tests.test_base import GitmateTestCase
 from gitmate_hooks.views import github_webhook_receiver
 from gitmate_hooks.decorators import signature_check
@@ -89,3 +90,54 @@ class TestWebhookReceivers(GitmateTestCase):
         }
         response = self.simulate_github_webhook_call('pull_request', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_github_installation_webhook_created_or_updated(self):
+        # installation created webhook
+        data = {
+            'action': 'created',
+            'installation': {'id': 11},
+            'sender': {'login': self.user.username, 'id': 1},
+            'repositories': [
+                {'id': 1, 'full_name': self.repo.full_name}
+            ]
+        }
+        response = self.simulate_github_webhook_call('installation', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # verification
+        self.repo.refresh_from_db()
+        db_inst = Installation.objects.get(identifier=11, provider='github')
+        self.assertIn(self.user, db_inst.admins.all())
+        self.assertIn(self.repo, db_inst.repos.all())
+
+        # repositories removed webhook
+        data = {
+            'action': 'removed',
+            'installation': {'id': 11},
+            'sender': {'login': self.user.username, 'id': 1},
+            'repositories_removed': [
+                {'id': 1, 'full_name': self.repo.full_name}
+            ]
+        }
+        response = self.simulate_github_webhook_call(
+            'installation_repositories', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # verification
+        self.repo.refresh_from_db()
+        db_inst.refresh_from_db()
+        self.assertNotIn(self.repo, db_inst.repos.all())
+
+    def test_github_installation_webhook_deleted(self):
+        # creating a sample object and testing for deletion
+        db_inst = Installation.objects.create(identifier=12, provider='github')
+
+        data = {
+            'action': 'deleted',
+            'installation': {'id': 12},
+            'sender': {'login': self.repo.user.username, 'id': 1}
+        }
+        response = self.simulate_github_webhook_call('installation', data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        with self.assertRaises(Installation.DoesNotExist):
+            db_inst.refresh_from_db()
