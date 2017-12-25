@@ -1,8 +1,23 @@
+from typing import Optional
+
+from IGitt.Interfaces.User import User as IGittUser
 from django.contrib.auth.models import User
 from django.db.models import QuerySet
+from social_django.models import UserSocialAuth
 
 from .models import Organization
 from .models import Repository
+
+
+def get_user_if_exists(igitt_user: IGittUser) -> Optional[User]:
+    """
+    Retrieves matching User from the database, if it exists.
+    """
+    try:
+        return UserSocialAuth.objects.get(provider=igitt_user.hoster,
+                                          uid=igitt_user.identifier).user
+    except UserSocialAuth.DoesNotExist:
+        return None
 
 
 def divert_access_to_repos(repos: QuerySet(Repository), user: User):
