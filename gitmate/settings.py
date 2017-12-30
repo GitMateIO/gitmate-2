@@ -145,6 +145,9 @@ SOCIAL_AUTH_PIPELINE = (
 
     # Update the user record with any changed info from the auth service.
     'social.pipeline.user.user_details',
+
+    # Connect the user with his/her Installation objects.
+    'gitmate.pipelines.populate_repositories',
 )
 
 # Put gitmate's corresponding OAuth details here.
