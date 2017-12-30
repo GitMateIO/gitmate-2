@@ -64,6 +64,18 @@ class TestGitmatePRStaleReminder(GitmateTestCase):
             'pr_stale_reminder.add_stale_label_to_merge_requests', self.repo)
         m_mr_labels.assert_called_with({'status/STALE'})
 
+        # test nothing happens on stale label added
+        m_mr_labels.reset_mock()
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
+            'pull_request': {'number': 0},
+            'action': 'labeled',
+            'label': {'name': 'status/STALE'}
+        }
+        response = self.simulate_github_webhook_call('pull_request', data)
+        m_mr_labels.assert_not_called()
+
         # testing updated pull requests
         data = {
             'repository': {'full_name': self.repo.full_name,

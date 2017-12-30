@@ -40,6 +40,18 @@ class TestGitmateIssueStaleReminder(GitmateTestCase):
             'issue_stale_reminder.add_stale_label_to_issues', self.repo)
         m_issue_labels.assert_called_with({'status/STALE'})
 
+        # test nothing happens on stale label added
+        m_issue_labels.reset_mock()
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
+            'issue': {'number': 0},
+            'action': 'labeled',
+            'label': {'name': 'status/STALE'}
+        }
+        response = self.simulate_github_webhook_call('issues', data)
+        m_issue_labels.assert_not_called()
+
         # testing updated issue
         data = {
             'repository': {'full_name': self.repo.full_name, 'id': 49558751},

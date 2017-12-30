@@ -46,6 +46,8 @@ def add_stale_label_to_issues(
     'issue_stale_reminder',
     IssueActions.REOPENED,
     IssueActions.COMMENTED,
+    IssueActions.LABELED,
+    IssueActions.UNLABELED,
     MergeRequestActions.OPENED,
     MergeRequestActions.SYNCHRONIZED
 )
@@ -58,6 +60,11 @@ def remove_stale_label_from_issues(
     Unassigns the chosen label from issues when they are updated again or if
     they are mentioned from other pull requests.
     """
+    if len(args) > 0 and args[0] == stale_label:
+        # LABELED and UNLABELED events return the label used, skip action if
+        # the label was ``stale_label``
+        return
+
     if isinstance(entity, MergeRequest):
         issues = entity.mentioned_issues
         for issue in issues:

@@ -33,6 +33,8 @@ def add_stale_label_to_merge_requests(
 
 @ResponderRegistrar.responder(
     'pr_stale_reminder',
+    MergeRequestActions.LABELED,
+    MergeRequestActions.UNLABELED,
     MergeRequestActions.REOPENED,
     MergeRequestActions.SYNCHRONIZED,
     MergeRequestActions.COMMENTED,
@@ -46,5 +48,10 @@ def remove_stale_label_from_merge_requests(
     """
     Unassigns the chosen label from pull requests when they are updated again.
     """
+    if len(args) > 0 and args[0] == stale_label:
+        # LABELED and UNLABELED events return the label used, skip action if
+        # the label was ``stale_label``
+        return
+
     with lock_igitt_object('label mr', pr):
         pr.labels = pr.labels - {stale_label}
