@@ -7,8 +7,8 @@ class GitmateRebaserConfig(GitmatePluginConfig):
     verbose_name = 'Perform a merge, fastforward or rebase when asked for'
     plugin_category = PluginCategory.PULLS
     description = ('Automatically performs a merge, fastforward or rebase on a'
-                   'pull request when someone adds a comment with the keywords'
-                   '<tt>rebase</tt>, <tt>merge</tt> or <tt>fastforward</tt> '
-                   'mentioning the authorized username.'
-                   '<br>Example comment:<br><br><tt>"@gitmate-bot rebase"'
-                   '</tt>')
+                   'pull request when someone with write access adds a comment'
+                   ' with the keywords <tt>rebase</tt>, <tt>merge</tt> or <tt>'
+                   'fastforward</tt> (short: ff) mentioning the user that '
+                   'GitMate uses.<br>Example comment:<br><br><tt>'
+                   '"@gitmate-bot rebase"</tt>')
