@@ -46,7 +46,7 @@ class Plugin(models.Model):
                      if r.name == f'{self.full_name}_settings' and
                      isinstance(r, models.fields.related.OneToOneRel)]
         try:
-            return relations[0].model
+            return relations[0].related_model
         except IndexError:
             raise MissingSettingsError
 
@@ -82,8 +82,7 @@ class Plugin(models.Model):
         Returns a detailed dictionary of specified plugin's settings with their
         values, types and descriptions.
         """
-        plugin = self.import_module()
-        settings, _ = plugin.models.Settings.objects.get_or_create(repo=repo)
+        settings, _ = self.settings_model.objects.get_or_create(repo=repo)
         return {
             'name': self.name,
             'title': self.config_value('verbose_name', None),
@@ -107,16 +106,14 @@ class Plugin(models.Model):
         """
         Returns the dictionary of settings for the specified plugin.
         """
-        plugin = self.import_module()
-        settings, _ = plugin.models.Settings.objects.get_or_create(repo=repo)
+        settings, _ = self.settings_model.objects.get_or_create(repo=repo)
         return model_to_dict(settings, exclude=['repo', 'id'])
 
     def set_settings(self, repo, settings):
         """
         Sets the plugin settings for this plugin for the specified repo.
         """
-        plugin = self.import_module()
-        instance, _ = plugin.models.Settings.objects.get_or_create(repo=repo)
+        instance, _ = self.settings_model.objects.get_or_create(repo=repo)
         for name, value in settings.items():
             setattr(instance, name, value)
         instance.save()
