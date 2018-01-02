@@ -84,9 +84,8 @@ push_rc_image:
     - docker login -e gitlab-ci@gitlab.com -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - ./.ci/push_image.sh $TEST_IMAGE_NAME $RC_NAME
     - ./.ci/push_image.sh "$TEST_IMAGE_NAME-ee" "$RC_NAME-ee"
-  when: manual
   only:
-    - master@gitmate/open-source/gitmate-2
+    - /^rc\/.*$/@gitmate/open-source/gitmate-2
 
 push_release_image: &push_release_image
   stage: release
@@ -96,7 +95,7 @@ push_release_image: &push_release_image
     - ./.ci/push_image.sh "$TEST_IMAGE_NAME-ee" "$RELEASE_NAME-ee"
   when: manual
   only:
-    - master@gitmate/open-source/gitmate-2
+    - /^rc\/.*$/@gitmate/open-source/gitmate-2
 
 push_hotfix_image:
   <<: *push_release_image
@@ -137,9 +136,8 @@ deploy_rc:
     url: https://api.rc.gitmate.io
   dependencies:
     - push_rc_image
-  when: manual
   only:
-    - master@gitmate/open-source/gitmate-2
+    - /^rc\/.*$/@gitmate/open-source/gitmate-2
 
 deploy_release: &deploy_release
   stage: deploy
@@ -158,7 +156,7 @@ deploy_release: &deploy_release
     - push_release_image
   when: manual
   only:
-    - master@gitmate/open-source/gitmate-2
+    - /^rc\/.*$/@gitmate/open-source/gitmate-2
 
 deploy_hotfix:
   <<: *deploy_release
