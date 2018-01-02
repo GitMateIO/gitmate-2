@@ -30,7 +30,7 @@ def store_head_commit_sha(pr: MergeRequest):
     'approver', PipelineActions.UPDATED)
 def add_approved_label(
         commit: Commit,
-        approved_label: str='status/approved',
+        approved_label: str='status/ci-approved',
         status_labels: str='status/pending_review, status/WIP'
 ):
     """

@@ -11,7 +11,8 @@ class Settings(SettingsBase):
         help_text='Comma seperated labels to be removed from the merge '
                   'request once it has been approved. e.g. process/WIP, '
                   'status/stale, process/pending_review')
-    approved_label = models.CharField(max_length=40, default='status/approved')
+    approved_label = models.CharField(max_length=40,
+                                      default='status/ci-approved')
 
 
 class MergeRequestModel(models.Model):
