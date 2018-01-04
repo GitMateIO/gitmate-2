@@ -375,3 +375,4 @@ GITHUB_JWT = GitHubJsonWebToken(
 
 # store SVM models for labels here
 GITMATE_MODELS_DIR = os.environ.get('GITMATE_MODELS_DIR', None)
+GITMATE_DUPLICATES_DIR = os.environ.get('GITMATE_DUPLICATES_DIR', None)
