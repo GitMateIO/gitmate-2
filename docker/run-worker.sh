@@ -19,7 +19,7 @@ do_docker_socket() {
 
     # Create the docker group in this container
     echo "Creating host_docker group with gid $docker_group_id ..."
-    addgroup -S -g $docker_group_id host_docker
+    groupadd -fr -g $docker_group_id host_docker
 
     # Add the daemon user to the docker group
     # The host_docker group might not be created if there's already a group with
@@ -27,7 +27,7 @@ do_docker_socket() {
     # work.
     group=$(cat /etc/group | grep $docker_group_id | sed 's/:.*//')
     echo "Adding $USER to the $group group ..."
-    addgroup $USER $group
+    usermod -aG $group $USER
 }
 
 echo "Checking if DOCKER_HOST is defined ..."

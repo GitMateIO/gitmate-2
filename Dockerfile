@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-python-machinelearning:latest
+FROM python:3-stretch
 LABEL maintainer "Muhammad Kaisar Arkhan <yukinagato@protonmail.com>"
 
 ENV USER=gitmate ROOT=/usr/src/app NUM_WORKERS=3 LOG_LEVEL=DEBUG TIMEOUT=30 MIN=3 MAX=10
@@ -7,22 +7,35 @@ EXPOSE 8000
 
 WORKDIR $ROOT
 
-RUN addgroup -S $USER && \
-    adduser -h $ROOT -G $USER -S $USER
+RUN useradd -d $ROOT -r $USER
 
 ADD requirements.txt $ROOT
 
-RUN apk add --no-cache docker postgresql-libs git && \
-    apk add --no-cache --virtual .build-deps \
+RUN set -ex && \
+    \
+    buildDeps=' \
         gcc \
-        musl-dev \
-        postgresql-dev \
-        python3-dev \
-        libffi-dev && \
+        libpq-dev \
+        libffi-dev \
+    ' && \
+    \
+    apt-get update && \
+    apt-get install -y --no-install-recommends apt-transport-https && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
+    echo \
+    "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable" \
+    >> /etc/apt/sources.list && \
+    \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+            libpq5 git docker-ce $buildDeps && \
+    \
     pip install --no-cache-dir -r $ROOT/requirements.txt && \
-    apk del .build-deps
+    \
+    apt-get purge -y --auto-remove $buildDeps && \
+    rm -rf /var/lib/apt/lists/*
 
 ADD . $ROOT
-RUN ./install_deps.sh && apk del .build-deps || true
+RUN ./install_deps.sh
 
 CMD ["./docker/run.sh"]
