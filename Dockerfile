@@ -9,7 +9,7 @@ WORKDIR $ROOT
 
 RUN useradd -d $ROOT -r $USER
 
-ADD requirements.txt $ROOT
+ADD . $ROOT
 
 RUN set -ex && \
     \
@@ -31,11 +31,9 @@ RUN set -ex && \
             libpq5 git docker-ce $buildDeps && \
     \
     pip install --no-cache-dir -r $ROOT/requirements.txt && \
+    ./install_deps.sh && \
     \
     apt-get purge -y --auto-remove $buildDeps && \
     rm -rf /var/lib/apt/lists/*
-
-ADD . $ROOT
-RUN ./install_deps.sh
 
 CMD ["./docker/run.sh"]
