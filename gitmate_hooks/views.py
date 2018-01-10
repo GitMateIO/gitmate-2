@@ -28,6 +28,7 @@ def github_webhook_receiver(request):
     """
     webhook = json.loads(request.body.decode('utf-8'))
     event = request.META['HTTP_X_GITHUB_EVENT']
+    repo_obj = None
 
     # responding to regular webhook calls for registered events
     if 'repository' in webhook:

@@ -3,6 +3,7 @@ from enum import Enum
 from inspect import Parameter
 from inspect import signature
 from typing import Callable
+from typing import Optional
 import logging
 
 from billiard.einfo import ExceptionInfo
@@ -163,7 +164,9 @@ class ResponderRegistrar:
         return _wrapper
 
     @classmethod
-    def responder(cls, plugin_name: str, *actions: [Enum],
+    def responder(cls,
+                  plugin_name: Optional[str]=None,
+                  *actions: [Enum],
                   queue: Enum=TaskQueue.SHORT):
         """
         Registers the decorated function as a responder to the actions
@@ -233,6 +236,7 @@ class ResponderRegistrar:
         specified, invokes responders only within that plugin.
         """
         retvals = []
+        options_specified = {}
         if isinstance(event, GitmateActions):
             responders = cls._get_responders(event, plugin_name=plugin_name)
         else:
@@ -242,9 +246,11 @@ class ResponderRegistrar:
             # filter options for responder from options of plugin it is
             # registered in, to avoid naming conflicts when two plugins have
             # the same model field. e.g. `stale_label`
-            plugin = Plugin.objects.get(name=cls._plugins[responder])
-            options_specified = cls._filter_matching_options(
-                responder, plugin, repo)
+            plugin_name = cls._plugins[responder]
+            if plugin_name is not None:
+                plugin = Plugin.objects.get(name=plugin_name)
+                options_specified = cls._filter_matching_options(
+                    responder, plugin, repo)
             try:
                 retvals.append(responder.delay(*args, **options_specified))
             except BaseException:  # pragma: no cover

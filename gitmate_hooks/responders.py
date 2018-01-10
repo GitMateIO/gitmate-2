@@ -5,6 +5,7 @@ only basic operations on Django models.
 """
 from typing import List
 
+from django.db.models import Q
 from IGitt.Interfaces.Actions import InstallationActions
 from IGitt.Interfaces.Installation import Installation as IGittInstallation
 from IGitt.Interfaces.Repository import Repository as IGittRepository
@@ -17,7 +18,7 @@ from gitmate_hooks.utils import ResponderRegistrar
 
 
 @ResponderRegistrar.responder(
-    'hooks',
+    None,
     InstallationActions.CREATED,
     InstallationActions.REPOSITORIES_ADDED
 )
@@ -39,13 +40,19 @@ def update_installed_repositories(
         db_installation.save()
 
     for repo in repos:
-        Repository.objects.get_or_create(
-            provider=repo.hoster, identifier=repo.identifier,
-            full_name=repo.full_name, installation=db_installation,
-            active=True)
+        Repository.objects.update_or_create(
+            Q(identifier=repo.identifier) | Q(full_name=repo.full_name),
+            provider=repo.hoster,
+            defaults={
+                'installation': db_installation,
+                'full_name': repo.full_name,
+                'provider': repo.hoster,
+                'identifier': repo.identifier,
+                'active': True
+            })
 
 
-@ResponderRegistrar.responder('hooks', InstallationActions.DELETED)
+@ResponderRegistrar.responder(None, InstallationActions.DELETED)
 def delete_installation(installation: IGittInstallation, _: IGittUser):
     """
     Deletes an installation object from the database.
@@ -53,8 +60,7 @@ def delete_installation(installation: IGittInstallation, _: IGittUser):
     Installation.from_igitt_installation(installation).delete()
 
 
-@ResponderRegistrar.responder(
-    'hooks', InstallationActions.REPOSITORIES_REMOVED)
+@ResponderRegistrar.responder(None, InstallationActions.REPOSITORIES_REMOVED)
 def remove_installed_repositories(
         installation: IGittInstallation,
         sender: IGittUser,
