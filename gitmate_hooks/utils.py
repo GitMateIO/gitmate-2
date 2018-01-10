@@ -9,6 +9,7 @@ from billiard.einfo import ExceptionInfo
 from celery import Task
 from celery.schedules import crontab
 from celery.utils.log import get_logger
+from django.conf import settings
 
 from gitmate.celery import app as celery
 from gitmate_config.enums import GitmateActions
@@ -233,6 +234,7 @@ class ResponderRegistrar:
         specified, invokes responders only within that plugin.
         """
         retvals = []
+        options_specified = {}
         if isinstance(event, GitmateActions):
             responders = cls._get_responders(event, plugin_name=plugin_name)
         else:
@@ -242,9 +244,13 @@ class ResponderRegistrar:
             # filter options for responder from options of plugin it is
             # registered in, to avoid naming conflicts when two plugins have
             # the same model field. e.g. `stale_label`
-            plugin = Plugin.objects.get(name=cls._plugins[responder])
-            options_specified = cls._filter_matching_options(
-                responder, plugin, repo)
+            p_name = cls._plugins[responder]
+            if p_name in settings.GITMATE_PLUGINS:
+                # settings exist only in plugins, so retrieve them only if it
+                # is a plugin.
+                plugin = Plugin.objects.get(name=p_name)
+                options_specified = cls._filter_matching_options(
+                    responder, plugin, repo)
             try:
                 retvals.append(responder.delay(*args, **options_specified))
             except BaseException:  # pragma: no cover
