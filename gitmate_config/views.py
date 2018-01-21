@@ -17,6 +17,7 @@ from rest_framework.viewsets import GenericViewSet
 from social_django.models import UserSocialAuth
 
 from gitmate_config.enums import Providers
+from gitmate_config.models import Installation
 from gitmate_config.models import Plugin
 from gitmate_config.models import Organization
 from gitmate_config.models import Repository
@@ -42,9 +43,10 @@ class RepositoryViewSet(
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return Repository.objects.filter(
-            admins__in=[self.request.user]
-        ).order_by('-active', 'full_name')
+        repos = Repository.objects.filter(admins__in=[self.request.user])
+        for i in Installation.objects.filter(admins__in=[self.request.user]):
+            repos |= i.repos.all()
+        return repos.order_by('-active', 'full_name')
 
     def list(self, request):
         if int(request.GET.get('cached', '1')) > 0:
@@ -130,8 +132,10 @@ class RepositoryViewSet(
 
                 # TODO: validate if a cached repo was removed. Handling if it
                 # was active?
-            except UserSocialAuth.DoesNotExist:  # pragma: no cover
-                pass  # User never gave us his key for that provider
+            except (UserSocialAuth.DoesNotExist, KeyError):  # pragma: no cover
+                # User never gave us his key for that provider, or the provider
+                # isn't relevant to natural fetch process. e.g. `github-app`
+                pass
 
         return super().list(request)
 

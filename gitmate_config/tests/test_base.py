@@ -18,7 +18,9 @@ import vcr
 
 from gitmate.utils import snake_case_to_camel_case
 from gitmate_config.enums import Providers
-from gitmate_config.models import Plugin, Organization
+from gitmate_config.models import Installation
+from gitmate_config.models import Organization
+from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
 from gitmate_hooks.views import github_webhook_receiver
@@ -145,6 +147,13 @@ class GitmateTestCase(TransactionTestCase):
             'id': 1369631,
         })
         self.gl_auth.save()
+        self.gh_app_auth = UserSocialAuth(
+            user=self.user, provider=Providers.GITHUB_APP.value, uid=1)
+        self.gh_app_auth.set_extra_data({
+            'access_token': os.environ['GITHUB_TEST_TOKEN'],
+            'id': 16681030
+        })
+        self.gh_app_auth.save()
 
         self.repo = Repository(
             user=self.user,
@@ -159,6 +168,19 @@ class GitmateTestCase(TransactionTestCase):
             provider='github',
         )
         self.org.save()  # Needs an ID before adding relationship
+
+        self.gh_inst = Installation(provider='github-app', identifier=1)
+        self.gh_inst.save()  # Needs an ID before adding relationship
+        self.gh_inst.admins.add(self.user)
+        self.gh_inst.save()
+
+        self.gh_app_repo = Repository(
+            full_name=os.environ['GITHUB_TEST_REPO'],
+            provider=Providers.GITHUB_APP.value,
+            active=self.active,
+            installation=self.gh_inst
+        )
+        self.gh_app_repo.save()  # Needs an ID before adding relationship
 
         self.repo.admins.add(self.user)
         self.org.admins.add(self.user)

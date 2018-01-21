@@ -39,7 +39,8 @@ class TestRepositories(GitmateTestCase):
         cached_get_repos_request.user = self.user
 
         response = self.repo_list(cached_get_repos_request)
-        self.assertEqual(response.data, [])
+        # contains github installation repository only
+        self.assertEqual(len(response.data), 1)
 
         uncached_get_repos_request.user = self.user
         response = self.repo_list(uncached_get_repos_request)
