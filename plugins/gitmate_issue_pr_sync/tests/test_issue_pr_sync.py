@@ -12,6 +12,8 @@ from IGitt.GitLab.GitLabIssue import GitLabIssue
 from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.GitLab.GitLabUser import GitLabUser
 
+from plugins.gitmate_issue_pr_sync.models import MergeRequestModel
+
 
 class TestIssuePRSync(GitmateTestCase):
     def setUp(self):
@@ -92,6 +94,36 @@ class TestIssuePRSync(GitmateTestCase):
         response = self.simulate_github_webhook_call('issues', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         m_labels.assert_called_with({'good first issue'})
+
+        self.assertEqual(len(MergeRequestModel.objects.all()), 1)
+
+        # closing merge request
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
+            'pull_request': {'number': 110, 'merged': False},
+            'action': 'closed',
+        }
+        self.simulate_github_webhook_call('pull_request', data)
+
+        # assert merge request got deleted
+        self.assertEqual(len(MergeRequestModel.objects.all()), 0)
+
+        # LABELED event, closed merge request
+        data = {
+            'repository': {'full_name': environ['GITHUB_TEST_REPO'],
+                           'id': 49558751},
+            'issue': {'number': 0},
+            'action': 'labeled',
+            'label': {'name': 'type/bug'}
+        }
+        m_labels.return_value = set()
+        before_count = m_labels.call_count
+        response = self.simulate_github_webhook_call('issues', data)
+        after_count = m_labels.call_count
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(before_count, after_count)
+
 
     @patch.object(GitLabMergeRequest, 'assignees', new_callable=PropertyMock)
     @patch.object(GitLabMergeRequest, 'labels', new_callable=PropertyMock)
@@ -180,3 +212,39 @@ class TestIssuePRSync(GitmateTestCase):
         response = self.simulate_gitlab_webhook_call('Issue Hook', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         m_labels.assert_called_with({'first'})
+
+        self.assertEqual(len(MergeRequestModel.objects.all()), 1)
+
+        # closing merge request
+        data = {
+            'object_attributes': {
+                'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
+                'iid': 25,
+                'action': 'close',
+            },
+        }
+        self.simulate_gitlab_webhook_call('Merge Request Hook', data)
+
+        # assert merge request got deleted
+        self.assertEqual(len(MergeRequestModel.objects.all()), 0)
+
+        # LABELED event, closed merge request
+        data = {
+            'object_attributes': {
+                'target': {'path_with_namespace': environ['GITLAB_TEST_REPO']},
+                'action': 'update',
+                'iid': 0
+            },
+            'changes': {
+                'labels': {
+                    'previous': [],
+                    'current': [{'title': 'type/bug'}]
+                }
+            }
+        }
+        m_labels.return_value = set()
+        before_count = m_labels.call_count
+        response = self.simulate_gitlab_webhook_call('Issue Hook', data)
+        after_count = m_labels.call_count
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(before_count, after_count)

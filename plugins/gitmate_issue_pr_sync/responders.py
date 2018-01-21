@@ -75,3 +75,9 @@ def sync_pr_with_updated_issue(issue: Issue,
             pr.assignees |= issue.assignees
         pr_object.closes_issues.update({str(issue.number): True})
         pr_object.save()
+
+@ResponderRegistrar.responder('issue_pr_sync',
+                              MergeRequestActions.CLOSED)
+def remove_merge_requests(pr: MergeRequest):
+    """Remove closed and merged MRs from database."""
+    MergeRequestModel.objects.get(number=pr.number).delete()
