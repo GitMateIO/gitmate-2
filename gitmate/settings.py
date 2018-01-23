@@ -182,6 +182,7 @@ SOCIAL_AUTH_BITBUCKET_SECRET = os.environ.get('SOCIAL_AUTH_BITBUCKET_SECRET')
 
 AUTHENTICATION_BACKENDS = (
     'gitmate.backends.GitHubAppOAuth2',
+    'social_core.backends.github.GithubOAuth2',
     'social_core.backends.gitlab.GitLabOAuth2',
     'social_core.backends.bitbucket.BitbucketOAuth',
     'django.contrib.auth.backends.ModelBackend'
