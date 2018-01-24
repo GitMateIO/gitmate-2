@@ -375,9 +375,17 @@ REBASER_IMAGE = os.environ.get('REBASER_IMAGE',
 CONTAINER_TIMEOUT = 60 * 10
 
 # github application json web token
-GITHUB_JWT = GitHubJsonWebToken(
-    os.environ.get('GITHUB_APP_PRIVATE_KEY', RANDOM_PRIVATE_KEY),
-    int(os.environ.get('GITHUB_APP_ID', -1)))
+GITHUB_PRIVATE_KEY_PATH = os.environ.get(
+    'GITHUB_PRIVATE_KEY_PATH', '/dev/null')
+
+if os.path.getsize(GITHUB_PRIVATE_KEY_PATH) > 0:  # pragma: no cover
+    with open(GITHUB_PRIVATE_KEY_PATH, 'r') as f:
+        GITHUB_APP_PRIVATE_KEY = f.readline()
+else:
+    GITHUB_APP_PRIVATE_KEY = RANDOM_PRIVATE_KEY
+
+GITHUB_JWT = GitHubJsonWebToken(GITHUB_APP_PRIVATE_KEY,
+                                int(os.environ.get('GITHUB_APP_ID', -1)))
 
 # store SVM models for labels here
 GITMATE_MODELS_DIR = os.environ.get('GITMATE_MODELS_DIR', None)
