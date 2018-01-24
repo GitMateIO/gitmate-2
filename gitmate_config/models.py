@@ -329,8 +329,12 @@ class Repository(models.Model):
     @property
     def token(self) -> IGittToken:
         """
-        Returns the IGitt access token for the repository.
+        Returns the IGitt access token for the repository or the installation
+        token, if the repository is related to an installation.
         """
+        if self.installation is not None:
+            return self.installation.token
+
         raw_token = self.user.social_auth.get(
             provider=self.provider).access_token
 

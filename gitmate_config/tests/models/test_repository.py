@@ -4,6 +4,10 @@ from django.http import Http404
 import pytest
 from rest_framework.reverse import reverse
 
+from IGitt.GitHub import GitHubToken
+from IGitt.GitHub import GitHubInstallationToken
+from IGitt.GitLab import GitLabOAuthToken
+
 from gitmate.exceptions import MissingSettingsError
 from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
@@ -45,6 +49,11 @@ class TestRepository(GitmateTestCase):
         # Don't allow saving if not linked to a user
         with pytest.raises(ValidationError):
             repo.full_clean()
+
+    def test_token(self):
+        self.assertIsInstance(self.repo.token, GitHubToken)
+        self.assertIsInstance(self.gh_app_repo.token, GitHubInstallationToken)
+        self.assertIsInstance(self.gl_repo.token, GitLabOAuthToken)
 
     def test_set_plugin_settings(self):
         # add a plugin into it

@@ -169,7 +169,7 @@ class GitmateTestCase(TransactionTestCase):
         )
         self.org.save()  # Needs an ID before adding relationship
 
-        self.gh_inst = Installation(provider='github-app', identifier=1)
+        self.gh_inst = Installation(provider='github', identifier=1)
         self.gh_inst.save()  # Needs an ID before adding relationship
         self.gh_inst.admins.add(self.user)
         self.gh_inst.save()
