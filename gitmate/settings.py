@@ -375,13 +375,14 @@ REBASER_IMAGE = os.environ.get('REBASER_IMAGE',
 CONTAINER_TIMEOUT = 60 * 10
 
 # github application json web token
-GITHUB_PRIVATE_KEY_PATH = os.environ.get(
-    'GITHUB_PRIVATE_KEY_PATH', '/dev/null')
+GITHUB_PRIVATE_KEY_PATH = os.environ.get('GITHUB_PRIVATE_KEY_PATH', '')
 
-if os.path.getsize(GITHUB_PRIVATE_KEY_PATH) > 0:  # pragma: no cover
-    with open(GITHUB_PRIVATE_KEY_PATH, 'r') as f:
+try:
+    with open(GITHUB_PRIVATE_KEY_PATH, 'r') as f:  # pragma: no cover
         GITHUB_APP_PRIVATE_KEY = f.readline()
-else:
+except FileNotFoundError:
+    logging.warning('No GitHub private key found. You will not be able to '
+                    'use GitHub Apps.')
     GITHUB_APP_PRIVATE_KEY = RANDOM_PRIVATE_KEY
 
 GITHUB_JWT = GitHubJsonWebToken(GITHUB_APP_PRIVATE_KEY,
