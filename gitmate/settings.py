@@ -379,7 +379,7 @@ GITHUB_PRIVATE_KEY_PATH = os.environ.get('GITHUB_PRIVATE_KEY_PATH', '')
 
 try:
     with open(GITHUB_PRIVATE_KEY_PATH, 'r') as f:  # pragma: no cover
-        GITHUB_APP_PRIVATE_KEY = f.readline()
+        GITHUB_APP_PRIVATE_KEY = f.read()
 except FileNotFoundError:
     logging.warning('No GitHub private key found. You will not be able to '
                     'use GitHub Apps.')
