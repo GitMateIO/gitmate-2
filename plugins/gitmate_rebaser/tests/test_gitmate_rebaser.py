@@ -18,9 +18,11 @@ from IGitt.GitLab.GitLabMergeRequest import GitLabMergeRequest
 from IGitt.GitLab.GitLabRepository import GitLabRepository
 from IGitt.GitLab.GitLabUser import GitLabUser
 from IGitt.Interfaces import AccessLevel
+from IGitt.Interfaces.Comment import CommentType
 
 from gitmate_config.tests.test_base import GitmateTestCase
 from gitmate_config.tests.test_base import StreamMock
+from plugins.gitmate_rebaser.responders import verify_command_access
 
 
 PopenResult = namedtuple('ret', 'stdout wait')
@@ -47,7 +49,8 @@ class TestGitmateRebaser(GitmateTestCase):
         self.repo.set_plugin_settings([{
             'name': 'rebaser',
             'settings': {
-                'enable_rebase': True
+                'enable_rebase': True,
+                'fastforward_admin_only': True,
             }
         }])
         self.gl_repo.set_plugin_settings([{
@@ -194,3 +197,36 @@ class TestGitmateRebaser(GitmateTestCase):
                                                      self.github_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         m_comment.assert_not_called()
+
+    @patch.object(GitHubComment, 'author', new_callable=PropertyMock)
+    @patch.object(GitHubComment, 'repository', new_callable=PropertyMock)
+    @patch.object(GitHubRepository, 'get_permission_level')
+    def test_verify_command_access(self, m_get_perm, m_repo, m_author):
+        merge_admin_only = self.plugin.get_settings(
+            self.repo)['merge_admin_only']
+        fastforward_admin_only = self.plugin.get_settings(
+            self.repo)['fastforward_admin_only']
+
+        m_repo.return_value = self.repo.igitt_repo
+        m_author.return_value = GitHubUser(
+            self.repo.token, self.repo.user.username)
+
+        m_comment = GitHubComment(self.repo.token,
+                                  self.repo.igitt_repo,
+                                  CommentType.ISSUE,
+                                  123)
+
+        m_get_perm.return_value = AccessLevel.CAN_WRITE
+        self.assertTrue(verify_command_access(m_comment, merge_admin_only,
+                                              fastforward_admin_only,
+                                              'merge'))
+
+        m_get_perm.return_value = AccessLevel.CAN_WRITE
+        self.assertFalse(verify_command_access(m_comment, merge_admin_only,
+                                               fastforward_admin_only,
+                                               'fastforward'))
+
+        m_get_perm.return_value = AccessLevel.ADMIN
+        self.assertTrue(verify_command_access(m_comment, merge_admin_only,
+                                              fastforward_admin_only,
+                                              'fastforward'))

@@ -15,14 +15,17 @@ from gitmate_hooks.utils import ResponderRegistrar
 COMMAND_REGEX = r'@(?:{}|gitmate-bot)\s+((?:rebase|merge|fastforward|ff))'
 
 
-def verify_command_access(comment: Comment, cmd: str):
+def verify_command_access(comment: Comment, merge_admin_only: bool,
+                          fastforward_admin_only: bool, cmd: str):
     """
     Verifies if the author of comment has access to perform the operation.
     """
     perm_levels = {
         'rebase': AccessLevel.CAN_READ,
-        'merge': AccessLevel.ADMIN,
-        'fastforward': AccessLevel.ADMIN
+        'merge': (AccessLevel.ADMIN if merge_admin_only else
+                  AccessLevel.CAN_WRITE),
+        'fastforward': (AccessLevel.ADMIN if fastforward_admin_only else
+                        AccessLevel.CAN_WRITE)
     }
     author_perm = comment.repository.get_permission_level(comment.author)
     if author_perm.value >= perm_levels[cmd].value:
@@ -51,7 +54,9 @@ def apply_command_on_merge_request(
         pr: MergeRequest, comment: Comment,
         enable_rebase: bool=False,
         enable_merge: bool=False,
-        enable_fastforward: bool=False
+        enable_fastforward: bool=False,
+        merge_admin_only: bool=True,
+        fastforward_admin_only: bool=True,
 ):
     """
     Performs a merge, fastforward or rebase of a merge request when an
@@ -69,7 +74,8 @@ def apply_command_on_merge_request(
     }.get(cmd)
 
     if enabled_cmd:
-        if not verify_command_access(comment, cmd):
+        if not verify_command_access(comment, merge_admin_only,
+                                     fastforward_admin_only, cmd):
             pr.add_comment(
                 f'Hey @{comment.author.username}, you do not have the access '
                 f'to perform the {cmd} action with [GitMate.io]'
