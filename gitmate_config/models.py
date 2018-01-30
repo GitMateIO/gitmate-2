@@ -240,7 +240,7 @@ class Repository(models.Model):
 
     # the installation this repository is related to
     installation = models.ForeignKey(
-        Installation, null=True, related_name='repos')
+        Installation, models.SET_NULL, null=True, related_name='repos')
 
     def __str__(self):
         return self.full_name
