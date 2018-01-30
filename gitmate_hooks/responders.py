@@ -5,7 +5,6 @@ only basic operations on Django models.
 """
 from typing import List
 
-from django.db.models import Q
 from IGitt.Interfaces.Actions import InstallationActions
 from IGitt.Interfaces.Installation import Installation as IGittInstallation
 from IGitt.Interfaces.Repository import Repository as IGittRepository
@@ -40,9 +39,8 @@ def update_installed_repositories(
         db_installation.save()
 
     for repo in repos:
-        Repository.objects.filter(
-            Q(identifier=repo.identifier) | Q(full_name=repo.full_name)
-        ).update_or_create(
+        Repository.objects.update_or_create(
+            identifier=repo.identifier,
             provider=repo.hoster,
             defaults={
                 'identifier': repo.identifier,

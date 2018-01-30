@@ -1,7 +1,6 @@
 import json
 
 from django.conf import settings
-from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
@@ -34,8 +33,7 @@ def github_webhook_receiver(request):
     if 'repository' in webhook:
         repository = webhook['repository']
         repo_obj = get_object_or_404(Repository,
-                                     (Q(identifier=repository['id']) |
-                                      Q(full_name=repository['full_name'])),
+                                     identifier=repository['id'],
                                      active=True,
                                      provider=Providers.GITHUB.value)
         token = repo_obj.token

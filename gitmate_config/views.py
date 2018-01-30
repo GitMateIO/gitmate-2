@@ -70,13 +70,10 @@ class RepositoryViewSet(
                 master_repos = hoster[provider.value](
                     provider.get_token(raw_token)).master_repositories
                 repo_ids = [repo.identifier for repo in master_repos]
-                repo_names = [repo.full_name for repo in master_repos]
 
                 for igitt_repo in master_repos:
-                    repo, _ = Repository.objects.filter(
-                        Q(identifier=igitt_repo.identifier) |
-                        Q(full_name=igitt_repo.full_name)
-                    ).get_or_create(
+                    repo, _ = Repository.objects.get_or_create(
+                        identifier=igitt_repo.identifier,
                         provider=provider.value,
                         defaults={'active': False,
                                   'user': request.user,
@@ -119,7 +116,6 @@ class RepositoryViewSet(
                 inaccessible_repos = self.get_queryset().filter(
                     provider=provider.value).exclude(
                         Q(identifier__in=repo_ids) |
-                        Q(full_name__in=repo_names) |
                         Q(installation__isnull=False))
 
                 # delete them if he's the only administrator

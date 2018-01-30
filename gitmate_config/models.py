@@ -3,6 +3,7 @@ from importlib import import_module
 from django.apps import apps
 from django.conf import settings as django_settings
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.forms.models import model_to_dict
 from django.http import Http404
@@ -213,7 +214,7 @@ class Organization(models.Model):
 class Repository(models.Model):
 
     # The unique identifier for each repository which never changes
-    identifier = models.IntegerField(default=None, null=True)
+    identifier = models.IntegerField(default=None)
 
     # The user who operates the repository
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
@@ -244,6 +245,12 @@ class Repository(models.Model):
 
     def __str__(self):
         return self.full_name
+
+    def save(self, *args, **kwargs):
+        if not any([self.user, self.installation]):
+            raise ValidationError(
+                'Repository has to be linked to an Installation or a User')
+        super(Repository, self).save(*args, **kwargs)
 
     def get_plugin_settings(self):
         """
@@ -312,19 +319,10 @@ class Repository(models.Model):
         :param instance: The IGitt Repository instance.
         :param active: Filter for active repositories.
         """
-        try:
-            return cls.objects.get(
-                identifier=instance.identifier,
-                provider=instance.hoster,
-                active=active)
-        except cls.DoesNotExist:
-            obj = cls.objects.get(
-                full_name=instance.full_name,
-                provider=instance.hoster,
-                active=active)
-            obj.identifier = instance.identifier
-            obj.save()
-            return obj
+        return cls.objects.get(
+            identifier=instance.identifier,
+            provider=instance.hoster,
+            active=active)
 
     @property
     def token(self) -> IGittToken:
@@ -360,7 +358,7 @@ class Repository(models.Model):
         raise NotImplementedError
 
     class Meta:
-        unique_together = ('provider', 'full_name')
+        unique_together = ('provider', 'identifier')
         verbose_name_plural = 'repositories'
 
 

@@ -157,6 +157,7 @@ class GitmateTestCase(TransactionTestCase):
 
         self.repo = Repository(
             user=self.user,
+            identifier=49558751,
             full_name=os.environ['GITHUB_TEST_REPO'],
             provider=Providers.GITHUB.value,
             active=self.active)
@@ -175,6 +176,7 @@ class GitmateTestCase(TransactionTestCase):
         self.gh_inst.save()
 
         self.gh_app_repo = Repository(
+            identifier=49558751,
             full_name=os.environ['GITHUB_TEST_REPO'],
             provider=Providers.GITHUB_APP.value,
             active=self.active,
@@ -188,6 +190,7 @@ class GitmateTestCase(TransactionTestCase):
         self.org.save()
         self.gl_repo = Repository(
             user=self.user,
+            identifier=3439658,
             full_name=os.environ['GITLAB_TEST_REPO'],
             provider=Providers.GITLAB.value,
             active=self.active)

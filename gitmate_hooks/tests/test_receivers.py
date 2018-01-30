@@ -98,7 +98,7 @@ class TestWebhookReceivers(GitmateTestCase):
             'installation': {'id': 11},
             'sender': {'login': self.user.username, 'id': 1},
             'repositories': [
-                {'id': 1, 'full_name': self.repo.full_name}
+                {'id': 49558751, 'full_name': self.repo.full_name}
             ]
         }
         response = self.simulate_github_webhook_call('installation', data)
@@ -116,7 +116,7 @@ class TestWebhookReceivers(GitmateTestCase):
             'installation': {'id': 11},
             'sender': {'login': self.user.username, 'id': 1},
             'repositories_removed': [
-                {'id': 1, 'full_name': self.repo.full_name}
+                {'id': 49558751, 'full_name': self.repo.full_name}
             ]
         }
         response = self.simulate_github_webhook_call(

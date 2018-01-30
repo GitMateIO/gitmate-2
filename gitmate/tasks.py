@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.db.models import Q
 
 from gitmate.celery import app as celery
 from gitmate_config.models import Installation
@@ -19,9 +18,8 @@ def populate_github_repositories(db_user, igitt_user):
 
         # create repos for this installation, if they weren't populated before
         for repo in inst.repositories:
-            Repository.objects.filter(
-                Q(identifier=repo.identifier) | Q(full_name=repo.full_name)
-            ).get_or_create(
+            Repository.objects.get_or_create(
+                identifier=repo.identifier,
                 provider=repo.hoster,
                 installation=db_inst,
                 defaults={

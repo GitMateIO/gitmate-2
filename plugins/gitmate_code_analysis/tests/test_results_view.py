@@ -1,5 +1,3 @@
-from urllib.parse import quote_plus
-
 from rest_framework import status
 
 from gitmate_config.enums import Providers
@@ -18,7 +16,7 @@ class TestResultsView(GitmateTestCase):
         AnalysisResults.objects.create(
             repo=self.repo, results={'hello': 'world'},
             sha=self.sha, coafile_location='.coafile')
-        data = {'repo': quote_plus(self.repo.full_name),
+        data = {'repo': self.repo.identifier,
                 'sha': self.sha, 'provider': Providers.GITHUB.value}
         request = self.factory.get(self.user_detail_url, data=data)
         response = get_analysis_result(request)
@@ -36,7 +34,7 @@ class TestResultsView(GitmateTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_get_result_not_found(self):
-        data = {'repo': quote_plus(self.repo.full_name),
+        data = {'repo': self.repo.identifier,
                 'sha': self.sha, 'provider': Providers.GITHUB.value}
         request = self.factory.get(self.user_detail_url, data=data)
         response = get_analysis_result(request)

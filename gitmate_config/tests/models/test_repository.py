@@ -45,10 +45,11 @@ class TestRepository(GitmateTestCase):
             repo.full_clean()
 
     def test_user(self):
-        repo = Repository(full_name=self.full_name, provider=self.provider)
+        repo = Repository(
+            full_name=self.full_name, provider=self.provider, identifier=0)
         # Don't allow saving if not linked to a user
         with pytest.raises(ValidationError):
-            repo.full_clean()
+            repo.save()
 
     def test_token(self):
         self.assertIsInstance(self.repo.token, GitHubToken)
