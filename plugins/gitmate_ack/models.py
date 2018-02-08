@@ -7,13 +7,11 @@ from gitmate_config.models import SettingsBase, Repository
 
 
 class Settings(SettingsBase):
-    ack_strs = models.CharField(
+    ack_strs = models.TextField(
         default='ack, reack',
-        max_length=100,
         help_text='Keywords for acknowledging commits, comma separated')
-    unack_strs = models.CharField(
+    unack_strs = models.TextField(
         default='unack',
-        max_length=100,
         help_text='Keywords for unacknowledging commits, comma separated')
 
 
