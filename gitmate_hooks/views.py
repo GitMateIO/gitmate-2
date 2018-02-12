@@ -27,7 +27,7 @@ def github_webhook_receiver(request):
     """
     webhook = json.loads(request.body.decode('utf-8'))
     event = request.META['HTTP_X_GITHUB_EVENT']
-    repo_obj = None
+    repo_obj, token = None, None
 
     # responding to regular webhook calls for registered events
     if 'repository' in webhook:
@@ -45,12 +45,15 @@ def github_webhook_receiver(request):
             identifier=webhook['installation']['id'])
         token = installation_obj.token
 
+    # if the webhook is irrelevant, e.g. events like `ping`, `zen` etc.
+    if token is None:  # pragma: no cover
+        return Response(status=status.HTTP_200_OK)
+
     try:
         for action, objs in GitHub(token).handle_webhook(event, webhook):
             ResponderRegistrar.respond(action, *objs, repo=repo_obj)
     except NotImplementedError:  # pragma: no cover
-        # IGitt can't handle it yet, upstream issue, no plugin needs it yet
-        return Response(status=status.HTTP_200_OK)
+        pass
 
     return Response(status=status.HTTP_200_OK)
 
