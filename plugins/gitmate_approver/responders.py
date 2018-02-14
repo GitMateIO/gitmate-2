@@ -38,14 +38,12 @@ def add_approved_label(
     """
     status_labels = [label.strip() for label in status_labels.split(',')
                      if label.strip()]
-    try:
-        pr = MergeRequestModel.objects.get(head_sha=commit.sha).igitt_pr
+
+    for db_pr in MergeRequestModel.objects.filter(head_sha=commit.sha):
+        pr = db_pr.igitt_pr
         with lock_igitt_object('label mr', pr):
             labels = pr.labels
             if commit.combined_status is Status.SUCCESS:
                 pr.labels = {approved_label} | labels - set(status_labels)
             else:
                 pr.labels = labels - {approved_label}
-    except MergeRequestModel.DoesNotExist:  # pragma: no cover
-        # Merge request containing this commit hasn't been opened yet
-        pass
