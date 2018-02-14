@@ -1,6 +1,7 @@
 *.pyc
 *.orig
 .idea/
+.pytest_cache
 db.sqlite3
 node_modules/
 jspm_packages/
