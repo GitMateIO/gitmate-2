@@ -80,4 +80,5 @@ def sync_pr_with_updated_issue(issue: Issue,
                               MergeRequestActions.CLOSED)
 def remove_merge_requests(pr: MergeRequest):
     """Remove closed and merged MRs from database."""
-    MergeRequestModel.objects.get(number=pr.number).delete()
+    repo = Repository.from_igitt_repo(pr.repository)
+    MergeRequestModel.objects.get(repo=repo, number=pr.number).delete()
