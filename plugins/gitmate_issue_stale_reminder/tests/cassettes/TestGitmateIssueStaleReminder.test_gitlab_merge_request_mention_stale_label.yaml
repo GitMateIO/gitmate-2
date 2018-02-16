@@ -61,32 +61,4 @@ interactions:
       X-Request-Id: [9caf904e-0f05-42f5-ae3e-20acbc734013]
       X-Runtime: ['0.248450']
     status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [IGitt]
-    method: GET
-    uri: https://gitlab.com/api/v4/users/2?per_page=100
-  response:
-    body: {string: '{"message":"404 User Not Found"}'}
-    headers:
-      Cache-Control: [no-cache]
-      Content-Length: ['32']
-      Content-Type: [application/json]
-      Date: ['Thu, 21 Dec 2017 09:09:08 GMT']
-      RateLimit-Limit: ['600']
-      RateLimit-Observed: ['3']
-      RateLimit-Remaining: ['597']
-      RateLimit-Reset: ['1513847408']
-      RateLimit-ResetTime: ['Fri, 21 Dec 2017 09:10:08 GMT']
-      Server: [nginx]
-      Vary: [Origin]
-      X-Content-Type-Options: [nosniff]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [54ceddd2-d7c1-4241-9817-3598e28d12e0]
-      X-Runtime: ['0.039113']
-    status: {code: 404, message: Not Found}
 version: 1

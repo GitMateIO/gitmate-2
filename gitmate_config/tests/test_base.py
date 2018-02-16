@@ -13,8 +13,8 @@ from django.test import TransactionTestCase
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory
 from social_django.models import UserSocialAuth
+from vcr import VCR
 import pytest
-import vcr
 
 from gitmate.utils import snake_case_to_camel_case
 from gitmate_config.enums import Providers
@@ -105,13 +105,22 @@ class GitmateTestCase(TransactionTestCase):
     def _get_vcr(self):
         testdir = os.path.dirname(inspect.getfile(self.__class__))
         cassettes_dir = os.path.join(testdir, 'cassettes')
-        return vcr.VCR(
+        return VCR(
             record_mode=self.vcrpy_record_mode,
             cassette_library_dir=cassettes_dir,
             match_on=['method', 'scheme', 'host', 'port', 'path'],
             filter_query_parameters=FILTER_QUERY_PARAMS,
             filter_post_data_parameters=FILTER_QUERY_PARAMS,
             before_record_response=GitmateTestCase.remove_link_headers)
+
+    def tearDown(self):
+        # Check the cassette for unused interactions and remove them
+        if self.cassette.all_played is False:  # pragma: no cover
+            self.cassette.data = [
+                v for i, v in enumerate(self.cassette.data)
+                if self.cassette.play_counts[i] >= 1
+            ]
+            self.cassette._save(force=True)
 
     def setUp(self):
         # Reconfigure gitmate for tests
