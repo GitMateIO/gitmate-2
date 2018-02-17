@@ -14,6 +14,7 @@ from .models import MergeRequestModel
 @ResponderRegistrar.responder(
     'issue_pr_sync',
     MergeRequestActions.OPENED,
+    MergeRequestActions.REOPENED,
     MergeRequestActions.SYNCHRONIZED
 )
 def sync_updated_pr_with_issue(pr: MergeRequest,
