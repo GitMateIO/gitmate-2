@@ -82,4 +82,9 @@ def sync_pr_with_updated_issue(issue: Issue,
 def remove_merge_requests(pr: MergeRequest):
     """Remove closed and merged MRs from database."""
     repo = Repository.from_igitt_repo(pr.repository)
-    MergeRequestModel.objects.get(repo=repo, number=pr.number).delete()
+    try:
+        MergeRequestModel.objects.get(repo=repo, number=pr.number).delete()
+    except MergeRequestModel.DoesNotExist:  # pragma: no cover
+        # Merge request doesn't exist in db. Maybe it wasn't synchronized after
+        # gitmate was enabled.
+        pass
