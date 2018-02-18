@@ -3,16 +3,21 @@ This module contains basic functions to create, update and delete entries from
 a database. The current scope of this module does not require testing as it is
 only basic operations on Django models.
 """
+import logging
 from typing import List
 
+from celery.schedules import crontab
+from django.contrib.auth.models import User
 from IGitt.Interfaces.Actions import InstallationActions
 from IGitt.Interfaces.Installation import Installation as IGittInstallation
 from IGitt.Interfaces.Repository import Repository as IGittRepository
 from IGitt.Interfaces.User import User as IGittUser
 
+from gitmate_config.enums import Providers
 from gitmate_config.models import Installation
 from gitmate_config.models import Repository
 from gitmate_config.utils import get_user_if_exists
+from gitmate_config.views import RepositoryViewSet
 from gitmate_hooks.utils import ResponderRegistrar
 
 
@@ -81,3 +86,28 @@ def remove_installed_repositories(
         db_repo = Repository.from_igitt_repo(repo)
         db_repo.installation = None
         db_repo.save()
+
+
+@ResponderRegistrar.scheduler(crontab('0', '0', '*', '*', '*'))
+def remove_non_existent_repos():
+    """
+    Checks all repositories every 24 hours, and if they are deleted, delete
+    from database as well.
+    """
+    for user in User.objects.all():
+        for provider in Providers:
+            if provider == Providers.GITHUB_APP:
+                continue
+            RepositoryViewSet.unlink_repos_for_provider(
+                user=user, provider=provider)
+
+    for repo in Repository.objects.all().exclude(
+            provider=Providers.GITHUB_APP.value):
+        try:
+            repo.igitt_repo.refresh()
+        except RuntimeError as error:
+            if error.args[-1] == 404:
+                logging.info(f'Deleting repository {repo}')
+                repo.delete()
+            else:  # pragma: no cover, for logging
+                logging.error(f'Cannot refresh data on {repo.igitt_repo}')

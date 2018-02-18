@@ -1,10 +1,13 @@
 from typing import Optional
 
+from IGitt.GitHub.GitHub import GitHub
+from IGitt.GitLab.GitLab import GitLab
 from IGitt.Interfaces.User import User as IGittUser
 from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from social_django.models import UserSocialAuth
 
+from .enums import Providers
 from .models import Organization
 from .models import Repository
 
@@ -48,3 +51,31 @@ def divert_access_to_orgs(orgs: QuerySet(Organization), user: User):
             org.admins.remove(user)
             org.primary_user = org.admins.first()
             org.save()
+
+
+class GitMateUser:
+    hoster = {
+        Providers.GITHUB.value: GitHub,
+        Providers.GITLAB.value: GitLab
+    }
+
+    def __init__(self, user):
+        """
+        :param user: ``User`` object of the user, this GitMateUser represents.
+        """
+        self.user = user
+
+    def get_token(self, provider):
+        """
+        :param provider: ``Provider`` object whose token is needed.
+        """
+        raw_token = self.user.social_auth.get(
+            provider=provider.value).extra_data['access_token']
+        return provider.get_token(raw_token)
+
+    def get_hoster(self, provider):
+        return self.hoster[provider.value](self.get_token(provider))
+
+    def master_repos(self, provider):
+        hoster = self.get_hoster(provider)
+        return hoster.master_repositories

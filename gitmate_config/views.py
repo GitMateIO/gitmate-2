@@ -4,8 +4,6 @@ from django.db.models import Count
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
-from IGitt.GitHub.GitHub import GitHub
-from IGitt.GitLab.GitLab import GitLab
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication
@@ -21,6 +19,7 @@ from gitmate_config.models import Installation
 from gitmate_config.models import Plugin
 from gitmate_config.models import Organization
 from gitmate_config.models import Repository
+from gitmate_config.utils import GitMateUser
 
 from .serializers import PluginSettingsSerializer
 from .serializers import RepositorySerializer
@@ -43,32 +42,50 @@ class RepositoryViewSet(
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        repos = Repository.objects.filter(admins__in=[self.request.user])
-        for i in Installation.objects.filter(admins__in=[self.request.user]):
+        return RepositoryViewSet.get_queryset_for_user(self.request.user)
+
+    @staticmethod
+    def get_queryset_for_user(user):
+        repos = Repository.objects.filter(admins__in=[user])
+        for i in Installation.objects.filter(admins__in=[user]):
             repos |= i.repos.all()
         return repos.order_by('-active', 'full_name')
+
+    @staticmethod
+    def unlink_repos_for_provider(user, provider, repos=None, repo_ids=None):
+        gitmate_user = GitMateUser(user)
+        repos = repos if repos else gitmate_user.master_repos(provider)
+        repo_ids = repo_ids if repo_ids else [repo.identifier
+                                              for repo in repos]
+        # unlink the repositories in the provider for which the
+        # user no longer has access to, excluding installation
+        # repositories
+        inaccessible_repos = RepositoryViewSet.get_queryset_for_user(
+            user).filter(
+                provider=provider.value).exclude(
+                    Q(identifier__in=repo_ids) |
+                    Q(installation__isnull=False))
+
+        # delete them if he's the only administrator
+        inaccessible_repos.annotate(
+            num_admins=Count('admins')
+        ).filter(num_admins=1).delete()
+
+        # give the access to someone else otherwise
+        divert_access_to_repos(inaccessible_repos, user)
 
     def list(self, request):
         if int(request.GET.get('cached', '1')) > 0:
             return super().list(request)
 
-        # Update db model
-        hoster = {
-            Providers.GITHUB.value: GitHub,
-            Providers.GITLAB.value: GitLab,
-        }
+        gitmate_user = GitMateUser(request.user)
 
         for provider in Providers:
             try:
-                raw_token = self.request.user.social_auth.get(
-                    provider=provider.value
-                ).extra_data['access_token']
-
                 # Orgs already checked for master access of the current user
                 checked_orgs = set()
 
-                master_repos = hoster[provider.value](
-                    provider.get_token(raw_token)).master_repositories
+                master_repos = gitmate_user.master_repos(provider)
                 repo_ids = [repo.identifier for repo in master_repos]
 
                 for igitt_repo in master_repos:
@@ -110,21 +127,9 @@ class RepositoryViewSet(
 
                     repo.save()
 
-                # unlink the repositories in the current provider for which the
-                # user no longer has access to, excluding installation
-                # repositories
-                inaccessible_repos = self.get_queryset().filter(
-                    provider=provider.value).exclude(
-                        Q(identifier__in=repo_ids) |
-                        Q(installation__isnull=False))
-
-                # delete them if he's the only administrator
-                inaccessible_repos.annotate(
-                    num_admins=Count('admins')
-                ).filter(num_admins=1).delete()
-
-                # give the access to someone else otherwise
-                divert_access_to_repos(inaccessible_repos, request.user)
+                RepositoryViewSet.unlink_repos_for_provider(
+                    user=request.user, provider=provider, repos=master_repos,
+                    repo_ids=repo_ids)
 
                 # TODO: validate if a cached repo was removed. Handling if it
                 # was active?

@@ -5,8 +5,11 @@ from IGitt.GitHub.GitHubComment import GitHubComment
 from IGitt.GitHub.GitHubMergeRequest import GitHubMergeRequest
 from IGitt.Interfaces.Comment import CommentType
 from IGitt.Interfaces.Actions import MergeRequestActions
+from IGitt.Utils import CachedDataMixin
 
+from gitmate_config.models import Repository
 from gitmate_config.tests.test_base import GitmateTestCase
+from gitmate_hooks.responders import remove_non_existent_repos
 from gitmate_hooks.utils import run_plugin_for_all_repos
 from gitmate_hooks.utils import ResponderRegistrar
 
@@ -91,3 +94,11 @@ class TestResponderRegistrar(GitmateTestCase):
                 MergeRequestActions.OPENED, 'example', repo=self.repo)],
             []
         )
+
+    @patch.object(CachedDataMixin, 'refresh')
+    def test_remove_non_existant_repos(self, m_refresh):
+        self.assertEqual(len(Repository.objects.all()), 3)
+        m_refresh.side_effect = RuntimeError('404 not found', 404)
+        remove_non_existent_repos()
+        # Only gh_app_repo remains after deletion
+        self.assertEqual(len(Repository.objects.all()), 1)
