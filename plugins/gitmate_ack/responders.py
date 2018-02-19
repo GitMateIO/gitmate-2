@@ -67,6 +67,28 @@ def pending(commit: Commit):
     return state
 
 
+def map_comment_parts_to_keywords(ack_strs, unack_strs, body):
+    pattern = r'(^{k})\s|\s({k})\s|\s({k}$)'
+    ack_keywords = get_keywords(ack_strs)
+    unack_keywords = get_keywords(unack_strs)
+    all_keywords = ack_keywords + unack_keywords
+    keywords_pattern = '|'.join(pattern.format(
+        k=re.escape(kw)) for kw in all_keywords)
+    body = re.split(keywords_pattern, body)
+    # remove empty strings and None elements
+    body = filter(lambda x: x, body)
+
+    mapping = {'ack': [], 'unack': []}
+
+    for element in body:
+        if element in ack_keywords:
+            mapping['ack'].append(next(body))
+        elif element in unack_keywords:
+            mapping['unack'].append(next(body))
+
+    return mapping
+
+
 @ResponderRegistrar.responder(
     'ack',
     MergeRequestActions.COMMENTED
@@ -83,15 +105,10 @@ def gitmate_ack(pr: MergeRequest,
     pattern = r'(^{k}\s)|(\s{k}\s)|(\s{k}$)'
     perm_level = pr.repository.get_permission_level(comment.author)
 
-    ack_cmt = any([re.search(pattern.format(k=re.escape(kw)), body)
-                   for kw in get_keywords(ack_strs)])
-    unack_cmt = any([re.search(pattern.format(k=re.escape(kw)), body)
-                     for kw in get_keywords(unack_strs)])
+    comment_slices = map_comment_parts_to_keywords(ack_strs, unack_strs, body)
 
-    print(ack_cmt, unack_cmt, get_keywords(ack_strs), get_keywords(unack_strs))
-
-    if ((ack_cmt or unack_cmt) and
-            perm_level.value < AccessLevel.CAN_WRITE.value):
+    if (any(comment_slices)
+            and perm_level.value < AccessLevel.CAN_WRITE.value):
         msg = ('Sorry @{}, you do not have the necessary permission '
                'levels to perform the action.'.format(comment.author.username))
         pr.add_comment(msg)
@@ -107,15 +124,14 @@ def gitmate_ack(pr: MergeRequest,
         add_review_status(pr)
         db_pr.refresh_from_db()
 
-    if unack_cmt:
-        for commit in commits:
-            if commit.sha[:6] in body:
+    for commit in commits:
+        for substring in comment_slices['unack']:
+            if commit.sha[:6] in substring:
                 db_pr.acks[_get_commit_hash(commit)] = _status_to_dict(
                     unack(commit))
 
-    if ack_cmt:
-        for commit in commits:
-            if commit.sha[:6] in body:
+        for substring in comment_slices['ack']:
+            if commit.sha[:6] in substring:
                 db_pr.acks[_get_commit_hash(commit)] = _status_to_dict(
                     ack(commit))
 

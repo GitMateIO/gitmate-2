@@ -1,4 +1,5 @@
 from os import environ
+from unittest.mock import Mock
 from unittest.mock import patch
 from unittest.mock import PropertyMock
 
@@ -19,6 +20,7 @@ from IGitt.Interfaces.CommitStatus import CommitStatus
 from IGitt.Interfaces.CommitStatus import Status
 from rest_framework import status
 
+from plugins.gitmate_ack.responders import map_comment_parts_to_keywords
 from gitmate_config.tests.test_base import GitmateTestCase
 
 
@@ -60,9 +62,15 @@ class TestAck(GitmateTestCase):
         self.gh_commit = GitHubCommit(
             self.gh_token, self.repo.full_name,
             'f6d2b7c66372236a090a2a74df2e47f42a54456b')
+        self.gh_commit_2 = GitHubCommit(
+            self.gh_token, self.repo.full_name,
+            '3f2a3b37a2943299c589004c2a5be132e9440cba')
         self.gl_commit = GitLabCommit(
             self.gl_token, self.gl_repo.full_name,
             'f6d2b7c66372236a090a2a74df2e47f42a54456b')
+        self.gl_commit_2 = GitLabCommit(
+            self.gl_token, self.gl_repo.full_name,
+            '3f2a3b37a2943299c589004c2a5be132e9440cba')
 
     @patch.object(GitHubMergeRequest, 'commits', new_callable=PropertyMock)
     @patch.object(GitHubMergeRequest, 'head', new_callable=PropertyMock)
@@ -470,3 +478,62 @@ class TestAck(GitmateTestCase):
         m_add_comment.assert_called_once_with(
             'Sorry @{}, you do not have the necessary permission levels to '
             'perform the action.'.format(self.user.username))
+
+    def test_mapping(self):
+        body = '11 ack 1 2 3 unack 4 reack 5 6 7 unack 8 9 10'
+        self.assertEqual(
+            map_comment_parts_to_keywords('ack, reack', 'unack', body),
+            {'ack': ['1 2 3', '5 6 7'],
+             'unack': ['4', '8 9 10']})
+
+    @patch.object(GitHubComment, 'author', new_callable=PropertyMock)
+    @patch.object(GitHubCommit, 'set_status')
+    @patch.object(GitHubRepository, 'get_permission_level')
+    @patch.object(GitHubComment, 'body', new_callable=PropertyMock)
+    @patch.object(GitHubMergeRequest, 'commits', new_callable=PropertyMock)
+    def test_github_ack_unack(
+        self, m_commits, m_body, m_get_perms, m_set_status, m_author
+    ):
+        m_commits.return_value = tuple([self.gh_commit, self.gh_commit_2])
+        m_body.return_value = 'ack 3f2a3b3 unack f6d2b7c'
+        m_get_perms.return_value = AccessLevel.CAN_WRITE
+
+        self.gh_commit.set_status = Mock()
+        self.gh_commit_2.set_status = Mock()
+
+        m_author.return_value = GitHubUser(self.gh_token, self.user.username)
+
+        self.simulate_github_webhook_call('pull_request', self.gh_pr_data)
+        self.simulate_github_webhook_call(
+            'issue_comment', self.gh_comment_data)
+
+        self.assertEqual(self.gh_commit.set_status.call_args[0][0].status,
+                         Status.FAILED)
+        self.assertEqual(self.gh_commit_2.set_status.call_args[0][0].status,
+                         Status.SUCCESS)
+
+    @patch.object(GitLabComment, 'author', new_callable=PropertyMock)
+    @patch.object(GitLabCommit, 'set_status')
+    @patch.object(GitLabRepository, 'get_permission_level')
+    @patch.object(GitLabComment, 'body', new_callable=PropertyMock)
+    @patch.object(GitLabMergeRequest, 'commits', new_callable=PropertyMock)
+    def test_gitlab_ack_unack(
+        self, m_commits, m_body, m_get_perms, m_set_status, m_author
+    ):
+        m_commits.return_value = tuple([self.gl_commit, self.gl_commit_2])
+        m_body.return_value = 'ack 3f2a3b3 unack f6d2b7c'
+        m_get_perms.return_value = AccessLevel.CAN_WRITE
+
+        self.gl_commit.set_status = Mock()
+        self.gl_commit_2.set_status = Mock()
+
+        m_author.return_value = GitLabUser(self.gh_token, 0)
+
+        self.simulate_gitlab_webhook_call(
+            'Merge Request Hook', self.gl_pr_data)
+        self.simulate_gitlab_webhook_call('Note Hook', self.gl_comment_data)
+
+        self.assertEqual(self.gl_commit.set_status.call_args[0][0].status,
+                         Status.FAILED)
+        self.assertEqual(self.gl_commit_2.set_status.call_args[0][0].status,
+                         Status.SUCCESS)
