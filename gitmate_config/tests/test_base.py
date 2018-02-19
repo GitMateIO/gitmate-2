@@ -83,7 +83,7 @@ class StreamMock:
         pass
 
 
-@pytest.mark.usefixtures('vcrpy_record_mode')
+@pytest.mark.usefixtures('vcrpy_record_mode', 'delete_unused_recordings')
 class GitmateTestCase(TransactionTestCase):
     """
     A base class for setting up a dummy user, request factory and a repo for
@@ -115,7 +115,8 @@ class GitmateTestCase(TransactionTestCase):
 
     def tearDown(self):
         # Check the cassette for unused interactions and remove them
-        if self.cassette.all_played is False:  # pragma: no cover
+        if (self.cassette.all_played is False
+                and self.delete_unused_recordings):  # pragma: no cover
             self.cassette.data = [
                 v for i, v in enumerate(self.cassette.data)
                 if self.cassette.play_counts[i] >= 1
