@@ -40,6 +40,8 @@ def save_identifier(apps, schema_editor):
         except Exception as ex:
             # If a user token was revoked, or any other error occurs, it should
             # be skipped and migration continues.
+            if not repo.active:
+                repo.delete()
             logging.exception(
                 f'ERROR: Fetching identifier for {repo} failed.\n'
                 f'Exception:   {repr(ex)}\n')
