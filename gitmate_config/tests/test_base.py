@@ -84,13 +84,8 @@ class StreamMock:
 
 
 @pytest.mark.usefixtures('vcrpy_record_mode')
-class GitmateTestCase(TransactionTestCase):
-    """
-    A base class for setting up a dummy user, request factory and a repo for
-    the user.
-    """
-    active = False
-    upmate = True
+class RecordedTestCase(TransactionTestCase):
+    enable_unused_record_deletion = True
 
     @staticmethod
     def remove_link_headers(resp):
@@ -111,11 +106,12 @@ class GitmateTestCase(TransactionTestCase):
             match_on=['method', 'scheme', 'host', 'port', 'path'],
             filter_query_parameters=FILTER_QUERY_PARAMS,
             filter_post_data_parameters=FILTER_QUERY_PARAMS,
-            before_record_response=GitmateTestCase.remove_link_headers)
+            before_record_response=RecordedTestCase.remove_link_headers)
 
-    def tearDown(self):
+    def tearDown(self):  # pragma: no cover
         # Check the cassette for unused interactions and remove them
-        if self.cassette.all_played is False:  # pragma: no cover
+        if (not self.cassette.all_played and self.enable_unused_record_deletion
+                and not self.cassette.dirty):
             self.cassette.data = [
                 v for i, v in enumerate(self.cassette.data)
                 if self.cassette.play_counts[i] >= 1
@@ -123,16 +119,27 @@ class GitmateTestCase(TransactionTestCase):
             self.cassette._save(force=True)
 
     def setUp(self):
-        # Reconfigure gitmate for tests
-        reinit_plugin('testplugin', upmate=self.upmate)
-
-        self.factory = APIRequestFactory()
-
         # use vcrpy recorder
         myvcr = self._get_vcr()
         context_manager = myvcr.use_cassette(self._get_cassette_name())
         self.cassette = context_manager.__enter__()
         self.addCleanup(context_manager.__exit__, None, None, None)
+
+
+class GitmateTestCase(RecordedTestCase):
+    """
+    A base class for setting up a dummy user, request factory and a repo for
+    the user.
+    """
+    active = False
+    upmate = True
+
+    def setUp(self):
+        # Reconfigure gitmate for tests
+        reinit_plugin('testplugin', upmate=self.upmate)
+
+        self.factory = APIRequestFactory()
+        super(GitmateTestCase, self).setUp()
 
         self.user = User.objects.create_user(
             username='john',
