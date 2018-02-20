@@ -6,9 +6,12 @@ import os
 import re
 
 from django.apps import apps
+from django.apps.registry import Apps
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core import management
+from django.db import connection
+from django.db.migrations.executor import MigrationExecutor
 from django.test import TransactionTestCase
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory
@@ -124,6 +127,41 @@ class RecordedTestCase(TransactionTestCase):
         context_manager = myvcr.use_cassette(self._get_cassette_name())
         self.cassette = context_manager.__enter__()
         self.addCleanup(context_manager.__exit__, None, None, None)
+
+
+class MigrationTestCase(RecordedTestCase):
+    migrate_from = None
+    migrate_to = None
+    app = None
+
+    def setUp(self):
+        super(MigrationTestCase, self).setUp()
+
+        self.assertTrue(
+            self.app and self.migrate_from and self.migrate_to,
+            f"A MigrationTestCase subclass, '{type(self).__name__}' must "
+            'define app, migrate_from and migrate_to properties.')
+
+        self.migrate_from = [(self.app, self.migrate_from)]
+        self.migrate_to = [(self.app, self.migrate_to)]
+        executor = MigrationExecutor(connection)
+        old_apps = executor.loader.project_state(self.migrate_from).apps
+
+        # Reverse to the original migration
+        executor.migrate(self.migrate_from)
+
+        # Run any configuration setup before testing the migration
+        self.setUpBeforeMigration(old_apps)
+
+        # Run the migration to test
+        executor = MigrationExecutor(connection)
+        executor.loader.build_graph()
+        executor.migrate(self.migrate_to)
+
+        self.apps = executor.loader.project_state(self.migrate_to).apps
+
+    def setUpBeforeMigration(self, apps: Apps):  # pragma: no cover
+        pass
 
 
 class GitmateTestCase(RecordedTestCase):
