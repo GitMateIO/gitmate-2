@@ -131,7 +131,7 @@ class Installation(models.Model):
     provider = models.CharField(default=None, max_length=32)
 
     # unique identifier for the installation
-    identifier = models.IntegerField(default=-1)
+    identifier = models.IntegerField(default=None)
 
     def __str__(self):  # pragma: no cover
         return f'{self.provider}-installation#{self.identifier}'
