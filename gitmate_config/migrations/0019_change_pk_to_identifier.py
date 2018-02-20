@@ -4,15 +4,25 @@ from __future__ import unicode_literals
 import logging
 
 from django.db import migrations
+from django.conf import settings
 
+from IGitt.GitHub import GitHubInstallationToken
 from IGitt.GitHub.GitHubRepository import GitHubRepository
 from IGitt.GitLab.GitLabRepository import GitLabRepository
 from gitmate_config.enums import Providers
 
 
+def get_installation_token(inst):
+    if inst.provider == Providers.GITHUB.value:
+        return GitHubInstallationToken(inst.identifier, settings.GITHUB_JWT)
+
+    # Other providers aren't implemented yet.
+    raise NotImplementedError
+
+
 def get_token(repo):
     if repo.installation is not None:
-        return repo.installation.token
+        return get_installation_token(repo.installation)
 
     raw_token = repo.user.social_auth.get(
         provider=repo.provider).access_token
@@ -30,6 +40,8 @@ def get_identifier(repo):
     elif repo.provider == Providers.GITLAB.value:
         return GitLabRepository(get_token(repo), repo.full_name).identifier
 
+    # Other providers aren't implemented yet.
+    raise NotImplementedError
 
 def save_identifier(apps, schema_editor):
     Repository = apps.get_model('gitmate_config', 'Repository')
@@ -47,7 +59,6 @@ def save_identifier(apps, schema_editor):
                 f'Exception:   {repr(ex)}\n')
 
 
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -55,5 +66,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(save_identifier)
+        migrations.RunPython(save_identifier, migrations.RunPython.noop)
     ]
