@@ -214,7 +214,7 @@ class Organization(models.Model):
 class Repository(models.Model):
 
     # The unique identifier for each repository which never changes
-    identifier = models.IntegerField(default=None)
+    identifier = models.IntegerField(default=None, null=True)
 
     # The user who operates the repository
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
