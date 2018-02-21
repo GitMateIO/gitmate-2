@@ -10,11 +10,11 @@ class TestSettings(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('testplugin')
 
-        settings = self.plugin_module.models.Settings()
+        settings = self.plugin_config.settings_model()
         settings.repo = self.repo
         settings.save()
 
-        settings = self.plugin_module.models.Settings()
+        settings = self.plugin_config.settings_model()
         settings.repo = self.gl_repo
         settings.save()
 
@@ -44,7 +44,7 @@ class TestSettings(GitmateTestCase):
                          args=(repo.pk,),
                          request=list_plugin_settings_request)
                  for repo in (self.gl_repo, self.repo,)]
-        plugin_data = [{
+        plugin_data = {
             'name': 'testplugin',
             'title': 'Testing',
             'plugin_category': 'issue',
@@ -66,15 +66,13 @@ class TestSettings(GitmateTestCase):
                     'type': 'BooleanField'
                 },
             ]
-        }]
-        resp_data = [{
-            'repository': repo,
-            'plugins': plugin_data
-        } for repo in repos]
+        }
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn(resp_data[0], response.data)
-        self.assertIn(resp_data[1], response.data)
+
+        for resp in response.data:
+            self.assertIn(plugin_data, resp['plugins'])
+            self.assertIn(resp['repository'], repos)
 
     def test_retrieve_plugin_settings_unauthorized(self):
         retrieve_plugin_settings_request = self.factory.get(
@@ -92,36 +90,36 @@ class TestSettings(GitmateTestCase):
             retrieve_plugin_settings_request,
             pk=self.repo.pk)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, {
-            'repository': reverse('api:repository-detail',
-                                  args=(self.repo.pk,),
-                                  request=retrieve_plugin_settings_request),
-            'plugins': [
-                {
-                    'name': 'testplugin',
-                    'title': 'Testing',
-                    'plugin_category': 'issue',
-                    'description': (
-                        'A simple plugin used for testing. Smile :)'
-                    ),
-                    'active': True,
-                    'settings': [
-                        {
-                            'name': 'example_char_setting',
-                            'value': 'example',
-                            'description': 'An example Char setting',
-                            'type': 'CharField'
-                        },
-                        {
-                            'name': 'example_bool_setting',
-                            'value': True,
-                            'description': 'An example Bool setting',
-                            'type': 'BooleanField'
-                        },
-                    ]
-                }
-            ]
-        })
+        self.assertEqual(
+            response.data['repository'],
+            reverse('api:repository-detail',
+                    args=(self.repo.pk,),
+                    request=retrieve_plugin_settings_request))
+        self.assertIn(
+            {
+                'name': 'testplugin',
+                'title': 'Testing',
+                'plugin_category': 'issue',
+                'description': (
+                    'A simple plugin used for testing. Smile :)'
+                ),
+                'active': True,
+                'settings': [
+                    {
+                        'name': 'example_char_setting',
+                        'value': 'example',
+                        'description': 'An example Char setting',
+                        'type': 'CharField'
+                    },
+                    {
+                        'name': 'example_bool_setting',
+                        'value': True,
+                        'description': 'An example Bool setting',
+                        'type': 'BooleanField'
+                    },
+                ]
+            },
+            response.data['plugins'])
 
     def test_update_plugin_settings_authorized(self):
         settings = [{

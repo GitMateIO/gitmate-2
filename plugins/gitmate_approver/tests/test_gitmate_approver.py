@@ -28,8 +28,8 @@ class TestGitmateApprover(GitmateTestCase):
                 }
             }
         ]
-        self.repo.set_plugin_settings(self.settings)
-        self.gl_repo.set_plugin_settings(self.settings)
+        self.repo.settings = self.settings
+        self.gl_repo.settings = self.settings
 
     @patch.object(GitHubCommit, 'combined_status',
                   new_callable=PropertyMock, return_value=Status.SUCCESS)

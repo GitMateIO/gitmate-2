@@ -9,12 +9,13 @@ from billiard.einfo import ExceptionInfo
 from celery import Task
 from celery.schedules import crontab
 from celery.utils.log import get_logger
-from django.conf import settings
+from django.apps import apps
 
+from gitmate.apps import get_all_plugins
 from gitmate.celery import app as celery
+from gitmate.utils import GitmatePluginConfig
 from gitmate_config.enums import GitmateActions
 from gitmate_config.enums import TaskQueue
-from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 from gitmate_hooks.decorators import block_comment
 
@@ -31,8 +32,8 @@ def run_plugin_for_all_repos(plugin_name: str,
                         e.g. MergeRequestActions.COMMENTED
     :param is_active:   A boolean value for active state of plugin.
     """
-    plugin = Plugin.objects.get(name=plugin_name)
-    for repo in plugin.repository_set.filter(active=is_active):
+    for repo in Repository.objects.filter(
+            active=is_active, plugins__contains=[plugin_name]):
         ResponderRegistrar.respond(event_name, repo.igitt_repo, repo=repo)
 
 
@@ -187,7 +188,7 @@ class ResponderRegistrar:
     @classmethod
     def _filter_matching_options(cls,
                                  responder: ExceptionLoggerTask,
-                                 plugin: Plugin,
+                                 plugin: GitmatePluginConfig,
                                  repo: Repository) -> dict:
         """
         Filters the matching options for the given responder out of all the
@@ -211,8 +212,7 @@ class ResponderRegistrar:
 
         def plugin_filter(r): return plugin_name == cls._plugins[r]
 
-        def repo_filter(r): return repo.plugins.filter(
-            name=cls._plugins[r]).exists()
+        def repo_filter(r): return cls._plugins[r] in repo.plugins
 
         if repo is not None and isinstance(repo, Repository):
             responders = list(filter(repo_filter, responders))
@@ -244,13 +244,13 @@ class ResponderRegistrar:
             # filter options for responder from options of plugin it is
             # registered in, to avoid naming conflicts when two plugins have
             # the same model field. e.g. `stale_label`
-            p_name = cls._plugins[responder]
-            if p_name in settings.GITMATE_PLUGINS:
-                # settings exist only in plugins, so retrieve them only if it
-                # is a plugin.
-                plugin = Plugin.objects.get(name=p_name)
+            plugin = cls._plugins[responder]
+            registered_plugins = [conf.plugin_name
+                                  for conf in get_all_plugins()]
+            if plugin in registered_plugins:
+                config = apps.get_app_config(f'gitmate_{plugin}')
                 options_specified = cls._filter_matching_options(
-                    responder, plugin, repo)
+                    responder, config, repo)
             try:
                 retvals.append(responder.delay(*args, **options_specified))
             except BaseException:  # pragma: no cover

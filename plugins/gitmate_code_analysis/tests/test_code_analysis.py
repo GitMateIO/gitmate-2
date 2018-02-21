@@ -81,14 +81,14 @@ class TestCodeAnalysis(GitmateTestCase):
     def test_pr_analysis_no_issues_github(
         self, comment_mock, _, pr_based=False
     ):
-        self.repo.set_plugin_settings([
+        self.repo.settings = [
             {
                 'name': 'code_analysis',
                 'settings': {
                     'pr_based_analysis': pr_based,
                 }
             }
-        ])
+        ]
 
         def popen_bouncer():
             return PopenResult(
@@ -164,14 +164,14 @@ class TestCodeAnalysis(GitmateTestCase):
 
     @patch.object(GitHubCommit, 'comment')
     def test_pr_analysis_many_issues_github(self, comment_mock, _):
-        self.repo.set_plugin_settings([
+        self.repo.settings = [
             {
                 'name': 'code_analysis',
                 'settings': {
                     'pr_based_analysis': False,
                 }
             }
-        ])
+        ]
 
         def fake_popen(cmd, **kwargs):
             if 'bouncer.py' in cmd:
@@ -209,14 +209,14 @@ class TestCodeAnalysis(GitmateTestCase):
     def test_pr_analysis_no_issues_gitlab(
         self, comment_mock, _, pr_based=False
     ):
-        self.repo.set_plugin_settings([
+        self.repo.settings = [
             {
                 'name': 'code_analysis',
                 'settings': {
                     'pr_based_analysis': pr_based,
                 }
             }
-        ])
+        ]
 
         response = self.simulate_gitlab_webhook_call(
             'Merge Request Hook', self.gitlab_data)
@@ -276,14 +276,14 @@ class TestCodeAnalysis(GitmateTestCase):
 
     @patch.object(GitLabCommit, 'comment')
     def test_pr_analysis_many_issues_gitlab(self, comment_mock, _):
-        self.repo.set_plugin_settings([
+        self.repo.settings = [
             {
                 'name': 'code_analysis',
                 'settings': {
                     'pr_based_analysis': False,
                 }
             }
-        ])
+        ]
 
         def fake_popen(cmd, **kwargs):
             if 'bouncer.py' in cmd:

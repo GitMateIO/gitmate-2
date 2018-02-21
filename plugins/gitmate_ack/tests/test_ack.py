@@ -84,12 +84,12 @@ class TestAck(GitmateTestCase):
         self, m_set_status, m_get_statuses, m_sha, m_get_perms, m_author,
         m_body, m_head, m_commits
     ):
-        self.repo.set_plugin_settings([{
+        self.repo.settings = [{
             'name': 'ack',
             'settings': {
                 'ack_strs': r'bot\ack, bot\accept'
             }
-        }])
+        }]
 
         m_get_statuses.return_value = (
             CommitStatus(Status.SUCCESS, 'No issues',

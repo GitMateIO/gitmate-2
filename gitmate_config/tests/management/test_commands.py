@@ -30,7 +30,7 @@ class TestCommands(GitmateTestCase):
                          'plugins.gitmate_testplugin')
 
         call_command('upmate')
-        self.repo.plugins.add(testplugin)
+        self.repo.plugins.append(testplugin)
 
         self.assertEqual(self.repo.get_plugin_settings(), {
             'example_bool_setting': True,

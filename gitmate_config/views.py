@@ -14,9 +14,9 @@ from rest_framework.viewsets import GenericViewSet
 
 from social_django.models import UserSocialAuth
 
+from gitmate.apps import get_all_plugins
 from gitmate_config.enums import Providers
 from gitmate_config.models import Installation
-from gitmate_config.models import Plugin
 from gitmate_config.models import Organization
 from gitmate_config.models import Repository
 from gitmate_config.utils import GitMateUser
@@ -167,9 +167,9 @@ class RepositoryViewSet(
 
                 # turn on default plugins for the first time only
                 if instance.activation_count == 1:
-                    plugins = [{'name': plugin.name, 'active': True}
-                               for plugin in Plugin.get_default_list()]
-                    instance.set_plugin_settings(plugins)
+                    plugins = [{'name': conf.plugin_name, 'active': True}
+                               for conf in get_all_plugins(default_only=True)]
+                    instance.settings = plugins
 
                 # register the webhook for repository events
                 repo.register_hook(hook_url, settings.WEBHOOK_SECRET)
@@ -230,7 +230,7 @@ class PluginSettingsViewSet(
 
     def update(self, request, pk=None, *args, **kwargs):
         repo = get_object_or_404(Repository, pk=pk)
-        repo.set_plugin_settings(request.data)
+        repo.settings = request.data
         serializer = PluginSettingsSerializer(
             instance=repo.get_plugin_settings_with_info(request))
         return Response(serializer.data, status=status.HTTP_200_OK)

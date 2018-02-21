@@ -8,8 +8,6 @@ from IGitt.GitHub import GitHubToken
 from IGitt.GitHub import GitHubInstallationToken
 from IGitt.GitLab import GitLabOAuthToken
 
-from gitmate.exceptions import MissingSettingsError
-from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 from gitmate_config.tests.test_base import GitmateTestCase
 
@@ -58,10 +56,10 @@ class TestRepository(GitmateTestCase):
 
     def test_set_plugin_settings(self):
         # add a plugin into it
-        self.repo.plugins.add(self.plugin)
+        self.repo.plugins.append(self.plugin)
         self.repo.save()
 
-        old_settings = self.repo.get_plugin_settings()
+        old_settings = self.repo.settings
 
         # No proper plugin name
         new_settings = [{
@@ -69,8 +67,8 @@ class TestRepository(GitmateTestCase):
             'settings': {}
         }]
         with pytest.raises(Http404):
-            self.repo.set_plugin_settings(new_settings)
-        modified_settings = self.repo.get_plugin_settings()
+            self.repo.settings = new_settings
+        modified_settings = self.repo.settings
         assert modified_settings == old_settings
 
         # No status setting
@@ -78,8 +76,8 @@ class TestRepository(GitmateTestCase):
             'name': 'testplugin',
             'settings': {}
         }]
-        self.repo.set_plugin_settings(new_settings)
-        modified_settings = self.repo.get_plugin_settings()
+        self.repo.settings = new_settings
+        modified_settings = self.repo.settings
         assert modified_settings == old_settings
 
         # Undefined plugin
@@ -87,8 +85,8 @@ class TestRepository(GitmateTestCase):
             'name': 'undefinedplugin'
         }]
         with pytest.raises(Http404):
-            self.repo.set_plugin_settings(new_settings)
-        modified_settings = self.repo.get_plugin_settings()
+            self.repo.settings = new_settings
+        modified_settings = self.repo.settings
         assert modified_settings == old_settings
 
         # Remove all plugins
@@ -96,8 +94,8 @@ class TestRepository(GitmateTestCase):
             'name': 'testplugin',
             'active': False,
         }]
-        self.repo.set_plugin_settings(new_settings)
-        modified_settings = self.repo.get_plugin_settings()
+        self.repo.settings = new_settings
+        modified_settings = self.repo.settings
         assert modified_settings == {}
 
         # Successful set
@@ -109,20 +107,13 @@ class TestRepository(GitmateTestCase):
                 'example_char_setting': 'hello'
             }
         }]
-        self.repo.set_plugin_settings(new_settings)
+        self.repo.settings = new_settings
 
-        modified_settings = self.repo.get_plugin_settings()
+        modified_settings = self.repo.settings
         assert modified_settings['example_bool_setting'] is False
         assert modified_settings['example_char_setting'] == 'hello'
 
     def test_plugin_set_settings_not_importable(self):
-        # create a fake plugin
-        plugin = Plugin('fake_plugin')
-        with pytest.raises(MissingSettingsError):
-            plugin.save()
-        # try to import it
-        assert plugin.importable == False
-
         new_settings = [{
             'name': 'fake_plugin',
             'settings': {
@@ -130,40 +121,39 @@ class TestRepository(GitmateTestCase):
             }
         }]
         with pytest.raises(Http404):
-            self.repo.set_plugin_settings(new_settings)
+            self.repo.settings = new_settings
 
     def test_get_plugin_settings_with_info(self):
         # add a plugin into it
-        self.repo.plugins.add(self.plugin)
+        self.repo.plugins.append(self.plugin)
         self.repo.save()
 
         settings = self.repo.get_plugin_settings_with_info()
-        assert settings == {
-            'repository': reverse('api:repository-detail',
-                                  args=(self.repo.pk,)),
-            'plugins': [
-                {
-                    'name': 'testplugin',
-                    'title': 'Testing',
-                    'plugin_category': 'issue',
-                    'description': (
+        self.assertIn(
+            {
+                'name': 'testplugin',
+                'title': 'Testing',
+                'plugin_category': 'issue',
+                'description': (
                         'A simple plugin used for testing. Smile :)'
-                    ),
-                    'active': True,
-                    'settings': [
-                        {
-                            'name': 'example_char_setting',
-                            'value': 'example',
-                            'description': 'An example Char setting',
-                            'type': 'CharField'
-                        },
-                        {
-                            'name': 'example_bool_setting',
-                            'value': True,
-                            'description': 'An example Bool setting',
-                            'type': 'BooleanField'
-                        },
-                    ]
-                }
-            ]
-        }
+                ),
+                'active': True,
+                'settings': [
+                    {
+                        'name': 'example_char_setting',
+                        'value': 'example',
+                        'description': 'An example Char setting',
+                        'type': 'CharField'
+                    },
+                    {
+                        'name': 'example_bool_setting',
+                        'value': True,
+                        'description': 'An example Bool setting',
+                        'type': 'BooleanField'
+                    },
+                ]
+            },
+            settings['plugins'])
+        self.assertEqual(settings['repository'],
+                         reverse('api:repository-detail',
+                                 args=(self.repo.pk,)))

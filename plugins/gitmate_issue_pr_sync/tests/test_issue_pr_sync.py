@@ -124,7 +124,6 @@ class TestIssuePRSync(GitmateTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(before_count, after_count)
 
-
     @patch.object(GitLabMergeRequest, 'assignees', new_callable=PropertyMock)
     @patch.object(GitLabMergeRequest, 'labels', new_callable=PropertyMock)
     @patch.object(GitLabIssue, 'assignees', new_callable=PropertyMock)

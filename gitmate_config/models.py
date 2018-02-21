@@ -1,13 +1,13 @@
-from importlib import import_module
+from typing import List
+from typing import Optional
 
 from django.apps import apps
 from django.conf import settings as django_settings
 from django.contrib.auth.models import User
+from django.contrib.postgres import fields as psql_fields
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.forms.models import model_to_dict
 from django.http import Http404
-from django.shortcuts import get_object_or_404
 from IGitt.GitHub import GitHubInstallationToken
 from IGitt.GitHub.GitHubInstallation import GitHubInstallation
 from IGitt.GitHub.GitHubOrganization import GitHubOrganization
@@ -20,7 +20,7 @@ from IGitt.Interfaces.Organization import Organization as IGittOrganization
 from IGitt.Interfaces.Repository import Repository as IGittRepository
 from rest_framework.reverse import reverse
 
-from gitmate.exceptions import MissingSettingsError
+from gitmate.apps import get_all_plugins
 from gitmate_config.enums import GitmateActions
 from gitmate_config.enums import Providers
 
@@ -229,7 +229,8 @@ class Repository(models.Model):
     full_name = models.CharField(default=None, max_length=255)
 
     # The set of active plugins on the repository
-    plugins = models.ManyToManyField(Plugin)
+    plugins = psql_fields.ArrayField(models.CharField(max_length=255),
+                                     default=list)
 
     active = models.BooleanField(default=False)
 
@@ -250,15 +251,8 @@ class Repository(models.Model):
         if not any([self.user, self.installation]):
             raise ValidationError(
                 'Repository has to be linked to an Installation or a User')
+        self.plugins = list(set(self.plugins))
         super(Repository, self).save(*args, **kwargs)
-
-    def get_plugin_settings(self):
-        """
-        Returns a dictionary of settings for active plugins in this repo.
-        """
-        return {k: v for plugin in self.plugins.all()
-                for k, v in plugin.get_settings(self).items()
-                if plugin.importable}
 
     def get_plugin_settings_with_info(self, request=None):
         """
@@ -269,47 +263,62 @@ class Repository(models.Model):
             'repository': reverse('api:repository-detail', args=(self.pk,),
                                   request=request),
             'plugins': [plugin.get_settings_with_info(self)
-                        for plugin in Plugin.objects.order_by('name')
-                        if plugin.importable]
+                        for plugin in get_all_plugins()]
         }
 
-    def set_plugin_settings(self, plugins=[]):
+    @property
+    def settings(self):
+        """
+        Returns a dictionary of settings for active plugins in this repo.
+        """
+        return {k: v for plugin in get_all_plugins(repo=self)
+                for k, v in plugin.get_settings(self).items()}
+
+    @settings.setter
+    def settings(self, plugins: Optional[List]=None):
         """
         Sets the plugin settings for all plugins for the specified repo.
         """
         # Don't move to module code, causes circular dependency!
         from gitmate_hooks.utils import ResponderRegistrar
 
+        if plugins is None:  # pragma: no cover
+            plugins = []
+
         for plugin in plugins:
             if 'name' not in plugin:
                 raise Http404
 
-            # premature 404 because plugin is not saved at all without it being
-            plugin_obj = get_object_or_404(Plugin, name=plugin['name'])
+            # premature 404 because no such plugin is not present
+            try:
+                config = apps.get_app_config(f"gitmate_{plugin['name']}")
+            except LookupError:
+                raise Http404
+
+            plugin_name = config.plugin_name
 
             if 'active' in plugin:
-                plugin_exists = self.plugins.filter(pk=plugin_obj.pk).exists()
+                plugin_exists = plugin_name in self.plugins
 
                 # respond to plugin activation / deactivation
-                if plugin['active'] is True and plugin_exists is False:
-                    self.plugins.add(plugin_obj)
+                if plugin['active'] is True and not plugin_exists:
+                    self.plugins.append(plugin_name)
                     ResponderRegistrar.respond(
                         GitmateActions.PLUGIN_ACTIVATED,
                         self,
                         repo=self,
-                        plugin_name=plugin['name'])
-                elif plugin['active'] is False and plugin_exists is True:
-                    self.plugins.remove(plugin_obj)
+                        plugin_name=plugin_name)
+                elif plugin['active'] is False and plugin_exists:
+                    self.plugins.remove(plugin_name)
                     ResponderRegistrar.respond(
                         GitmateActions.PLUGIN_DEACTIVATED,
                         self,
                         repo=self,
-                        plugin_name=plugin['name'])
+                        plugin_name=plugin_name)
                 self.save()
 
-            if 'settings' in plugin:
-                if isinstance(plugin['settings'], dict):
-                    plugin_obj.set_settings(self, plugin['settings'])
+            if 'settings' in plugin and isinstance(plugin['settings'], dict):
+                config.set_settings(self, plugin['settings'])
 
     @classmethod
     def from_igitt_repo(cls, instance: IGittRepository, active: bool=True):
@@ -369,6 +378,23 @@ class SettingsBase(models.Model):
     repo = models.OneToOneField(
         Repository, on_delete=models.CASCADE,
         related_name='%(app_label)s_settings')
+
+    @property
+    def configuration(self):
+        """
+        Returns the current configuration of the plugin with the name, value,
+        description and type of each field.
+        """
+        return [
+            {
+                'name': field.name,
+                'value': field.value_from_object(self),
+                'description': field.help_text,
+                'type': field.get_internal_type(),
+            }
+            for field in self._meta.fields
+            if field.name not in ['repo', 'id']
+        ]
 
     class Meta:
         verbose_name_plural = 'settings'

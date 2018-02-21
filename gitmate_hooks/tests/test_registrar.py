@@ -19,20 +19,20 @@ class TestResponderRegistrar(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('testplugin')
 
-        @ResponderRegistrar.responder(self.plugin.name,
+        @ResponderRegistrar.responder(self.plugin,
                                       MergeRequestActions.OPENED)
         def test_responder(obj, example_bool_setting: bool = True):
             return example_bool_setting
 
         @ResponderRegistrar.scheduled_responder(
-            self.plugin.name, 100.00, is_active=True)
+            self.plugin, 100.00, is_active=True)
         def scheduled_responder_function(obj, example_bool_setting: bool=True):
             return example_bool_setting
 
     @patch.object(GitHubComment, 'body', new_callable=PropertyMock)
     def test_blocked_comment_response(self, m_body):
 
-        @ResponderRegistrar.responder(self.plugin.name,
+        @ResponderRegistrar.responder(self.plugin,
                                       MergeRequestActions.COMMENTED)
         def test_blocked_responder(mr, comment, *args, **kwargs):
             # this should never run
@@ -54,18 +54,18 @@ class TestResponderRegistrar(GitmateTestCase):
     def test_active_plugin(self):
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, 'example', repo=self.repo)],
+                MergeRequestActions.OPENED, self.plugin, repo=self.repo)],
             [True]
         )
-        self.repo.set_plugin_settings([{
+        self.repo.settings = [{
             'name': 'testplugin',
             'settings': {
                 'example_bool_setting': False
             }
-        }])
+        }]
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, 'example', repo=self.repo)],
+                MergeRequestActions.OPENED, self.plugin, repo=self.repo)],
             [False]
         )
 
@@ -87,11 +87,12 @@ class TestResponderRegistrar(GitmateTestCase):
 
     def test_inactive_plugin(self):
         # Clearing all plugins!
-        self.repo.plugins.all().delete()
+        self.repo.plugins = []
+        self.repo.save()
 
         self.assertEqual(
             [result.get() for result in ResponderRegistrar.respond(
-                MergeRequestActions.OPENED, 'example', repo=self.repo)],
+                MergeRequestActions.OPENED, self.plugin, repo=self.repo)],
             []
         )
 

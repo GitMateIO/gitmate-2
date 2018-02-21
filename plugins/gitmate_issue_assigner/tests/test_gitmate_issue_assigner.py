@@ -26,8 +26,8 @@ class TestIssueAssigner(GitmateTestCase):
                 }
             }
         ]
-        self.repo.set_plugin_settings(self.settings)
-        self.gl_repo.set_plugin_settings(self.settings)
+        self.repo.settings = self.settings
+        self.gl_repo.settings = self.settings
 
     @patch.object(GitHubIssue, 'description', new_callable=PropertyMock)
     @patch.object(GitHubIssue, 'title', new_callable=PropertyMock)

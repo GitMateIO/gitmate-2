@@ -23,7 +23,6 @@ from gitmate.utils import snake_case_to_camel_case
 from gitmate_config.enums import Providers
 from gitmate_config.models import Installation
 from gitmate_config.models import Organization
-from gitmate_config.models import Plugin
 from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
 from gitmate_hooks.views import github_webhook_receiver
@@ -272,17 +271,16 @@ class GitmateTestCase(RecordedTestCase):
         self.gl_repo.save()
 
     def setUpWithPlugin(self, name: str):
-        self.plugin = Plugin(name=name)
-        self.plugin_module = self.plugin.import_module()
-        self.plugin.save()
+        self.plugin = name
+        self.plugin_config = apps.get_app_config(f'gitmate_{self.plugin}')
 
         GitmateTestCase.setUp(self)
 
-        self.repo.plugins.add(self.plugin)
+        self.repo.plugins.append(self.plugin)
         self.repo.active = True
         self.repo.save()
 
-        self.gl_repo.plugins.add(self.plugin)
+        self.gl_repo.plugins.append(self.plugin)
         self.gl_repo.active = True
         self.gl_repo.save()
 

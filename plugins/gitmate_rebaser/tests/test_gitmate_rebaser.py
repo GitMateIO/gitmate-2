@@ -46,19 +46,19 @@ def fake_popen_failure(cmd, **kwargs):
 class TestGitmateRebaser(GitmateTestCase):
     def setUp(self):
         super().setUpWithPlugin('rebaser')
-        self.repo.set_plugin_settings([{
+        self.repo.settings = [{
             'name': 'rebaser',
             'settings': {
                 'enable_rebase': True,
                 'fastforward_admin_only': True,
             }
-        }])
-        self.gl_repo.set_plugin_settings([{
+        }]
+        self.gl_repo.settings = [{
             'name': 'rebaser',
             'settings': {
                 'enable_rebase': True
             }
-        }])
+        }]
         self.github_data = {
             'repository': {'full_name': environ['GITHUB_TEST_REPO'],
                            'id': 49558751},
@@ -202,9 +202,9 @@ class TestGitmateRebaser(GitmateTestCase):
     @patch.object(GitHubComment, 'repository', new_callable=PropertyMock)
     @patch.object(GitHubRepository, 'get_permission_level')
     def test_verify_command_access(self, m_get_perm, m_repo, m_author):
-        merge_admin_only = self.plugin.get_settings(
+        merge_admin_only = self.plugin_config.get_settings(
             self.repo)['merge_admin_only']
-        fastforward_admin_only = self.plugin.get_settings(
+        fastforward_admin_only = self.plugin_config.get_settings(
             self.repo)['fastforward_admin_only']
 
         m_repo.return_value = self.repo.igitt_repo
