@@ -8,10 +8,9 @@ class Settings(SettingsBase):
     keywords = psql_fields.JSONField(
         help_text='Comma seperated keywords (values) triggering labels (keys) '
                   'to be set; e.g. type/bug: bug, crash.',
-        default={}
-    )
+        default=dict)
+
     label_texts_as_keywords = models.BooleanField(
         default=False,
         help_text='Apply labels if they are mentioned in the issue body '
-                  'automatically.'
-    )
+                  'automatically.')

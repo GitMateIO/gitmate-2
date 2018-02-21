@@ -19,7 +19,7 @@ class MergeRequestModel(models.Model):
     repo = models.ForeignKey(Repository, on_delete=models.CASCADE,
                              related_name='ack_mrs')
     number = models.IntegerField()
-    acks = psql_fields.JSONField(default={})
+    acks = psql_fields.JSONField(default=dict)
     last_head = models.CharField(default='', max_length=40)
 
     @property

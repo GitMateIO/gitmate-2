@@ -152,8 +152,7 @@ def add_review_status(pr: MergeRequest):
     """
     db_pr, _ = MergeRequestModel.objects.get_or_create(
         repo=Repository.from_igitt_repo(pr.repository),
-        number=pr.number,
-        defaults={'acks': dict()})  # TODO: works only if set manually
+        number=pr.number)
 
     head = pr.head
 

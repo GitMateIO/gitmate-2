@@ -17,7 +17,7 @@ class Settings(SettingsBase):
 class MergeRequestModel(models.Model):
     repo = models.ForeignKey(Repository, on_delete=models.CASCADE)
     number = models.IntegerField()
-    closes_issues = psql_fields.JSONField(default={})
+    closes_issues = psql_fields.JSONField(default=dict)
 
     @classmethod
     def find_mrs_with_issue(cls, issue: Issue):

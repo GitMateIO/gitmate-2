@@ -18,7 +18,7 @@ class AnalysisResults(models.Model):
         related_name='analysis_result_repository')
     sha = models.CharField(default=None, max_length=40)
     coafile_location = models.CharField(max_length=255)
-    results = psql_fields.JSONField()
+    results = psql_fields.JSONField(default=dict)
 
     def __str__(self):  # pragma: no cover
         return '{}@{}'.format(self.repo.full_name, self.sha)
