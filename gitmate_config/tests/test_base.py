@@ -38,9 +38,9 @@ FILTER_PARAMS_REGEX = re.compile(r'(\??)((?:{})=\w+&?)'.format(
 # henceforth coverage here is not required.
 
 
-def reinit_plugin(name, upmate: bool=False):  # pragma: no cover
+def reinit_plugin(name):  # pragma: no cover
     """
-    Reinitialize gitmate with plugin and upmate, if specified.
+    Reinitialize gitmate with the specified plugin.
     """
     app_name = 'gitmate_' + name
     app_config_name = 'plugins.{}.apps.{}Config'.format(
@@ -61,10 +61,6 @@ def reinit_plugin(name, upmate: bool=False):  # pragma: no cover
 
     # migrate the models
     management.call_command('migrate', app_name, interactive=False)
-
-    # upmate the plugins, if specified
-    if upmate is True:
-        management.call_command('upmate', interactive=False)
 
 
 class StreamMock:
@@ -193,7 +189,7 @@ class GitmateTestCase(RecordedTestCase):
 
     def setUp(self):
         # Reconfigure gitmate for tests
-        reinit_plugin('testplugin', upmate=self.upmate)
+        reinit_plugin('testplugin')
 
         self.factory = APIRequestFactory()
 

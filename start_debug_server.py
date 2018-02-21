@@ -19,9 +19,6 @@ if __name__ == '__main__':
     print('\033[36mprecautiously attempting to migrate database...\033[0m')
     call(['python3', 'manage.py', 'migrate'])
 
-    print('\033[36mupmating plugins...\033[0m')
-    call(['python3', 'manage.py', 'upmate'])
-
     environ['DJANGO_DEBUG'] = 'True'
 
     print('\033[36mstarting the server, you are now on your own. '
