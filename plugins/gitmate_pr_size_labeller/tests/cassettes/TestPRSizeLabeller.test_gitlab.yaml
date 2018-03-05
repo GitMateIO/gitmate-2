@@ -31,45 +31,6 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.3]
     method: GET
-    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
-  response:
-    body: {string: '[{"id":"99f484ae167dcfcc35008ba3b5b564443d425ee0","short_id":"99f484ae","title":"yet
-        another one","created_at":"2016-02-11T17:53:37.000+00:00","parent_ids":["bbd11b50412d34072f1889e4cea04a32de183605"],"message":"yet
-        another one\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:37.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:37.000+00:00"},{"id":"bbd11b50412d34072f1889e4cea04a32de183605","short_id":"bbd11b50","title":"a
-        commit","created_at":"2016-02-11T17:53:33.000+00:00","parent_ids":["674498fd415cfadc35c5eb28b8951e800f357c6f"],"message":"a
-        commit\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:33.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:33.000+00:00"}]'}
-    headers:
-      Cache-Control: ['max-age=0, private, must-revalidate']
-      Content-Length: ['963']
-      Content-Type: [application/json]
-      Date: ['Sun, 13 Aug 2017 21:36:47 GMT']
-      Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="last"']
-      Server: [nginx]
-      Strict-Transport-Security: [max-age=31536000]
-      Vary: [Origin]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Next-Page: ['']
-      X-Page: ['1']
-      X-Per-Page: ['100']
-      X-Prev-Page: ['']
-      X-Request-Id: [4a7c1195-0588-4e8f-8f51-ee38f0f4dfe5]
-      X-Runtime: ['0.123961']
-      X-Total: ['2']
-      X-Total-Pages: ['1']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.3]
-    method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/changes?User-Agent=IGitt&per_page=100
   response:
     body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true,"changes":[]}'}
@@ -109,45 +70,6 @@ interactions:
       X-Frame-Options: [SAMEORIGIN]
       X-Request-Id: [dd061a0e-75e5-4b18-9abf-f07cc9bdbf02]
       X-Runtime: ['0.455960']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.3]
-    method: GET
-    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
-  response:
-    body: {string: '[{"id":"99f484ae167dcfcc35008ba3b5b564443d425ee0","short_id":"99f484ae","title":"yet
-        another one","created_at":"2016-02-11T17:53:37.000+00:00","parent_ids":["bbd11b50412d34072f1889e4cea04a32de183605"],"message":"yet
-        another one\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:37.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:37.000+00:00"},{"id":"bbd11b50412d34072f1889e4cea04a32de183605","short_id":"bbd11b50","title":"a
-        commit","created_at":"2016-02-11T17:53:33.000+00:00","parent_ids":["674498fd415cfadc35c5eb28b8951e800f357c6f"],"message":"a
-        commit\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:33.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:33.000+00:00"}]'}
-    headers:
-      Cache-Control: ['max-age=0, private, must-revalidate']
-      Content-Length: ['963']
-      Content-Type: [application/json]
-      Date: ['Sun, 13 Aug 2017 21:37:01 GMT']
-      Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="last"']
-      Server: [nginx]
-      Strict-Transport-Security: [max-age=31536000]
-      Vary: [Origin]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Next-Page: ['']
-      X-Page: ['1']
-      X-Per-Page: ['100']
-      X-Prev-Page: ['']
-      X-Request-Id: [befde871-5383-4ed2-94ed-98c9e5d4eb6d]
-      X-Runtime: ['0.093261']
-      X-Total: ['2']
-      X-Total-Pages: ['1']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -205,45 +127,6 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.3]
     method: GET
-    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
-  response:
-    body: {string: '[{"id":"99f484ae167dcfcc35008ba3b5b564443d425ee0","short_id":"99f484ae","title":"yet
-        another one","created_at":"2016-02-11T17:53:37.000+00:00","parent_ids":["bbd11b50412d34072f1889e4cea04a32de183605"],"message":"yet
-        another one\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:37.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:37.000+00:00"},{"id":"bbd11b50412d34072f1889e4cea04a32de183605","short_id":"bbd11b50","title":"a
-        commit","created_at":"2016-02-11T17:53:33.000+00:00","parent_ids":["674498fd415cfadc35c5eb28b8951e800f357c6f"],"message":"a
-        commit\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:33.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:33.000+00:00"}]'}
-    headers:
-      Cache-Control: ['max-age=0, private, must-revalidate']
-      Content-Length: ['963']
-      Content-Type: [application/json]
-      Date: ['Sun, 13 Aug 2017 21:37:14 GMT']
-      Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="last"']
-      Server: [nginx]
-      Strict-Transport-Security: [max-age=31536000]
-      Vary: [Origin]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Next-Page: ['']
-      X-Page: ['1']
-      X-Per-Page: ['100']
-      X-Prev-Page: ['']
-      X-Request-Id: [b0b505ca-0798-4760-b409-12aacfa4fa44]
-      X-Runtime: ['0.099323']
-      X-Total: ['2']
-      X-Total-Pages: ['1']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.3]
-    method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/changes?User-Agent=IGitt&per_page=100
   response:
     body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true,"changes":[]}'}
@@ -283,45 +166,6 @@ interactions:
       X-Frame-Options: [SAMEORIGIN]
       X-Request-Id: [9a6c6da1-efdb-4ea5-ad2a-7087355b2104]
       X-Runtime: ['0.259805']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.3]
-    method: GET
-    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
-  response:
-    body: {string: '[{"id":"99f484ae167dcfcc35008ba3b5b564443d425ee0","short_id":"99f484ae","title":"yet
-        another one","created_at":"2016-02-11T17:53:37.000+00:00","parent_ids":["bbd11b50412d34072f1889e4cea04a32de183605"],"message":"yet
-        another one\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:37.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:37.000+00:00"},{"id":"bbd11b50412d34072f1889e4cea04a32de183605","short_id":"bbd11b50","title":"a
-        commit","created_at":"2016-02-11T17:53:33.000+00:00","parent_ids":["674498fd415cfadc35c5eb28b8951e800f357c6f"],"message":"a
-        commit\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:33.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:33.000+00:00"}]'}
-    headers:
-      Cache-Control: ['max-age=0, private, must-revalidate']
-      Content-Length: ['963']
-      Content-Type: [application/json]
-      Date: ['Sun, 13 Aug 2017 21:37:24 GMT']
-      Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="last"']
-      Server: [nginx]
-      Strict-Transport-Security: [max-age=31536000]
-      Vary: [Origin]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Next-Page: ['']
-      X-Page: ['1']
-      X-Per-Page: ['100']
-      X-Prev-Page: ['']
-      X-Request-Id: [e2cddeba-52f9-4341-bf69-39bcd594eea3]
-      X-Runtime: ['0.087141']
-      X-Total: ['2']
-      X-Total-Pages: ['1']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -379,45 +223,6 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.3]
     method: GET
-    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
-  response:
-    body: {string: '[{"id":"99f484ae167dcfcc35008ba3b5b564443d425ee0","short_id":"99f484ae","title":"yet
-        another one","created_at":"2016-02-11T17:53:37.000+00:00","parent_ids":["bbd11b50412d34072f1889e4cea04a32de183605"],"message":"yet
-        another one\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:37.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:37.000+00:00"},{"id":"bbd11b50412d34072f1889e4cea04a32de183605","short_id":"bbd11b50","title":"a
-        commit","created_at":"2016-02-11T17:53:33.000+00:00","parent_ids":["674498fd415cfadc35c5eb28b8951e800f357c6f"],"message":"a
-        commit\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:33.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:33.000+00:00"}]'}
-    headers:
-      Cache-Control: ['max-age=0, private, must-revalidate']
-      Content-Length: ['963']
-      Content-Type: [application/json]
-      Date: ['Sun, 13 Aug 2017 21:37:36 GMT']
-      Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="last"']
-      Server: [nginx]
-      Strict-Transport-Security: [max-age=31536000]
-      Vary: [Origin]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Next-Page: ['']
-      X-Page: ['1']
-      X-Per-Page: ['100']
-      X-Prev-Page: ['']
-      X-Request-Id: [4cc92fa8-1ecc-4293-b00a-2a4eb0870639]
-      X-Runtime: ['0.103460']
-      X-Total: ['2']
-      X-Total-Pages: ['1']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.3]
-    method: GET
     uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/changes?User-Agent=IGitt&per_page=100
   response:
     body: {string: '{"id":3757647,"iid":2,"project_id":3439658,"title":"Sils/severalcommits","description":"","state":"reopened","created_at":"2017-06-07T03:51:41.112Z","updated_at":"2017-06-16T08:11:45.849Z","target_branch":"master","source_branch":"sils/severalcommits","upvotes":0,"downvotes":0,"author":{"name":"GitMate","username":"gitmate-test-user","id":1369631,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/27e08ed25afa8578cb3a346964f0de32?s=80&d=identicon","web_url":"https://gitlab.com/gitmate-test-user"},"assignee":null,"source_project_id":3439658,"target_project_id":3439658,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"99f484ae167dcfcc35008ba3b5b564443d425ee0","merge_commit_sha":null,"user_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitmate-test-user/test/merge_requests/2","subscribed":true,"changes":[]}'}
@@ -457,45 +262,6 @@ interactions:
       X-Frame-Options: [SAMEORIGIN]
       X-Request-Id: [64a94ae3-9c34-43d3-9f08-c839d226ced0]
       X-Runtime: ['0.215728']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.3]
-    method: GET
-    uri: https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&per_page=100
-  response:
-    body: {string: '[{"id":"99f484ae167dcfcc35008ba3b5b564443d425ee0","short_id":"99f484ae","title":"yet
-        another one","created_at":"2016-02-11T17:53:37.000+00:00","parent_ids":["bbd11b50412d34072f1889e4cea04a32de183605"],"message":"yet
-        another one\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:37.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:37.000+00:00"},{"id":"bbd11b50412d34072f1889e4cea04a32de183605","short_id":"bbd11b50","title":"a
-        commit","created_at":"2016-02-11T17:53:33.000+00:00","parent_ids":["674498fd415cfadc35c5eb28b8951e800f357c6f"],"message":"a
-        commit\n","author_name":"Lasse Schuirmann","author_email":"lasse.schuirmann@gmail.com","authored_date":"2016-02-11T17:53:33.000+00:00","committer_name":"Lasse
-        Schuirmann","committer_email":"lasse.schuirmann@gmail.com","committed_date":"2016-02-11T17:53:33.000+00:00"}]'}
-    headers:
-      Cache-Control: ['max-age=0, private, must-revalidate']
-      Content-Length: ['963']
-      Content-Type: [application/json]
-      Date: ['Sun, 13 Aug 2017 21:37:56 GMT']
-      Etag: [W/"641221fd73f291d81a9e3d4c33662ddf"]
-      Link: ['<https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="first", <https://gitlab.com/api/v4/projects/gitmate-test-user%2Ftest/merge_requests/2/commits?User-Agent=IGitt&id=gitmate-test-user%2Ftest&merge_request_iid=2&page=1&per_page=100>;
-          rel="last"']
-      Server: [nginx]
-      Strict-Transport-Security: [max-age=31536000]
-      Vary: [Origin]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Next-Page: ['']
-      X-Page: ['1']
-      X-Per-Page: ['100']
-      X-Prev-Page: ['']
-      X-Request-Id: [94742c76-5c0a-4f53-a6e2-de2939d55147]
-      X-Runtime: ['0.084161']
-      X-Total: ['2']
-      X-Total-Pages: ['1']
     status: {code: 200, message: OK}
 - request:
     body: null
