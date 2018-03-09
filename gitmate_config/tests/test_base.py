@@ -134,6 +134,11 @@ class MigrationTestCase(RecordedTestCase):
     migrate_to = None
     app = None
 
+    def tearDown(self):
+        # run the migration all the way forward after testing
+        management.call_command(
+            'migrate', self.app, verbosity=0, interactive=False)
+
     def setUp(self):
         super(MigrationTestCase, self).setUp()
 
