@@ -121,6 +121,23 @@ class RecordedTestCase(TransactionTestCase):
             ]
             self.cassette._save(force=True)
 
+    @classmethod
+    def setUpClass(cls):
+        """
+        On inherited classes, run `setUp` method as usual.
+
+        Inspired via http://stackoverflow.com/questions/1323455/python-unit-test-with-base-and-sub-class/17696807#17696807
+        """
+        if (cls is not RecordedTestCase and
+                cls.setUp is not RecordedTestCase.setUp):
+            _setUp = cls.setUp
+
+            def newSetUp(self, *args, **kwargs):
+                RecordedTestCase.setUp(self)
+                return _setUp(self, *args, **kwargs)
+
+            cls.setUp = newSetUp
+
     def setUp(self):
         # use vcrpy recorder
         myvcr = self._get_vcr()
@@ -140,8 +157,6 @@ class MigrationTestCase(RecordedTestCase):
             'migrate', self.app, verbosity=0, interactive=False)
 
     def setUp(self):
-        super(MigrationTestCase, self).setUp()
-
         self.assertTrue(
             self.app and self.migrate_from and self.migrate_to,
             f"A MigrationTestCase subclass, '{type(self).__name__}' must "
@@ -182,7 +197,6 @@ class GitmateTestCase(RecordedTestCase):
         reinit_plugin('testplugin', upmate=self.upmate)
 
         self.factory = APIRequestFactory()
-        super(GitmateTestCase, self).setUp()
 
         self.user = User.objects.create_user(
             username='john',
