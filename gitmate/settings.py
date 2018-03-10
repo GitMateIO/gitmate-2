@@ -73,11 +73,21 @@ REQUISITE_APPS = [
     'coala_online',
 ]
 
+RELEASE_VERSION = 'UNKNOWN_VERSION'
+
+git_dir = os.path.join(BASE_DIR, '.git')
+ver_file = os.path.join(BASE_DIR, '.version')
+
+if os.path.isdir(git_dir):  # pragma: no cover
+    RELEASE_VERSION = raven.fetch_git_sha(BASE_DIR)
+elif os.path.exists(ver_file):  # pragma: no cover
+    with open(ver_file, 'r') as f:
+        RELEASE_VERSION = f.read().rstrip()
+
+
 RAVEN_CONFIG = {
     'dsn': os.environ.get('RAVEN_DSN'),
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+    'release': RELEASE_VERSION,
 }
 
 GITMATE_PLUGINS = get_plugins()
