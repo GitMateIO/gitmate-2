@@ -6,13 +6,6 @@ variables:
   DB_USER: postgres
   DB_PASSWORD: postgres
   DB_ADDRESS: postgres
-  DJANGO_DEBUG: "True"
-  GITHUB_TEST_REPO: gitmate-test-user/test
-  GITLAB_TEST_REPO: gitmate-test-user/test
-  GITHUB_TEST_TOKEN: somerandomstring
-  GITLAB_TEST_TOKEN: somerandomstring
-  GITHUB_BOT_TOKEN: foobar
-  GITLAB_BOT_TOKEN: foobar
   DOCKER_DRIVER: overlay2
 
 before_script:
