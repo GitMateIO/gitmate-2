@@ -537,3 +537,30 @@ class TestAck(GitmateTestCase):
                          Status.FAILED)
         self.assertEqual(self.gl_commit_2.set_status.call_args[0][0].status,
                          Status.SUCCESS)
+
+    @patch.object(GitLabComment, 'author', new_callable=PropertyMock)
+    @patch.object(GitLabCommit, 'set_status')
+    @patch.object(GitLabCommit, 'sha', new_callable=PropertyMock)
+    @patch.object(GitLabRepository, 'get_permission_level')
+    @patch.object(GitLabComment, 'body', new_callable=PropertyMock)
+    @patch.object(GitLabMergeRequest, 'commits', new_callable=PropertyMock)
+    @patch.object(GitLabMergeRequest, 'add_comment')
+    def test_gitlab_no_response_with_unrelated_comment(
+        self, m_add_comment, m_commits, m_body, m_get_perms, m_sha,
+        m_set_status, m_author
+    ):
+        m_sha.return_value = 'f6d2b7c66372236a090a2a74df2e47f42a54456b'
+        m_get_perms.return_value = AccessLevel.NONE
+        m_commits.return_value = tuple([self.gl_commit])
+        m_body.return_value = 'something that should not be responded to'
+        m_author.return_value = GitLabUser(self.gh_token, 0)
+
+        self.simulate_gitlab_webhook_call(
+            'Merge Request Hook', self.gl_pr_data)
+        # reset the mock after posting status for opening the PR
+        m_set_status.reset_mock()
+
+        self.simulate_gitlab_webhook_call('Note Hook', self.gl_comment_data)
+
+        m_add_comment.assert_not_called()
+        m_set_status.assert_not_called()

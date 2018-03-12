@@ -1,3 +1,4 @@
+from collections import defaultdict
 from hashlib import sha1
 import re
 
@@ -78,7 +79,7 @@ def map_comment_parts_to_keywords(ack_strs, unack_strs, body):
     # remove empty strings and None elements
     body = filter(lambda x: x, body)
 
-    mapping = {'ack': [], 'unack': []}
+    mapping = defaultdict(list)
 
     for element in body:
         if element in ack_keywords:
@@ -102,13 +103,13 @@ def gitmate_ack(pr: MergeRequest,
     """
     body = comment.body.lower()
     commits = pr.commits
-    pattern = r'(^{k}\s)|(\s{k}\s)|(\s{k}$)'
     perm_level = pr.repository.get_permission_level(comment.author)
-
     comment_slices = map_comment_parts_to_keywords(ack_strs, unack_strs, body)
 
-    if (any(comment_slices)
-            and perm_level.value < AccessLevel.CAN_WRITE.value):
+    # return right away if the comment isn't related to ack / unack command
+    if not any(comment_slices):
+        return
+    elif perm_level.value < AccessLevel.CAN_WRITE.value:
         msg = ('Sorry @{}, you do not have the necessary permission '
                'levels to perform the action.'.format(comment.author.username))
         pr.add_comment(msg)
