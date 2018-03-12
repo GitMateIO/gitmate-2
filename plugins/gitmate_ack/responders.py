@@ -14,6 +14,8 @@ from gitmate_config.models import Repository
 from gitmate_hooks.utils import ResponderRegistrar
 from .models import MergeRequestModel
 
+sha_regex = r'\b[0-9a-f]{5,40}\b'
+sha_compiled = re.compile(sha_regex)
 
 def _get_commit_hash(commit: Commit):
     """
@@ -106,8 +108,12 @@ def gitmate_ack(pr: MergeRequest,
     perm_level = pr.repository.get_permission_level(comment.author)
     comment_slices = map_comment_parts_to_keywords(ack_strs, unack_strs, body)
 
+    has_commit_sha = any(sha_compiled.search(string)
+                         for _list in comment_slices.values()
+                         for string in _list)
+
     # return right away if the comment isn't related to ack / unack command
-    if not any(comment_slices):
+    if not any(comment_slices) or not has_commit_sha:
         return
     elif perm_level.value < AccessLevel.CAN_WRITE.value:
         msg = ('Sorry @{}, you do not have the necessary permission '

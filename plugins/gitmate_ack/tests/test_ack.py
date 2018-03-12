@@ -372,6 +372,18 @@ class TestAck(GitmateTestCase):
                           (Status.SUCCESS, 'review/gitmate/manual'),
                           (Status.SUCCESS, 'review/gitmate/manual/pr')])
 
+    @patch.object(GitLabComment, 'body', new_callable=PropertyMock)
+    @patch.object(GitLabMergeRequest, 'add_comment')
+    def test_gitlab_ack_returning_none(
+            self, m_add_comment,  m_body
+    ):
+        m_body.return_value = 'Might get ack after this change.'
+        response = self.simulate_gitlab_webhook_call('Merge Request Hook',
+                                                     self.gl_pr_data)
+        response = self.simulate_gitlab_webhook_call('Note Hook',
+                                                     self.gl_comment_data)
+        m_add_comment.assert_not_called()
+
     @patch.object(GitLabMergeRequest, 'commits', new_callable=PropertyMock)
     @patch.object(GitLabComment, 'body', new_callable=PropertyMock)
     @patch.object(GitLabComment, 'author', new_callable=PropertyMock)
