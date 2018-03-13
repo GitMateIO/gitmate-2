@@ -29,13 +29,22 @@ from .utils import divert_access_to_repos
 
 
 class RepositoryViewSet(
-    GenericViewSet,
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
+        GenericViewSet,
+        mixins.ListModelMixin,
+        mixins.RetrieveModelMixin,
+        mixins.UpdateModelMixin,
 ):
     """
-    Retrieves repositories this user has access to.
+    Manages the repositories owned by the authenticated user.
+
+    list:
+    Returns a list of all repositories owned by the authenticated user.
+
+    retrieve:
+    Returns a specified repository of the authenticated user.
+
+    partial_update:
+    Patches a specified repository of the authenticated user.
     """
     serializer_class = RepositorySerializer
     authentication_classes = (SessionAuthentication, BasicAuthentication)
@@ -180,11 +189,23 @@ class RepositoryViewSet(
 
 
 class UserViewSet(
-    GenericViewSet,
-    mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin
+        GenericViewSet,
+        mixins.RetrieveModelMixin,
+        mixins.UpdateModelMixin,
+        mixins.DestroyModelMixin
 ):
+    """
+    Manages the users within GitMate.
+
+    retrieve:
+    Returns the user details of the authenticated user.
+
+    destroy:
+    Deletes the user account of the authenticated user.
+
+    update:
+    Updates the user details of the authenticated user.
+    """
     authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
@@ -209,11 +230,24 @@ class UserViewSet(
 
 
 class PluginSettingsViewSet(
-    GenericViewSet,
-    mixins.RetrieveModelMixin,
-    mixins.ListModelMixin,
-    mixins.UpdateModelMixin
+        GenericViewSet,
+        mixins.RetrieveModelMixin,
+        mixins.ListModelMixin,
+        mixins.UpdateModelMixin
 ):
+    """
+    Manages the configuration for plugins of each repository.
+
+    retrieve:
+    Retrieves the configuration for the plugins of a repository.
+
+    list:
+    Retrieves the list of configurations for the plugins of all repositories
+    owned by the authenticated user.
+
+    update:
+    Updates the configuration for the plugins of a repository.
+    """
     authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated,)
     serializer_class = PluginSettingsSerializer

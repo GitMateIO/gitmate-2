@@ -68,7 +68,6 @@ REQUISITE_APPS = [
     'gitmate_config',
     'gitmate_hooks',
     'rest_framework',
-    'rest_framework_docs',
     'corsheaders',
     'coala_online',
 ]

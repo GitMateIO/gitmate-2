@@ -20,6 +20,7 @@ from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.views import logout
+from rest_framework.documentation import include_docs_urls
 
 from coala_online.views import coala_online
 
@@ -27,7 +28,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('social_django.urls', namespace='auth')),
     url(r'^api/', include('gitmate_config.urls', namespace='api')),
-    url(r'^docs/', include('rest_framework_docs.urls', namespace='docs')),
+    url(r'^docs/', include_docs_urls(title='API Documentation')),
     url(r'^webhooks/', include('gitmate_hooks.urls', namespace='webhooks')),
     url(r'^logout/', logout,
         {'next_page': settings.SOCIAL_AUTH_LOGOUT_REDIRECT_URL}),
